@@ -629,6 +629,57 @@
 <div class="panel panel-primary">
   <div class="panel-heading">
     <div class="panel-title">
+      事件对象 event
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+        https://facebook.github.io/react/docs/events.html
+      <div class="col-sm-6">
+        <pre>
+        event          //包装兼容过的 event
+        公用属性与方法
+          boolean bubbles //是否冒泡
+          boolean cancelable //是否可取消
+          DOMEventTarget currentTarget //在冒泡事件中指向触发的tagert dom对象;
+          boolean defaultPrevented //是否阻止了默认行为
+          number eventPhase  //事件阶段
+          boolean isTrusted // 是否由用户触发,(对应还是js触发)
+          DOMEvent nativeEvent //原生 event
+          void preventDefault() //阻止默认
+          boolean isDefaultPrevented() 是否阻止默认???
+          void stopPropagation() 阻止冒泡
+          boolean isPropagationStopped() 是否阻止了冒泡
+          DOMEventTarget target  //触发dom对象(包装后的)
+          number timeStamp  //触发的时间戳
+          string type         //事件类型
+        特殊:
+          剪切事件 onCopy onCut onPaste
+          键盘事件 onKeyDown onKeyPress onKeyUp
+          
+    
+
+
+        </pre>
+      </div>
+      <!-- col-md-6 S-->
+      <div class="col-sm-6">
+        <div>
+          <h3>demo标题</h3>
+          <p>demo内容</p>
+        </div>
+      </div>
+      <!-- col-md-6 E-->
+    </div>
+  </div>
+  <div class="panel-footer">
+    footer
+  </div>
+</div>
+ 
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
       示例标题
     </div>
   </div>
