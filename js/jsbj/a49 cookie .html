@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+
+   
+
+		js cookie操作（读，写，删除）实例介绍
+www.111cn.net 编辑:swteen 来源:转载
+在js中对cookie的操作无非就是cookie读，写，设置，删除操作了，下面我来给大家简单介绍js cookie 读，写，删除操作，有需要的朋友可参考。
+
+设置cookie
+每个cookie都是一个名/值对，可以把下面这样一个字符串赋值给document.cookie：
+ 代码如下	复制代码
+document.cookie="userId=828"; 
+如果要一次存储多个名/值对，可以使用分号加空格（; ）隔开，例如：
+ 代码如下	复制代码
+document.cookie="userId=828; userName=hulk"; 
+在cookie 的名或值中不能使用分号（;）、逗号（,）、等号（=）以及空格。在cookie的名中做到这点很容易，但要保存的值是不确定的。如何来存储这些值呢？方 法是用escape()函数进行编码，它能将一些特殊符号使用十六进制表示，例如空格将会编码为“20%”，从而可以存储于cookie值中，而且使用此 种方案还可以避免中文乱码的出现。
+例如：
+ 代码如下	复制代码
+<script language="javascript">
+       //写cookies
+        function setCookie(name,value)
+        {
+            var Days = 30;
+            var exp = new Date();
+            exp.setTime(exp.getTime() + Days*24*60*60*1000);
+            document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+        }        
+       //读取cookies
+        function getCookie(name)
+        {
+            var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+            if(arr=document.cookie.match(reg)){
+                return unescape(arr[2]);
+            }else{
+                return null
+            };
+        }
+       //删除cookies
+       function delCookie(name)
+       {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval=getCookie(name);
+        if(cval!=null)
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+        }
+
+/*
+        function SetCookie(name,value)
+            {  
+                var Days = 1;
+                var exp  = new Date();
+                exp.setTime(exp.getTime() + Days*24*60*60*1000);
+                document.cookie = name + "="+ escape (value) + ";expires=" +exp.toGMTString()+";path=/;";
+            }
+        function GetCookie(name)
+        {
+            var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+            if(arr != null) return unescape(arr[2]); return null; 
+        } 
+ */
+ </script>  
+如何调用函数就很简单，直接使用setCookie("名","值")、getCookie("名")、delCookie("名")！
+
+访问Cookie
+ 代码如下	复制代码
+document.write(document.cookie);//输出类似"name1=value1; name2=value2; name3=value3"的字符串
+document.write(typeof document.cookie);//cookie仅仅是个字符串
+再看个实例
+ 代码如下	复制代码
+<script language=javascript>
+//获得coolie 的值
+ 
+function cookie(name){   
+   var cookieArray=document.cookie.split("; "); //得到分割的cookie名值对   
+   var cookie=new Object();   
+   for (var i=0;i<cookieArray.length;i++){   
+      var arr=cookieArray[i].split("=");       //将名和值分开   
+      if(arr[0]==name)return unescape(arr[1]); //如果是指定的cookie，则返回它的值   
+   }
+   return "";
+}
+ 
+function delCookie(name)//删除cookie
+{
+   document.cookie = name+"=;expires="+(new Date(0)).toGMTString();
+}
+ 
+function getCookie(objName){//获取指定名称的cookie的值
+    var arrStr = document.cookie.split("; ");
+    for(var i = 0;i < arrStr.length;i ++){
+        var temp = arrStr[i].split("=");
+        if(temp[0] == objName) return unescape(temp[1]);
+   }
+}
+ 
+function addCookie(objName,objValue,objHours){      //添加cookie
+    var str = objName + "=" + escape(objValue);
+    if(objHours > 0){                               //为时不设定过期时间，浏览器关闭时cookie自动消失
+        var date = new Date();
+        var ms = objHours*3600*1000;
+        date.setTime(date.getTime() + ms);
+        str += "; expires=" + date.toGMTString();
+   }
+   document.cookie = str;
+}
+ 
+function SetCookie(name,value)//两个参数，一个是cookie的名子，一个是值
+{
+    var Days = 30; //此 cookie 将被保存 30 天
+    var exp = new Date();    //new Date("December 31, 9998");
+    exp.setTime(exp.getTime() + Days*24*60*60*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+function getCookie(name)//取cookies函数       
+{
+    var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+     if(arr != null) return unescape(arr[2]); return null;
+ 
+}
+function delCookie(name)//删除cookie
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
+</script>
+	</head>
+	<body>
+	  
+	</body>
+</html>

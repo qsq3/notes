@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		
+	</head>
+	<body onload="alert('页面加载完成')">
+
+
+			
+			
+		<h3>键盘的事件,按住不动时执行顺序onkeydown onkeypress onkeyup</h3> 	
+		<input onkeydown="alert('按下按键,系统还未接收到用户输入信息')" value="onkeydown" />
+		<input onkeypress="alert('按下按键,系统还未接收到用户输入信息')" value="onkeypress" />
+		<input onkeyup="alert('键盘弹起按键的时候触发');" value="onkeyup" />
+
+	  <script type="text/javascript">
+			var oDiv =document.getElementById("div1");
+/*键盘事件:只有能获得焦点的元素才能触发键盘事件;顺序  
+	1,onkeydown- 按下键盘,未输入当前字符时就触发;
+	2,onkeypress - 按下键盘,未输入当前字符时就触发;在onkeydown后面;
+		2:   对应charCode;针对字符层面;大小写敏感,对主副键盘数字键不敏感,只捕获字符键;不捕获功能键(包括后退、删除和中文输入法);
+	3,onkeyup - 已输入字符,松开键盘时触发;
+		1,3: 对应keyCode;针对硬件层面;大小写不敏感,对主付键盘数字键敏感,可捕获功能键;
+	键盘事件event对象还有三个属性:altKey, ctrlKey,shiftKey辅助:event.altKey = false;
+
+	获取用户实际敲击的按钮，用keydown事件来获取事件对象，并获取keyCode值，所有浏览器兼容
+	获取用户输入的字符，那么就使用keypress来获取，然后获取charCode（火狐和safari）或是keyCode（其他浏览器）。
+				
+				//全局esc返回主界面
+				document.onkeyup = keyUp;
+				function keyUp(e){
+					e = e|| window.event;
+					var currKey = e.keyCode||e.which||e.charCode;
+					var realkey = String.fromCharCode(currKey);
+					//console.log("keycode: "+currKey+"\n"+"realkey:"+ realkey);
+					if (currKey == 27)//esc返回主界面
+					{
+						oLoginBg.style.display = "none";
+						loginUname.value = loginPwShow.value = loginPwHide.value = "";
+					}
+					return (currKey == 13) ? false: true; //禁止回车的默认事件
+				};
+
+				执行长按enter键的事件， 你可以这样子做：
+				@Override
+				public boolean onKeyDown(int keyCode, KeyEvent event) {
+					 super.onKeyDown(keyCode, event);
+					 if(keyCode == KeyEvent.KEYCODE_ENTER){
+						 event.startTracking();
+					 }
+				}
+				@Override
+				public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+				return super.onKeyLongPress(keyCode, event);
+				}
+
+				这样子你的onKeyLongPress方法就会被执行到了
+
+                */
+
+                oninput="txtCount()" //IE9+其他 W3C标准
+                onpropertychange="txtCount()" //IE8-
+
+		</script>
+	</body>
+</html>

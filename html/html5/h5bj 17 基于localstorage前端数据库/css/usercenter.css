@@ -1,0 +1,174 @@
+/**
+ *  author : 空山 112093112@qq.com
+ * **/
+.topBanner{
+	padding: 20px 0;
+	background-color: #3299FF;
+}
+.topBanner .title{
+	margin: 0 auto;
+    font-size: 24px;
+    line-height: 2;
+    text-align: center;
+    color: #fff;
+}
+.topBanner .avatarWrap{
+	margin: 20px auto;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	border: 1px solid #fff;
+	padding: 6px;
+	overflow: hidden;
+	position: relative;
+}
+.topBanner .avatarWrap .avatar{
+	width: 80px;
+	height: 80px;
+	background-color: #fff;
+	border-radius: 50%;
+	overflow: hidden;
+	position: absolute;
+	left: 0; top: 0; bottom: 0; right: 0; margin: auto;
+}
+.course .weui_cell_ft{
+    border: 0 none !important;
+}
+.course .weui_cell_ft:before{
+    display: none;
+    font-family: weui;
+    font-style: normal;
+    font-weight: 400;
+    speak: none;
+    display: inline-block;
+    vertical-align: middle;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    margin: 0;
+    font-size: 23px;
+}
+.course .weui_cell_ft.signed{
+    border-color: #09bb07;
+    color: #09bb07;
+}
+ .course .weui_cell_ft.signed:before{
+    color: #09bb07;
+    content: "\EA06";
+    
+}
+ .course .weui_cell_ft.signed:after{
+    display: inline-block;
+    content: "已签到";
+}
+
+.course .weui_cell_ft.unsigned{
+    border-color: #F76260;
+    color: #F76260;
+}
+.course .weui_cell_ft.unsigned:before{
+    color: #f43530;
+    content: "\EA0B";
+}
+ .course .weui_cell_ft.unsigned:after{
+    display: inline-block;
+    content: "未签到";
+}
+
+.course .weui_cell_ft.details{
+    border-color: #10AEFF;
+    color: #10AEFF;
+}
+.course .weui_cell_ft.details:before{
+    color: #10AEFF;
+    content: "\EA03";
+}
+.course .weui_cell_ft.details:after{
+    display: inline-block;
+    content: "查看详情";
+}
+
+.course .weui_cell_ft.onTeaching{
+    border-color: #10AEFF;
+    color: #10AEFF;
+}
+.course .weui_cell_ft.onTeaching:before{
+    color: #10aeff;
+    content: "\EA09";
+}
+ .course .weui_cell_ft.onTeaching:after{
+    display: inline-block;
+    content: "授课中";
+}
+
+.gapD{
+    height:10px;
+    width:100%;
+    background-color: #ddd;
+}
+.leftAnime .weui_tab_bd_item_active{
+    animation:leftAnime 1s ease-out;
+    -webkit-animation:leftAnime 1s ease-out; 
+}
+@keyframes leftAnime{
+from {transform: translateX(100%);}
+to {transform: translateX(0);}
+}
+
+/**S userdata-hd **/
+
+.userdata-hd .weui_media_box.weui_media_appmsg .weui_media_hd {
+    width: 100px;
+    height: 100px;
+    margin-right: 2em;
+}
+.userdata-hd .weui_media_box.weui_media_appmsg .weui_media_appmsg_thumb {
+    border-radius: 50%;
+    height: 100%;
+}
+
+/**E userdata-hd**/
+.userdata-bd.weui_panel:before,
+.userdata-bd.weui_panel:after{
+    display:none;
+}
+.userdata-bd .weui_panel_hd {
+    padding: 10px 15px;
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+.userdata-bd .weui_cells {
+    margin-top: 6px;
+    font-size: 13px;
+}
+.userdata-bd .weui_panel_hd:before,
+.userdata-bd .weui_panel_hd:after{
+    display:none;
+}
+
+.usercenterMain{
+    margin: 20px 0 60px;
+}
+
+.weui_navbar{
+	box-sizing: border-box;
+	border-top: 1px solid #3299FF;
+    border-bottom: 0 none;
+}
+.weui_navbar_item{
+	color: #fff;
+	background-color: #3299FF;
+}
+.weui_navbar_item.weui_bar_item_on{
+    color: #3299FF;
+	background-color: #fff;
+}
+.weui_navbar_item.weui_bar_item_on::after{
+	display: none;
+}
+.weui_navbar:after {
+	display: none;
+}

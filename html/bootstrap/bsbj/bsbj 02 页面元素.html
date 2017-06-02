@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>页面元素</title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+		</style>
+	</head>
+	<body>
+		<div class="container">
+		    <div class="row">
+                <div class="h2 page-header">页面元素 概述</div>
+                <div class="row">
+                    按钮 a input button          输入框 input text password           下拉框 select
+
+                    多选框 checkbox       单选框  radio             图片 img
+                    
+                    图标 glyphicon         输入框组 input-group           下拉菜单 dropdown/dropup等
+                    
+                    按钮组 btn-group       导航 nav (分页导航)             导航条 navbar
+                    
+                </div>
+                <div class="row">
+      
+                </div>
+                <hr />
+            </div>
+		    <div class="row">
+		        <div class="h2 page-header">按钮
+                    <small>这是副标题</small>
+                </div>
+    		    <div class="row">
+    		        <div class="h4 ">原生按钮</div>
+                    <input type="button" value="input button"/>
+                    <input type="submit" id="" value="input submit" name="" />
+                    <input type="reset" value="input reset" />
+                    <a href="javascript:void(0);">a标签</a>
+                    <button type="button">button标签</button>
+                </div>
+                <div class="row">
+                    <div class="h4">BS按钮</div>
+                    <input type="button" class='btn btn-primary btn-lg' value="input button"/>
+                    <input type="submit" class='btn btn-default' id="" value="input submit" name="" />
+                    <input type="reset" class='btn btn-danger btn-sm' value="input reset" />
+                    <a class="btn btn-success btn-xs" href="javascript:void(0);">a标签</a>
+                    <button type="button">button标签</button>
+                </div>
+                <br />
+            </div>
+            <div class="row">
+                <div class="h2 page-header">form输入框</div>
+                <div class="row">
+                    <div class="h4">原生form输入框</div>
+                    userName : <input type="text" name="userName" id="" value="" />
+                    password : <input type="password" id="" value="" />
+                </div>   
+                <div class="row">
+                    <div class="h4">BSform输入框1 默认</div>
+                    <div class="form-group">
+                        <label>userName : </label>
+                        <input type="text" class='form-control' name="userName" placeholder="用户名" id="" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label>password: </label>
+                        <input type="password" id="" class='form-control' placeholder="密码" value="" />
+                    </div>
+                </div>
+                <div class="row form-inline">
+                    <div class="h4">BS form输入框2 form-inline强制把form-group等变成inline-block</div>
+                    <div class="form-group">
+                        <label>userName : </label>
+                        <input type="text" class='form-control' name="userName" placeholder="用户名" id="" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label>password: </label>
+                        <input type="password" id="" class='form-control' placeholder="密码" value="" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="h4">BS form输入框3 </div>
+                    <div class="form-group col-md-3">
+                        <label>userName : </label>
+                        <input type="text" class='form-control' name="userName" placeholder="用户名" id="" value="" />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>password: </label>
+                        <input type="password" id="" class='form-control' placeholder="密码" value="" />
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="h4">BS form输入框4 form-horizontal是调整内部水平样式的class, 为control-label提供样式</div>
+                    <div class="form-group">
+                        <label class='col-sm-2 control-label'>userName : </label>
+                        <div class="col-sm-6">
+                            <input type="text" class='form-control' name="userName" placeholder="用户名" id="" value="" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class='col-sm-2 text-center'>password : </label>
+                        <div class="col-sm-6">
+                            <input type="text" class='form-control' name="userName" placeholder="密码" id="" value="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-inline">
+                <div class="h2 page-header">复选框checkbox</div>
+                <div class='checkbox'><input type="checkbox" name="checkbox" id="" value="checkbox1" />checkbox1</div>
+                <div class='checkbox'><input type="checkbox" name="checkbox" id="" value="checkbox2" />checkbox2</div>
+                <div class='checkbox'><input type="checkbox" name="checkbox" id="" value="checkbox3" />checkbox3</div>
+            </div>
+            <div class="row form-group">
+                <div class="h2 page-header">单选框radio</div>
+                <div class='radio'><input type="radio" name="radio" id="" value="radio1" />radio1</div>
+                <div class='radio'><input type="radio" name="radio" id="" value="radio2" />radio2</div>
+                <div class='radio'><input type="radio" name="radio" id="" value="radio3" />radio3</div>
+            </div>
+            <div class="row form-group form-horizontal">
+                <div class="h2 page-header">下拉框select</div>
+                <label class='col-sm-2 control-label'>下拉选框 : </label>
+                <div class="col-sm-5">
+                    <select name="select" class='form-control' multiple="multiple">
+                    	<option value="">html</option>
+                    	<option value="">css</option>
+                    	<option value="">js</option>
+                    	
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="h2 page-header">图片</div>
+                <div class="col-md-6">
+                    <img src="img/1.jpg" class="img-circle"/><!--圆形-->
+                </div>
+                <div class="col-md-6">
+                    <img src="img/1.jpg" class="img-rounded"/><!--小圆角-->
+                </div>
+                <div class="col-md-6">
+                    <img src="img/1.jpg" class="img-responsive"/> <!--响应-->
+                </div>
+                <div class="col-md-6">
+                    <img src="img/1.jpg" class="img-thumbnail"/><!--响应 缩略图模式(自带白色边框)-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="h2 page-header">小图标</div>
+                <span class="glyphicon glyphicon-adjust" style="font-size: 40px;"></span>
+                <span class="glyphicon glyphicon-home"></span>
+                <span class="glyphicon glyphicon-user"></span>
+                <span class="glyphicon glyphicon-lock"></span>
+                <span class="glyphicon glyphicon-log-in"></span>
+            </div>
+             <hr />
+             
+            <div class="row">
+                <div class="h2 page-header">输入框组</div>
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="text" class='form-control text-right' placeholder="" name="" id="" value="" />
+                    <span class="input-group-addon">.00</span>
+                </div>
+                <br />
+                <div class="input-group">
+                    <span class="glyphicon glyphicon-user input-group-addon"></span>
+                    <!-- 注意这里复用样式名会导致表现冲突,应用下面的办法来嵌套分开给样式名-->
+                    <input type="text" class='form-control' placeholder="左侧轻微偏离" name="" id="" value="" />
+                </div>
+                <br />
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-lock "></span>
+                    </span>
+                    <input type="password" class='form-control' placeholder="左侧完美接合" name="" id="" value="" />
+                </div>
+            </div>
+            <hr />
+            
+            <div class="row">
+                <div class="h2 page-header">下拉菜单</div>
+                <!--下拉结构三要素 : 下拉group ,下拉按钮(按钮内容,按钮动作),下拉内容-->
+                <div class="dropdown"> <!--等拉开子菜单的方式,dropup,同时兼用了input-group功能-->
+                    <!--data-toggle属性用于下拉动作js控制 首先隐藏dropdown-menu class包含的列表元素 ，点击时 open menu-->
+                    <button  class="btn btn-default " data-toggle="dropdown">
+                        下拉菜单
+                        <span class = "caret"></span> <!--小箭头图标-->
+                    </button>
+                    <!--无序列表排列 去掉原点 跟父容器绝对定位 absolute  菜单居左 居右 pull-right-->
+                    <ul class="dropdown-menu"> 
+                        <!--dropdown-header把内容设置为disabled -->
+                        <li class = "dropdown-header">分类</li> 
+                        <li><a href="javascript:void(0);">html5</a></li>
+                        <li><a href="javascript:void(0);">css3</a></li>
+                        <li class = "divider"></li> <!--分割线-->
+                        <li class = "dropdown-header">分类2</li>
+                        <li><a href="javascript:void(0);">javascript</a></li>
+                        <li><a href="javascript:void(0);">jquery</a></li>
+                    </ul>
+                 </div>
+                <hr />
+                <div class = "input-group">  <!--保持内联，消除边距，类似与form-inline-->
+                    <div class="input-group-btn"><!--不折行，与相邻元素内联 包含dropdown-->
+                        <button  class="btn btn-default dropdown-toggle" data-toggle="dropdown"> <!--data-toggle属性用于下拉动作js控制-->
+                            请选择
+                            <span class = "caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">                  
+                            <li><a href="javascript:void(0);">宝贝</a></li>
+                            <li><a href="javascript:void(0);">店铺</a></li>
+                        </ul>
+                    </div>
+                    <input type = "text" class = "form-control" placeholder="请输入关键字">
+                    <span class = "input-group-btn"> <!--不折行，与相邻元素内联-->
+                        <button class = "btn btn-primary">搜索</button>
+                    </span>
+                </div>
+            </div> 
+            <hr />
+            
+            <div class="row">
+                <div class="h2 page-header">按钮组</div>
+                
+                <!--保持内联 消除边距 btn-group-lg sm xs大小-->
+                <div class = "btn-group "> 
+                    <button class = "btn btn-default">
+                        <span class="glyphicon glyphicon-align-left"></span>
+                    </button>
+                    <button class = "btn btn-primary">
+                        <span class="glyphicon glyphicon-align-center"></span>
+                    </button>
+                    <button class = "btn btn-primary">
+                        <span class="glyphicon glyphicon-align-right"></span>
+                    </button>           
+                </div>
+                <br />
+                <br />
+                
+                <!--按钮组带下拉菜单-->
+                <div class="btn-group">
+                    <button  class="btn btn-default">我的xx</button> 
+                    <button  class="btn btn-default">购物车</button> 
+                    <div class = "btn-group">
+                        <!--data-toggle属性用于下拉动作js控制 首先隐藏dropdown class包含的列表元素 ，点击时 open menu-->
+                        <button  class="btn btn-default" data-toggle="dropdown"> 
+                            收藏夹1
+                            <span class = "caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">   <!--右对齐-->              
+                            <li><a href="javascript:void(0);">收藏的宝贝</a></li>
+                            <li><a href="javascript:void(0);">收藏的店铺</a></li>
+                        </ul>   
+                    </div>
+                    <div class = "btn-group"> <!--两个下拉需分别分组-->
+                        <button  class="btn btn-default" data-toggle="dropdown">
+                            收藏夹2
+                            <span class = "caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">  <!--默认左对齐-->    
+                            <li><a href="javascript:void(0);">收藏的宝贝</a></li>
+                            <li><a href="javascript:void(0);">收藏的店铺</a></li>
+                        </ul>
+                    </div>
+                 </div>
+                 
+                 <br />
+                 <br />
+                 
+                <!--按钮组带下拉菜单  列式摆放-->
+                <div class="btn-group btn-group-vertical">  
+                    <button  class="btn btn-default">我的xx</button> 
+                    <button  class="btn btn-default">购物车</button> 
+                    <button  class="btn btn-default" data-toggle="dropdown">
+                        收藏夹<span class = "caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">                  
+                        <li><a href="javascript:void(0);">收藏的宝贝</a></li>
+                        <li><a href="javascript:void(0);">收藏的店铺</a></li>
+                    </ul>
+                    
+                    
+                </div>
+                
+                <br />
+                <br />
+                <!--按钮组等分按钮-->
+                <!--等分按钮,按钮宽度等分父元素剩余宽度-->
+                <div class="btn-group btn-group-justified">  
+                    <div class = "btn-group">
+                        <button  class="btn btn-default">我的yy</button> 
+                    </div>
+                    <div class = "btn-group">
+                        <button  class="btn btn-default">购物车</button> 
+                    </div>  
+                    <div class = "btn-group">
+                        <button  class="btn btn-default">我的yy</button> 
+                    </div>
+                    <div class = "btn-group">
+                        <button  class="btn btn-default">购物车</button> 
+                    </div>  
+                </div>
+            </div><hr />
+            
+            <div class="row">
+                <div class="h2 page-header">
+                    导航知识点
+                </div>
+                    <!--
+                    作者：896913570@qq.com
+                    描述：导航知识点
+                    nav 只设置了布局方式 取消列表原点 active  disable等基础样式，
+                        它必须配合nav-tabs nav-pills等附加样式才能呈现出导航效果
+                -->
+                <!--选项卡(tab页样式)导航 nav-tabs样式作用：水平方向展示 出现边框-->
+                
+                 <ul class = "nav nav-tabs nav-justified"> 
+                    <!--class="active" 表示选中当前tab页,高亮显示 通过js控制tab切换-->
+                    <li ><a href="javascript:void(0);">新闻</a></li> 
+                    <li><a href="javascript:void(0);">音乐</a></li>
+                    <li class="active"><a href="javascript:void(0);">电影</a></li>
+                    <li><a href="javascript:void(0);">视频</a></li>
+                    <li><a href="javascript:void(0);">体育</a></li>
+                 </ul>
+                 <br />
+                 <br />
+                 <!--胶囊样式导航 水平分片显示 选中高亮-->
+                 <ul class = "nav nav-pills nav-justified"> 
+                    <li><a href="javascript:void(0);">新闻</a></li>
+                    <li class = "active"><a href="javascript:void(0);">音乐</a></li>
+                    <li><a href="javascript:void(0);">电影</a></li>
+                    <li><a href="javascript:void(0);">视频</a></li>
+                    <li><a href="javascript:void(0);">体育</a></li>
+                 </ul>
+                 
+                 <br />
+                 <!--垂直分布样式导航 折行-->
+                 <ul class = "nav nav-pills nav-stacked">
+                    <li><a href="javascript:void(0);">新闻</a></li>
+                    <li><a href="javascript:void(0);">音乐</a></li>
+                    <li><a href="javascript:void(0);">电影</a></li>
+                    <li><a href="javascript:void(0);">视频</a></li>
+                    <li><a href="javascript:void(0);">体育</a></li>
+                 </ul>
+                 
+                 <br />
+                <!--带下拉菜单的胶囊导航 且等分导航-->
+                <ul class = "nav nav-pills nav-justified">
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" data-toggle="dropdown">
+                            新闻新闻
+                            <span class="caret"></span>
+                        </a>
+                        <ul class= "dropdown-menu pull-right">
+                            <li><a href="javascript:void(0);">国内新闻</a></li>
+                            <li><a href="javascript:void(0);">国外新闻</a></li>                     
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0);">音乐</a></li>
+                    <li><a href="javascript:void(0);">电影</a></li>
+                    <li><a href="javascript:void(0);">视频</a></li>
+                    <li><a href="javascript:void(0);">体育</a></li>
+                </ul>
+                <!--面包屑样式导航 在加载下一个li元素之前加斜杠-->
+                    <ul class = "breadcrumb">
+                        <!--可以在导航元素加入i标签添加图标 <i class = "glyphicon glyphicon-home"></i>-->
+                        <li><i class = "glyphicon glyphicon-home"></i><a href="javascript:void(0);">新浪</a></li>
+                        <li><a href="javascript:void(0);">体育</a></li>
+                        <li><a href="javascript:void(0);">篮球</a></li>
+                        <li><a href="javascript:void(0);">NBA</a></li>
+                        <li><a href="javascript:void(0);">勇士</a></li>
+                    </ul>
+                
+                <br />
+                <!--分页导航-->
+                <ul class = "pagination">
+                    <li><a href="javascript:void(0);">首页</a></li>
+                    <li><a href="javascript:void(0);">上一页</a></li>
+                    <li><a href="javascript:void(0);">...</a></li>
+                    <li><a href="javascript:void(0);">3</a></li>
+                    <li><a href="javascript:void(0);">4</a></li>
+                    <li><a href="javascript:void(0);">5</a></li>
+                    <li class = "active"><a href="javascript:void(0);">6</a></li>
+                    <li class = "disabled"><a href="javascript:void(0);">下一页</a></li>
+                    <li class = "disabled"><a href="javascript:void(0);">尾页</a></li>
+                </ul>
+            </div>
+            <hr />
+            
+            <div class="row">
+                <div class="h2 page-header">导航条</div>
+                <!--
+                    描述：导航条知识点 
+                    1：导航条是包含导航的  导航条= 导航+搜索框+brand+搜索框+。。。。。
+                    2:导航条用法：a>在导航的基础上 ul class = "nav" 添加class navabar-nav
+                              b>在导航的外层套用一层div容器  并加上class <div class="navbar navbar-default"> 
+                                
+                -->
+                <!--navbar样式的作用是控制导航条大小  边距 行距 
+                    navbar-default 是控制颜色，风格
+                        .navbar {
+                          position: relative;
+                          min-height: 50px;
+                          margin-bottom: 20px;
+                          border: 1px solid transparent; 
+                        }
+                        .navbar-nav {
+                          margin: 7.5px -15px;
+                        }
+                -->
+                <!--导航条里面只包含导航-->
+                <div class="navbar navbar-default">             
+                     <ul class = "nav navbar-nav">
+                        <li  class="active"><a href="javascript:void(0);">新闻</a></li>
+                        <li><a href="javascript:void(0);">音乐</a></li>
+                        <li><a href="javascript:void(0);">电影</a></li>
+                        <li><a href="javascript:void(0);">视频</a></li>
+                        <li><a href="javascript:void(0);">体育</a></li>
+                     </ul>
+                 </div>
+                 
+                 <!--导航条里面包含导航+导航头-->
+                 <div class="navbar navbar-default">
+                    <!-- navbar-header :float:left-->
+                    <div class = "navbar-header"> 
+                        <button class="btn btn-default" style = "margin:8px 8px 5px 5px;">
+                            <span class = "glyphicon glyphicon-home" ></span>
+                        </button>                   
+                    </div>
+                    <ul class = "nav navbar-nav">
+                        <li  class="active"><a href="javascript:void(0);">新闻</a></li>
+                        <li><a href="javascript:void(0);">音乐</a></li>
+                        <li><a href="javascript:void(0);">电影</a></li>
+                        <li><a href="javascript:void(0);">视频</a></li>
+                        <li><a href="javascript:void(0);">体育</a></li>
+                    </ul>
+                 </div>
+                 
+                 <!--导航条里面包含导航+导航头+搜索框-->
+                 <div class="navbar navbar-default">
+                     <div class = "navbar-header"> 
+                        <!--navbar-brand样式 控制字体大小 控制显示宽度-->
+                        <button class="btn btn-default navbar-brand" style = "margin:0px 5px 0px 5px;">
+                            <span class = "glyphicon glyphicon-home" ></span>
+                        </button>                   
+                     </div>
+                     <ul class = "nav navbar-nav">
+                        <li  class="active"><a href="javascript:void(0);">新闻</a></li>
+                        <li><a href="javascript:void(0);">音乐</a></li>
+                        <li><a href="javascript:void(0);">电影</a></li>
+                        <li><a href="javascript:void(0);">视频</a></li>
+                        <li><a href="javascript:void(0);">体育</a></li>
+                     </ul>
+                     
+                     <div class = "navbar-form">
+                        <div class = "input-group">
+                            <input type="text" class="form-control" placeholder = "请输入关键字" />
+                            <span class="input-group-btn " >
+                                <button class = "btn btn-primary">搜索</button>
+                            </span>
+                        </div>
+                     </div>              
+                 </div>
+                 
+                 <!--导航条里面包含导航+导航头+搜索框（搜索图片）-->
+                 <div class="navbar navbar-default">
+                     <div class = "navbar-header">
+                        <button class="btn btn-default" style = "margin:8px 8px 5px 5px;">
+                            <span class = "glyphicon glyphicon-home" ></span>
+                        </button>                   
+                     </div>
+                     <ul class = "nav navbar-nav">
+                        <li  class="active"><a href="javascript:void(0);">新闻</a></li>
+                        <li><a href="javascript:void(0);">音乐</a></li>
+                        <li><a href="javascript:void(0);">电影</a></li>
+                        <li><a href="javascript:void(0);">视频</a></li>
+                        <li><a href="javascript:void(0);">体育</a></li>
+                     </ul>
+                     <!--navbar-right :无边距居右-->
+                     <div class = "navbar-form pull-right">
+                        <div class = "input-group">
+                            <input type="text" class="form-control" placeholder = "请输入关键字" />
+                            <span class="input-group-addon " >
+                                <span class = "glyphicon glyphicon-search"></span>
+                            </span>
+                        </div>
+                     </div>              
+                 </div>
+                 
+                <!--导航条里面包含导航+导航头+搜索框（响应式导航）-->
+                <!--导航条浮动在最上面 ----navbar-fixed-top-->
+                <div class="navbar navbar-default "> <!--navbar-inverse-->
+                    <div class="navbar-header">
+                        <!--navbar-toggle 在宽屏时不显示 内容，即icon-bar-->
+                        <button class = "navbar-toggle" 
+                            data-toggle = "collapse" data-target = ".test-con">
+                            <span class= "icon-bar"></span>
+                            <span class= "icon-bar"></span>
+                            <span class= "icon-bar"></span>
+                        </button>
+                        <button class="btn btn-default navbar-brand" style = "margin:0px 5px 0px 5px;">
+                            <span class = "glyphicon glyphicon-home" ></span>
+                        </button>
+                    </div>
+                    <!--collapse navbar-collapse 在窄屏时不显示所包含的内容 在点击展开按钮 显示数据 折叠式-->
+                    <div  class = "collapse navbar-collapse test-con">
+                         <ul class = "nav navbar-nav">
+                            <li  class="active"><a href="javascript:void(0);">新闻</a></li>
+                            <li>
+                                <a href="javascript:void(0);">音乐
+                                    <span class= "label label-default">new</span>
+                                </a>
+                            </li>
+                            <li><a href="javascript:void(0);">电影</a></li>
+                            <li>
+                                <a href="javascript:void(0);">视频
+                                    <span class ="badge pull-right">5</span>
+                                </a>
+                            </li>
+                            <li><a href="javascript:void(0);">体育</a></li>
+                         </ul>
+                     </div>
+                </div>
+
+            </div>
+            <hr />
+            
+            
+		    <div class="row" style='margin-bottom: 50px;'>
+		        
+		    </div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,126 @@
+.pay {
+    width: 100%;
+    margin-top: 0.08rem;
+    .pay_methods {
+        box-sizing: border-box;
+        padding: 0 0.12rem 0 0.12rem;
+        margin-bottom: 0.08rem;
+        background: #fff;
+        .item {
+            display: flex;
+            justify-content: space-between;
+            box-sizing: border-box;
+            padding: 0.1rem 0 0.1rem 0;
+            height: 0.6rem;
+            border-bottom: 1px solid #999;
+            .left {
+                img {
+                    float: left;
+                    width: 0.4rem;
+                    margin-right: 0.2rem;
+                }
+                .method {
+                    float: left;
+                    color: #444;
+                    font-size: 0.14rem;
+                    p:first-child {
+                        margin-bottom: 0.06rem;
+                    }
+                    p:last-child {
+                        color: #777;
+                        font-size: 0.1rem;
+                    }
+                }
+            }
+            .right {
+                line-height: 0.4rem;
+                img {
+                    width: 0.18rem;
+                }
+            }
+        }
+        .item:last-child {
+            border: 0
+        }
+    }
+    .order {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 0.12rem 0 0.12rem;
+        background: #fff;
+        .title {
+            height: 0.32rem;
+            color: #777;
+            font-size: 0.13rem;
+            text-align: right;
+            line-height: 0.32rem;
+            box-sizing: border-box;
+            border-bottom: 1px solid #999;
+        }
+        .detail {
+            box-sizing: border-box;
+            // height: 0.9rem;
+            padding: 0.1rem 0 0.1rem 0;
+            border-bottom: 1px solid #999;
+            .detailImg {
+                width: 0.7rem;
+                height: 0.7rem;
+            }
+            .detailImg:last-child {
+                margin-right: 0;
+            }
+        }
+        .price {
+            height: 0.44rem;
+            font-size: 0.15rem;
+            color: #444;
+            line-height: 0.44rem;
+            .original_cost {
+                float: left;
+                margin-right: 0.1rem;
+            }
+            .benefit {
+                float: left;
+                font-size: 0.13rem;
+                color: #ffc466;
+            }
+            .total {
+                float: right;
+                .red {
+                    color: #f44732;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+    .account {
+        width: 100%;
+        background: #fff;
+        position: fixed;
+        bottom: 0;
+        height: 0.49rem;
+        padding-left: 0.12rem;
+        line-height: 0.49rem;
+        box-sizing: border-box;
+        .account_benefit {
+            font-size: 0.14rem;
+            color: #ffc466;
+        }
+        .leave {
+            font-size: 0.18rem;
+            color: #444;
+            span {
+                color: #f44732;
+            }
+        }
+        .toPay {
+            height: 100%;
+            width: 28%;
+            background: #f44732;
+            float: right;
+            text-align: center;
+            font-size: 0.2rem;
+            color: #fff;
+        }
+    }
+}

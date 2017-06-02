@@ -1,0 +1,112 @@
+#balancePage {
+    .header {
+        width: 100%;
+        height: 1rem;
+        background: #ffae00;
+        box-sizing: border-box;
+        padding: 0 0.12rem 0 0.12rem;
+        display: flex;
+        justify-content: space-between;
+        color: #fff;
+        margin-bottom: 0.08rem;
+        .left {
+            line-height: 1rem;
+            .font {
+                font-size: 0.15rem;
+            }
+            .money {
+                font-size: 0.36rem;
+            }
+        }
+        .right {
+            line-height: 1rem;
+            margin: auto 0;
+            .recharge {
+                display: block;
+                width: 0.9rem;
+                height: 0.36rem;
+                background: #f44732;
+                text-align: center;
+                line-height: 0.36rem;
+            }
+        }
+    }
+    #tabs {
+        width: 100%;
+        height: 0.44rem;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        line-height: 0.44rem;
+        text-align: center;
+        background: #fff;
+        li {
+            width: 50%;
+            color: #666;
+            border-bottom: 2px solid #999;
+            color: #777;
+            font-size: 0.16rem;
+        }
+        .tab_active {
+            color: #f44732;
+            border-bottom: 2px solid #f44732;
+        }
+    }
+    #tab_con {
+        background: #fff;
+        width: 100%;
+        padding: 0 0.12rem 0 0.12rem;
+        box-sizing: border-box;
+        div {
+            display: none;
+            div {
+                display: block
+            }
+            ul {
+                .item {
+                    display: flex;
+                    justify-content: space-between;
+                    height: 0.6rem;
+                    box-sizing: border-box;
+                    padding: 0.12rem 0 0.12em 0;
+                    font-size: 0.15rem;
+                    .left {
+                        p:first-child {
+                            color: #333;
+                            margin-bottom: 0.08rem;
+                        }
+                        p:last-child {
+                            font-size: 0.13rem;
+                            color: #f44732;
+                        }
+                    }
+                    .right {
+                        p:first-child {
+                            color: #333;
+                            margin-bottom: 0.08rem;
+                        }
+                        p:last-child {
+                            font-size: 0.13rem;
+                            color: #777;
+                        }
+                    }
+                }
+            }
+        }
+        .tab_con_active {
+            display: block;
+        }
+        #expenses {
+            .item {
+                .left {
+                    p:first-child {
+                        color: #666;
+                    }
+                    p:last-child {
+                        color: #ffae00;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>a18 数组的常见方法.js</title>
+	</head>
+	<script type="text/javascript">
+
+		//数组的创建
+		var a1 = new Array();
+		var a2 = new Array(2);//长度为2;
+		var a3 = new Array("张三","李四","王五");
+		//alert(a1+"|"+a2+"|"+a3); //a2的.为分隔两个数据之间	
+		//简洁的创建方式 常用
+		var aa1=[];
+		var aa3 = ["章子怡","范冰冰","杨银"]
+		//alert(a1+"|"+a3); 
+
+		//理解数组对象	
+		var b = [1,2];
+		a = 5;
+		b[a] = 3;
+		b.a = 9;
+		for (var i =0;i<b.length;i++)
+		{
+			console.log( i + " : "+b[i] +';') 
+			// 0:3 ; 1:2;2 : undefined;3 : undefined;4 : undefined;5 : 3;
+		}
+		for (var i in b	)
+		{
+			console.log( i + " : "+b[i] +';') 
+			//0 : 1;1 : 2;5 : 3;a : 9;
+		}
+		console.log(b.a); //9; //此处b.a属性存在,但是length不会表现出有他,for循环同样;
+
+		//concat之后:
+		var c=[4,5];
+		b=b.concat(c);
+		console.log(b+ " : "+b.length);//1,2,,,,3,4,5 : 8
+		for (var i =0;i<b.length;i++)
+			{
+				console.log( i + " : "+b[i] +';') 
+				// 0:3 ; 1:2;2 : undefined;3 : undefined;4 : undefined;5 : 3;6 : 4;7 : 5;
+			}
+		for (var i in b	)
+		{
+			console.log( i + " : "+b[i] +';') 
+			//0 : 1;1 : 2;5 : 3;6 : 4;7 : 5;
+		}
+		console.log(b.a); //undefined;
+
+			a[i] = 值; 的方式可以无视长度直接赋值;
+	</script>
+
+	<script type="text/javascript">
+		var a = ["a","b","f","g","c","d","e"];
+		var aa = [9,1,5,"b","a",22,8,6,3];
+		var bb;
+		var cc;
+
+		//注意:数组的方法不能随意用在类数组上
+/*		 //查看数组的长度;可读写;
+		 alert(a.length);
+		 //数组中元素的获取,依靠索引从0开始
+		 //所以一个数组索引的上下限是0和length-1;
+		alert(a[1]);	//bb
+		alert(a[a.length -1]); //gg
+		//遍历元素
+		for (var i = 0; i < a.length; i++) {
+			//alert(a[i]);
+		}		
+		 //java arraylist linklist vector
+		 //数组的长度是可变的,
+		a.length = 3 ;	
+		a.length = 10;
+		alert(a);
+
+		//var z =[1,"zhangsan",new Date(),[1,2,3,4]]
+
+		//添加移除元素,改变原数组;
+		
+		a.unshift("www");//	向数组的开头添加一个或更多元素，并返回新的长度。
+		a.push("com","com2");//	向数组的末尾添加一个或更多元素，并返回新的长度。
+		a.shift();//删除并返回数组的第一个元素
+		a.pop();//删除并返回数组的最后一个元素
+
+		//splice()剪接;删除元素,并向数组添加新元素,改变原数组;如果删除了元素，则返回的是含有被删除的元素的数组。;不可用于string;
+		//参数:
+		//index	必需。整数，规定添加/删除项目的位置，使用负数可从数组结尾处规定位置。超过length会视为最后一位;
+		//howmany	必需。要删除的项目数量。如果设置为 0，则不会删除项目。
+		//item1, ..., itemX	可选。向数组添加的新项目。
+
+		//a.splice(-1,1);//移除最后一位;
+		
+		//移除索引3开始,共1个元素,并从该索引位置添加"http","www"
+		alert(a.splice(3,1,"http","www"));
+		alert(a)
+		//更改指定索引对应的值
+		a[0] = 123;
+		a[5] = null;//赋空值,保留位置和长度;
+		//alert(a);
+		
+		//sort()排序,默认按ASCII码表排序;改变原数组;返回值也是改变后的数组;
+		alert(aa.sort());
+		alert(aa);
+		aa.sort(function(){
+			var ran=Math.random() - 0.5;
+			return ran;
+		}) //通过随机数进行乱序;return 1;返回正数为原来排序的反序;return -1;返回负数为原序;
+		alert(aa);
+		//反转排序
+		aa.sort(function(a,b){
+			return b-a;
+		}) //return b-a;只能排列数字,按数字大小倒序,a-b按数字大小正序列;
+		alert(aa);
+
+*/		//reverse反转,改变原数组;返回值也是改变后的数组;
+		alert(aa.reverse());
+		alert(aa);	
+/*
+		//其他常用方法 ,不会改变原数组本身,返回一个新的数组;
+		//slice()切分, 不改变原对象,在新的对象中返回被提取的部分。可用于array和string对象,
+		//取出索引1开始(包含1),到索引3之前(不包含3),如果没有指定end参数，那么切分的包含从 start 到结束的所有元素,
+		bb = aa.slice(1,3);
+		//alert(aa);
+		//alert(bb);
+		
+		//concat()拼接,不会改变原数组本身,返回一个新的数组;此方法不能用在类数组上;
+
+		cc = aa.concat([1,2,"aaa",4]);
+		alert(cc);
+
+		//arr.jion( 'a' )以a为界限符拼成字符串,不会改变原数组本身,返回一个新的数组,连接符参数没有则默认为",";
+		var ee=aa.join("@");
+		alert(ee);
+		//arr.toString()把数组转换为字符串,不会改变原数组本身,并返回结果.返回值与没有参数的 join() 方法返回的字符串相同。
+
+		//map() 方法返回一个新数组，数组中的元素为原始数组元素调用函数处理后的值。
+			map() 方法按照原始数组元素顺序依次处理元素。
+			注意： map() 不会对空数组进行检测。
+			注意： map() 不会改变原始数组。
+		语法
+		array.map(callback[, thisObject]);
+		下面是参数的详细信息：
+			callback : 从当前的元素函数产生新的数组的元素。
+			thisObject : 对象作为该执行回调时使用
+		返回值:返回创建数组
+
+		兼容性：
+			这种方法是一个JavaScript扩展到ECMA-262标准;因此它可能不存在在标准的其他实现。为了使它工作，你需要添加下面的脚本代码在顶部：*/
+		if (!Array.prototype.map)
+			{
+			 Array.prototype.map = function(fun /*, thisp*/)
+			 {
+			  var len = this.length;
+			  if (typeof fun != "function")
+			   throw new TypeError();
+			 
+			  var res = new Array(len);
+			  var thisp = arguments[1];
+			  for (var i = 0; i < len; i++)
+			  {
+			   if (i in this)
+				res[i] = fun.call(thisp, this[i], i, this);
+			  } 
+			  return res;
+			 };
+			}
+*/			
+	</script>
+	<body>
+		<h1>a18 数组的常见方法.js</h1>
+		数组：
+		定义：var arr = [1,2,3];  //  var arr = new Array(1,2,3);
+		数组长度 ： arr.length // 可读可写
+		添加值： arr.push(); // 后面添加，返回数组长度
+				arr.unshift(); // 前面添加，返回数组长度
+		删除： arr.pop();  // 删除数组最后一个，返回删除的那个
+			arr.shift();  // 删除数组第一个，返回删除的那个
+		splice ：arr.splice(  );  //(0,1); 从第0位开始删除1个,返回删除的那个
+				   //(0,1,'a'); 把第0位开始的第一位替换为'a',
+				   // (0,0,'a'); 在第0位后面添加'a'
+		排序：arr.sort();  //  按照字符编码来排序
+				// 可传函数参数 
+				//倒序 可以用reverse
+		两数组拼接：concat();  //  arr1.concat(arr2)
+		变为字符串：join();  //arr.jion( 'a' )以a为界限符拼成字符串
+
+
+
+
+// Production steps of ECMA-262, Edition 5, 15.4.4.18
+// Reference: http://es5.github.io/#x15.4.4.18
+//自定义forEach方法(因为IE不支持)
+
+if (!Array.prototype.forEach) {
+
+  Array.prototype.forEach = function(callback, thisArg) {
+
+    var T, k;
+
+    if (this == null) {
+      throw new TypeError(' this is null or not defined');
+    }
+
+    // 1. Let O be the result of calling toObject() passing the
+    // |this| value as the argument.
+    var O = Object(this);
+
+    // 2. Let lenValue be the result of calling the Get() internal
+    // method of O with the argument "length".
+    // 3. Let len be toUint32(lenValue).
+    var len = O.length >>> 0;
+
+    // 4. If isCallable(callback) is false, throw a TypeError exception. 
+    // See: http://es5.github.com/#x9.11
+    if (typeof callback !== "function") {
+      throw new TypeError(callback + ' is not a function');
+    }
+
+    // 5. If thisArg was supplied, let T be thisArg; else let
+    // T be undefined.
+    if (arguments.length > 1) {
+      T = thisArg;
+    }
+
+    // 6. Let k be 0
+    k = 0;
+
+    // 7. Repeat, while k < len
+    while (k < len) {
+
+      var kValue;
+
+      // a. Let Pk be ToString(k).
+      //    This is implicit for LHS operands of the in operator
+      // b. Let kPresent be the result of calling the HasProperty
+      //    internal method of O with argument Pk.
+      //    This step can be combined with c
+      // c. If kPresent is true, then
+      if (k in O) {
+
+        // i. Let kValue be the result of calling the Get internal
+        // method of O with argument Pk.
+        kValue = O[k];
+
+        // ii. Call the Call internal method of callback with T as
+        // the this value and argument list containing kValue, k, and O.
+        callback.call(T, kValue, k, O);
+      }
+      // d. Increase k by 1.
+      k++;
+    }
+    // 8. return undefined
+  };
+}
+	</body>
+</html>

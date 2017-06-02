@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> </title>
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <style type="text/css">
+    *{
+        margin:0;
+        padding:0;
+    }
+    li{
+        list-style:none;
+    }
+    a{
+        text-decoration:none;
+    }
+    hr{
+        margin:20px 0;
+    }
+    hr.dotted{
+        height:1px;border:none;border-top:1px dotted #ccc;
+    }
+    </style>
+</head>
+<body>
+2D变换:
+transform:
+	rotate()  旋转函数 (deg)
+    deg  度数
+        skew(X,Y) 倾斜函数 (deg) 
+    skewX()
+    skewY()
+        scale(X,Y) 缩放函数 (正数、负数和小数)
+    scaleX()
+    scaleY()
+        translate(X,Y) 位移函数(px)
+    translateX()
+    translateY()
+    transform 简写执行顺序(先写先执行) 先写translate 
+
+matrix(a,b,c,d,e,f) 矩阵函数
+    默认值：matrix(1,0,0,1,0,0)
+    通过矩阵实现缩放
+    x轴缩放 a=x*a;
+    y轴缩放 d=y*d;
+    通过矩阵实现位移
+    x轴位移: e=e+disX
+    y轴位移: f=f+disY
+    通过矩阵实现倾斜
+    x轴倾斜: c=Math.tan(xDeg/180*Math.PI)
+    y轴倾斜: b=Math.tan(yDeg/180*Math.PI)
+
+    通过矩阵实现旋转
+    a=Math.cos(deg/180*Math.PI); 
+    b=Math.sin(deg/180*Math.PI);
+    c=-Math.sin(deg/180*Math.PI);
+    d=Math.cos(deg/180*Math.PI);
+    变换兼容IE9以下IE版本只能通过矩阵来实现
+    filter: progid:DXImageTransform.Microsoft.Matrix( M11= 1, M12= 0, M21= 0 , M22=1,SizingMethod='auto expand');
+    IE下的矩阵没有E和F两个参数 M11==a; M12==c; M21==b; M22==d
+
+3D变换:
+    transform-style（preserve-3d） 建立3D空间
+    perspective 视镜
+    perspective- origin 视镜基点
+        x:left/center/right/length/%
+        y:top/center/bottom/length/%
+    transform 新增函数
+    rotateX()
+    rotateY()
+    rotateZ()
+    translateZ()
+    scaleZ()
+
+    transform-origin: x,y;旋转的基准点
+        x : left/center/right/length/%
+        y : top/center/bottom/length/%
+        z : length
+   
+    backface-visibility: hidden; 背面隐藏
+</body>
+</html>

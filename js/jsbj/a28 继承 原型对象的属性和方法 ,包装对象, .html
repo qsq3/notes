@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>a30原型继承.html</title>
+		
+		/*
+		基于面向对象设计的方式:
+		//1：找对象  小头爸爸  大头儿子  饭
+		//2：抽象（类，构造器）
+		//3：创建对象并且建立关系（操作对象）
+
+		实例对象.__proto__ === 其构造函数.prototype
+		注意 IE6789没有__proto__属性,IE9中可以使用Object.getPrototypeOf(ES5)获取对象的内部原型
+
+		// 所有的基本类型都有自己的包装对象：Number String Boolean	
+			var str = 'abc';str.charAt(0);
+			/* 基础类型在实行方法或者属性的时候，会先找到对应的包装对象
+					var a = new String('abc');//alert( typeof a )
+				通过包装对象去执行属性或者方法
+					a.charAt(0);
+				执行完后，包装对象消失;
+			*/
+			//str.ligoudaner = 10;
+				/* var a = new String('abc');
+				a.ligoudaner = 10;
+				delete a;删除a； */
+			//alert( str.ligoudaner ) // undefined
+				/* var b = new String('abc');
+					b.ligoudaner 未定义 */
+
+			/*原型里面有很多默认属性和方法;
+			并且不能for in;*/
+            Object的每个实例都具有下列属性方法：
+            1.constructor：
+                constructor不是实例属性，而是它原型对象中的属性,易被篡改,不要用来做判断;
+                保存着用于创建当前对象的函数 上面例子 构造函数就是 Object(),会被json写法影响,被清除后沿原型链往上找;写法:obj.constructor;
+            2.hasOwnProperty(prop):
+                为了判断一个对象是否包含自定义属性而不是原型链上的属性， 我们需要使用继承自 Object.prototype 的 hasOwnProperty 方法。
+                注意: 通过判断一个属性是否 undefined 是不够的。 因为一个属性可能确实存在，只不过它的值被设置为 undefined。
+                hasOwnProperty 是 JavaScript 中唯一一个处理属性但是不查找原型链的函数。,唯一可以排除原型链干扰的方法;
+                检查给定的属性是否在当前对象实例中（而不是在实例的原型中）。作为参数的属性必须以string形式指定,作为对象特权方法:判断目标属性是否对象的非继承私有属性,不会被json写法影响;返回布尔值;写法:( 对象.hasOwnProperty('属性名') );
+                Object.prototype.prop = 'propsss';
+                var obj = {und:undefined};
+                alert(obj.hasOwnProperty('prop')); // false
+                alert(obj.hasOwnProperty('und')); // true
+            3.isPrototypeOf(object):用于检查传入的对象是否是另一个对象的原型。
+            4.propertyIsEnumerable(propertyName)：用于检查给定的属性是否能够使用for in语句
+            5.toLocaleString():返回对象的字符串表示，与环境的地区对应
+            6.toString():同上
+            7.valueOf(): 返回对象的字符串、number、Boolean表示。通常与toString()相同
+            8.instanceof;二元运算符 , 判断实例的原型对象链中是否能找到该构造函数的prototype属性所指向的原型对象，返回布尔值, 用来判断某个对象的原型链上的构造函数;
+            注意:var oArr = [], oArr = function(){}; alert (oArr instanceof Object );//true
+            注意，instanceof 用来比较属于不同 JavaScript 上下文的对象（比如，浏览器中不同的文档结构）时将会出错， 因为它们的构造函数不会是同一个对象。
+
+            9,for in 循环同样在查找对象属性时遍历原型链上的所有属性。使用 hasOwnProperty 过滤
+                // foo 变量是上例中的
+                for(var i in foo) {
+                    if (foo.hasOwnProperty(i)) {
+                        console.log(i);
+                    }
+                }
+            null 的用处
+            JavaScript 中的 undefined 的使用场景类似于其它语言中的 null，实际上 JavaScript 中的 null 是另外一种数据类型。
+            它在 JavaScript 内部有一些使用场景（比如声明原型链的终结 Foo.prototype = null），但是大多数情况下都可以使用 undefined 来代替。
+<script type="text/javascript">
+	
+		//继承
+			function Animal (color){
+				//属性
+				this.color = color ;
+			};
+			Animal.prototype.run=function(){
+				alert("gogogo...");
+			};
+			//一. 类继承 ,直接使用父类,通过call方法进行对象冒充 实现继承特权属性,然后原型属性分两种方式;
+			//1 先通过call方法实现继承特权属性
+			function Cat (color,size)
+			{
+				Animal.call(this,color,size);//通过call继承特权属性, 
+				this.name = 'mimi';  //扩展新属性的方式:内部定义;
+			}
+			//2.通过遍历成员赋值,引用类型不行;
+			for (var key in Animal.prototype ) {	
+				Cat.prototype[key] = Animal.prototype[key]; //注意,此处会直接引用原型方法
+			}
+			//二.原型继承 新建一个构造函数中转,比3要绕,注意修正constructor属性;
+			var Fn = function(){};
+			Fn.prototype = Animal.prototype;
+			Cat.prototype = new Fn(); //也要先继承父类;
+			Cat.prototype.constructor = Cat; //注意修正constructor属性;
+			Cat.prototype.hou = function(){
+				alert('miaomiao');
+			};
+
+			//三. 原型继承 通过构造函数prototype实现继承;注意修正constructor属性;
+			function Dog(){
+				this.name= "旺财";
+				
+			};
+			Dog.prototype = new Animal();
+			//先继承父类的原型链,
+            //然后再添加自己的原型方法;
+            Dog.prototype.hou=function(){
+				alert("汪汪汪...");
+			};
+			alert(Dog.prototype.constructor)//Animal,constructor指向新的构造函数,需修正;
+			Dog.prototype.constructor = Dog; //注意修正constructor属性;
+			alert(Dog.prototype.constructor)//Dog,修正了
+			
+			function testExtends(){
+				//创建实例对象
+				var d1 = new Dog();
+				var d2 = new Cat('yellow','big');
+				d1.color = "黄色"
+				alert(d1.constructor+"--"+d2.constructor);
+				d1.hou(); 
+				
+			}
+		
+            // 四 创建专用继承的函数, 构造函数 == 类
+            function inherit( obj ){
+                function Fn(){};
+                Fn.prototype = obj;
+                return new Fn();
+            }
+
+            function Person( name , age , marry , sex ){
+                this.name = name;
+                this.age = age;
+                this.marry = marry;
+                this.sex = sex;
+            };
+ 
+            Person.prototype.showName = function(){
+                alert( this.name );
+            };
+ 
+ 
+            // 通过继承创造一个子类
+            function PersonChild(  pArr , weight ){
+                Person.apply( this , pArr );
+                this.weight = weight;
+            };
+     
+            PersonChild.prototype = inherit(Person.prototype);
+            PersonChild.prototype.showAge = function(){
+                alert( this.age );
+            };
+ 
+            //var obj = new PersonChild(['阿飞',18,false,0] , 60);
+            //obj.showName();
+ 
+            var pObj = new Person( '阿飞',18,false,0 );
+            pObj.showAge();
+
+		</script>
+	</head>
+	<body>
+	<input type="button" id="" value="测试JS的继承" onclick="testExtends();"/>
+	</body>
+</html>

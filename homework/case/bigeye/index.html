@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="空山"/>
+    <meta name="Description" content=""/>
+    <title>我有一只大眼睛 by 空山</title>
+    <style>
+        body,div,p,h1,h2,h3,h4,h5,h6,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,table,th,td {
+            margin: 0;
+            padding: 0;
+        }
+        img{
+            border:0 none;
+        }
+        a{
+            text-decoration:none;
+        }
+        ol, ul{
+            list-style: none;
+        } 
+        html,body{
+            width:100%;
+            height:100%;
+            font-size: 625%;
+            -moz-user-select: none; -khtml-user-select: none; user-select: none; 
+        }
+        body{
+            font: .16rem/1.5 "Microsoft Yahei ,arial, helvetica, sans-serif";
+            background-color: #fff;
+        }
+        .roomWrap{
+            position:relative;
+            left:50%;
+            margin-left:-6rem;
+            width:12rem;
+            height:6rem;
+            cursor: pointer;
+            perspective:600px;
+        }
+        .room{
+            width:100%;
+            height:100%;
+            transform-style:preserve-3d;
+            transform: translateZ(-3rem);
+        }
+        .tran3D .room{
+            animation: 5s tran3D;
+        }
+        @keyframes tran3D{
+            from {transform:translateZ(-3rem) rotateY(0deg)}
+            to {transform:translateZ(-3rem) rotateY(360deg)} 
+        }
+        .wall{
+            position:absolute;
+            background:linear-gradient(0deg,rgba(100,100,255,0.3) 4px,transparent 0),linear-gradient(90deg,rgba(100,100,255,0.3) 4px,transparent 0);
+            background-size:.5rem .5rem;
+        }
+       .door{
+            background:radial-gradient(circle at 40% 50%, rgba(255, 222, 111, 0.3), rgba(255, 111, 255, 0.3) 20%,rgba(0, 255, 255, 0.5) 30%,rgba(255, 255, 255, 0.5) );
+            left:0;
+            top:0;
+            width:100%;
+            height:100%;
+            transform-origin:top;
+            transform:translateZ(3rem);
+        }
+        .openDoor{
+            animation: 2s openDoor forwards;
+        }
+        
+        @keyframes openDoor{
+            from {transform: translateZ(3rem) rotateX(0deg)}
+            to {transform: translateZ(3rem) rotateX(270deg)} 
+        }
+        .closeDoor{
+            animation: 2s closeDoor forwards;
+        }
+        
+        @keyframes closeDoor{
+            from {transform: translateZ(3rem) rotateX(270deg)}
+            to {transform: translateZ(3rem) rotateX(0deg)} 
+        }
+        .title{
+            position:absolute;
+            top:15%;
+            left:0;
+            color:rgba(100, 233, 233, 0.6);
+            font:bold 2rem/3rem "Kaiti","Microsoft Yahei";
+            text-shadow:-4px 4px 1px rgba(66, 166, 166, 0.6);
+            text-indent:1rem;
+        }
+        .title.non{
+            font:bold 1.2rem/3rem "Kaiti","Microsoft Yahei";
+            text-shadow:-2px 2px 1px rgba(66, 166, 166, 0.6);
+        }
+        .title.win{
+            display: none;
+            color:rgba(233, 233, 100, 0.6);
+            text-shadow:-4px 4px 1px rgba(166, 166, 66, 0.6);
+        }
+        .title.lose{
+            display:none;
+            color:rgba(233, 100, 100, 0.6);
+            text-shadow:-4px 4px 1px rgba(166, 66, 66, 0.6);
+        }
+        .readme{
+            position: absolute;
+            left:10%;
+            top:60%;
+            border-radius:10%;
+            color:rgba(30, 133, 133, 0.8);
+            font: .24rem/.36rem "Kaiti","Microsoft Yahei";
+        }
+        .room div.wall:nth-of-type(2){
+            left:0;
+            top:100%;
+            width:100%;
+            height:100%;
+            transform:translateZ(3rem) rotateX(-90deg);
+            transform-origin:top;
+            border-top:3px solid rgba(100,100,255,0.3);
+        }
+        .room div.wall:nth-of-type(3){
+            left:-6rem;
+            top:0;
+            width:6rem;
+            height:6rem;
+            transform:translateZ(3rem) rotateY(-90deg);
+            transform-origin:right;
+            border-right:3px solid rgba(100,100,255,0.3);
+        }
+        .room div.wall:nth-of-type(4){
+            left:0;
+            top:-100%;
+            width:100%;
+            height:100%;
+            transform:translateZ(3rem) rotateX(90deg);
+            transform-origin:bottom;
+        }
+        .room div.wall:nth-of-type(5){
+            left:100%;
+            top:0;
+            width:6rem;
+            height:6rem;
+            transform:translateZ(3rem) rotateY(90deg);
+            transform-origin:left;
+        }
+        .room div.wall:nth-of-type(6){
+            left:0;
+            top:0;
+            width:100%;
+            height:100%;
+            transform:translateZ(-3rem);
+        }
+        .bagua{
+            position:absolute;
+            transform:translateZ(3rem) rotateX(90deg);
+            transform-origin:bottom;
+            right:10%;
+            bottom:10%;
+            margin:0 0 0 -1.4rem;
+            width:2.9rem;
+            height:2.9rem;
+            background:#ccc;
+            background:linear-gradient(45deg,transparent 28%,rgba(0, 55, 155, 0.5) 0) left bottom,
+                       linear-gradient(135deg,transparent 28%,rgba(0, 55, 155, 0.5) 0) left top,
+                       linear-gradient(225deg,transparent 28%,rgba(0, 55, 155, 0.5) 0) right top,
+                       linear-gradient(315deg,transparent 28%,rgba(0, 55, 155, 0.5) 0) right bottom;
+            background-repeat:no-repeat;
+            background-size:52% 52%;
+            transition: 3s;
+            -box-reflect: below .5rem -webkit-linear-gradient(bottom, rgba(0,0,0,1),rgba(0,0,0,0));
+        }
+        .baguaAnime{
+            animation: baguaAnime 15s 100ms;
+        }
+        @keyframes baguaAnime{
+        	0%{transform:translateZ(3rem) rotateX(90deg)}
+        	10%,90%{transform:translateZ(3rem) rotateX(0deg);}
+        	100%{transform:translateZ(3rem) rotateX(90deg)}
+        }
+        .bagua .baguaShadow{
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 26%;
+            bottom: -50%;
+            background:linear-gradient(45deg,transparent 28%,#eee 0) left bottom,
+                       linear-gradient(135deg,transparent 28%,#eee 0) left top,
+                       linear-gradient(225deg,transparent 28%,#eee 0) right top,
+                       linear-gradient(315deg,transparent 28%,#eee 0) right bottom;
+            background-repeat:no-repeat;
+            background-size:52% 52%;
+            transform: rotateX(110deg) rotateY(6deg) skewX(24deg) skewY(10deg) scale(0.6);
+            z-index: -1;
+        }
+        .taijiWrap{
+            position:absolute;
+            left:50%;
+            top:50%;
+            margin:-.6rem 0 0 -.6rem;
+            width:1.2rem;
+            height:1.2rem;
+            background:linear-gradient(45deg,transparent 28%,#fff 0) left bottom,
+                       linear-gradient(135deg,transparent 28%,#fff 0) left top,
+                       linear-gradient(225deg,transparent 28%,#fff 0) right top,
+                       linear-gradient(315deg,transparent 28%,#fff 0) right bottom;
+            background-repeat:no-repeat;
+            background-size:50% 50%;
+        }
+        .taiji{
+            -display:none;
+            position:absolute;
+            top:50%;
+            left:50%;
+            z-index:1;
+            margin:-0.51rem 0 0 -0.51rem;
+            width:.99rem;
+            height:.99rem;   
+            border-radius: 50%;
+            border:.02rem solid #000;
+            background:linear-gradient(#000 50%, #fff 0);
+        }
+        .taiji::before,.taiji::after{
+            position:absolute;
+            content:'';
+            width:.12rem;
+            height:.12rem;
+            top:50%;
+            margin-top:-0.25rem;
+            border:.19rem solid #fff;
+            border-radius: 50%;
+        }
+        .taiji::before{
+            background-color:#000;
+            left:0;
+            border-color:#fff;
+        }
+        .taiji::after{
+            background-color:#fff;
+            right:0;
+            border-color:#000;
+        }
+        .rotate{
+            animation: Rotate 5s  linear;/*infinite ease-in-out */
+        }
+        @keyframes Rotate{
+                10%{transform : scale(1) rotate(0deg); transform-origin:center}
+                20%{transform : scale(1.6) rotate(120deg);}
+                90%{transform : scale(1) rotate(720deg); transform-origin:center}
+        }
+        
+        li{
+            position:absolute;
+            z-index:1;
+            width:1.06rem;
+            height:.68rem;
+            background-color: #fff;
+            background:linear-gradient(67.5deg,transparent .25rem,#fff 0) left,
+                       linear-gradient(-67.5deg,transparent .25rem,#fff 0) right;
+            background-repeat:no-repeat;
+            background-size:52% 100%;
+        }
+        li:nth-child(1){
+            top:.1rem;
+            left:50%;
+            margin-left:-0.53rem;
+        }
+        li:nth-child(2){
+            top:.39rem;
+            left:1.64rem;
+            transform: rotate(45deg);
+        }
+        li:nth-child(3){
+            top: 1.12rem;
+            right: -.09rem;
+            transform: rotate(90deg);
+        }
+        li:nth-child(4){
+            top: 1.84rem;
+            left:1.64rem;
+            transform: rotate(135deg);
+        }
+        li:nth-child(5){
+            bottom:.1rem;
+            left:50%;
+            margin-left:-0.53rem;               
+            transform: rotate(180deg);
+        }
+        li:nth-child(6){
+            top: 1.84rem;
+            right:1.64rem;        
+            transform: rotate(225deg);
+        }
+        li:nth-child(7){
+            top: 1.12rem;
+            left: -.09rem;  
+            transform: rotate(270deg);
+        }
+        li:nth-child(8){
+            top:.39rem;
+            right:1.64rem;         
+            transform: rotate(315deg);
+        }
+        .rune{
+            position:absolute;
+            z-index:2;
+            left:50%;
+            top:50%;
+            margin:-.2rem 0 0 -.2rem;
+            width:.4rem;
+            height:.4rem;
+            text-align: center;
+        }
+        .thick{
+            float:left;
+            width:.4rem;
+            height:.06rem;
+            margin-top:.04rem;
+            background-color: #000;
+            border-radius:.03rem;
+        }
+        .thick.shortL{
+            width:.18rem;
+        }
+        .thick.shortR{
+            width:.18rem;
+            float:right;
+        }
+        .char{
+            display:none;
+            position:absolute;
+            z-index:2;
+            left:50%;
+            top:50%;
+            margin:-.22rem 0 0 -.25rem;
+            width:.5rem;
+            height:.4rem;
+            text-align: center;
+            font:0.3rem/0.4rem 'Kaiti';
+            color:#fff;
+            text-shadow:0 0 .01rem #FF3366, 0 0 .02rem #FF2255 ,0 0 .04rem #FF1144,0 0 .06rem #FF0033,0 0 .09rem #FF0055;
+            
+        }
+        .fixed{
+            position:fixed;
+            z-index:3;
+        }
+        .eye {
+            display:none;
+            position:absolute;
+            top:50%;
+            left:50%;
+            margin:-0.5rem 0 0 -0.5rem;
+            width:1rem;
+            height:1rem;   
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 20%, #fff, #000);
+            z-index:9 !important;
+            animation-fill-mode : forwards !important;
+        }
+        .eyeshadow{
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            left: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0) 50%);
+            transform: rotateX(107deg) translateZ(-.26rem);
+            z-index: -1;
+        } 
+
+        .eyeJump{
+            animation: eyeJump .5s cubic-bezier(0.165,0.840,0.440,1.00)  infinite; 
+        }
+        .pupilL .pupil{
+            transform: translateX(-.2rem) skewX(10deg) skewY(-5deg) scale(0.95);
+        }
+        .pupilTL .pupil{
+            transform:translateX(-.11rem) translateY(-.21rem) skewX(-10deg) skewY(0deg)  scaleX(0.96);
+        }
+        .pupilTR .pupil{
+            transform: translateX(.25rem) translateY(-.15rem) skewX(5deg) skewY(2deg) scaleX(0.94);
+        }
+        .pupilBL .pupil{
+            transform: translateX(-.25rem) translateY(.11rem) skewX(15deg) skewY(-10deg) scale(0.95);
+        }
+        .pupilBR .pupil{
+            transform: translateX(.22rem) translateY(.12rem) skewX(3deg) skewY(-10deg) scaleX(0.93);
+        }
+        @keyframes eyeJump{
+            0% {
+                transform: none ;
+            }
+            5% {
+                transform: scaleY(0.95) scaleX(1.05) translateY(.1rem)  ;
+            }
+            10% {
+                transform: scaleY(1.1) scaleX(0.9) translateY(-0.1rem) ;
+            }
+            60% {
+                transform: scale(1) translateY(-0.4rem) ;
+            }
+            100% {
+                transform: none ;
+            }
+        }
+        .eyeOut{
+            -transform: scale(2) translateY(0.3rem) skewX(-31deg) skewY(10deg);
+            animation: eyeOut 2s ease-out; 
+            
+        }
+        @keyframes eyeOut{
+            0% {
+                transform: none ;
+            }
+            5% {
+                transform: scaleY(0.95) scaleX(1.05) translateY(.1rem) ;
+            }
+            10% {
+                transform: scaleY(1.1) scaleX(0.9) translateY(-.1rem);
+            }
+            40% {
+                transform: scale(3.5) ; top:-40%;left:20%;
+            }
+            /*100% {
+                transform: scale(5) translateY(0.3rem) skewX(-31deg) skewY(10deg);top:30%;left:40%;
+            }*/
+            100% {
+                transform: scale(12); top:40%;left:40%;
+            }
+        }
+        .eyeHide{
+            animation: eyeHide 5s ease-out; ;
+        }
+        @keyframes eyeHide{
+            0% {
+                opacity: 1 ;
+            }
+            10%, 95%{
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        .pupil {
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            margin: 30%;
+            border-radius: 50%;
+            transform : none;
+            transition: .5s !important;
+            animation-fill-mode : forwards !important;
+            background: radial-gradient(circle at 50% 50%, #222 0%, #888 30%, #555 100%);
+        }
+        .observe .pupil{
+            animation: observe 10s ease-out infinite; 
+            
+        }
+        .pupil:before {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 37.5%;
+            height: 37.5%;
+            border-radius: 50%;
+            top: 31.25%;
+            left: 31.25%;
+            background: #333;
+        }
+        .pupil:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 31.25%;
+            height: 31.25%;
+            border-radius: 50%;
+            top: 18.75%;
+            left: 18.75%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        @keyframes observe {
+            5% {
+                transform: none;
+            }
+            10% {
+                transform: translateX(-.25rem) translateY(.11rem) skewX(15deg) skewY(-10deg) scale(0.95);
+            }
+            12%, 22% {
+                transform: none;
+            }
+            25%, 32%,42% {
+                transform: translateX(.25rem) translateY(-.15rem) skewX(5deg) skewY(2deg) scaleX(0.94);
+            }
+            30% {
+                transform: none;
+            }
+            46%,50%
+            {
+                transform:translateX(-.11rem) translateY(-.21rem) skewX(-10deg) skewY(0deg)  scaleX(0.96);
+            }
+            60%,66%{
+                transform: translateX(-.25rem) translateY(.08rem) skewX(15deg) skewY(-10deg) scale(0.95);
+            }
+            72%, 80% {
+                transform: translateX(.22rem) translateY(.12rem) skewX(3deg) skewY(-10deg) scaleX(0.93);
+            }
+            83%, 100% {
+                transform: none;
+            }
+        }
+        .candy{
+            position: fixed;
+            tOP:20%;
+            left:20%;
+            z-index:3;
+            width:.6rem;
+            height:.3rem;
+            background:linear-gradient(45deg,red 50%,transparent 0) left top/25% 50%,
+                       linear-gradient(135deg,red 50%,transparent 0) left bottom/25% 50%,
+                       linear-gradient(225deg,red 50%,transparent 0) right bottom/25% 50%,
+                       linear-gradient(315deg,red 50%,transparent 0) right top/25% 50% ,
+                       linear-gradient(red ,red) center/66% 100%;
+            transform: rotateX(60deg);
+            -transform-origin: bottom;
+            background-repeat:no-repeat;
+            border-radius: .05rem;
+        }
+        .sway{
+            -transform: translateX(-150%) rotate(20deg) rotateX(80deg) scale(0.95) translateZ(.2rem) skewX(10deg);
+            animation: sway 1s ease-out infinite; 
+        }
+        @keyframes sway{
+            0% {transform: rotateX(70deg);}
+            30%,35% {transform: translateX(-150%) rotate(20deg) rotateX(30deg) scale(0.95) translateY(-10%) translateZ(.2rem) skewX(10deg);}
+            50% {transform: translateX(0) rotateX(60deg) scale(1);}
+            75%,80% {transform: translateX(150%) rotate(-20deg) rotateX(-20deg) scale(0.95) translateY(-10%) translateZ(-.2rem) skewY(10deg);}
+            100% {transform: translateX(0) rotateX(70deg) scale(1);}
+        }
+        .hp ,.mp,.score{
+            position:absolute;
+            width:3rem;
+            height:.4rem;
+            top:0;
+            font:bold .2rem/.4rem "Microsoft Yahei";
+            letter-spacing:2px;
+            text-align:center;
+            border:3px solid rgba(88, 88, 233, 0.5);
+            border-radius:50%;
+            box-shadow: 0 0 .2rem -.05rem #000;
+            color:#fff;
+            text-shadow:0 0 1px #000,0 0 2px #000,0 0 3px #000;
+            overflow: hidden; 
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .hp{
+            right:0;
+        }
+        .mp{
+            left:0;
+        }
+        .score{
+            left:50%;
+            margin-left:-1.5rem;
+        }
+    
+    </style>
+</head>
+<body >
+<div class="roomWrap">
+<div class="room">
+    <div class="wall door">
+        <div class="title non">我有一只大眼睛</div>
+        <div class="readme">
+            <p> 
+            说明 : 点击真眼清光真眼的血量完成游戏<br />
+            单击眼怪需MP,通过鼠标滑过糖块获取;<br /> 
+            击中真眼 : 真眼隐身,并增加玩家血量<br />
+            击中假眼 : 假眼变红,增加真眼血量,并减少玩家血量 <br />
+            眼怪同样可以吃糖增加其本身血量,真眼吃糖还会减少玩家血量<br />
+            </p>
+        </div>
+        <div class="title win">YOU WIN</div>
+        <div class="title lose">YOU LOSE</div>
+    </div>
+    <div class="wall"></div>
+    <div class="wall"></div>
+    <div class="wall"></div>
+    <div class="wall"></div>
+    <div class="wall"></div>
+    <div class="bagua">
+        <!-- <div class="baguaShadow"></div> -->
+        <div class="taijiWrap">
+           <div class="taiji">
+           </div> 
+           <div class="eye">
+                <div class="eyeshadow"></div>
+                <div class="pupil"></div>
+           </div> 
+        </div>
+        <ul>
+            <li>
+                <p class='rune'>
+                    <i class='thick'></i>
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                    <i class='thick'></i>
+                </p>
+                <span class='char'>离</span>
+            </li>
+            <li>
+                <p class='rune'>
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                </p>
+                <span class='char'>坤</span>
+            </li>
+            <li>
+                <p class='rune'>
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                    <i class='thick'></i>
+                    <i class='thick'></i>
+                </p>
+                <span class='char'>兑</span>
+            </li>
+            <li>
+                <p class='rune'>
+                    <i class='thick'></i>
+                    <i class='thick'></i>
+                    <i class='thick'></i>
+                </p>
+                <span class='char'>乾</span>
+            </li>
+            <li>
+                <p class='rune'>
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                    <i class='thick'></i>
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                </p>
+                <span class='char'>坎</span>
+            </li>
+            <li>
+                <p class='rune'>
+                    <i class='thick'></i>
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                    
+                </p>
+                <span class='char'>艮</span>
+            </li>
+            <li>
+                <p class='rune'>
+                    
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                    <i class='thick'></i>
+                </p>
+                <span class='char'>震</span>
+            </li>
+            <li>
+                <p class='rune'>
+                    <i class='thick'></i>
+                    <i class='thick'></i>
+                    <i class='thick shortL'></i>
+                    <i class='thick shortR'></i>
+                </p>
+                <span class='char'>巽</span>
+            </li>
+        </ul>
+    </div>
+    <!--<div class="candy sway"></div>-->
+    <div class="hp">HP: <span>0</span></div>
+    <div class="mp">MP: <span>0</span></div>
+    <div class="score">SCORE: <span>0</span></div>
+    <!-- <div class="cursor bowl"></div> -->
+    <!-- <div class="cursor hammer hammerG"></div> -->
+</div>
+</div>
+    <script src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.gbtags.com/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <script type="text/javascript" >
+        $(function(){
+            var roomOpend = false;
+            var taijiUnban = false;
+            var $bagua = $('.bagua');
+            var $taiji = $('.taiji');
+            var $rune = $('.rune').not('.fixed');
+            var $chars = $('.char');
+            var $eye = $('.eye') , $eyeC;
+            var $room = $('.roomWrap');
+            var cursor = $(".cursor");
+            var size = {
+                width : $room.width() - $bagua.width(),
+                height : $room.height(),
+                top : $room.offset().top - $(document).scrollTop(),
+                bottom : $room.offset().top + $room.height() - $(document).scrollTop(),
+                left : 0 - $(document).scrollLeft(),
+                right : 0 + $room.width() - $bagua.width()-$(document).scrollLeft()
+            };
+            var timeGrab = new Date(),timeHit = new Date(),timeHitHide = new Date();
+            var mp,hp,score ,trueEye ,candyFactoryTimer,eyeFactoryTimer;
+            var mpO = $(".mp").children("span");
+            var hpO = $(".hp").children("span");
+            var scoreO = $(".score").children("span");
+            var $door = $('.door');
+            document.ondragstart = function(){return false};
+            
+            //打开房间
+            $room.on("mouseenter",roomOpen);
+            function roomOpen(){
+                if (roomOpend) {return false};
+                roomOpend = true;
+                taijiUnban = false;
+                $room.addClass("tran3D")
+                setTimeout(function(){
+                    $room.removeClass("tran3D");
+                    taijiRotate();
+                    $door.addClass("openDoor").fadeOut(1000,function(){
+                        $door.removeClass("openDoor");
+                    });
+                },5000);
+            }
+//          太极转动
+            //$taiji.mouseenter(taijiRotate);
+            function taijiRotate (){
+                if (taijiUnban) {return false};
+                mp = 25;
+                hp = 20;
+                score = 0;
+                mpO.html(mp);
+                hpO.html(hp);
+                scoreO.html(score);
+                trueEye = null;
+                taijiUnban = true;
+                $bagua.removeClass('rotate').addClass("baguaAnime");
+                setTimeout(function(){
+                    $bagua.removeClass("baguaAnime");
+                },15000)
+                $taiji.addClass('rotate');
+                $rune.each(function(i){
+                    var $this = $(this);
+                    var transform = $(this).parent().css('transform');
+                    setTimeout(function(){
+                        var pos = inductTo($taiji);
+                        var offset = $this.offset();
+                        (offset.left > pos.left) && (offset.left += $this.width());
+                        (offset.top > pos.top) && (offset.top += $this.height());
+                        var $thisC = $this.clone();
+                        
+                        $('body').append($thisC);
+                        $this.hide(200, function() {
+                            $this.siblings('.char').show(500);
+                        });
+                        $thisC.addClass('fixed').css(offset).css('transform',transform).animate(pos,1500,function(){
+                            $thisC.remove();
+                            if (i == ($rune.length-1)) {
+                                eyeObserve();
+                            }
+                        });
+                    }, (i*200+200))
+                })
+            };
+            //八卦内眼睛观察
+            function eyeObserve(){
+                $taiji.fadeOut(800);
+                $eye.fadeIn(800,function(){
+                    $eye.addClass('observe');
+                    setTimeout(function(){
+                        $chars.eq(5).hide(500).prev('.rune').show(500);
+                    },800);
+                    setTimeout(function(){
+                        $chars.eq(1).hide(500).prev('.rune').show(500);
+                    },3300);
+                    setTimeout(function(){
+                        $chars.eq(0).hide(500).prev('.rune').show(500);
+                    },4300);
+                    setTimeout(function(){
+                        $chars.eq(7).hide(500).prev('.rune').show(500,function(){
+                            $chars.eq(6).hide(500).prev('.rune').show(500);
+                        });
+                    },4800);
+                    setTimeout(function(){
+                        $chars.eq(4).hide(500).prev('.rune').show(500);
+                    },6800);
+                    setTimeout(function(){
+                        $chars.eq(2).hide(500).prev('.rune').show(500);
+                        $chars.eq(3).hide(500).prev('.rune').show(500,function(){
+                            $eye.removeClass('observe');
+                            $eye.fadeOut(1000,function(){
+                                $rune.fadeOut(500)
+                                $chars.fadeIn(500); 
+                                candyFactory();
+                                eyeFree();eyeFree();
+                                eyeFactoryTimer = setInterval(function(){
+                                    if($('.eye').length >=6){return};
+                                    eyeFree();
+                                },11111);
+                            })
+                        });
+                    },7300);
+                });
+            };
+            
+            /*changeMouse();
+            function changeMouse(){
+                $(document).on('mousemove' , function(e){
+                    cursor.css({top: e.pageY , left: e.pageX});
+                })
+            };*/
+            //眼睛出八卦
+            function eyeFree(){
+                $taiji.fadeIn(3000).removeClass('rotate');
+                var $eyeC = $eye.clone();
+                $eyeC[0].hp = 5;
+                if(!trueEye){
+                    trueEye = $eyeC[0];
+                    trueEye.hp = 15;
+                };
+                var offset = {};
+                offset.left = size.right;
+                offset.top = size.bottom - $eye.height()/1.4;
+                offset.background = "radial-gradient(circle at 30% 20%, "+ getRandomColor()+", #000)";
+                $eyeC.addClass('fixed eyeJump').css(offset).hide().children('.eyeshadow').hide();
+        
+                $room.append($eyeC);
+                $eyeC.fadeIn(1000,function(){
+                    eyeMove ($eyeC)
+                });
+                $eyeC.on("click",hitEye)
+            };
+            function hitEye(){
+                if ( (new Date() - timeHit <= 10) || mp<=0 || this.hp <= 0 ){return};
+                var This = this;
+                timeHit = new Date();
+                mp--;
+                this.hp--;
+                if(this == trueEye){
+                    hp++;
+                    score += 10;
+                    if (new Date() - timeHitHide >=5000) {
+                        timeHitHide = new Date();
+                        $(this).addClass("eyeHide");
+                    	setTimeout(function(){
+                    	    $(This).removeClass("eyeHide");
+                    	},5000);
+                    }
+                    //$(this).css('background',"radial-gradient(circle at 30% 20%,transparent, transparent)");
+                }else{
+                    hp--;
+                    trueEye.hp++;
+                    score += 5;
+                    $(this).css('background',"radial-gradient(circle at 30% 20%,red, #000)");
+                };
+                mpO.html(mp);
+                hpO.html(hp);
+                scoreO.html(score);
+                if (this.hp <= 0)
+                {
+                    deadEye($(this));
+                }
+            };
+            function deadEye(obj){
+                clearTimeout(obj[0].timer);
+                if (obj[0] != trueEye)
+                {
+                    score += 200;
+                    scoreO.html(score);
+                    var pos = inductTo(obj);
+                    obj.stop(true).animate(pos,1000);
+                    setTimeout(function(){
+                        obj.off().remove();
+                    },1000)
+                }else{
+                    score += 1000;
+                    scoreO.html(score);
+                }
+                
+            }
+            //生成糖果
+            function candyFactory(){
+                candyFactoryTimer = setInterval(function () {
+                	var rPos = {
+                        "top" : getRandom(size.top+size.height*2/3,size.bottom),
+                        "left" : getRandom(size.left,size.right)
+                    };
+                    var candy = $("<div class='candy drop sway'></div>");
+                    var c = getRandomColor();
+                    var d = "linear-gradient(45deg,"+c+" 50%,transparent 0) left top/25% 50% no-repeat,linear-gradient(135deg,"+c+" 50%,transparent 0) left bottom/25% 50% no-repeat,linear-gradient(225deg,"+c+" 50%,transparent 0) right bottom/25% 50% no-repeat,linear-gradient(315deg,"+c+" 50%,transparent 0) right top/25% 50%  no-repeat,linear-gradient("+c+" ,"+c+") center/66% 100% no-repeat";
+                    candy.css({"left":rPos.left,"top":size.top,"background":d});
+                    candy[0].hp = 1;
+                    $room.append(candy);
+                    candy.on('mouseenter',grabCandy);
+                    candy.animate({"top":rPos.top},3000,'swing',function(){
+                        candy.removeClass("sway");
+                        candy.fadeOut(3000,function(){
+                            candy[0].hp = 0;
+                            candy.off().remove();
+                       })
+                    });
+                },getRandom(500,1500))
+            };
+            function grabCandy (){
+                if (this.hp <= 0)
+                {
+                    return;
+                }
+                timeGrab = new Date();
+                var _This = this;
+                mp += this.hp;
+                score+=this.hp;
+                mpO.html(mp);
+                scoreO.html(score);
+                this.hp = 0;
+                $(this).css("animation-play-state" , "paused").stop(true).fadeOut(500,function(){
+                    $(this).off().remove();
+                });                
+            }
+            
+            //眼睛抓糖果
+            function eyeMove ($eyeC) {
+                $eyeC[0].timer = setTimeout(function(){
+                    var bgC = "radial-gradient(circle at 30% 20%, "+ getRandomColor()+", #000)";
+                    $eyeC.css({"background":bgC});
+
+                    var i = 0;
+                    var candys = $(".candy.drop"),c;
+                    for (var i = 0; i< candys.length;i++) {
+                    	if (candys[i].hp > 0) {
+                    		c =  candys.eq(i);
+                    		break;
+                    	} else{
+                    		c = null;
+                    	}
+                    };
+                    if (c) {
+                        candys.each(function(i){
+                            collision ($eyeC ,$(this));
+                        });
+                    	if($eyeC[0] != trueEye){getRandom(0,3) || (c = null)};
+                    }
+                    rPos = setEyeCPos ($eyeC , (c&&c.offset()));
+                    if (getRandom(0,2)) {
+                    	$eyeC.removeClass('observe').addClass('eyeJump '+ rPos.pupil).stop(true).animate({"left":rPos.left,"top":rPos.top},rPos.time,'swing',function(){
+                              $eyeC.removeClass('eyeJump '+rPos.pupil).addClass('observe');
+                        });
+                    }
+                    if (hp <= 0)
+                    {
+                        clearTimeout($eyeC[0].timer);
+                        eyeOut( "lose");
+                    }else if (trueEye.hp <= 0){
+                        clearTimeout($eyeC[0].timer);
+                        eyeOut( "win");
+                    }else if ($eyeC[0].hp > 0){
+                        $eyeC[0].timer = setTimeout(arguments.callee , 1000);
+                    }
+                },100)
+  
+            };
+            function collision ($eyeC ,candy){
+                if (candy[0].hp<=0) {
+                    return;
+                }
+                var f = false;
+                var x = $eyeC.offset().left;
+                var y = $eyeC.offset().top;
+                var a1 = candy.offset().left - $eyeC.width();
+                var a2 = candy.offset().left + candy.width();
+                var b1 = candy.offset().top - $eyeC.height();
+                var b2 = candy.offset().top + candy.height();
+                if ((x>= a1) && (x <= a2 ) && (y >= b1) && (y<= b2)) {
+                    $eyeC[0].hp += candy[0].hp;
+                    candy[0].hp = 0;
+                    candy.css("animation-play-state" , "paused").stop(true).fadeOut(1000,function(){
+                        candy.remove();
+                    });
+                    if($eyeC[0] == trueEye){
+                        hp--;
+                        hpO.html(hp);
+                    }
+                };
+            };
+            //眼睛跳出与吸入;
+            function eyeOut(overName){
+                if(!roomOpend){return};
+                clearInterval(eyeFactoryTimer);
+                clearInterval(candyFactoryTimer);
+                var t = 500;
+                var eyes = $(".eye").filter(".fixed");
+                eyes.removeClass('eyeJump').off().stop(true).each(function(i){
+                    clearTimeout(this.timer);
+                });
+                if(overName == 'lose'){
+                    eyes.addClass('eyeOut');
+                    t = 2000;
+                };
+                setTimeout(baguaRotate,t);
+                function baguaRotate(){
+                    $bagua.addClass('rotate');
+                    var pos = inductTo($taiji);
+                    pos.left -= 150;
+                    pos.top -= 150;
+                    eyes.stop(true).animate(pos,3000,function(){
+                        $chars.fadeOut(500);
+                        $rune.fadeIn(500,function(){
+                            over(overName);
+                        });
+                    });
+                };    
+            };
+            //结束,重置
+            function over(overName){
+                if(!roomOpend){return};
+                var obj = $("."+overName);
+                var eyes = $(".eye").filter(".fixed");
+                clearInterval(eyeFactoryTimer);
+                clearInterval(candyFactoryTimer);
+                eyes.off().remove();
+                obj.show();
+                $('.non').hide();
+                $(".readme").hide();
+                $door.addClass("closeDoor").fadeIn(1000);
+                setTimeout(function(){
+                    obj.fadeOut(1000,function(){
+                        $('.non').fadeIn(500);
+                        $(".readme").fadeIn(500);
+                        $door.removeClass("closeDoor");
+                        roomOpend = false;
+                        taijiUnban = false;
+                    })
+                },2000)
+            };
+            
+            //通用函数
+            //通过糖果坐标获取眼睛路线,(预留获取随机目标);
+            function setEyeCPos (obj ,rPos) {
+                getRandom(0,1)&&(rPos = null);
+                
+                rPos = rPos || {
+                    
+                    top : getRandom(size.top+obj.height()*2,size.bottom-obj.height()*2),
+                    left : getRandom(size.left+obj.width()*2,size.right-obj.width()*2),
+                };
+                getDistance (obj,rPos);
+                var d = rPos.dist;
+                rPos.time = getRandom(d*2,d*3);
+                if(rPos.rt >= 0 && rPos.rl >= 0){
+                    rPos.pupil = 'pupilTL';
+                }else if(rPos.rt >= 0 && rPos.rl < 0) {
+                    rPos.pupil = 'pupilTR';
+                } else if(rPos.rt < 0 && rPos.rl >= 0) {
+                    rPos.pupil = 'pupilBL';
+                } else {
+                    rPos.pupil = 'pupilBR';
+                };
+                return rPos;
+            }
+           
+            function getDistance (obj,rPos){
+                rPos.rl = obj.offset().left - rPos.left;
+                rPos.rt = obj.offset().top - rPos.top;
+                rPos.dist =  Math.sqrt(Math.pow(rPos.rt,2) + Math.pow(rPos.rl,2) );  
+            }
+            function getRandom (from ,to ){
+                return Math.floor(Math.random()*(to - from + 1)) +from;
+            }
+            function getRandomColor (){
+                var r = Math.floor(Math.random()*255);
+                var g = Math.floor(Math.random()*255);
+                var b = Math.floor(Math.random()*255);
+                var a = Math.random()/3 + 0.5;
+                return "rgba("+r+","+g+","+b+","+a+")";
+            };
+            function inductTo (obj) {
+                return {
+                    opacity : 0,
+                    width : 0,
+                    height : 0,
+                    top : obj.offset().top+obj.height()/2 - $(document).scrollTop(),
+                    left : obj.offset().left+obj.width() - $(document).scrollLeft()
+                };
+            }
+            function addAnimeEnd(obj,fn){
+                obj.addEventListener("webkitAnimationEnd",fn);//当动画过渡完成之后调用一个功能函数
+                obj.addEventListener("animationend",fn);
+            }
+        
+            function removeAnimeEnd(obj,fn){
+                obj.removeEventListener("webkitAnimationEnd",fn);
+                obj.removeEventListener("animationend",fn);
+            }
+        })
+        
+    </script>
+</body>
+</html> 

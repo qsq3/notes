@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        .m-slider {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider {
+            width: 1000%;
+            position: relative;
+            left: 0;
+        }
+
+        .slider li {
+            position: relative;
+            left: 0;
+            float: left;
+            width: 10%;
+        }
+
+        .slider li img {
+            width: 100%;
+        }
+        .slider li p{
+            text-indent: 2em;
+            width: 100%;
+            position: absolute;
+            bottom:0px;
+            height: 30px;
+            line-height: 30px;
+            color: #fff;
+            background: rgba(0,0,0,0.3);
+        }
+        .tab{
+            position: absolute;
+            bottom:0;
+            width:100%;
+            text-align: center;
+        }
+        .tab span{
+            display:inline-block;
+            width:20px;
+            height: 20px;
+            margin: 5px;
+            border-radius: 50%;
+            background: rgba(166,166,166,0.8);
+            cursor:pointer;
+        }
+        .tab span.act{
+            background: rgba(233,0,0,0.8);
+        }
+        .anime{
+            transition: left 500ms linear;
+        }
+
+    </style>
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script type='text/javascript' src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        window.onload = function(){
+            var li = document.getElementById('slider').getElementsByTagName("li");
+            var _width = li[0].clientWidth;
+            var startPos,isScrolling;
+            window.onresize = function(){
+                _width = li[0].clientWidth;
+            }
+            var slider = {
+                //判断设备是否支持 touch 事件
+                touch : ("ontouchstart" in window) || window.DocumentTouch && document instanceof DocumentTouch,
+                //事件
+                events : {
+                    index : 0,
+                    slider : document.getElementById("slider"),
+                    tab : document.getElementsByClassName('tab')[0].children,
+                    //利用handleEvent,写入事件
+                    handleEvent : function (event){
+                        event = event || window.event;
+                        var self = this;//这里this指向了events了;
+                        switch (event.type){
+                            case "touchstart":
+                                self.start(event);
+                                break;
+                            case "touchmove":
+                                self.move(event);
+                                break;
+                            case "touchend":
+                                self.end(event);
+                                break;
+                            default:
+                                break;
+                        }
+                    },
+                    //触摸开始
+                    start : function(event){
+                        //获取所有touches(多点触摸) ,其中的,第一个触摸点对象
+                        var touch = event.targetTouches[0];
+                        //获取触摸点参数
+                        startPos = {x:touch.pageX,y:touch.pageY,time:+ new Date};
+                        // 往哪个方向滑动
+                        isScrolling = 0;
+                        //添加监听事件
+                        this.slider.addEventListener("touchmove",this,false);
+                        this.slider.addEventListener("touchend",this,false);
+                    },
+                    // 触摸移动
+                    move : function(event){
+                        //判断页面是否有多个touch事件,或者是否被缩放;
+                        if (event.targetTouches.length > 1 || (event.scale && event.scale !== 1)){return};
+                        var touch = event.targetTouches[0];
+                        endPos = {x:touch.pageX-startPos.x,y:touch.pageY-startPos.y};
+                        isScrolling = Math.abs(endPos.x) < Math.abs(endPos.y) ? 0 : 1;
+                        if (isScrolling){
+                            event.preventDefault(); //阻止默认滚屏事件
+                            this.slider.className = 'slider';
+                            this.slider.style.left = -this.index*_width+ endPos.x+'px';
+
+                        };
+                    },
+                    end : function(event){
+                        var duration = +new Date - startPos.time;
+                        if(isScrolling){
+                            //清空默认样式
+                            this.tab[this.index].className = '';
+                            if(Number(duration) >=10){
+                                //判断左右
+                                if(endPos.x>=10 && this.index >0){
+                                    this.index--;
+                                }else if(endPos.x <= -10 && this.index< this.tab.length-1){
+                                    this.index ++;
+                                }
+                            }
+                            this.tab[this.index].className = 'act';
+                            this.slider.className = "slider anime";
+                            this.slider.style.left = -this.index*_width+ 'px';
+                        };
+                        //解绑事件
+                        this.slider.removeEventListener("touchmove",this,false);
+                        this.slider.removeEventListener("touchend",this,false);
+                    }
+
+                },
+                //初始化
+                init : function(){
+                    if(!!this.touch){
+                        document.body.addEventListener("touchstart",this.events,false);
+                    }
+                }
+            };
+            slider.init();
+            
+
+        };
+
+    </script>
+    </head>
+    <body>
+        <div class="m-slider">
+            <ul class="slider" id="slider">
+                <li><a href="javascript:;"><img src="images/1.jpg" alt="">
+                    <p>11111111111111111</p>
+                </a></li>
+                <li><a href="javascript:;"><img src="images/2.jpg" alt="">
+                    <p>2222222222222222</p>
+                </a></li>
+                <li><a href="javascript:;"><img src="images/3.jpg" alt="">
+                    <p>33333333333333</p>
+                </a></li>
+                <li><a href="javascript:;"><img src="images/4.jpg" alt="">
+                    <p>4444444444</p>
+                </a></li>
+                <li><a href="javascript:;"><img src="images/5.jpg" alt="">
+                    <p>5555555555</p>
+                </a></li>
+            </ul>
+            <div class="tab">
+                <span class="act" id='aaa'></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </body>
+    </html>

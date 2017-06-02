@@ -1,0 +1,195 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="description" content="vertical-align属性测试实验面板 >> 张鑫旭-鑫空间-鑫生活" />
+<meta name="description" content="张鑫旭web前端学习实例页面" />
+<meta name="keywords" content="张鑫旭,张鑫旭-鑫空间-鑫生活,web前端,css,jQuery,javascript,demo页面" />
+<meta name="author" content="张鑫旭,zhangxixnu" />
+<title>vertical-align属性测试实验面板 &gt;&gt; 张鑫旭-鑫空间-鑫生活</title>
+<link rel="stylesheet" href="../css/demo.css" type="text/css" />
+<style type="text/css">
+body{background:#a0b3d6; font-size:84%; margin:0; line-height:1.5; color:#333; font-family:Arial, sans-serif;}
+a{color:#34538b; text-decoration:none;}a:hover{text-decoration:underline;}
+a img { border: 0; }
+input,select,textarea{font-size:100%;}
+#header{height:60px; padding:0 0 0 40px;}
+#header .logo{margin-top:12px; overflow:hidden; float:left;}
+#main{width:100%; background:#beceeb; overflow:hidden;}
+#main h1{line-height:40px; margin:0; text-align:center; font-size:18px; background:#c1d5eb; font-family:'kaiti','microsoft yahei'; text-shadow:0px 1px 0px #f2f2f2;}
+#body{padding:0; overflow:hidden;}
+#body .part{width:50%; min-height:500px; _height:500px; background:white;}
+#code{float:left; margin-left:-1px; margin-bottom:-999em; padding-bottom:999em;}
+#effect{float:right; margin-right:-1px; margin-bottom:-999em; padding-bottom:999em;}
+#body h3{line-height:30px; margin:0; font-size:15px; background:#f0f3f9; padding-left:10px; border-bottom:1px solid #ededed; color:#4e4e4e; text-shadow:0px 1px 0px white;}
+#footer{line-height:1.4; padding:15px 0; border-top:1px solid #486aaa; font-family:'Lucida Grande',Verdana, Sans-Serif; text-align:center; text-shadow:1px 1px #cad5eb;}
+#footer:before{display:block; height:1px; content:''; background-color:#909BAF; color:#aaa; overflow:hidden; position:relative; top:-15px;}
+#footer img{margin-bottom:-3px;}
+.show{padding-bottom:20px;}
+.show h5{font-size:13px; line-height:20px; padding:10px 0 2px 2px; margin:0 0 0 8px; border-bottom: 1px dotted #e5e5e5;}
+.demo{padding:10px; *zoom:1;}
+.demo:after{display:table; content:""; clear:both;}
+pre{
+  font:14px/1.3 Consolas, Monaco, monospace;
+  padding:5px 10px;
+  margin:0;
+  white-space:pre-wrap;
+  word-wrap:break-word;
+}
+#ad, .ad {width:468px; height:60px; margin:0 auto; color: #fff; }
+.ad { position: absolute; top: 0; right: 0; text-align: center; font-size: 12px; background-color: #67748A; background-color: rgba(0,0,0,.35); }
+@media screen and (max-width: 468px) {
+    #ad { display: none; }
+}
+@media screen and (max-width: 700px) {
+   .ad { display: none; }
+}
+.light{background:#f0f3f9;}
+#content{min-height:500px; _height:500px; background:white; border:solid #cad5eb; border-width:0 2px; font-family:'Lucida Grande',Verdana;}
+.article{font-family:Arial; padding:10px 0; font-size:12px; clear:both;}
+.article_new{ margin:-31px 10px 0 0; line-height: 20px; font-family:Arial; padding:5px 0; font-size:12px; clear:both; text-align:right;}
+.article_new a { display: inline-block; }
+#back{margin-top:-25px; position:absolute; right:10px;}
+.demo{width:1000px; margin:30px auto; position:relative;}
+.operate_box{position:absolute; width:250px; left:0; border-right:1px dashed #a0b3d6;}
+.test_box{background:green; width:600px; margin-left:310px; line-height:200px;}
+.line_box{background:black; color:white; padding-left:20px; font-size:14px;}
+.test_dot{display:inline-block; width:4px; height:4px; overflow:hidden; background:red; vertical-align:bottom;}
+.img{vertical-align:middle;}
+
+.mulit_line{line-height:150px; border:1px dashed #cccccc; padding-left:5px;}
+.mulit_line span{display:-moz-inline-stack; display:inline-block; line-height:1.4em; vertical-align:middle;}
+.mulit_line i{width:0; display:-moz-inline-stack; display:inline-block; vertical-align:middle; font-size:0;}
+
+</style>
+</head>
+
+<body>
+<div id="header">
+	<a href="http://www.zhangxinxu.com/" class="logo" title="回到鑫空间-鑫生活首页">
+    	<img src="http://www.zhangxinxu.com/php/image/zxx_home_logo.png" border="0" />
+    </a>
+</div>
+<div id="main">
+	<h1>vertical-align属性测试实验面板</h1>
+    <div id="body" class="light">
+    	<div id="content" class="show">
+        	<h3>展示</h3>
+            <div class="article_new"><a href="http://www.zhangxinxu.com/wordpress/?p=813">&lt;&lt; 回到相关文章</a></div>
+            <div class="demo">
+            	<div class="operate_box">
+                	<p><strong>修改默认参数：</strong></p>
+                	<p>最外框背景色：<select id="outBoxColor">
+                    				<option value="blue">蓝色&nbsp;</option>
+                                    <option value="red">红色</option>
+                                    <option value="gray">灰色</option>
+                                    <option value="green" selected="selected">绿色</option>
+                                    <option value="yellow">黄色</option>
+                                    <option value="orange">橙色</option>
+                                    <option value="pink">粉色</option>
+                                </select>
+                    </p>
+                    <p>内容的行高为：<input id="lineHeight" type="text" value="200" size="4" /> px</p>
+                    <p>图片垂直对齐：<select id="imgVerAlign">
+                    	<option value="middle" selected="selected">middle</option>
+                        <option value="bottom">bottom</option>
+                        <option value="text-bottom">text-bottom</option>
+                        <option value="top">top</option>
+                        <option value="text-top">text-top</option>
+                        <option value="baseline">baseline</option>
+                    </select></p>
+                    <p>小方点背景色：<select id="dotBgColor">
+                    				<option value="black">黑色&nbsp;</option>
+                                    <option value="red" selected="selected">红色</option>
+                                    <option value="gray">灰色</option>
+                                    <option value="green">绿色</option>
+                                    <option value="yellow">黄色</option>
+                                    <option value="orange">橙色</option>
+                                    <option value="pink">粉色</option>
+                                </select>
+                    </p>
+                    <p>方点垂直对齐：<select id="dotVerAlign">   
+                        <option value="middle">middle</option>
+                        <option value="bottom" selected="selected">bottom</option>
+                        <option value="text-bottom">text-bottom</option>
+                        <option value="top">top</option>
+                        <option value="text-top">text-top</option>
+                        <option value="baseline">baseline</option>
+                    </select></p>
+                    <p>文字框背景色：<select id="textBoxBg">
+                    				<option value="black">黑色&nbsp;</option>
+                                    <option value="red">红色</option>
+                                    <option value="gray">灰色</option>
+                                    <option value="green">绿色</option>
+                                    <option value="yellow">黄色</option>
+                                    <option value="orange">橙色</option>
+                                    <option value="pink">粉色</option>
+                                </select>
+                    </p>
+                    <p>文字大小修改：<input id="fontSize" type="text" value="20" size="4" /> px</p>
+                </div>
+            	<div id="testBox" class="test_box">
+                    <span id="lineBox" class="line_box">
+                        <img id="testImage" class="img" src="img/mm10.jpg" />
+                        <span id="testDot" class="test_dot"></span>
+                        <span id="testWord" style="font-size:20px;">我是卡哇伊文字！</span>
+						<span id="testWord" style="font-size:20px;">我是卡哇伊文字2！</span>
+						<span id="testWord" style="font-size:20px;">我是卡哇伊文字！</span>
+						<span id="testWord" style="font-size:20px;">我是卡哇伊文字！</span>
+						<span id="testWord" style="font-size:20px;">我是卡哇伊文字！</span>
+                    </span>
+                </div>                
+            </div>
+        </div>       
+    </div>
+</div>
+<script type="text/javascript">
+var $ = function(id){
+	return document.getElementById(id);
+};
+var fn = {
+	fnBgChange: function(o, target){
+		o.onchange = function(){
+			target.style.backgroundColor = o.value;
+		};
+	},
+	fnFontChange: function(o, target){
+		o.onkeyup = function(){
+			var v = parseInt(o.value, 10);
+			target.style.fontSize = v + "px";
+		};
+	},
+	fnLineHChange: function(o, target){
+		o.onkeyup = function(){
+			var v = parseInt(o.value, 10).toString();
+			target.style.lineHeight = v + "px";
+		};
+	},
+	fnVerChange: function(o, target){
+		o.onchange = function(){
+			target.style.verticalAlign = o.value;
+		};
+	}
+};
+//绑定
+fn.fnBgChange($("outBoxColor"),$("testBox"));
+fn.fnBgChange($("textBoxBg"),$("lineBox"));
+fn.fnBgChange($("dotBgColor"),$("testDot"));
+fn.fnFontChange($("fontSize"),$("testWord"));
+fn.fnVerChange($("imgVerAlign"),$("testImage"));
+fn.fnVerChange($("dotVerAlign"),$("testDot"));
+fn.fnLineHChange($("lineHeight"),$("testBox"));
+</script>
+
+
+ertical-align:middle属性的表现与否，仅仅与其父标签有关，至于我们通常看到的与后面的文字垂直居中显示那都是假象！
+
+<div style="background:#eee">
+<span style="line-height:20px;background:#ccc">line box取手下同行line-height<span style="line-height:40px;background:#red">最高</span>的值<br /> 这是第二行</span>
+</div>
+<p class="mulit_line">
+    <span style="font-size:12px;">这里是高度为150像素的标签内的多行文字，文字大小为12像素。<br />这里是第二行，用来测试多行的显示效果。</span><i>&nbsp;</i>
+</p>
+</body>
+</html>

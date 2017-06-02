@@ -1,0 +1,124 @@
+<!--声明文档类型 html5-->
+<!doctype html>
+<!--最外层结构,声明语言为中文-->
+<html lang="zh-cn">
+	<!--头部------------------------------------------------------------------------------------------------------------->
+	<head>
+		<!--编码方式,gbk,gb2312中文编码,UTF-8国际编码,注意html文档本身也有编码,需更改为一致-->
+		<meta charset="UTF-8"/>
+		<!--头部三要素------------------------------------------>
+		<!--网页标题,搜索引擎权重最高-->
+		<title></title>
+		<!--网页关键字-->
+		<meta name="keywords" content=""/>
+		<!--网页描述,80个字以内-->
+		<meta name="discription" content=""/>
+		<!--新窗口打开链接------------------------------------->
+		<base target="_blank" />
+		<!--作者------------------------------------------------>
+		<meta name="author" content="空山"/>
+		<!--编辑工具-->
+		<meta name="generator" content="Editplus"/>
+		<link rel="stylesheet" type="text/css" href="css/cssReset.css"/>
+		<!-- <link rel="stylesheet" type="text/css" href="css/ktbjPage.css"/> -->
+	</head>
+	<!--身体标签---------------------------------------------------------------------------------------->
+	<body>
+		<div id="header">
+			
+		</div>
+		<div id="main">
+			<textarea rows="10" cols="100%" readonly="readonly" autofocus="autofocus">
+			css3:
+			transition:1000;动画过度,CSS3的复合属性,配合:hover之类的伪类使用;
+			transition 属性是一个简写属性，用于设置四个过渡属性,默认值：all 0 ease 0：
+				transition-property 规定设置过渡效果的 CSS 属性的名称。
+				transition-duration	规定完成过渡效果需要多少秒或毫秒。
+				transition-timing-function 规定速度效果的速度曲线。
+				transition-delay 	定义过渡效果何时开始。
+			
+			//自定义动画 scale(1)缩放,1表示倍速,rotate(x,y,z,deg)旋转;
+			{
+				animation: App .5s infinite ease-in-out; //动画对象 使用时间 循环播放 运动曲线;
+			}
+			@keyframes  App{   //定义动画起点和终点;
+				0%{}
+				25%{transform : rotate(-15deg);}
+				50%{transform : rotate(15deg);}
+				75%{transform : scale(0.8);}
+				100%{}
+				<!-- from : {transform: rotate(0) scale(1)};
+				to : {transform: rotate(270deg) scale(2)}; -->
+			}
+			@-moz-keyframes  App{  //火狐
+				from : {transform: rotate(0)};
+				to : {transform: rotate(270deg)};
+			}
+			@-webkit-keyframes  App{ //谷歌
+			}
+			@-ms-keyframes  App{ //IE新版本
+			}
+			@-o-keyframes  App{ //欧鹏
+			}
+			-khtml- //苹果
+
+			父元素{transform-style:preserve-3D;//变换为3D模型;
+				 transform-origin:center center -180px;旋转基线 中点
+			}
+			父元素:hover:{transform:rotateX(360deg);} //旋转角度360度
+
+			透明度,需分两行,(透明内容包括背景):
+			{opacity:0.6; //0.0-1.0 基于IE9以上;
+			filter:alpha(opacity=60);}//0-100 基于IE678低版本;
+			
+			background:transparent 背景颜色透明;
+
+			rgba兼容IE8
+			rgba(255,255,255,0.1);
+			filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#19ffffff,endColorstr=#19ffffff
+
+			li{perspective:1000px;} 景深1000px;
+
+			不同浏览器有兼容问题,
+			li>a{transform-origin:bottom; 旋转折叠基线
+				transform:rotateX(90deg); 旋转折叠角度:X轴90度;
+			}
+			li>a3{transform:translateZ(-360px);}Z轴平移
+
+			.wrapcenter{text-align:center;/*IE下兼容居中,外包一个div.wrapcenter*/}
+			
+
+
+“大小不固定的图片、多行文字的水平垂直居中
+			css代码：
+.zxx_ul_image{overflow:hidden; zoom:1;}
+.zxx_ul_image li{float:left; width:150px; height:150px; text-align:center; line-height:150px; *font-size:125px;}
+.zxx_ul_image li:after{content:' '; vertical-align:middle;}
+.zxx_ul_image li img{vertical-align:middle;}
+相应HTML代码：
+<ul class="zxx_ul_image">
+    <li><img src="http://image.zhangxinxu.com/image/study/s/s128/mm1.jpg" /></li>
+    <li><img src="http://image.zhangxinxu.com/image/study/s/s128/mm2.jpg" /></li>
+    <li><img src="http://image.zhangxinxu.com/image/study/s/s128/mm3.jpg" /></li>
+    <li><img src="http://image.zhangxinxu.com/image/study/s/s128/mm4.jpg" /></li>
+    <li><img src="http://image.zhangxinxu.com/image/study/s/s128/mm5.jpg" /></li>
+    <li><img src="http://image.zhangxinxu.com/image/study/s/s128/mm6.jpg" /></li>  
+</ul>
+
+			
+		
+
+			IE下margin:0 auto不居中怎么办
+			解决方法一
+			因为所有HTML页面的起初定义都在DTD文档里，应该修改DTD为
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+			解决方法二
+			可以是对网页主体body,或者外包一个父级div,声明文本居中,即body{text-align:center}
+
+			</textarea>
+		</div>
+		<div id="footer">
+
+		<div>
+	</body>
+</html>

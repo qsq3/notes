@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript">
+	
+			//如果不通过函数声明或var声明变量,其实是给window.的属性赋值,而不是变量,变量不可删除而属性可删除,原理见作用域
+
+			JS中数据类型的判断
+
+			一、JS中有哪些数据类型。 
+            ①primitive 原始类型(赋值类型)
+                1.数值型（Number）。包括整数、浮点数。
+                2.布尔型（Boolean）。
+                3.字符串型（String）。
+                    转字符串的效率:
+                    (“” +) > String() > .toString() > new String()
+                /*基本类型都有相应的构造函数，可以生成对应的字符串对象、数字对象和布尔值对象,这些对象的类型为object;
+                与基本数据类型对应的对象类型，作用很小，造成的混淆却很大。 */ 
+                typeof false == "boolean"; typeof (new Boolean(false)) == "object";   
+                typeof 1234 == "number";   typeof(new Number(1234)) == "object" ;   
+                typeof "1234" == "string" ; typeof (new String("Hello World")) == "object" ;     
+                4.特殊 : 
+                    空值(null)。typeof 为 object; 
+                    未定义（undefined）typeof 为 undefined;
+                    是JS里面唯二不能作为对象处理的类型;  
+                    null == undefined ; null !== undefined; null != false; null!=0;
+                    注意: null == undefined 为true;因此js里面的比较要用===或!==更严谨;
+                    null 转boolean为false,转number为0 ;
+                    注意: 比较运算符的隐式转换优先转换数字;
+
+            ②object 对象类型(引用类型)
+                5.函数;(Function) 
+                6.数组（Array） typeof 为 object。
+                7.对象（Object）。
+                    对象分:
+                    BOM对象:
+                        Window, Navigator, Screen, History, Location,document对象
+                        DOM对象:
+                            DOM节点对象(单个),DOM节点列表对象(类数组,但是不能使用数组的方法),DOM其他原生对象(比如style等),
+                    JS对象:
+                        Boolean, Number, String, Date, Array, Math, RegExp, Function
+                        自定义对象: new Object();
+			
+            
+
+            关于boolean转换:
+            number 类型中, 仅 0 ,-0 和 NaN 转为 false ,其余true; 注意 NaN != NaN;
+            string 类型中, 仅 空字符串 转为 false ,其余true;
+            object 类型中, 仅 null 转为 false, 其余对象都被当作 true (包括所有数组,即使是空数组).
+            function 类型中, 全都为true;
+			undefined 转boolean为false,转 number 为 NaN;
+
+			Infinity -Infinity 正无穷,负无穷均为true; Infinity == Infinity(即使运算前明显不等,结果是Infinity就会相等);
+			NaN是个奇葩的值,NaN != NaN ,即使运算前结果相等, 运算比较结果也会不等;例子:
+            var d = NaN,
+                e = d;
+            alert(e == d )//false;
+            
+            关于隐式转换:
+            ""           ==   "0"           // false
+            0            ==   ""            // true
+            0            ==   "0"           // true
+            false        ==   "false"       // false
+            false        ==   "0"           // true
+            false        ==   undefined     // false
+            false        ==   null          // false
+            null         ==   undefined     // true
+            " \t\r\n"    ==   0             // true
+
+			二、判断一个变量属于什么数据类型。
+			1.数值型（number）。
+			比较常用的判断方法是
+
+			function isNumber(val)
+			{
+				 return typeof val === 'number';
+			}
+			但有些情况就不行。比如
+
+			var a;
+			document.write(isNumber(parseInt(a)));
+			这里打印出来的是true,但实际上变量a是NaN，它是不能用于数值运算的。
+			所以上面的函数可以修改为
+
+			function isNumber(val)
+			{
+				 return typeof val === 'number' && isFinite(val);
+			}
+			isFinite() 函数是js自带的，它会过滤掉NaN和Infinity。
+			另外，判断变量是否是NaN，可以用isNaN(),它返回布尔值。
+
+			2.布尔型（boolean）、 字符串型（string） 和未定义（Undefined）。
+			这3个类型 比较简单，直接用
+			typeof val === ‘boolean’
+			typeof val === ‘string’
+			typeof val === ‘undefined’
+			就可以了。
+
+			3.对象（Object）和 空值（Null）。
+			对象的类型:
+			1.变量;
+			2.常量;
+			3.Dom对象;
+			4.自定义对象;
+			由于当变量是空值Null时，typeof也会返回object，所以Object不能直接用
+			typeof 判断。应该这样
+			function isObj(str)
+			{
+				if(str === null || typeof str === 'undefined')
+				{
+					return false;
+				}
+				return typeof str === 'object';
+			}
+			判断空值用 val === null 即可。注意要用全等。
+			4.数组（Array）。
+			数组类型不可用typeof来判断。因为当变量是数组类型是，typeof会返回object。
+			这里有两种方法判断数组类型。
+			function isArray(arr) 
+			{
+				return Object.prototype.toString.apply(arr) === '[object Array]';
+			}
+			//或
+			function isArray(arr) 
+			{
+				return arr.constructor === Array;
+			}
+
+			//区分数组还是对象的另一个方法;
+				if ( arr && typeof arr === 'object' && typeof arr.length === 'number' && !arr.propertyIsEnumerable('length')){ 
+					 alert("arr is an array");	
+				};
+				var arr = [111, 222, 333];
+				alert(arr[0]+"\n"+ arr.propertyIsEnumerable(0)+"\n"+ arr.propertyIsEnumerable("length")+"\n"+arr.hasOwnProperty("length"));*/
+			//如果一个属性是可枚举的，而且它不是继承于原型链的，它就会被 for... in 语句迭代出来,即为对象;propertyIsEnumeralbe() 在javascript中，检测的内容只能是对象的非继承属性！所有的数组其实都继承自Array对象，那么length都继承自Array对象 ,
+			
+			var obj={a:'a',b:'b'}
+			//console.log(obj.length); //undefined
+			var arr=['a','b']
+			//console.log(arr.length); // 2
+			for (var k in obj )
+			{
+				console.log(k);
+			}
+			
+			/*普通对象是没有length属性,arguments和一些类数组对象(比如dom节点列表)才拥有length属性;类比过作用域链，查找变量是沿着作用域链的。查找属性是沿着原型链；Arguments对象确实是特殊的对象, 它就是这麽设计的
+			再次阅读构造Arguments对象的步骤
+			调用内部[[DefineOwnProperty]]方法 (也就是设置私有属性方法)
+			调用参数为 ('length',{[[Value]]: len, [[Writable]]: true, [[Enumerable]]: false, [[Configurable]]: true})
+			这个对象的length是直接附上去的
+			可以这样模拟这个过程
+			a = {}
+			Object.defineProperty(a,'length',{value : 0,writable : true,enumerable : false,configurable : true})
+			alert(a.length)
+			alert(a.hasOwnProperty('length'))	
+
+			var t1=Number("12a3123");
+			document.write(t1); //NaN
+			document.write("<br />");
+			var t2=t1;
+			document.write(t2 == t1);//false
+
+			[]转boolean为true,转number为0; 转string为空;
+			![]boolean为false,转number为0;转string为false;
+			{}转boolean为true,转number为NaN,转string为{Object object};
+			!{}转boolean为false,转number为0,转string为false;
+			Boolean(value)，Number(value)，String(value)。
+
+			JS 中将 number 转换为 string 我们比较熟悉，直接用toString() 的方法就可以了；那么将 string 转换成为 number 都有些什么方法呢？如下便简单的列举了一些，以便记录，说不定什么时候就用到了~~另外toString(16)可转换为16进制;
+			注意:
+			alert(Number("010a")) //NaN
+			alert(parseInt(".10a")) //NaN
+			alert(parseFloat("0.10a"")) // 0.1
+			我们可以使用parseInt ，或者unary plus 或者parseFloat with floor 或者Math.round这些方式，请看如下具体的代码：
+
+			1)：parseInt /Number/ParseFloat;
+
+					var x = parseInt("10");  // 10
+			 但是这种只带一个参数的方式会存在诟病。比如我们想将字符串 "010" 转化为数字 10，直接用这个方法将会返回8/;. 
+					var x = Number(010)  //8 ,注意是number类型
+					var x = parseInt(010); // 8
+					var x = ParseFloat(010); // 8
+					var x = parseInt(".10") //NaN
+
+			 因此这里提供另外一个方法，带有两个参数：第一个是目标转换字符串，第二个用来指定将字符串转化为几进制的数字，并且radix的范围是(2~36) 
+
+			parseInt(string, radix)
+		 例如：
+
+				var x = parseInt("1000", 10);  // 1000
+		 
+
+		2)：unary plus (一元操作符"+")，这种方式非常的巧妙,即隐式转换;
+
+				var x = +"1000"; // 1000
+
+			   var x = +"1000.12"; // 1000.12
+		 
+
+		3)：parseFloat 方法可以将对应的字符串转化为浮点类型的数字
+
+				var x = parseFloat("1000.01aaa") // 1000.01
+		 
+
+		4)：Math.floor 的方式可以对字符和数字进行向下取整
+
+				var x = Math.floor("1000.01"); // 1000
+
+			   var x = Math.floor(1000.01); // 1000
+
+			   var x = Math.floor(1000.91); // 1000
+		 
+
+		5)：Math.round 的方式可以对字符和数字进行四舍五入取整
+
+			var x = Math.round("1000"); //1000 equivalent to round("1000",0)
+
+			var x = Math.round("1000.56"); // 1001
+
+			var x = Math.round("1000.23"); // 1000
+		}
+
+
+		数值可作为对象被调用,但要注意第一个.号会被解析为浮点符号,因此需要以下写法:
+			122..toString(); // 第二个点号可以正常解析
+			122 .toString(); // 注意点号前面的空格
+			(122).toString(); // 2先被计算
+			122["toString"](16);//换成中括号格式;
+		function vartype () {
+			
+
+				
+
+			
+				
+				/*显式类型转换*/
+				//转换数字类型,整数类型,浮点型;见a27;
+				var str="123.45.6"
+				//alert("原来的数字是" + str +"\n" + Number(str)+"\n" + parseInt(str)+"\n"+parseFloat(str));
+				/*
+				@ 空字符串 和 空数组 和 null 进行Number()转换的时候返回0；
+				/*parseInt强制取整,从第一位找起,第一位是数字类型才行,后面不符合的直接砍掉
+
+				强制类型转换：
+				Boolean(value)，Number(value)，String(value)。
+				a=undefined;
+				alert(Number(a)+" : "+Boolean(a)+" : "+String(a));
+
+				/*隐式类型转换*/
+				/*隐式类型转换
+				+ 将数字转换成字符串
+				- * / % ++ --将字符串转换成数字
+				==; ===; !; !=; >; <; <=; >=; 转换成布尔值
+
+					var a = 10;
+					var b = a + 'px'; //  '10px'
+					alert( typeof b );
+					//var c = a + ''; //加号隐式转换为字符串,原理:先把双方转换为字符串再进行连接;
+					var a = 20;
+					var b = '15px'
+					var c = b - a; //减号隐式转换为number,原理:先把双方转换为数字串再进行运算,乘*,除/,模%,++,--同样也是;
+					alert( c );
+					var b = 5 % 2;
+					var c = parseInt( 5 / 2 );
+					var a = '2';
+					a ++;
+					alert( typeof a )
+
+				==; ===; !; !=; >; <; <=; >=; 转换成布尔值
+				> <  // '10' > 2 true  '10' > '2' false 
+				两个字符串比较对应位置的ASCII编码,从首字母开始;
+
+					// '' 0 null undefined NaN false   =====>  false
+						
+					var a = 5;
+					var b = '10';
+					var c = a < b;
+					alert( c );
+					var a = '50';
+					var b = '6';
+					var c = a > b;
+					alert( c )
+					var a = NaN;
+					var b = !a;
+					
+					if ( b )
+					{
+						alert( 'a为假' );
+					}else
+					{
+						alert( 'a为真' );
+					}
+					
+					b?alert('a为假'):alert('a为真');
+					
+					//条件?真code:假code;
+					
+					//isNaN( )
+					//讨厌数字 Number()
+			
+					var a = '200px' - 4;
+					var b = isNaN( {} );
+					alert( NaN == NaN );
+					alert(a);
+					alert(b);
+
+					//算术运算符 + — * / %
+					var aaa = 123;
+					var bbb = 2;
+					ccc = aaa/bbb;
+					aaa += 1;//aaa = aaa + 1;
+					aaa += 10 * 3-3;//aaa= aaa + (10 * 3-3);
+					//自增自减运算符
+					var ddd = 100;
+					ddd++;//先用再加
+					++ddd;//先加再用
+					var eee = 100;
+					alert(eee++);//先用再加,100
+					alert(eee);//101
+					alert(++eee);//102
+					alert(eee);//102
+					alert(eee--);//102
+					alert(eee);//101
+					alert(--eee);//100
+					alert(eee);//100
+					//此外,还有 *= /= -= %=
+			}
+			
+			
+			
+
+				
+				
+			
+		</script>
+	</head>
+	<body>
+		<h1>Javascript变量的类型</h1>
+		<input type="button" id="" value="test" onclick="test2();" />
+
+		<input type="button" id="" value="testtype" onclick="testtype();" />
+		
+		<input type="button" id="" value="vartype" onclick="vartype();" />
+	</body>
+</html>

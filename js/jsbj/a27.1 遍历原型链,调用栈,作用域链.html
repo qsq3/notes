@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		
+	</head>
+	<body>
+		<script type="text/javascript">
+		JavaScript:遍历原型链,调用栈,作用域链
+
+		在JavaScript中,有三种常见的链式结构:原型链(Prototype Chain),调用栈(Call Stack),作用域链(Scope Chain).本文并不准备讲这些概念的基础知识,而是要给出如何遍历这三种链结构的方法,从而加深理解.
+
+		遍历原型链
+
+		在JavaScript中,任何对象都有自己的原型链.原型链是由一系列对象加上最后的null组成的.如果还没掌握相关基础知识,可以看看我在MDN上翻译的继承与原型链一文.遍历函数如下:
+
+		function getPrototypeChain(obj) {
+			var protoChain = [];
+			while (obj = Object.getPrototypeOf(obj)) {
+				protoChain.push(obj);
+			}
+			protoChain.push(null);
+			return protoChain;
+		}
+		尝试执行一下
+
+		>getPrototypeChain(new String(""))
+		[String, Object, null]                     //依次是String.prototype,Object.prototype,null
+		  
+		>getPrototypeChain(function(){})
+		[function Empty() {}, Object, null]        //依次是Function.prototype,Object.prototype,null
+		这个函数是在我以前写的一篇文章JavaScript:我对原型链的理解中给出的.
+
+		遍历调用栈
+
+		在JavaScript中,调用栈就是一系列的函数,表明当前函数是由哪些上层函数调用的.遍历函数如下:
+
+		function getCallStack() {
+			var stack = [];
+			var fun = getCallStack;
+			while (fun = fun.caller) {
+				stack.push(fun)
+			}
+			return stack
+		}
+		该函数用到了非标准的caller属性,不过主流浏览器都支持它.尝试执行一下:
+
+		function a() {
+			b()
+		}
+
+		function b() {
+			c()
+		}
+
+		function c() {
+			alert(getCallStack().map(function (fun) {
+				return fun.name  //使用了非标准的name属性
+			}))  
+		}
+
+		a()  //弹出c,b,a
+		b()  //弹出c,b
+		在调试工具中,我们可以直接使用console.trace()来打印出调用栈.在递归调用中,如果调用栈的长度过长,引擎就会抛出异常"too much recursion".到底多长是上限,不同的引擎不同的操作系统环境这个值是不同的.可以使用下面这个函数表达式获取到这个上限值:
+
+		> (function(i){try{(function m(){++i&&m()}())}catch(e){return i}})(0)
+		50761
+		遍历作用域链
+
+		作用域链是由一系列执行上下文(Execution context)中的活动对象(Activation object)加最后的全局对象组成的.活动对象是一个抽象实体(Abstract Entity),它是由引擎内部来管理的,并不能通过JavaScript来访问.看不到,摸不着,所以这些知识就很难理解.
+
+		不过在Mozilla的引擎中,有一个魔法属性__parent__可以获取到函数执行时的活动对象.只是在SpiderMonkey中,该属性已经被删除了(Firefox 4开始).不过在Mozilla的另外一个JavaScript引擎Rhino(Java编写)上,还可以使用这个特殊属性.遍历代码如下:
+
+		function getScopeChain(fun) {
+			var scopeChain = [];
+			while (fun = fun.__parent__) {
+				scopeChain.push(fun);
+			}
+			return scopeChain;
+		}
+		尝试执行一下:
+
+		var a = 0;
+		(function fun1() {
+			var a = 1;
+			(function fun2() {
+				var a = 2;
+				(function fun3() {
+					var a = 3;
+					getScopeChain(function () {}).map(function (obj) {
+						print("-----------------------------")
+						for(var i in obj){
+							print(i + ":" + (obj[i].name?obj[i].name:obj[i]))
+						}
+					})
+				})()
+			})()
+		})()
+
+		-----------------------------           //函数fun3
+		arguments:[object Arguments]        
+		a:3
+		fun3:fun3
+		-----------------------------           //函数fun2
+		arguments:[object Arguments]
+		a:2
+		fun2:fun2
+		-----------------------------           //函数fun1
+		arguments:[object Arguments]
+		a:1
+		fun1:fun1
+		-----------------------------           //全局上下文
+		a:0
+		getScopeChain:getScopeChain
+		另外,如果是在Firefox的特权代码中(chrome上下文),还可以使用Debugger API来获取到各种引擎内部隐藏着的数据,Firebug中的以及Firefox自带的调试器,都是用这些API来实现的.
+
+		/////////////////////////////////////
+		JS中有两个特殊的对象：Object与Function，它们都是构造函数，用于生成对象。
+		Object.prototype是所有对象(包括所有函数)的祖先原型，Function.prototype是所有构造函数的原型(Function.prototype其本身大概是唯一不能成为构造函数的函数类型,其祖先原型也是Object.prototype)。
+
+		可以将JS的对象分为三类：用户创建对象(实例对象)，构造函数对象，原型对象。
+
+		原型中的默认属性():
+
+		__proto__ 属性 : 指向此对象的原型链父级方向的原型。
+		实例对象的__proto__属性将会指向其构造函数的原型,原型对象的__proto__属性将会指向其父级原型。
+		注意 IE6789没有__proto__属性,IE9中可以使用Object.getPrototypeOf(ES5)获取对象的内部原型
+
+		prototype 属性 : 指向其构造的原型对象，Function对象独有,
+
+		constructor 属性,指向该对象的构造函数,会被json初始化的方式清除,会被Dog.prototype = new Animal();方式继承的方法改变指向,用此类继承方式时看需求重置constructor属性;
+
+		instanceof;判断某个对象的构造函数;返回布尔值;写法:( oArr instanceof Array );
+
+		hasOwnProperty();原型默认方法:判断目标属性是否对象的非继承私有属性,不会被json写法影响;返回布尔值;写法:( 对象.hasOwnProperty('属性名') );
+
+
+		function Foo() {}
+		var fun = new Function();
+		var obj = new Object();
+		var foo = new Foo();
+		foo.__proto__ === Foo.prototype //true;
+		obj.__proto__ === Object.prototype //true;
+		fun.__proto__ === Function.prototype //true;
+		//一般情况下: 
+		构造函数 === 构造函数.prototype.constructor //Function.prototype为例外,不能作为构造函数;
+		实例对象.__proto__ === 实例对象.constructor.prototype === 其构造函数.prototype === 其原型对象 === 其原型对象.constructor.prototype ;
+		原型对象.__proto__ === 原型对象的父级原型(即把这个原型对象当成实例构造出来的构造函数, 所对应的原型对象) !== 原型对象.constructor.prototype;
+		
+		//Function:所有函数的构造函数;包括其本身和本身的原型;
+		Function === Function.constructor ===  Object.constructor ===Function.prototype.constructor //true;
+
+		//Function.prototype,是所有构造函数的原型;他有点特殊, 他是一个函数类型,但不能作为构造函数来new,
+		//并且Function.prototype.prototype === undefined;
+		typeof Function.prototype === function //true;
+		Function.prototype === Function.__proto__ === Object.__proto__ //true
+		//Function.prototype.__proto__ 原型对象的__proto__属性指向了Object.prototype(最终原型);
+		Function.prototype.__proto__ === Object.prototype//true; 
+		//Object: 所有对象的构造函数;包括他自身;
+		Object === Object.prototype.constructor  //true
+		Object.prototype === Object.prototype.constructor.prototype //true;
+		//他的prototype指向所有对象的祖先原型,同样也是Function的原型的原型;
+		Object.prototype.__proto__ === null //true;最终祖先原型,没有爸爸了;
+
+		</script>
+	</body>
+</html>

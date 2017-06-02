@@ -1,0 +1,564 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>推箱子</title>
+		<meta name="keywords" content=""/>
+		<meta name="description" content=""/>
+         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<style type="text/css">
+			body,div,p,h1,h2,h3,h4,h5,h6,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,table,th,td {
+				margin:0;
+				padding:0;
+			}
+			#wrap{
+				position:relative;
+				margin:0 auto;
+				background:url("img/block.gif");
+			}
+			#wrap div{
+				transition:.2s;
+			}
+			.wall{
+				top:-12px;
+			}
+			.ball{
+				top:2px;
+				left:3px;
+			}
+			.box{
+				top:-10px;
+			}
+			.person{
+				top:-30px;
+				left:-7px;
+			}
+			.control{
+				width:560px;
+                padding:20px 0;
+				height: 50px;
+				margin:0 auto;
+			}
+			.control input{
+				margin:0 10px 10px 0;
+                padding: 2px 5px;
+				float:left;
+			}
+            .control #chooseStage{
+                width:60px;
+                margin-left:100px;
+            }
+			.stepwrap{
+                clear:both;
+				width:100%;
+				height:30px;
+				font:16px/30px "Microsoft Yahei";
+				background:#EEE;
+				margin:0 auto;
+				text-align:center;
+			}
+		</style>
+		<script type="text/javascript">
+			'use strict';
+			window.onload = function(){
+				var game;
+				game = {
+					oWrap : document.getElementById("wrap"),
+					//地图大小
+					size : { x:16 , y:16 ,xl:35,yl:35},
+					//用到的对象;
+					oBox : [],
+					oBall : [],
+					oP :{},
+					//步骤
+					step :[],
+					//自动
+					auto:[
+						[40,38,37,37,39,38,38,40,39,39],
+						[39,39,40,40,40,40,39,40,40,37,37,38,39,40,39,38,37,38,39,39,39,40,39,38,38,40,37,37,37,37,38,38,38,38,37,37,40,39,38,39,40,40,40,40,39,40,40,37,37,38,39,40,39,38,37,38,39,39,39,40,39,38,37,37,37,37,38,38,38,37,37,40,39,38,39,40,40,40,39,40,40,37,37,38,39,40,39,38,37,38,39,39,39],
+					
+					],
+					autoN:0,
+					//关卡
+					stage:	0 ,
+					//关卡数据
+					stageData:  [
+						[
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,1,0,1,1,1,1,0,0,0,0],
+							[0,0,0,0,1,1,1,3,0,3,2,1,0,0,0,0],
+							[0,0,0,0,1,2,0,3,4,1,1,1,0,0,0,0],
+							[0,0,0,0,1,1,1,1,3,1,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+						],
+						//2
+						[
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0],
+							[0,0,0,0,1,4,0,0,1,0,0,0,0,0,0,0],
+							[0,0,0,0,1,0,3,3,1,0,1,1,1,0,0,0],
+							[0,0,0,0,1,0,3,0,1,0,1,2,1,0,0,0],
+							[0,0,0,0,1,1,1,0,1,1,1,2,1,0,0,0],
+							[0,0,0,0,0,1,1,0,0,0,0,2,1,0,0,0],
+							[0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0],
+							[0,0,0,0,0,1,0,0,0,1,1,1,1,0,0,0],
+							[0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+						],
+						//3
+						[
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+							[0,0,0,0,0,1,0,0,0,1,2,0,1,0,0,0],
+							[0,0,0,0,1,1,0,0,3,2,2,2,1,0,0,0],
+							[0,0,0,0,1,0,0,3,0,1,5,2,1,0,0,0],
+							[0,0,0,1,1,0,1,1,3,1,0,1,1,0,0,0],
+							[0,0,0,1,0,0,0,3,0,0,3,0,1,0,0,0],
+							[0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0],
+							[0,0,0,1,1,1,1,1,1,1,4,0,1,0,0,0],
+							[0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+						],
+						//4
+						[
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0],
+							[0,0,0,0,1,1,1,1,1,1,4,1,1,0,0,0],
+							[0,0,0,0,1,2,2,2,2,1,3,0,1,1,0,0],
+							[0,0,0,0,1,2,2,2,2,1,0,3,0,1,0,0],
+							[0,0,0,0,1,2,2,2,2,0,3,0,0,1,0,0],
+							[0,0,0,0,1,0,2,2,2,1,0,0,0,1,0,0],
+							[1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0],
+							[1,0,3,0,3,0,0,0,3,0,0,1,0,0,1,0],
+							[1,0,0,0,0,3,3,0,0,0,3,0,3,0,1,0],
+							[1,1,1,0,3,0,3,0,3,0,0,1,1,1,1,0],
+							[0,0,1,1,0,0,0,3,0,3,0,1,0,0,0,0],
+							[0,0,0,1,0,0,1,1,1,1,1,1,0,0,0,0],
+							[0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+						],
+						//第五关
+					[
+						[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0],
+                        [0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0],
+                        [0,0,0,0,1,1,1,3,3,3,0,1,0,0,0,0],
+                        [0,0,0,0,1,4,0,3,2,2,0,1,0,0,0,0],
+                        [0,0,0,0,1,0,3,2,2,2,1,1,0,0,0,0],
+                        [0,0,0,0,1,1,1,1,0,0,1,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+					],
+					//第六关
+					[
+						[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
+                        [0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0],
+                        [0,0,0,0,1,0,3,2,2,3,0,1,0,0,0,0],
+                        [0,0,0,0,1,4,3,2,5,0,1,1,0,0,0,0],
+                        [0,0,0,0,1,0,3,2,2,3,0,1,0,0,0,0],
+                        [0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0],
+                        [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+					],
+					
+					//第七关
+					[
+						[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0],
+                        [0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0],
+                        [0,0,0,1,0,3,3,3,1,1,0,0,0,0,0,0],
+                        [0,0,0,1,0,0,1,2,2,1,1,1,0,0,0,0],
+                        [0,0,0,1,1,0,0,2,2,3,0,1,0,0,0,0],
+                        [0,0,0,0,1,0,4,0,0,0,0,1,0,0,0,0],
+                        [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+					],
+					
+					//第八关
+					[
+						[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0],
+                        [0,0,0,0,1,1,1,1,1,1,4,1,1,0,0,0],
+                        [0,0,0,0,1,2,2,2,2,1,3,0,1,1,0,0],
+                        [0,0,0,0,1,2,2,2,2,1,0,3,0,1,0,0],
+                        [0,0,0,0,1,2,2,2,2,0,3,0,0,1,0,0],
+                        [0,0,0,0,1,0,2,2,2,1,0,0,0,1,0,0],
+                        [1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0],
+                        [1,0,3,0,3,0,0,0,3,0,0,1,0,0,1,0],
+                        [1,0,0,0,0,3,3,0,0,0,3,0,3,0,1,0],
+                        [1,1,1,0,3,0,3,0,3,0,0,1,1,1,1,0],
+                        [0,0,1,1,0,0,0,3,0,3,0,1,0,0,0,0],
+                        [0,0,0,1,0,0,1,1,1,1,1,1,0,0,0,0],
+                        [0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+					]
+
+					
+					
+					],
+					
+					//运行游戏;
+					exe : function(){
+						this.createMap();
+						this.controlWrap();
+					},
+
+					//创建地图,注册键盘事件;
+					createMap : function(){
+						//遍历筛选
+						var oDiv,oImg,oP;
+						this.oWrap.innerHTML="";
+						this.oBox = [];
+						this.oBall = [];
+						this.step=[];
+						this.oP = {};
+						this.autoN = 0;
+						this.oWrap.style.cssText ="width:"+ (this.size.x * this.size.xl)+"px;height:"+(this.size.y * this.size.yl) +"px";
+						document.getElementById("stage").innerHTML = this.stage +1;
+						document.getElementById("step").innerHTML = this.step.length;
+						for(var j=0;j<this.size.y;j++){
+							for(var i=0; i<this.size.x;i++){
+								switch(this.stageData[this.stage][j][i]){
+									case 1:
+										appDiv.call(this);
+										oImg.src ="img/wall.png";
+										oImg.className = "wall";
+										break;
+									case 2:
+										appDiv.call(this);
+										oImg.src ="img/ball.png";
+										oImg.className = "ball";
+										oDiv.style.zIndex = 1;
+										this.oBall.push(oDiv);
+										break;
+									case 3:
+										appDiv.call(this);
+										oImg.src ="img/box.png";
+										oImg.className = "box";
+										this.oBox.push(oDiv);
+										break;
+									case 4:
+										appDiv.call(this);
+										oImg.src ="img/down.png";
+										oImg.className = "person";
+										this.oP = oDiv;
+										this.oP.z = this.oP.y * this.size.x+this.oP.x;
+										this.oP.style.zIndex = this.oP.z;
+										break;
+								}
+							}
+						}
+						//添加子块
+						function appDiv(){
+							oDiv = document.createElement("div");
+							oImg = new Image();
+							oDiv.x=i;
+							oDiv.y=j;
+							oDiv.style.cssText = "width:"+ this.size.xl +"px;height:"+ this.size.yl +"px;position:absolute;top:"+(j*this.size.yl)+"px;left:"+(i*this.size.xl)+"px;z-index:"+(j*this.size.x);
+							this.oWrap.appendChild(oDiv);
+							oDiv.appendChild(oImg);
+							oImg.style.position="absolute";
+						};
+						this.controlFn(this.oP);
+					},
+					
+					//控制函数
+					controlFn : function(oP){
+						var This = this;
+						document.onkeydown = function(e){
+							e = e || window.event;
+							var keycode = e.keyCode;
+							This.controlP(keycode,oP);
+								switch(keycode){
+									case 38:
+									case 39:
+									case 40:
+									case 37:
+									return false;
+									break;
+								default:
+									break;
+							};
+						};
+					},
+					
+					//控制人物
+					controlP : function(keycode,oP){
+						var oPImg = oP.children[0];
+						oP.yc = oP.y;
+						oP.xc = oP.x;
+						switch(keycode){
+							case 38:
+								oP.s = "img/up.png";
+								oPImg.src = oP.s;
+								oP.yc = oP.y - 1;
+								if(this.collision(oP)){
+									oP.y -- ;
+									this.moveP(oP);
+								};
+								break;
+							case 39:
+								oP.s = "img/right.png";
+								oPImg.src = oP.s;
+								oP.xc = oP.x+1;
+								if(this.collision(oP)){
+									oP.x ++ ;
+									this.moveP(oP);
+								};
+								break;
+							case 40:
+								oP.s = "img/down.png";
+								oPImg.src = oP.s;
+								oP.yc = oP.y + 1;
+								if(this.collision(oP)){
+									oP.y ++ ;
+									this.moveP(oP);
+								};
+								break;
+							case 37:
+								oP.s = "img/left.png";
+								oPImg.src = oP.s;
+								oP.xc = oP.x - 1;
+								if(this.collision(oP)){
+									oP.x -- ;
+									this.moveP(oP);
+								};
+								break;
+							default:
+								break;
+						};
+					},
+				
+					//人物移动
+					moveP : function(oP){
+						oP.style.top = oP.y * this.size.yl + "px";
+						oP.style.left = oP.x * this.size.xl + "px";
+						oP.z = oP.y * this.size.x + oP.x;
+						oP.style.zIndex = oP.z;
+						document.getElementById("step").innerHTML = this.step.length;
+						this.pass();
+					}, 
+					//箱子移动
+					moveB : function(box){
+						box.style.top = box.y * this.size.yl + "px";
+						box.style.left = box.x * this.size.xl + "px";
+						box.style.zIndex = box.y * this.size.x;
+					},
+
+					//人物碰撞判断
+					collision : function(oP){
+						var stepE =[];
+						//判断人物撞墙;
+						if(this.stageData[this.stage][oP.yc][oP.xc] == 1){
+							return false;
+						};
+						//判断人物撞箱;
+						for (var i=0;i< this.oBox.length;i++ )
+						{	
+							if (oP.xc == this.oBox[i].x && oP.yc == this.oBox[i].y)
+							{	
+								this.oBox[i].xc  = this.oBox[i].x + (oP.xc - oP.x);
+								this.oBox[i].yc  = this.oBox[i].y + (oP.yc - oP.y);
+								//箱子判断:
+								if (this.collisionBox(this.oBox[i],this.oBox))
+								{	
+									
+									this.step.push({x: oP.x , y:oP.y ,z:oP.z,s:oP.s , box:i,bX:this.oBox[i].x ,bY:this.oBox[i].y }); 
+									this.oBox[i].x += (oP.xc - oP.x);
+									this.oBox[i].y += (oP.yc - oP.y);
+									this.moveB(this.oBox[i]);
+									return true;
+								}else{
+									return false;
+								};
+							}
+						}
+						this.step.push({x:oP.x , y:oP.y ,z:oP.z,s:oP.s});
+						return true;
+					},
+
+					//箱子碰撞判断;
+					collisionBox : function( box){
+						//判断箱子撞墙;
+						if(this.stageData[this.stage][box.yc][box.xc] == 1){
+							return false;
+						};
+						//判断箱子撞箱;
+						for (var i=0;i< this.oBox.length;i++ )
+						{
+							if (box.xc == this.oBox[i].x && box.yc == this.oBox[i].y)
+							{			
+								return false;
+							}
+						}
+						return true;
+					},
+					
+					//过关判断
+					pass : function(){
+						var checknum =0;
+						var This = this;
+						for(var i=0;i<this.oBall.length;i++){
+							for(var j=0;j<this.oBox.length;j++){
+								if (this.oBall[i].x == this.oBox[j].x && this.oBall[i].y == this.oBox[j].y )
+								{
+									checknum++;
+								}
+							}
+						};
+						if (checknum == this.oBall.length)
+						{	
+							if (this.autoN == 1)
+							{
+								this.oP.children[0].src = "img/prev.jpg";
+
+							}else if(this.autoN == 2){
+								this.oP.children[0].src = "img/auto.jpg";
+							};
+							setTimeout(function(){
+							alert("过关了");
+							This.stage++;
+							This.createMap();
+						
+							},500);
+						};		
+					},
+
+					//控制菜单;
+					controlWrap : function(){
+						var oControl =document.getElementById("control").getElementsByTagName("input");
+						var This = this;
+						for (var i=0;i<oControl.length;i++ )
+						{
+							oControl[i].onclick = function(){
+								switch(this.id){
+									case "prevStage" :
+										This.stage>0 && This.stage--;
+										This.createMap();
+										break;
+									case "nextStage" :
+										This.stage < (This.stageData.length-1) && This.stage++;
+										This.createMap();
+										break;
+									case "sure" :
+										var a= oControl.text.value;
+										if (a == parseInt(a) && a <= This.stageData.length && a>0 )
+										{	This.stage =a-1;
+											This.createMap();
+										}
+										break;
+									case "prev" :
+										This.autoN = 1;
+										This.prevStep();
+										break;
+									case "auto" :
+										var n =0;
+										var autotimer;
+										This.createMap();
+										if(This.auto[This.stage]){
+											This.autoN = 2;
+											autotimer = setInterval(function(){
+												if (n >= This.auto[This.stage].length-1 )
+												{
+													clearInterval(autotimer);
+												};
+												This.controlP(This.auto[This.stage][n],This.oP);
+												n++;
+												
+											},300);
+										}else{
+											alert("电脑没有设置过这关,你得自己想")
+										}
+										break;
+									default: break;
+								};
+							};
+						};
+
+					},
+					//后退一步
+					prevStep : function(){
+						//var a= document.getElementsByClassName("person")[0].parentNode;
+						if (this.step.length > 0)
+						{	
+							this.oP.x = this.step[this.step.length-1].x;
+							this.oP.y = this.step[this.step.length-1].y;
+							this.oP.s = this.step[this.step.length-1].s;
+							this.oP.z = this.step[this.step.length-1].z;
+							this.oP.children[0].src = this.oP.s;
+							this.oP.style.zIndex = this.oP.z;
+							if (this.step[this.step.length-1].box != undefined)
+							{
+								var i = this.step[this.step.length-1].box;
+								this.oBox[i].x = this.step[this.step.length-1].bX;
+								this.oBox[i].y = this.step[this.step.length-1].bY;
+								this.moveB(this.oBox[i]);
+							}
+							this.step.pop();
+							this.moveP(this.oP);
+						}
+					},
+
+				};
+				game.exe();
+			};	
+		</script>
+	</head>
+
+	<body>
+		<form class="control" id="control">
+			<input type="button" value="悔一步" id="prev"/>
+			<input type="button" value="过本关" id="auto"/>
+			<input type="button" value="上一关" id="prevStage"/>
+			<input type="button" value="下一关" id="nextStage"/>
+			<input type="text" value="" size=10 placeholder="输入关卡" name="text" id="chooseStage"/>
+			<input type="button" value="确定" id="sure"/>
+			<div class="stepwrap">这是第<span id="stage">1</span>关第 <span id="step">0</span> 步</div>
+		</form>
+		<div id="wrap"></div>
+	</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>18. web Workers  离线存储</title>
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.4.css" />
+    <script type="text/javascript" src="js/baseUtil.js"></script>
+    <style type="text/css">
+      pre{
+        white-space : pre-wrap;
+      }
+      *{
+				margin:0px;
+				padding:0px;
+			}
+			#box{
+				width:100%;
+				border:2px solid red;
+			}
+    </style>
+</head>
+<body class="container">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="row">
+
+      <div class="col-sm-6">
+        <pre>
+web workers
+  new Worker(‘后台处理的JS地址’)
+  利用postMessage传输数据
+  onmessage = function(){}  监听接收信息
+  importScripts(‘导入其他JS文件’)
+         self  :  指向全局 worker 对象
+  close()方法，立刻停止worker运行
+
+  不支持alert/console.log()等
+
+跨文档请求
+
+  同域跨文档
+      iframe内页：
+        父页面操作子页面：contentWindow
+        子页面操作父页面：window.top(找到最顶级的父页面)/parent(第一父页面)
+      新窗口页：
+         父页面操作子页面：window.open
+        子页面操作父页面：window.opener
+
+  不同域跨文档
+    postMessage（“发送的数据”,”接收的域”）
+      message事件监听
+      ev.origin 发送数据来源的域
+      ev.data  发送的数据
+    通过判断发送的数据来执行相应的需求
+
+  XMLHttpRequest 新增功能
+      跨域请求：修改服务端头信息
+      IE兼容：XDomaiRequest
+      
+  进度事件：
+      upload.onprogress(ev)  上传进度(实现文件上传进度条)
+        ev.total  发送文件的总量
+        ev.loaded 已发送的量
+      FormData  构建提交二进制数据
+
+离线存储 manifest 即将被 serviceWorker(仅https)替代
+
+  1、服务器修改配置,设置头信息 :
+    Apache/conf/httpd.conf配置文件下
+    AddType text/cache-manifest .appcache
+   或者php页面内配置头信息 <?php header("content-type: text/cache-manifest"); ?>
+
+  2、html标签加 : 
+    manifest=manifest.appcache
+  3、写manifest文件 :  离线的清单列表
+  先写 :  CACHE MANIFEST
+  FALLBACK :  第一个网络地址没获取到，就走第二个缓存的
+  NETWORK ：无论缓存中存在与否，均从网络获取
+
+  参考 : https://segmentfault.com/a/1190000002422341
+         https://wenku.baidu.com/view/e845a60a16fc700abb68fc8d.html
+
+  serviceWorker(仅https)
+
+  1.首页添加注册代码
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/serviceWorker.js');
+    };
+
+  2.修改不缓存域名列表及离线状态页面 
+  在 serviceWorker.js 中修改
+  const ignoreFetch = [
+    /https?:\/\/cdn.bootcss.com\//,
+    /https?:\/\/static.duoshuo.com\//,
+    /https?:\/\/www.google-analytics.com\//,
+    /https?:\/\/dn-lbstatics.qbox.me\//,
+  ];
+
+  3.打开Chrome Dev Tools->Source，看看自己的blog都引用了哪些第三方资源，逐个加到忽略列表里。
+
+  4. 库 upup.js
+  <script src="//cdnjs.cloudflare.com/ajax/libs/UpUp/0.3.0/upup.min.js"></script>
+    <script>
+    UpUp.start({
+      'content-url': 'offline.html',
+      'assets': ['/img/logo.png', '/css/style.css', 'headlines.json'],
+      'service-worker-url': '/upup.sw.min.js'
+    });
+   </script>
+  参考 :  http://web.jobbole.com/86372/?utm_source=blog.jobbole.com&utm_medium=relatedPosts
+          http://web.jobbole.com/84792/
+
+        </pre>
+      </div>
+      <!-- col-md-6 S-->
+      <div class="col-sm-6">
+
+        <div>
+          <h3>利用webworker 处理马赛克数据</h3>
+          <canvas width="500" height="200" id="demo-01">
+            您的浏览器不支持canvas,请您更换最新版本的浏览器！
+          </canvas>
+          <script type="text/javascript">
+            ;(function(){
+              var canvas = document.getElementById("demo-01");
+              var context = canvas.getContext("2d");
+              var img = new Image();
+              img.width = 200;
+              img.height = 200;
+              img.src = 'img/1.jpg'; 
+
+              img.onload = function(){
+                
+                context.clearRect(0,0,canvas.width,canvas.height);//清除画布内容
+                
+                //绘制图片
+                context.drawImage(img,0,0,200, 200);
+               
+                var copyData = context.getImageData(0,0,200, 200);
+                //马赛克
+                var newData = context.createImageData(200,200);
+                var n = 10;//模糊值
+                
+                var worker = new Worker('./h5bj 18 webworker.js');//webwoker js文件url
+                var datas = {
+                  copyData : copyData, 
+                  newData : newData,
+                  n : n
+                };
+                
+                worker.postMessage(datas);
+                worker.onmessage = function( e ){
+                  context.clearRect(250, 0,200,200);
+                  context.putImageData(e.data, 250, 0);
+                }
+
+              }
+
+            })();
+          </script>
+        </div>
+        
+        <div>
+          <h3>同域 iframe 跨文档</h3>
+          <div>
+            <div id="box"> 
+              <p>这是父页面测试文本</p>
+              <p><button id="btn"> 改变子页面的内容 并打开子页面新窗口</button> </p>
+              <p><button id="btn2"> 改变打开的子页面的内容</button> </p>
+            </div>
+            <iframe src="./h5bj 18.02 测试iframe.html" frameborder="0" id="iframe" width="100%"></iframe>
+          </div>  
+          <script type="text/javascript">
+            ;(function(){
+              var btn = document.getElementById("btn");
+              var iframe = document.getElementById("iframe");
+              //同域名操作
+              var newWindow;
+
+              btn.onclick = function(){
+                iframe.contentWindow.document.getElementById("box").style.color = "red"; //改变内容
+                newWindow = window.open("./h5bj 18.02 测试iframe.html"); //打开子页面新窗口
+              }
+
+              btn2.onclick = function(){ //改变打开的子页面的内容
+                newWindow.document.getElementById("box").style.border = '1px solid #0f6';
+                newWindow.document.getElementById("box").style.color = "#0f6";
+              }
+              //跨域操作 postMessage
+              iframe.contentWindow.postMessage("0","http://localhost:3000/h5/h5bj/h5bj%2018%20web%20workers%20%E8%B7%A8%E6%96%87%E6%A1%A3%E6%93%8D%E4%BD%9C%20%E5%92%8C%20%E7%A6%BB%E7%BA%BF%E5%AD%98%E5%82%A8.html"); //发送请求信息 参数: data, 目标域名
+              window.addEventListener("message",function(ev){            //监听发送信息事件
+              console.log(ev.data);
+              console.log(ev.origin);
+              if (ev.origin == "http://www.c.com")  //信息来源的域名
+              {
+                if (ev.data == 0)                     //信息来源的 data
+                {
+                  box.style.color = "red";
+                }
+              }
+              
+            });
+            })()
+          </script>
+        </div>
+      </div>
+      <!-- col-md-6 E-->
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

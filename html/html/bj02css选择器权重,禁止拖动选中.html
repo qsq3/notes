@@ -1,0 +1,100 @@
+<!--声明文档类型 html5-->
+<!doctype html>
+<!--最外层结构,声明语言为中文-->
+<html lang="zh-cn">
+	<!--头部------------------------------------------------------------------------------------------------------------->
+	<head>
+		<!--编码方式,gbk,gb2312中文编码,UTF-8国际编码,注意html文档本身也有编码,需更改为一致-->
+		<meta charset="UTF-8"/>
+		<!--头部三要素------------------------------------------>
+		<!--网页标题-->
+		<title></title>
+		<!--网页关键字-->
+		<meta name="keywords" content=""/>
+		<!--网页描述,80个字以内-->
+		<meta name="discription" content=""/>
+		<!--新窗口打开链接------------------------------------->
+		<base target="_blank" />
+		<!--作者------------------------------------------------>
+		<meta name="author" content="空山"/>
+		<!--编辑工具-->
+		<meta name="generator" content="Editplus"/>
+		<link rel="stylesheet" type="text/css" href="css/cssReset.css"/>
+		<link rel="stylesheet" href="iconfont/iconfont.css">
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript">
+			
+		</script>
+
+		<style type="text/css">
+			.a{
+				width:300px;
+				height:300px;
+				border:1px solid #f00;
+			}
+			.b{
+				width:200px;
+				height:200px;
+				border:1px solid #0f0;
+			}	
+			.c{
+				width:100px;
+				height:100px;
+				border:1px solid #f60;
+			}
+			#a {
+				
+				color:yellow;
+			}
+			.c{
+				color:blue;
+			}
+		</style>
+	
+		
+	</head>
+	<!--身体标签---------------------------------------------------------------------------------------->
+	<body>
+	CSS优先级 * < 标签 < class < id < 行间 <  js <  !important;
+	(JS其实就是写在行间,只不过把之前的行间覆盖了)
+		<div id="a" class="a">aaa
+			<div id="b" class="b">bbb
+				<p id="c" class="c">ccc</p>
+			</div>
+		</div>
+
+        oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onbeforecopy="return false" oncopy=document.selection.empty() onselect=document.selection.empty()
+
+         这是通过CSS样式来实现的禁止用鼠标选择功能：unselectable为IE准备,onselectstart为Chrome、Safari准备,-moz-user-select是FF的 
+          css style:html,body{-moz-user-select: none; -khtml-user-select: none; user-select: none;}
+        <div unselectable="on" onselectstart="return false;" style="-moz-user-select:none;"> 
+          屏蔽选择的样式定义：-moz-user-select属性（只支持ff）。 
+          属性有三个属性值： 
+          1、 none：用none,子元素所有的文字都不能选择，包括input输入框中的文字也不能选择。 
+          2、 -moz-all：子元素所有的文字都可以被选择，但是input输入框中的文字不可以被选择。 
+          3、 -moz-none：子元素所有的文字都不能选择，但是input输入框中的文字除外。
+
+          *{
+				-moz-user-select: none;
+				-o-user-select:none;
+				-khtml-user-select:none;
+				-webkit-user-select:none;
+				-ms-user-select:none;
+				user-select:none;
+				margin:0;
+				padding:0;
+			} 
+
+            /*下一种是通过css3选择器使元素透明,影响较大,慎用*/
+			::selection {
+				background:transparent;
+				opacity:0;
+			}
+			::-moz-selection {
+				background:transparent;opacity:0;
+				}
+			::-webkit-selection {
+				background:transparent;opacity:0;
+			}
+	</body>
+</html>

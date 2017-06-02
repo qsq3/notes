@@ -1,0 +1,370 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<style type="text/css">
+			*{
+				margin:0;
+				padding:0;
+				outline:0;
+			}
+			a{
+				text-decoration:none;
+			}
+			a img{
+				border:0;
+			}
+			ul,ol{
+				list-style:none;
+			}
+			.clearfix{
+				zoom:1;
+			}
+			.clearfix:after{
+				content:'';
+				clear:both;
+				display:block;
+				height:0;
+				visibility:hidden;
+			}
+			.box,.box2{
+				position:relative;
+				width:520px;
+				height:280px;
+				margin:20px auto;
+				cursor:pointer;
+				overflow:hidden;
+			}
+			.img{
+				position:absolute;
+				width:5200px;
+				left:-520px;
+			}
+			.img a{
+				float:left;
+			}
+			.img a img{
+				float:left;
+			}
+			.tab{
+				position:absolute;
+				bottom:5px;
+				left:50%;
+				margin-left:-62px;
+			}
+			.tab li{
+				float:left;
+				height:15px;
+				width:15px;
+				background:#ccc;
+				border-radius:50%;
+				margin:5px;
+				opacity: 0.5;
+			}
+			.tab li.on{
+				background:red;
+			}
+			.btn div{
+				position:absolute;
+				top:50%;
+				margin-top:-18px;
+				width:24px;
+				height:36px;
+				font:bold 18px/36px '宋体';
+				text-align:center;
+				background:#999;
+				color:#fff;
+				opacity: 0.5;
+			}
+			.btn div + div{
+				right:0;
+			}
+			.boxOn .tab li, .boxOn .btn div{
+				opacity:1;
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload = function(){
+				var oBox = getClass('box')[0],
+					oImg = getClass('img',oBox)[0],
+					oTab = getClass('tab',oBox)[0].getElementsByTagName('li'),
+					oBtn = getClass('btn',oBox)[0].getElementsByTagName('div');
+				var oJbox ={
+					'box' : oBox, //轮播盒子
+					'img' : oImg, //图片盒子
+					'tab' : oTab, //tab标签
+					'btn' : oBtn, //左右按钮
+					'tabOn' : 'on', //tab标签激活的classname
+					'boxOn' : 'boxOn', //盒子移入效果的classname
+					'autotime' : 3000,
+					'movetime' : 1000
+				};
+
+				var oBox2 = getClass('box2')[0],
+					oImg2 = getClass('img',oBox2)[0],
+					oTab2 = getClass('tab',oBox2)[0].getElementsByTagName('li'),
+					oBtn2 = getClass('btn',oBox2)[0].getElementsByTagName('div');
+				var oJbox2 ={
+					'box' : oBox2, //轮播盒子
+					'img' : oImg2, //图片盒子
+					'tab' : oTab2, //tab标签
+					'btn' : oBtn2, //左右按钮
+					'tabOn' : 'on', //tab标签激活的classname
+					'boxOn' : 'boxOn', //盒子移入效果的classname
+					'autotime' : 2000,
+					'movetime' : 500
+				};
+
+				var box = new Banner(oJbox);
+				var box2 = new Banner(oJbox2);
+
+				box.click();
+				box.mouseon();
+				box.auto();
+				box2.click();
+				box2.mouseon();
+				box2.auto();
+			};
+
+			/*轮播模块 开始*/
+			function Banner( oJ){
+				this.oJ = oJ;
+				this.box = oJ.box;
+				this.boxW = getStyle(oJ.box , 'width');
+				this.img = oJ.img;
+				this.tab = oJ.tab;
+				this.btn = oJ.btn;
+				this.tabOn = oJ.tabOn;
+				this.boxOn = oJ.boxOn;
+				this.autotime = oJ.autotime || 3000;
+				this.movetime = oJ.movetime || 1000;
+				this.index = 0;
+				this.reg = new RegExp('\\b'+oJ.boxOn+'\\b' , 'g');
+
+			};
+			//点击事件
+			Banner.prototype.click = function(){
+				var This = this;
+				var clearTimer = function(){
+					if(This.timer){
+						clearInterval(This.timer);
+						This.img.style.left = -(This.boxW * (This.index + 1)) + 'px';
+					};
+				};
+				this.btn[0].onclick = function(){
+					clearTimer();
+					This.index--;
+					This.run();
+				};
+				this.btn[1].onclick = function(){
+					clearTimer();
+					This.index++;
+					This.run();
+				};
+
+				for (var i=0;i<this.tab.length ;i++)
+				{
+					this.tab[i].i=i;
+					this.tab[i].onclick = function(){
+						clearTimer();
+						This.index = this.i;
+						This.run();
+					}
+				}
+			
+			};
+			//自动播放
+			Banner.prototype.auto=function(){
+				var This =this;
+				this.timerautoPlay = function(){
+					This.timerauto=setInterval(function(){
+						This.index++;
+						This.run();
+					},This.autotime);
+				}
+				this.timerautoPlay();
+			};
+			//鼠标移入移出
+			Banner.prototype.mouseon = function(){
+				var This = this;
+				this.box.onmouseenter = function(){
+					This.timerauto && clearInterval(This.timerauto);
+					if (!This.reg.test(this.className))
+					{
+						this.className += " "+This.boxOn;
+					}
+				};
+				this.box.onmouseleave = function(){
+					This.timerautoPlay && This.timerautoPlay();
+					if (This.reg.test(this.className))
+					{
+						this.className = this.className.replace(This.reg,'').replace(/^\s*|\s*$/g ,'');
+						
+					}
+				};
+			}
+			
+			//运行函数
+			Banner.prototype.run = function(){
+				var This = this;
+				var target = -(this.boxW * (this.index + 1));
+				this.move(this.img,'left',target,this.movetime ,function(){
+					this.style.left = -(This.boxW * (This.index + 1)) + 'px';
+				});
+				this.index<0 && (this.index = this.tab.length -1);
+				this.index %= this.tab.length ;
+				for (var i=0;i<this.tab.length ;i++ )
+				{
+					this.tab[i].className = '';
+				}
+				this.tab[this.index].className = this.tabOn;
+				
+			};
+			//运动框架 
+			Banner.prototype.move = function (obj,attr,target,time,fn){
+				var This =this;
+				var timeS = new Date();
+				var start = getStyle(obj ,attr);
+				this.timer = setInterval(function(){
+					var timeN = new Date();
+					var p = (timeN - timeS)/time;
+					if (p>=1)
+					{
+						p=1;
+						clearInterval(This.timer);
+					};
+					obj.style[attr] = start + (target-start)*p +'px';
+					if (p >= 1)
+					{
+						fn && fn.call(obj);
+					}
+				},13);
+			}
+			
+			/**轮播模块 结束**/
+
+			//公共部分:
+			
+			//getClass
+			function getClass(cName , obj){
+				var obj = obj || document;
+				if (obj.getElementsByClassName)
+				{
+					return obj.getElementsByClassName(cName);
+				}else{
+					var arrE = obj.getElementsByTagName('*');
+					var arrC = [];
+					var reg = new RegExp('\\b'+cName+'\\b');
+					for (var i=0;i<arrE.length ;i++ )
+					{
+						if (reg.test(arrE[i].className))
+						{
+							arrC.push(arrE[i]);
+						}
+					}
+					return arrC;
+				}
+			};
+			//getStyle
+			function getStyle(obj,attr){
+				switch(attr){
+					case 'top':
+						return obj.offsetTop;
+						break;
+					case 'left':
+						return obj.offsetLeft;
+						break;
+					case 'width':
+						return obj.clientWidth;
+						break;
+					case 'height':
+						return obj.clientHeight;
+						break;
+					default:
+						return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj)[attr];
+						break;
+				}
+			};
+			
+
+		
+		</script>
+	</head>
+	<body>
+		<div class="box">
+			<div class='img clearfix'>
+				<a href="javascript:;" title=''>
+					<img src="images/5.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/1.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/2.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/3.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/4.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/5.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/1.jpg" alt="" />
+				</a>
+			</div>
+			<ul class="tab clearfix">
+				<li class='on'></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<div class="btn">
+				<div>&lt;</div>
+				<div>&gt;</div>
+			</div>
+		</div>
+		<div class="box2">
+			<div class='img clearfix'>
+				<a href="javascript:;" title=''>
+					<img src="images/5.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/1.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/2.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/3.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/4.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/5.jpg" alt="" />
+				</a>
+				<a href="javascript:;" title=''>
+					<img src="images/1.jpg" alt="" />
+				</a>
+			</div>
+			<ul class="tab clearfix">
+				<li class='on'></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<div class="btn">
+				<div>&lt;</div>
+				<div>&gt;</div>
+			</div>
+		</div>
+	</body>
+</html>

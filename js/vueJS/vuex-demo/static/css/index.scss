@@ -1,0 +1,57 @@
+@import "base/min";
+.index{
+	background:gray;
+	#banner{
+		width: 100%;
+		height: 100px;
+		background:gray;
+	}
+	#entrance{
+		width:100%;
+		height:105px;
+		border-radius: 30px 30px 0 0;
+		background:white;
+		.entrance_style{
+			width:33.3%;
+			float: left;
+			// background:white;
+			img{
+              width:44px;
+              margin: 11px auto 8px;
+              display:block;
+			}
+			label{
+				display: inline-block;
+				line-height: 30px;
+				color: #444;
+				width:100%;
+				text-align: center;
+				font-size: 16px;
+			}
+		}
+	}
+	#member{
+       width:100%;
+       background:white;
+
+      .logo_style{
+      	width:96%;
+      	margin-left: 2%;
+      	height:1px;
+      	background:#d4e6f3;
+
+      }
+      img{
+      		width:25%;
+      		display:block;
+      		margin:0px auto;
+      		background:white;
+      		margin-top: -14px;
+      	}
+      .member_style{
+      	width:33.3%;
+      	float:left;
+      	
+      }
+	}
+}

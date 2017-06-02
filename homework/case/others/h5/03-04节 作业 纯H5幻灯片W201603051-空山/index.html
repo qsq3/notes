@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>空山</title>
+    <meta name='keywords' content="" />
+    <meta name='description' content="" />
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        ::selection {
+            background:transparent;
+            opacity:0;
+        }
+        ::-moz-selection {
+            background:transparent;opacity:0;
+            }
+        ::-webkit-selection {
+            background:transparent;opacity:0;
+        }
+        li{
+            list-style:none;
+        }
+        .slide-wrap{
+            margin: 20px auto;
+            position:relative;
+            width:538px;
+            height:405px;
+            overflow:hidden;
+        }
+        .slide-wrap p{
+            position: absolute;
+            top:0;
+            right:0;
+            opacity: 0;
+			width:0%;
+			overflow:hidden;
+            -webkit-transition: all 1s;
+               -moz-transition: all 1s;
+                -ms-transition: all 1s;
+                 -o-transition: all 1s;
+                    transition: all 1s;
+        }
+        input{
+            display:none;
+        }
+        label{
+            position: absolute;
+            bottom: -56px;
+            zoom:1;
+            z-index:1;
+            margin:5px 10px;
+            border: 3px solid #ccc;
+            -webkit-transition: all 0.3s;
+               -moz-transition: all 0.3s;
+                -ms-transition: all 0.3s;
+                 -o-transition: all 0.3s;
+                    transition: all 0.3s;
+        }
+        label img{
+            display:block;
+        }
+        .slide-wrap:hover label{
+            bottom: 0;
+        }
+        label:nth-of-type(1) {
+            left: 94px;
+        }
+        label:nth-of-type(2) {
+            left: 164px;
+        }
+        label:nth-of-type(3) {
+            left: 234px;
+        }
+        label:nth-of-type(4) {
+            left: 304px;
+        }
+        label:nth-of-type(5) {
+            left: 374px;
+        }
+        input:checked + label{
+            border-color:#f60;
+        }
+        input:checked + label + p{
+            opacity:1;
+			width:100%
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div  class='slide-wrap'>
+            <input type="radio" name='slide-tab' id='slide-tab-01' checked="checked">
+            <label for="slide-tab-01" >
+                <img src="img/01.jpg" width='53' height="40" alt=""/>
+            </label>
+            <p id='img-01'><img src="img/01.jpg" width='538' height="405" alt="" /></p>
+            <input type="radio" name='slide-tab' id='slide-tab-02'>
+            <label for="slide-tab-02" >
+                <img src="img/02.jpg" width='53' height="40" alt="" />
+            </label>
+            <p id='img-02'><img src="img/02.jpg" width='538' height="405" alt="" /></p>
+            <input type="radio" name='slide-tab' id='slide-tab-03'>
+            <label for="slide-tab-03" >
+                <img src="img/03.jpg" width='53' height="40" alt="" />
+            </label>
+            <p id='img-03'><img src="img/03.jpg" width='538' height="405" alt="" /></p>
+            <input type="radio" name='slide-tab' id='slide-tab-04'>
+            <label for="slide-tab-04" >
+                <img src="img/04.jpg" width='53' height="40" alt="" />
+            </label>
+            <p id='img-04'><img src="img/04.jpg" width='538' height="405" alt="" /></p>
+            <input type="radio" name='slide-tab' id='slide-tab-05'>
+            
+            <label for="slide-tab-05" >
+                <img src="img/05.jpg" width='53' height="40" alt="" />
+            </label>
+            <p id='img-05'><img src="img/05.jpg" width='538' height="405" alt="" /></p> 
+           
+        </div>
+    </section>
+</body>
+</html>

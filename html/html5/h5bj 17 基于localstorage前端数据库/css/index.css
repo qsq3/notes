@@ -1,0 +1,187 @@
+/**
+ *  author : 空山 112093112@qq.com
+ * **/
+/** S 顶部幻灯 **/
+.topBanner .swiper-container {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 800px;
+    max-height: 250px;
+}
+.topBanner .swiper-container img{
+    width: 100%;
+    margin: 0 auto;
+}
+
+.topBanner .swiper-slide {
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+/** E 顶部幻灯 **/
+
+
+/** S 搜索栏 **/
+.userdataWrap{
+    display: none;
+}
+/** E 搜索栏 **/
+
+/**S 门店列表 **/
+.mainList .weui_panel_hd{
+    color: #333;
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+.mainList .weui_media_box.weui_media_appmsg .weui_media_hd {
+    width: 140px;
+    height: 100px;
+}
+.mainList .weui_media_box.weui_media_appmsg .weui_media_appmsg_thumb {
+    border-radius: 8px;
+    height: 100%;
+}
+/**E 门店列表**/
+
+/**S 课程类型列表**/
+.coursetypeList{
+    display: none;
+}
+.coursetypeList .coursetypeTitle .weui_cell_ft:after {
+    -webkit-transform: rotate(135deg);
+    transform: rotate(135deg);
+    transition: all .5s;
+}
+.coursetypeList .coursetypeTitle.ksc_active .weui_cell_ft:after{
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+.coursetype{
+    border-bottom: 1px solid #d9d9d9;
+    
+}
+.coursetype>.coursetypeTitle>.weui_cell_hd img{
+    width:30px;
+    margin-right:5px;
+    display:block
+}
+/**E 课程类型列表**/
+
+/**S 课程类型列表**/
+.courseList{
+    margin: 6px 1em 1em;
+    border: 1px solid #d9d9d9;
+    overflow: hidden;
+}
+.courseList a:nth-of-type(even){
+    background-color: #fafafa;
+}
+
+.courseList1{
+    display: none;
+}
+
+.courseList .course{
+    padding: 6px 1em;
+}
+
+.courseList .weui_media_box.course{
+    display: block;
+}
+.courseList .course:before {
+    left:0;
+    border-top: 1px solid #999;
+}
+.courseList1 .course .weui_cell_ft:after{
+    content: " ";
+    display: inline-block;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    height: 1px;
+    width: 1px;
+    border: 6px solid transparent;
+    border-left-color: #c8c8cd;
+    position: relative;
+    top: 2px;
+    left: 10px;
+    margin-left: .3em;
+}
+.courseList2 .course .weui_cell_ft:after{
+    display: none;
+    content: " ";
+    -webkit-transform: rotate(0); 
+    transform: rotate(0); 
+    height: auto;
+    width: auto;
+    border: 0 none; 
+    top: -2px;
+    top: -1px;
+    line-height: 24px;
+    margin-left: .3em;
+}
+ .course .weui_cell_ft{
+    font-size: 13px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+}
+ 
+.course .weui_cell_ft.registered{
+    border-color: #090;
+    color: #090;
+}
+ .course .weui_cell_ft.registered:after{
+    display: inline-block;
+    content: "已报名";
+}
+ 
+.course .weui_cell_ft.over{
+    border-color: #a30;
+    color: #a30;
+}
+ .course .weui_cell_ft.over:after{
+    display: inline-block;
+    content: "已结束";
+}
+ .course .courseTitle{
+    border-bottom: 1px solid #d9d9d9;
+}
+ .course .courseDetail{
+    padding-left: 15px;
+    color: #666;
+}
+ .course .courseDetail .weui_media_info_meta{
+    line-height: 1.4;
+    color: #666;
+}    
+
+
+/**E 课程列表**/
+
+/** S ftbar**/
+.ftbar{
+    position: fixed;
+    bottom: 0;
+    max-width: 800px;
+    background-color: rgba(255,255,255,0.8);
+}
+/** E ftbar **/
+
+.courseList2 .leftAnime{
+    animation:leftAnime 1s ease-out;
+    -webkit-animation:leftAnime 1s ease-out; 
+}
+@keyframes leftAnime{
+from {transform: translateX(100%);}
+to {transform: translateX(0);}
+}

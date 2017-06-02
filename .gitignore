@@ -1,0 +1,30 @@
+## 另外,可将过滤配置文件放在用户目录下, 需执行 git config --global core.excludesfile ~/.gitignore 来写入全局配置.gitconfig使得它全局生效。##
+##局部和全局过滤配置可同时生效##
+!/asset/
+# dependencies
+node_modules/
+# testing
+coverage/
+.git/
+dist/
+dest/
+*.zip
+*.rar
+*.7z
+*.mp4
+*.wmv
+*.mpg
+*.chm
+*.pdf
+*.project
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

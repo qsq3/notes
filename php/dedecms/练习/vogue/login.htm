@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>	
+	<head>
+		<meta charset="UTF-8">
+
+		<title>响应式后台登录系统</title>
+
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+
+		<link rel="shortcut icon" href="images/logo.png" />
+		<link href="css/reset.css" rel='stylesheet' type='text/css' />
+		<link href="css/login.css" rel='stylesheet' type='text/css' />
+	</head>
+	<body>
+
+	<div class="login-form">
+		<div class="head-info clearfix">
+			<label class="lbl-1"> </label>
+			<label class="lbl-2"> </label>
+			<label class="lbl-3"> </label>
+		</div>
+
+		<div class="avtar">
+			<img src="images/tzlogo.png" width="80" height="80"/>
+		</div>
+
+		<form name="form1" method="post" action="login.php">
+
+      <input type="hidden" name="gotopage" value="<?php if(!empty($gotopage)) echo RemoveXSS($gotopage);?>" />
+      <input type="hidden" name="dopost" value="login" />
+      <input name='adminstyle' type='hidden' value='newdedecms' />
+
+			<input type="text" name="userid" class="text" value="Username" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Username';}" >
+			<div class="key">
+				<input type="password" name="pwd" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}">
+			</div>
+			<div class="signin">
+				<input type="submit" name="sm1" value="Login" >
+			</div>
+		</form>
+	</div>
+
+
+</body>
+</html>

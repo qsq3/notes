@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>12. 视频/Canvas绘制视频/流媒体</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 禁止系统自动添加效果，直接显示设计原图;-->
+    <link rel="apple-touch-icon-precomposed" href="">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="" />
+    <link rel="shortcut icon" href="">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.4.css" />
+    <script type="text/javascript" src="js/baseUtil.js"></script>
+    <style type="text/css">
+      pre{
+        white-space : pre-wrap;
+      }
+    </style>
+</head>
+<body class="container">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="row">
+
+      <div class="col-sm-6">
+        <pre>
+常见的视频格式
+  MP4视频文件封装格式是基于QuickTime容器格式定义的
+
+  视频的组成部分：画面、音频、编码格式
+  视频编码：H.264、Theora、VP8(google开源)
+  
+  视频布局方案: 1. 只设置宽度 100%; 高度让其自适应
+                2. 需要设置固定宽高,  特意设置黑色背景, 提升视觉体验;
+
+HTML5支持的视频格式：
+  Ogg=带有Theora视频编码+Vorbis音频编码的Ogg文件
+          支持的浏览器:F、C、O
+  MEPG4=带有H.264视频编码+AAC音频编码的MPEG4文件
+          支持的浏览器: S、C
+  WebM=带有VP8视频编码+Vorbis音频编码的WebM格式
+          支持的浏览器: I、F、C、O
+
+Video属性
+  Autoplay  视频就绪自动播放
+  controls    向用户显示播放控件
+  Width   设置播放器宽度
+  Height    设置播放器高度
+  Loop    播放完是否继续播放该视频，循环播放
+  Preload   是否等加载完再播放
+  Src   视频url地址
+  Poster    加载等待的画面图片
+  Autobuffer  设置为浏览器缓冲方式，不设置autoplay才有效
+
+Video  API方法
+  play()
+  pause()
+  load()
+  全屏:   webkit    element.webkitRequestFullScreen();
+               Firefox    element.mozRequestFullScreen();
+               W3C        element.requestFullscreen();
+  退出全屏：
+               webkit    document.webkitCancelFullScreen(); 
+               Firefox    document.mozCancelFullScreen(); 
+               W3C       document.exitFullscreen();
+
+Video  API属性
+  currentTime  :  开始到播放现在所用的时间
+  duration  :  媒体总时间(只读)
+  volume  :   0.0-1.0的音量相对值
+  muted  :   是否静音 false /true
+  paused  :   媒体是否暂停(只读)
+  ended   :   媒体是否播放完毕(只读)
+  error   :  媒体发生错误的时候，返回错误代码 (只读)
+  currentSrc  :   以字符串的形式返回媒体地址(只读)
+  以及以下属性: 
+  loadstart progress suspend emptied stalled play pause loadedmetadata
+  loadeddata waiting playing canplay canplaythrough seeking seeked
+  timeupdate ended ratechange durationchange volumechange
+
+        </pre>
+      </div>
+
+      <div class="col-sm-6">
+        <div>
+          <h3>直接使用网络资源</h3>
+          <embed src="https://imgcache.qq.com/tencentvideo_v1/playerv3/TPout.swf?max_age=86400&v=20161117&vid=i0385mug0ql&auto=0" allowFullScreen="true" quality="high" width="100%" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+          <hr>
+        </div>
+
+        <div>
+          <h3>本地mp4资源</h3>
+          <style>
+            .clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+            .clearfix{*+height:1%;}
+            .fl{
+              float:left;
+            }
+            .fr{
+              float:right;
+            }
+            .progress-wrap{
+              background-color: #1b1b1b;
+              color: #fafafa;
+              padding: 10px 0;
+            }
+            .progress-wrap>input{
+              width:6em;
+              text-align:center;
+              border: 0 none;
+              outline : 0 none;
+              background-color: #1b1b1b;
+            }
+            .progress{
+              position : relative;
+              display : inline-block;
+              height: 20px;
+              line-height: 20px;
+              width:300px;
+              width: calc(100% - 12em);
+              margin: 0;
+              border-radius: 10px;
+              overflow: visible;
+            }
+            .progress-button{
+              position : absolute;
+              left: 0;
+              top: 50%;
+              z-index: 1;
+              margin: -10px 0 0 0;
+              width:20px;
+              height: 20px;
+              border-radius: 50%;
+              background-color: #88c;
+              font-size: 12px;
+              line-height: 20px;
+
+            }
+            .progress-bar{
+              float: left;
+              width: 0;
+              height: 20px;
+              font-size: 12px;
+              line-height: 20px;
+              border-radius: 10px;
+              color: #fff;
+              text-align: center;
+              background-color: #337ab7;
+              box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+              transition: none;
+            }
+            .controls{
+              position: relative;
+              height: 60px;
+              line-height: 40px;
+              background-color: #1b1b1b;
+              padding : 10px;
+              text-align: center;
+            }
+            .controls>a{
+              display:inline-block;
+            }
+            .controls-icon{
+              display: inline-block;
+              background-image: url("img/control.png");
+              background-repeat: no-repeat;
+              vertical-align: middle;
+            }
+            .controls-icon.hover-btn:hover{
+              background-position-y: -40px !important;
+            }
+            .controls-icon_start{
+              width:40px;
+              height:40px;
+              background-position: 0 0;
+            }
+            .controls-icon_pause{
+              width:40px;
+              height:40px;
+              background-position: -40px 0;
+            }
+            .controls-icon_stop{
+              background-position-x: -145px;
+              width: 28px;
+              height:28px;
+              margin: 6px 0;
+            }
+            .controls-icon_next{
+              background-position-x: -80px;
+              width: 33px;
+              height: 33px;
+              margin: 4px 0;
+            }
+            .controls-icon_prev{
+              background-position-x: -113px;
+              width: 33px;
+              height: 33px;
+              margin: 4px 0;
+            }
+            .controls-icon_nextlevel{
+              background-position-x: -174px;
+              width: 28px;
+              height:28px;
+              margin: 6px 0;
+            }
+
+            .controls-icon_voicebar{
+              background-position: -219px 0;
+              width: 40px;
+              height: 21px;
+              background-color: #fff;
+            }
+            .controls-icon_voicebtn{
+              background-position: -200px 0;
+              width: 12px;
+              height:28px;
+            }
+            .voiceclose .controls-icon_voicebtn{
+              margin-right: -8px;
+              background-position: -202px -42px;
+              width: 20px;
+            }
+            #voicebtn{
+              position: absolute;
+              right: 57px;
+              top: 20px;
+            }
+            #voicebtn.voiceclose{
+              right: 55px;
+              top: 23px;
+            }
+            #voicebar{
+              position: absolute;
+              left: 483px;
+              width:40px;
+              padding-right: 20px;
+              height:21px;
+              line-height:21px;
+              top:19px;
+              text-align:left;
+            }
+          </style>
+          <div id="wrap">
+            <video 
+              id="video1"
+              width="100%"
+              -src="img/demo.mp4" 
+              controls="true"
+              Poster="img/1.jpg"
+            >
+              <source src="img/demo.mp4" type="video/mp4">  
+              <source src="img/demo.ogg" type="video/ogg">  
+              <source/>  
+              您的浏览器不支持vedio, 请升级版本或更换chrome浏览器
+            </video>
+            <div class="clearfix progress-wrap">
+              <input class="fl" type="text" name="currenttimer" id="currenttimer" readonly value="00:00:00"/>
+              <div class="progress" id="progress">
+                <div class="progress-bar" id="progressbar"></div>
+                <div class="progress-button" id="progressbutton"></div>
+              </div>
+              <input class="fr" type="text" name="durationtimer" id="durationtimer" readonly value="00:00:00"/>
+            </div>
+            <div id="controls" class="controls">
+              <a href="javascript:void(0);" id="stopbtn">
+                <i class="controls-icon controls-icon_stop hover-btn"></i>
+              </a>
+              <a href="javascript:void(0);" id="prevbtn">
+                <i class="controls-icon controls-icon_prev hover-btn"></i>
+              </a>
+              <a href="javascript:void(0);" id="startbtn">
+                <i class="controls-icon controls-icon_start hover-btn"></i>
+              </a>
+              <a href="javascript:void(0);" id="pausebtn" style="display:none">
+                <i class="controls-icon controls-icon_pause hover-btn"></i>
+              </a>
+              <a href="javascript:void(0);" id="nextbtn">
+                <i class="controls-icon controls-icon_next hover-btn"></i>
+              </a>
+              <a href="javascript:void(0);" id="nextlevelbtn">
+                <i class="controls-icon controls-icon_nextlevel hover-btn"></i>
+              </a>
+              <a href="javascript:void(0);" id="voicebtn" class="">
+                <i class="controls-icon controls-icon_voicebtn "></i>
+              </a>
+              <a href="javascript:void(0);" id="voicebar">
+                <i class="controls-icon controls-icon_voicebar "></i>
+              </a>
+            </div>
+          </div>
+          <script>
+          ~function(){
+          //使用 video API 进行操作
+            var isPlaying = false;
+            var isDragging = false;
+            var isVoice = true;
+            var stepTime = 5;
+            var volume = 1;
+            var buttonDragStart;
+            var progressbuttonWidth = progressbutton.offsetWidth;
+            var progressLength = progress.clientWidth - progressbuttonWidth;
+            var voicebar_con = voicebar.getElementsByClassName('controls-icon_voicebar')[0];
+            //屏蔽拖拽
+            document.ondragstart = function(){return false};
+            /* 按键相关*/
+            //播放
+            startbtn.onclick = function(){
+              this.style.display = "none";
+              pausebtn.style.display = "inline-block";
+              video1.play();
+              isPlaying = true;
+              durationtimer.value = formatTime(video1.duration);
+            };
+
+            //暂停
+            pausebtn.onclick = function(){
+              this.style.display = "none";
+              startbtn.style.display = "inline-block";
+              video1.pause();
+              isPlaying = false;
+            };
+            stopbtn.onclick=function(){
+              video1.pause();
+              isPlaying = false;
+              setprogress(0);
+            };
+            prevbtn.onclick=function(){
+              var time = video1.currentTime;
+              time -=stepTime;
+              var p = time/video1.duration;
+              video1.pause();
+              setprogress(p);
+              video1.play();
+            };
+            nextbtn.onclick=function(){
+              var time = video1.currentTime;
+              time +=stepTime;
+              var p = time/video1.duration;
+              video1.pause();
+              setprogress(p);
+              video1.play();
+            };
+            voicebtn.onclick=function(){
+              if(this.className =='voiceclose'){
+                setvolume(volume);
+              }else{
+                setvolume(0);
+              }
+            };
+            //监听声音大小,
+            var volumeRect = getRect(voicebar);
+            var isDraggingVolume = false;
+            voicebar.addEventListener('click', function(e){
+              var p = (e.clientX - volumeRect.left)/volumeRect.width;
+              setvolume(p);
+            })
+            function setvolume(p){
+              p = p < 0 ? 0 : p >1 ? 1 : p;
+              voicebar_con.style.width = p*volumeRect.width+'px';
+              if(p == 0){
+                voicebtn.className = 'voiceclose';
+                video1.volume = 0;
+              }else{
+                voicebtn.className = '';
+                volume = video1.volume = p;
+              }
+            };
+
+            voicebar.addEventListener('mousedown', function(e){
+              e.preventDefault();
+              e.stopPropagation();
+              isDraggingVolume = true;
+              var p = (e.clientX - volumeRect.left)/volumeRect.width;
+              setvolume(p);
+              document.body.addEventListener('mousemove', volumeDragIng)
+              document.body.addEventListener('mouseup' , volumeDragEnd)
+            })
+            function volumeDragIng (e){
+              e.preventDefault();
+              e.stopPropagation();
+              var p = (e.clientX - volumeRect.left)/volumeRect.width;
+              setvolume(p);
+            };
+            function volumeDragEnd(e){
+              e.preventDefault();
+              e.stopPropagation();
+              isDraggingVolume = false;
+              document.body.removeEventListener('mousemove', volumeDragIng);
+              document.body.removeEventListener('mouseup' , volumeDragEnd);
+            };
+
+            //监听播放进程, 绘制进度条
+            video1.addEventListener('timeupdate', function(){
+              var p = this.currentTime/this.duration;
+              setprogress(p);
+            });
+            function setprogress(p){
+              p = p < 0 ? 0 : p >1 ? 1 : p;
+              var currentWidth = p*progressLength;
+              if(video1.paused){
+                video1.currentTime = p*video1.duration;
+              }
+              currenttimer.value = formatTime(video1.currentTime);
+              progressbar.style.width = currentWidth + progressbuttonWidth*0.8+'px';
+              progressbutton.style.left = currentWidth+'px';
+            };
+
+            progress.addEventListener('click', function(e){
+              if(isDragging) return;
+              e.preventDefault();
+              e.stopPropagation();
+              var _left = e.clientX - getRect(this).left - progressbuttonWidth/2;
+              var p = _left/progressLength;
+              if(isPlaying && !video1.ended && !video1.paused){
+                video1.pause();
+              }
+              setprogress(p);
+              if(isPlaying && !video1.ended && video1.paused){
+                video1.play();
+              }
+            });
+
+            progressbutton.addEventListener('mousedown', function(e){
+              e.preventDefault();
+              e.stopPropagation();
+              isDragging = true;
+              if(isPlaying){
+                video1.pause()
+              };
+              buttonDragStart = e.clientX - this.offsetLeft;
+              document.body.addEventListener('mousemove', buttonDragIng)
+              document.body.addEventListener('mouseup' , buttonDragEnd)
+            })
+
+            function buttonDragIng (e){
+              e.preventDefault();
+              e.stopPropagation();
+              var _left = e.clientX - buttonDragStart;
+              var p = _left/progressLength;
+              setprogress(p);
+            };
+            function buttonDragEnd(e){
+              e.preventDefault();
+              e.stopPropagation();
+              if(isPlaying && !video1.ended &&  video1.paused){
+                video1.play()
+              };
+              progress.onmousemove = null;
+              setTimeout(function(){
+                isDragging = false;
+              },1000/66);
+              document.body.removeEventListener('mousemove', buttonDragIng);
+              document.body.removeEventListener('mouseup' , buttonDragEnd);
+            };
+            function formatTime(time){
+              if('undefined' != typeof time){
+                time = parseInt(time);
+                var h = Math.floor(time%3600/60);
+                var m = Math.floor(time/60);
+                var s = Math.floor(time%60);
+                return getZero(h)+':'+getZero(m)+':'+getZero(s)
+              }else{
+                return '00:00:00'
+              }
+            }
+            function getZero(num){
+              return num<10? '0'+ num : ''+num;
+            }
+            function getId(idName){
+              return document.getElementById(idName);
+            }
+            function getRect (element) {
+              var rect = element.getBoundingClientRect();
+              var top = document.documentElement.clientTop;
+              var left= document.documentElement.clientLeft;
+              return{
+                top    :   rect.top - top,
+                bottom :   rect.bottom - top,
+                left   :   rect.left - left,
+                right  :   rect.right - left,
+                width  :   rect.right -  rect.left,
+                height :   rect.bottom - rect.top
+              }
+            };
+          }();
+          </script>
+          <hr>
+        </div>
+
+        <div>
+          <h3>使用canvas绘制视频;</h3>
+          <canvas id="canvas1"></canvas>
+          <script>
+          ~function(){
+            var cxt = canvas1.getContext("2d");
+            var width = canvas1.width = video1.clientWidth;
+            var height = canvas1.height = video1.clientHeight;
+            /** 方法一 ,卡顿丢帧 */
+            // video1.addEventListener('timeupdate',function(){
+            //   cxt.drawImage(video1,0,0,width,height)
+            // })
+            /** 方法二  */
+            function draw(){
+              cxt.drawImage(video1,0,0,width,height)
+              requestAnimationFrame(draw);
+            }
+            draw();
+          }()
+          </script>
+          <hr>
+        </div>
+        
+        <div>
+          <h3>流媒体</h3>
+          <video id="video2" src="" width="100%"  autoplay></video>
+          <div>
+            <a href="javascript:;" onclick="getPhoto()"  class="btn btn-default">截图</a>
+            <a href="javascript:;" onclick="getMedia()" class="btn btn-default">打开摄像头</a>
+          </div>  
+          
+          <canvas id="canvas2"></canvas>
+          <script>
+            //兼容
+            window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+            window.RTCSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription || window.webkitRTCSessionDescription;
+            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia ||navigator.msGetUserMedia;
+            window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL; 
+            var v = document.createElement("video");
+            var SRC_OBJECT = 'srcObject' in v ? "srcObject" :
+                             'mozSrcObject' in v ? "mozSrcObject" :
+                             'webkitSrcObject' in v ? "webkitSrcObject" : "srcObject";
+
+
+            var cxt = canvas2.getContext("2d");
+            //获取系统用户的摄像头信息
+            var exArray = [];//保存设备源id
+            MediaStreamTrack.getSources(function(sourcesInfos){ //getSources() 56 removed 
+              
+              for (var i=0;i != sourcesInfos.length ; ++i)
+              {
+                var sourcesInfo = sourcesInfos[i];
+                if (sourcesInfo.kind === "video")
+                {
+                  exArray.push(sourcesInfo.id);
+                }
+              }
+            });
+
+            //调用摄像头
+            function getMedia(){
+              if (navigator.getUserMedia)
+              {
+                navigator.getUserMedia({
+                  "video" : {
+                    "optional" : [{
+                      "sourceId" : exArray[1] || exArray[0] //0前置摄像头，1后置
+                    }]
+                  },
+                  "audio" : true
+                },successFn,errorFn)
+              }else{
+                alert("您当前的浏览器不支持摄像头的功能！！");
+              }
+            }
+
+            function successFn(stream){ debugger
+              //如果支持SRC_OBJECT视频流则给video
+              if (video2[SRC_OBJECT] !== undefined){
+                video2[SRC_OBJECT] = stream
+              }else{
+                video2.src = window.URL && window.URL.createObjectURL(stream) || stream;
+              }
+            }
+
+              function errorFn(ev){
+                alert("出错了"+ev);
+              }
+
+              function getPhoto(){
+                var width = canvas2.width = video2.clientWidth;
+                var height = canvas2.height = video2.clientHeight;
+                cxt.drawImage(video2,0,0,width,height);
+              }
+
+          </script>
+        </div>
+           
+      </div>
+      <!-- col-md-6 E-->
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    
+  </div>
+  <script type="text/javascript">
+    ;(function(){
+      
+
+    })()
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      使用插件
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="row">
+
+      <div class="col-sm-6">
+        <pre>
+          jsmpg,需转为mpg格式;
+        </pre>
+      </div>
+
+      <div class="col-sm-6">
+        <!-- 微信端, canvas-->
+        jsmpg 同样需服务器环境
+        <script type="text/javascript" src="./js/jsmpg.js"></script>
+        <div id="canvasWrap">
+            <canvas width="400" height="400" id="jsmpegCanvas"> jsmpg 同样需服务器环境 </canvas>
+        </div>
+        <script type="text/javascript">
+            window.onload = function(){
+                var canvas = document.getElementById('jsmpegCanvas');
+                var canvasWrap = document.getElementById('canvasWrap');
+                var player = new jsmpeg('img/jsmpg.mpg', {
+                    canvas:canvas, 
+                    autoplay:true, 
+                    loop: true,
+                    scale : 0.4 //自添加的缩放比
+                });
+                canvas.addEventListener('click', function(){
+                    if(player.playing) { player.pause(); } else { player.play(); }
+                }, false);
+                canvas.style.transform = 'scale('+document.body.clientWidth/canvas.clientWidth/4.5+')'; //通过scale调整大小
+                canvas.style.transformOrigin = '0 0'; //改变缩放基点;
+                //canvas.parentNode.style.transform = ' scale('+canvas.clientWidth/document.body.clientWidth+')';
+            }
+        </script> 
+      </div>
+    </div>
+  </div>
+
+  <style type="text/css">
+    
+  </style>
+  <div class="panel-footer">
+    
+  </div>
+  <script type="text/javascript">
+    ;(function(){
+     
+
+    })()
+  </script>
+</div>
+
+
+</body>
+</html>

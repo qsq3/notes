@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/nav.css" rel="stylesheet">
+	<style type="text/css">
+        p{
+            padding: 20px
+        }
+    </style>
+</head>
+<body ng-app="myApp">
+    <div class="col-md-3" ng-controller="UserClass">
+        <form role="form" name="f" ng-submit="register(formData)"><!--ng-submit="register(user)"-->
+            <div class="form-group">
+                <label>用户名</label>
+                <input type="text" class="form-control" placeholder="用户名" name="uname" ng-model="formData.uname">
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" class="form-control" placeholder="密码" name="upwd" ng-model="formData.upwd">
+            </div>
+            职业：
+
+            <select ng-model="formData.zw" class="form-control"
+                    ng-options="action for action in zwxiala" name="formData.zwxiala">
+            </select>
+            <div class="form-group">
+                <div class="radio">
+                    性别：
+                    <label>
+                        <input type="radio" name="sex" value="男" ng-model="formData.sex" checked>男
+                    </label>
+                    <label>
+                        <input type="radio" name="sex" value="女" ng-model="formData.sex">女
+                    </label>
+                </div>
+            </div>
+             <div class="form-group">
+                 兴趣：
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="favoriteColors" ng-model="formData.colors.aa"> aa
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="favoriteColors" ng-model="formData.colors.bb"> bb
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="favoriteColors" ng-model="formData.colors.cc"> cc
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">登录</button>
+            {{formData}}
+        </form>
+    </div>
+
+<script src="static/js/lib/angular.min.js"></script>
+<script src="static/js/add.js"></script>
+</body>
+</html>

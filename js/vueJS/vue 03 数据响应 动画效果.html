@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>vue 03 数据响应 动画效果</title>
+  <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css" />
+  <script type="text/javascript" src="js/vue.2.1.3.js"></script>
+  <style type="text/css">
+    .success{
+      color: green;
+    }
+    textarea{
+      min-width:  80%;
+    }
+  </style>
+</head>
+<body class="container">
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li></li>
+    </ul>
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <code></code>
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li> <b>如何追踪变化</b> 每个组件实例都有相应的 watcher 程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。</li>
+      <li> <b>变化检测问题</b> Vue 不能检测到对象属性的添加或删除;</li>
+      <li>
+        Vue 不允许在已经创建的实例上动态添加新的根级响应式属性（root-level reactive properties）。
+        <ol>
+          <li>所以必须在初始化实例前声明根级响应式属性,哪怕只是一个空值;</li>
+          <li>可以使用 Vue.set(vm.object, key, value) 方法将响应属性添加到嵌套的对象上</li>
+          <li>还可以使用 vm.$set 实例方法，这也是全局 Vue.set 方法的别名： this.$set(this.someObject,'b',2)</li>
+          <li>对于数组： this.$set(this.someArr,index,value) ; 修改长度:  this.someArr.splice(newLength)</li>
+        </ol>
+      </li>
+      <li><b>异步更新队列</b> Vue 执行 DOM 更新是异步的，只要观察到数据变化，Vue 就开始一个队列，更新后的回调方法 <code>$nextTick</code></li>
+    </ul>
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      单元素/组件的过渡 <code>transition</code> 
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li>Vue 提供了 transition 的封装组件，在下列情形中，可以给任何元素和组件添加 entering/leaving 过渡:
+          条件渲染 （使用 v-if）
+          条件展示 （使用 v-show）
+          动态组件
+          组件根节点
+      </li>
+      <li><b>CSS 过度</b><br>
+          v-enter: 定义进入过渡的开始状态。在元素被插入时生效，在下一个帧移除。<br>
+          v-enter-active: 定义进入过渡的结束状态。在元素被插入时生效，在 transition/animation 完成之后移除。<br>
+          v-leave: 定义离开过渡的开始状态。在离开过渡被触发时生效，在下一个帧移除。<br>
+          v-leave-active: 定义离开过渡的结束状态。在离开过渡被触发时生效，在 transition/animation 完成之后移除。<br>
+          对于这些在 enter/leave 过渡中切换的类名，v- 是这些类名的前缀。使用 &lt;name="my-transition">可以重置前缀，比如 v-enter 替换为 my-transition-enter。<br>
+      </li>
+      <li>
+        <div id="example-1">
+          <button v-on:click="show = !show">
+            Toggle
+          </button>
+          <transition name="slide-fade">
+            <p v-if="show">hello</p>
+          </transition>
+        </div>
+        <style type="text/css">
+          .slide-fade-enter-active {
+            transition: all .3s ease;
+          }
+          .slide-fade-leave-active {
+            transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+          }
+          .slide-fade-enter, .slide-fade-leave-active {
+            padding-left: 10px;
+            opacity: 0;
+          }
+        </style>
+        <script type="text/javascript">
+          new Vue({
+            el: '#example-1',
+            data: {
+              show: true
+            }
+          })
+
+        </script>
+      </li>
+
+      <li>
+        <b>CSS 动画 </b> 用法同 CSS 过渡，区别是在动画中 v-enter 类名在节点插入 DOM 后不会立即删除，而是在 animationend 事件触发时删除。
+      </li>
+      <li>
+        <div id="example-2">
+          <button @click="show = !show">Toggle show</button>
+          <transition name="bounce">
+            <div v-if="show">Look at me!</div>
+          </transition>
+        </div>
+        <style type="text/css">
+          .bounce-enter-active {
+            animation: bounce-in .5s;
+          }
+          .bounce-leave-active {
+            animation: bounce-out .5s;
+          }
+          @keyframes bounce-in {
+            0% {
+              transform: scale(0);
+            }
+            50% {
+              transform: scale(1.5);
+            }
+            100% {
+              transform: scale(1);
+            }
+          }
+          @keyframes bounce-out {
+            0% {
+              transform: scale(1);
+            }
+            50% {
+              transform: scale(1.5);
+            }
+            100% {
+              transform: scale(0);
+            }
+          }
+        </style>
+        <script type="text/javascript">
+          new Vue({
+            el: '#example-2',
+            data: {
+              show: true
+            }
+          })
+        </script>
+      </li>
+      <li>
+        <b>自定义过渡类名</b>
+        <div id="example-3">
+          <button @click="show = !show">
+            Toggle render
+          </button>
+          <transition
+            name="custom-classes-transition"
+            enter-active-class="animated tada"
+            leave-active-class="animated bounceOutRight"
+          >
+            <p v-if="show">hello</p>
+          </transition>
+        </div>
+        <link href="./css/animate.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript">
+          new Vue({
+            el: '#example-3',
+            data: {
+              show: true
+            }
+          })
+        </script>
+      </li>
+
+      <li>
+        <b>钩子函数 </b>同时使用 Transitions 和 Animations ; 
+        <div id="example-4">
+          <button @click="show = !show">
+            Toggle render
+          </button>
+          <transition
+            v-on:before-enter="beforeEnter"
+            v-on:enter="enter"
+            v-on:after-enter="afterEnter"
+            v-on:enter-cancelled="enterCancelled"
+            v-on:before-leave="beforeLeave"
+            v-on:leave="leave"
+            v-on:after-leave="afterLeave"
+            v-on:leave-cancelled="leaveCancelled"
+            v-bind:css="false"
+          >
+            <p v-if="show">hello</p>
+          </transition>
+        </div>
+        <!--
+        Velocity works very much like jQuery.animate and is
+        a great option for JavaScript animations
+        -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+
+        <script type="text/javascript">
+          new Vue({
+            el: '#example-4',
+            data: {
+              show: false
+            },
+            methods: {
+              // --------
+              // 进入中
+              // --------
+              beforeEnter: function (el) {
+                // ...
+                el.style.opacity = 0;
+                el.style.transformOrigin = 'left';
+                console.log('beforeEnter');
+              },
+              // 此回调函数是可选项的设置
+              // 与 CSS 结合时使用
+              enter: function (el, done) {
+                // ...
+                Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+                Velocity(el, { fontSize: '1em' }, { complete: done })
+              },
+              afterEnter: function (el) {
+                // ...
+              },
+              enterCancelled: function (el) {
+                // ...
+              },
+              // --------
+              // 离开时
+              // --------
+              beforeLeave: function (el) {
+                // ...
+              },
+              // 此回调函数是可选项的设置
+              // 与 CSS 结合时使用
+              leave: function (el, done) {
+                // ...
+                Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 })
+                Velocity(el, { rotateZ: '100deg' }, { loop: 2 })
+                Velocity(el, {
+                  rotateZ: '45deg',
+                  translateY: '30px',
+                  translateX: '30px',
+                  opacity: 0
+                }, { complete: done })
+              },
+              afterLeave: function (el) {
+                // ...
+              },
+              // leaveCancelled 只用于 v-show 中
+              leaveCancelled: function (el) {
+                // ...
+              }
+            }
+          })
+        </script>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      初始渲染的过渡 <code>appear</code>
+    </div>
+  </div>
+  <div class="panel-body">
+    可以通过 appear 特性设置节点的在初始渲染的过渡
+    这里默认和进入和离开过渡一样，同样也可以自定义 CSS 类名。
+    <pre>
+      &lt;transition
+        appear
+        appear-class="custom-appear-class"
+        appear-active-class="custom-appear-active-class"
+      >
+        <!-- ... -->
+      &lt;/transition>
+    </pre>
+    自定义 JavaScript 钩子：
+    <pre>
+    &lt;transition
+      appear
+      v-on:before-appear="customBeforeAppearHook"
+      v-on:appear="customAppearHook"
+      v-on:after-appear="customAfterAppearHook"
+    >
+      <!-- ... -->
+    &lt;/transition>
+    </pre>
+    <ul>
+      
+    </ul>
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      多个元素的过渡 
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li>知识点 <code>key</code> <code>mode</code> <code>transition-group</code> </li>
+      <li>transition内动态加载多个元素可使用符合写法, 需使用 key 作为Vue的识别标记</li>
+      <li><code>transition-group</code>会导致mode失效</li>
+      <li>
+        <div id="example-6" class="demo">
+          <div class="example-6-wrapper">
+            <transition 
+              name="in-out-translate-fade"
+              mode="in-out"
+            >
+              <button v-bind:key="on" @click=" on = !on ">
+                {{ on? 'on' : 'off' }}
+              </button>
+            </transition>
+            <transition 
+              name="in-out-translate-fade"
+              mode="in-out"
+            >
+              <button class="second" v-bind:key="docState" @click="changeMessage">
+                {{ buttonMessage }}
+              </button>
+            </transition>
+            <div class="second-input">
+              <label>输入框的状态是: </label>
+              <input v-model="docState"/>
+            </div>
+          </div>
+        </div>
+        <style>
+          .example-6-wrapper {
+            position: relative;
+            height: 18px;
+          }
+          .example-6-wrapper button {
+            position: absolute;
+          }
+          .example-6-wrapper button.second {
+            left: 60px;
+          }
+          .example-6-wrapper .second-input {
+            position: absolute;
+            left: 160px;
+          }
+          .in-out-translate-fade-enter-active, .in-out-translate-fade-leave-active {
+            transition: all .5s;
+          }
+          .in-out-translate-fade-enter, .in-out-translate-fade-leave-active {
+            opacity: 0;
+          }
+          .in-out-translate-fade-enter {
+            transform: translateX(31px);
+          }
+          .in-out-translate-fade-leave-active {
+            transform: translateX(-31px);
+          }
+        </style>
+        <script type="text/javascript">
+          new Vue({
+            el: '#example-6',
+            data: {
+              on: true,
+              docState : 'saved'
+            },
+            computed: {
+              buttonMessage: function () {
+                switch (this.docState) {
+                  case 'saved': return 'Edit'
+                  case 'edited': return 'Save'
+                  case 'editing': return 'Cancel'
+                }
+              }
+            },
+            methods : {
+              changeMessage : function () {
+                switch (this.docState) {
+                  case 'saved': this.docState= 'edited'; break;
+                  case 'edited': this.docState= 'editing';break;
+                  case 'editing': this.docState= 'saved';break;
+                }
+              }
+            }
+          })
+        </script>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      多组件过渡 <code>is</code>
+    </div>
+  </div>
+  <div class="panel-body" id="example-7">
+    <div>多组件过渡使用动态组件, 无需 key</div>
+    <label>A:</label>
+    <input type="radio" value="v-a" v-model="view"/>
+    &nbsp;&nbsp;
+
+    <label>B:</label>
+    <input type="radio" value="v-b" v-model="view">
+    <transition name="in-out-translate-fade" mode="out-in">
+      <component v-bind:is="view"></component>
+    </transition>
+  </div>
+  <script type="text/javascript">
+    new Vue({
+      el: '#example-7',
+      data: {
+        view: 'v-a'
+      },
+      components: {
+        'v-a': {
+          template: '<div>Component A</div>'
+        },
+        'v-b': {
+          template: '<div>Component B</div>'
+        }
+      }
+    })
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      列表过渡 <code>transition-group</code>
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li>不同于 <transition>， 它会以一个真实元素呈现：默认为一个 <code>span</code> 。可以通过 tag 特性更换为其他元素。这里tag失效,原因未知</li>
+      <li>元素 一定需要 指定唯一的 <code>key</code> 特性值</li>
+      <li><b>需要注意的是使用 FLIP 过渡的元素不能设置为 display: inline 。</b>
+      作为替代方案，可以设置为 display: inline-block 或者放置于 flex 中</li>
+      <li>
+        <div id="example-8">
+          <button v-on:click="shuffle">Shuffle</button>
+          <button v-on:click="add">Add</button>
+          <button v-on:click="remove">Remove</button>
+          <transition-group name="list-complete" tag="p">
+            <span
+              v-for="item in items"
+              v-bind:key="item"
+              class="list-complete-item"
+            >
+              {{ item }}
+            </span>
+          </transition-group>
+        </div>
+        <style type="text/css">
+          .list-complete-item {
+            transition: all 1s;
+            display: inline-block;
+            margin-right: 10px;
+          }
+          .list-complete-enter, .list-complete-leave-active {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          .list-complete-leave-active {
+            position: absolute;
+          }
+        </style>
+        <script type="text/javascript" src="js/lodash-4.17.2.js"></script>
+        <script type="text/javascript">
+          new Vue({
+            el: '#example-8',
+            data: {
+              items: [1,2,3,4,5,6,7,8,9],
+              nextNum: 10
+            },
+            methods: {
+              randomIndex: function () {
+                return Math.floor(Math.random() * this.items.length)
+              },
+              add: function () {
+                this.items.splice(this.randomIndex(), 0, this.nextNum++)
+              },
+              remove: function () {
+                this.items.splice(this.randomIndex(), 1)
+              },
+              shuffle: function () {
+                this.items = _.shuffle(this.items)
+              }
+            }
+          })
+        </script>
+      </li>
+      <li>
+        <ul id="staggered-list-demo">
+          <input v-model="query">
+          <transition-group
+            name="staggered-fade"
+            tag="ul"
+            v-bind:css="false"
+            v-on:before-enter="beforeEnter"
+            v-on:enter="enter"
+            v-on:leave="leave"
+          >
+            <li
+              v-for="(item, index) in computedList"
+              v-bind:key="item.msg"
+              v-bind:data-index="index"
+            >{{ item.msg }}</li>
+          </transition-group>
+        </ul>
+        <script type="text/javascript">
+          new Vue({
+            el: '#staggered-list-demo',
+            data: {
+              query: '',
+              list: [
+                { msg: 'Bruce Lee' },
+                { msg: 'Jackie Chan' },
+                { msg: 'Chuck Norris' },
+                { msg: 'Jet Li' },
+                { msg: 'Kung Fury' }
+              ]
+            },
+            computed: {
+              computedList: function () {
+                var vm = this;
+                return this.list.filter(function (item) {
+                  return item.msg.toLowerCase().indexOf(vm.query.toLowerCase()) !== -1
+                })
+              }
+            },
+            methods: {
+              beforeEnter: function (el) {
+                el.style.opacity = 0
+                el.style.height = 0
+              },
+              enter: function (el, done) {
+                var delay = el.dataset.index * 150
+                setTimeout(function () {
+                  Velocity(
+                    el,
+                    { opacity: 1, height: '1.6em' },
+                    { complete: done }
+                  )
+                }, delay)
+              },
+              leave: function (el, done) {
+                var delay = el.dataset.index * 150
+                setTimeout(function () {
+                  Velocity(
+                    el,
+                    { opacity: 0, height: 0 },
+                    { complete: done }
+                  )
+                }, delay)
+              }
+            }
+          })
+        </script>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <ul>
+        <li>可复用的过渡 : 将 <code>transition</code> 或者 <code>transition-group</code> 作为根组件。函数组件更适合完成这个任务.</li>
+        <li>动态过渡 : 通过事件的钩子函数方法,获取到相应上下文数据。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li>
+        <div></div>
+        <div id="dynamic-fade-demo">
+          Fade In: <input style="width:auto;display: inline-block;" type="range" v-model="fadeInDuration" min="0" v-bind:max="maxFadeDuration">
+          Fade Out: <input style="width:auto;display: inline-block;" type="range" v-model="fadeOutDuration" min="0" v-bind:max="maxFadeDuration">
+          <transition
+            v-bind:css="false"
+            v-on:before-enter="beforeEnter"
+            v-on:enter="enter"
+            v-on:leave="leave"
+          >
+            <p v-if="show">hello</p>
+          </transition>
+          <button v-on:click="toggle">toggle it!</button>
+        </div>
+        <script type="text/javascript">
+          var aaa= new Vue({
+            el: '#dynamic-fade-demo',
+            data: {
+              show: true,
+              fadeInDuration: 1000,
+              fadeOutDuration: 1000,
+              maxFadeDuration: 1500,
+              stop: false
+            },
+            mounted: function () {
+              this.show = false
+            },
+            methods: {
+              beforeEnter: function (el) {
+                el.style.opacity = 0
+              },
+              enter: function (el, done) {
+                var vm = this
+                Velocity(el,
+                  { opacity: 1 },
+                  {
+                    duration: this.fadeInDuration,
+                    complete: function () {
+                      done()
+                      if (!vm.stop) vm.show = false
+                    }
+                  }
+                )
+              },
+              leave: function (el, done) {
+                var vm = this
+                Velocity(el,
+                  { opacity: 0 },
+                  {
+                    duration: this.fadeOutDuration,
+                    complete: function () {
+                      done()
+                      vm.show = true
+                    }
+                  }
+                )
+              },
+              toggle: function () {
+                if (this.stop) {
+                  this.stop = false;
+                  this.show = false;
+                } else {
+                  this.stop = true;
+                }
+              }
+            }
+          })
+        </script>
+      </li>
+    </ul>
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      过渡状态
+      <ul>
+        <li>数字和运算</li>
+        <li>颜色的显示</li>
+        <li>SVG 节点的位置</li>
+        <li>元素的大小和其他的属性</li>
+        <li>不使用transition组件, 而是手动watcher数值变化, 使用第三方动画组件和JS钩子配合,自定义状态动画</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li>状态动画 与 watcher ; 
+        <div id="example-9">
+          <div>可复用的数字过渡</div>
+          <input v-model.number="firstNumber" type="number" step="20"> +
+          <input v-model.number="secondNumber" type="number" step="20"> =
+          {{ result }}
+          <p>
+            <animated-integer v-bind:value="firstNumber"></animated-integer> +
+            <animated-integer v-bind:value="secondNumber"></animated-integer> =
+            <animated-integer v-bind:value="result"></animated-integer>
+          </p>
+        </div>
+        <script src="js/tween-16.3.4.js"></script>
+        <script type="text/javascript">
+          Vue.component('animated-integer', {
+            template: '<span>{{ tweeningValue }}</span>',
+            props: {
+              value: {
+                type: Number,
+                required: true
+              }
+            },
+            data: function () {
+              return {
+                tweeningValue: 0
+              }
+            },
+            watch: {
+              value: function (newValue, oldValue) {
+                this.tween(oldValue, newValue)
+              }
+            },
+            mounted: function () {
+              this.tween(0, this.value)
+            },
+            methods: {
+              tween: function (startValue, endValue) {
+                var vm = this
+                function animate (time) {
+                  requestAnimationFrame(animate)
+                  TWEEN.update(time)
+                }
+                new TWEEN.Tween({ tweeningValue: startValue })
+                  .to({ tweeningValue: endValue }, 500)
+                  .onUpdate(function () {
+                    vm.tweeningValue = this.tweeningValue.toFixed(0)
+                  })
+                  .start()
+                animate()
+              }
+            }
+          })
+          // All complexity has now been removed from the main Vue instance!
+          new Vue({
+            el: '#example-9',
+            data: {
+              firstNumber: 20,
+              secondNumber: 40
+            },
+            computed: {
+              result: function () {
+                return this.firstNumber + this.secondNumber
+              }
+            }
+          })
+        </script>
+      </li>
+      <li>
+        <div id="example-10">
+          <div>颜色的状态动画 需要Tween.js 和 color.js</div>
+          <input
+            v-model="colorQuery"
+            v-on:keyup.enter="updateColor"
+            placeholder="Enter a color"
+          >
+          <button v-on:click="updateColor">Update</button>
+          <p>Preview:</p>
+          <span
+            v-bind:style="{ backgroundColor: tweenedCSSColor }"
+            style="display: inline-block; width: 50px; height: 50px"
+          ></span>
+          <p>{{ tweenedCSSColor }}</p>
+        </div>
+        <script type="text/javascript" src="js/color-1.0.3.js"></script>
+        <script type="text/javascript">
+          var Color = net.brehaut.Color
+          new Vue({
+            el: '#example-10',
+            data: {
+              colorQuery: '',
+              color: {
+                red: 0,
+                green: 0,
+                blue: 0,
+                alpha: 1
+              },
+              tweenedColor: {}
+            },
+            created: function () {
+              this.tweenedColor = Object.assign({}, this.color)
+            },
+            watch: {
+              color: function () {
+                function animate (time) {
+                  requestAnimationFrame(animate)
+                  TWEEN.update(time)
+                }
+                new TWEEN.Tween(this.tweenedColor)
+                  .to(this.color, 750)
+                  .start()
+                animate()
+              }
+            },
+            computed: {
+              tweenedCSSColor: function () {
+                return new Color({
+                  red: this.tweenedColor.red,
+                  green: this.tweenedColor.green,
+                  blue: this.tweenedColor.blue,
+                  alpha: this.tweenedColor.alpha
+                }).toCSS()
+              }
+            },
+            methods: {
+              updateColor: function () {
+                this.color = new Color(this.colorQuery).toRGB()
+                this.colorQuery = ''
+              }
+            }
+          })
+        </script>
+      </li>
+      <li>
+        <div>SVG</div>
+        <div id="app">
+          <svg width="200" height="200">
+            <polygon :points="points"></polygon>
+            <circle cx="100" cy="100" r="90"></circle>
+          </svg>
+          <label>Sides: {{ sides }}</label>
+          <input 
+            type="range" 
+            min="3" 
+            max="500" 
+            v-model.number="sides"
+          >
+          <label>Minimum Radius: {{ minRadius }}%</label>
+          <input 
+            type="range" 
+            min="0" 
+            max="90" 
+            v-model.number="minRadius"
+          >
+          <label>Update Interval: {{ updateInterval }} milliseconds</label>
+          <input 
+            type="range" 
+            min="10" 
+            max="2000"
+            v-model.number="updateInterval"
+          >
+        </div>
+        <style type="text/css">
+          svg { display: block; }
+            polygon { fill: #41B883; }
+            circle {
+              fill: transparent;
+              stroke: #35495E;
+            }
+            input[type="range"] {
+              display: block;
+              width: 100%;
+              margin-bottom: 15px;
+            }
+        </style>
+        <!-- http://greensock.com/tweenlite -->
+        <script type="text/javascript" src="js/tweenlite-1.19.0.js"></script>
+        <script type="text/javascript">
+          new Vue({
+            el: '#app',
+            data: function () {
+              var defaultSides = 10
+              var stats = Array.apply(null, { length: defaultSides })
+                .map(function () { return 100 })
+              return {
+                stats: stats,
+                points: generatePoints(stats),
+                sides: defaultSides,
+                minRadius: 50,
+                interval: null,
+                updateInterval: 500
+              }
+            },
+            watch: {
+              sides: function (newSides, oldSides) {
+                var sidesDifference = newSides - oldSides
+                if (sidesDifference > 0) {
+                  for (var i = 1; i <= sidesDifference; i++) {
+                    this.stats.push(this.newRandomValue())
+                  }
+                } else {
+                  var absoluteSidesDifference = Math.abs(sidesDifference)
+                  for (var i = 1; i <= absoluteSidesDifference; i++) {
+                    this.stats.shift()
+                  }
+                }
+              },
+              stats: function (newStats) {
+                TweenLite.to(
+                  this.$data, 
+                  this.updateInterval / 1000, 
+                  { points: generatePoints(newStats) }
+                )
+              },
+              updateInterval: function () {
+                this.resetInterval()
+              }
+            },
+            mounted: function () {
+              this.resetInterval()
+            },
+            methods: {
+              randomizeStats: function () {
+                var vm = this
+                this.stats = this.stats.map(function () {
+                  return vm.newRandomValue()
+                })
+              },
+              newRandomValue: function () {
+                return Math.ceil(this.minRadius + Math.random() * (100 - this.minRadius))
+              },
+              resetInterval: function () {
+                var vm = this
+                clearInterval(this.interval)
+                this.randomizeStats()
+                this.interval = setInterval(function () { 
+                  vm.randomizeStats()
+                }, this.updateInterval)
+              }
+            }
+          })
+
+          function valueToPoint (value, index, total) {
+            var x     = 0
+            var y     = -value * 0.9
+            var angle = Math.PI * 2 / total * index
+            var cos   = Math.cos(angle)
+            var sin   = Math.sin(angle)
+            var tx    = x * cos - y * sin + 100
+            var ty    = x * sin + y * cos + 100
+            return { x: tx, y: ty }
+          }
+
+          function generatePoints (stats) {
+            var total = stats.length
+            return stats.map(function (stat, index) {
+              var point = valueToPoint(stat, index, total)
+              return point.x + ',' + point.y
+            }).join(' ')
+          }
+        </script>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+</body>
+</html>

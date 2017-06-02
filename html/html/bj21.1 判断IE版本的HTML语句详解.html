@@ -1,0 +1,92 @@
+判断IE版本的HTML语句详解，如：[if lte IE 9]……[endif]
+2013-08-09 11:20:14来源：作者：
+我们常常会在网页的HTML里面看到形如[if lte IE 9]……[endif]的代码，表示的是限定某些浏览器版本才能执行的语句，那么这些判断语句的规则是什么呢？请看下文：
+
+我们常常会在网页的HTML里面看到形如[if lte IE 9]……[endif]的代码，表示的是限定某些浏览器版本才能执行的语句，那么这些判断语句的规则是什么呢？请看下文：
+
+<!--[if !IE]><!--> 除IE外都可识别 <!--<![endif]-->
+<!--[if IE]> 所有的IE可识别 <![endif]-->
+<!--[if IE 6]> 仅IE6可识别 <![endif]-->
+<!--[if lt IE 6]> IE6以及IE6以下版本可识别 <![endif]-->
+<!--[if gte IE 6]> IE6以及IE6以上版本可识别 <![endif]-->
+<!--[if IE 7]> 仅IE7可识别 <![endif]-->
+<!--[if lt IE 7]> IE7以及IE7以下版本可识别 <![endif]-->
+<!--[if gte IE 7]> IE7以及IE7以上版本可识别 <![endif]-->
+<!--[if IE 8]> 仅IE8可识别 <![endif]-->
+<!--[if IE 9]> 仅IE9可识别 <![endif]-->
+
+
+项目 范例 说明 
+! [if !IE] The NOT operator. This is placed immediately in front of the feature, operator, or subexpression to reverse the Boolean meaning of the expression.
+NOT运算符。这是摆立即在前面的功能，操作员，或子表达式扭转布尔表达式的意义。 
+lt [if lt IE 5.5] The less-than operator. Returns true if the first argument is less than the second argument.
+小于运算符。如果第一个参数小于第二个参数，则返回true。 
+lte [if lte IE 6] The less-than or equal operator. Returns true if the first argument is less than or equal to the second argument.
+小于或等于运算。如果第一个参数是小于或等于第二个参数，则返回true。 
+gt [if gt IE 5] The greater-than operator. Returns true if the first argument is greater than the second argument.
+大于运算符。如果第一个参数大于第二个参数，则返回true。 
+gte [if gte IE 7] The greater-than or equal operator. Returns true if the first argument is greater than or equal to the second argument.
+大于或等于运算。如果第一个参数是大于或等于第二个参数，则返回true。 
+( ) [if !(IE 7)] Subexpression operators. Used in conjunction with boolean operators to create more complex expressions.
+子表达式运营商。在与布尔运算符用于创建更复杂的表达式。 
+& [if (gt IE 5)&(lt IE 7)] The AND operator. Returns true if all subexpressions evaluate to true
+AND运算符。如果所有的子表达式计算结果为true，返回true 
+| [if (IE 6)|(IE 7)] The OR operator. Returns true if any of the subexpressions evaluates to true.
+OR运算符。返回true，如果子表达式计算结果为true。 
+
+
+<!--[if lt IE 9]>
+加载CSS1
+<!--[else]>
+加载CSS2
+<![endif]-->
+
+这样有效是有效,但是用HTML VALIDATOR里,报错,因为这个不符合XHTML 1.1的规范,
+如果把ELSE语句去掉,则正确.
+
+方法1：
+
+加载CSS2
+<!--[if lt IE 9]>
+加载CSS1(可以把要重写的写在这里).
+<![endif]-->
+
+<!--[if lte IE 6]>
+<![endif]-->
+IE6及其以下版本可见
+ 
+<!--[if lte IE 7]>
+<![endif]-->
+IE7及其以下版本可见
+ 
+<!--[if IE 6]>
+<![endif]-->
+只有IE6版本可见
+ 
+<![if !IE]>
+<![endif]>
+除了IE以外的版本
+ 
+<!--[if lt IE 8]>
+<![endif]-->
+IE8及其以下的版本可见
+ 
+<!--[if gte IE 7]>
+<![endif]-->
+IE7及其以下的版本可见
+ 
+用法：
+（1）
+可使用如下代码检测当前IE浏览器的版本（注意：在非IE浏览器中是看不到效果的） <!––[if IE]>
+       <h1>您正在使用IE浏览器</h1>        <!––[if IE 5]>
+           <h2>版本 5</h2>        <![endif]––>
+       <!––[if IE 5.0]>
+           <h2>版本 5.0</h2>        <![endif]––>
+       <!––[if IE 5.5]>
+           <h2>版本 5.5</h2>        <![endif]––>
+       <!––[if IE 6]>
+           <h2>版本 6</h2>        <![endif]––>
+       <!––[if IE 7]>
+           <h2>版本 7</h2>        <![endif]––>
+<![endif]––>
+那如果当前的浏览器是IE，但版本比IE5还低，该怎么办呢，可以使用<!–[if ls IE 5]>，当然，根据条件注释只能在IE5+的环境之下，所以<!–[if ls IE 5]>根本不会被执行。 lte：就是Less than or equal to的简写，也就是小于或等于的意思。 lt ：就是Less than的简写，也就是小于的意思。 gte：就是Greater than or equal to的简写，也就是大于或等于的意思。 gt ：就是Greater than的简写，也就是大于的意思。 ! ： 就是不等于的意思，跟javascript里的不等于判断符相同

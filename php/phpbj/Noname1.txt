@@ -1,0 +1,92 @@
+抽象方法:
+    1. 没有方法体: 没有{},直接;结束;
+    2. abstract 抽象修饰词修饰;
+    作用:  只写出结构, 具体实现交给子类; 规定了子类必须要有这些抽象方法的实现;功能交给子类;
+    
+
+抽象类: 
+    1. 有抽象方法的类, 则必须为抽象类;
+    2. abstract 抽象修饰词修饰抽象类 ;
+    作用: 作为一个规范, 要求子类的结构;
+注意: 
+    1. 抽象类中可以没有抽象方法;  
+    2. 抽象类除了可以有抽象方法之外, 和正常类一样;
+    3. 抽象类不能实例化对象;
+    4. 抽象类必须有子类,来将抽象方法覆盖;
+    5. 子类必须全部覆盖抽象方法,才能创建子类的实例对象;
+
+接口:  接口是一种特殊的抽象类;
+    1. 接口的成员方法, 必须全是抽象方法, 因此不需使用 abstract 修饰方法;
+    2. 接口的成员属性, 必须是常量;
+    3. 接口的所有成员方法, 权限必须是 public ;
+    4. 声明接口类, 不使用 class , 而是使用 interface ;
+    应用细节:
+    1. 可以使用 extends 让接口继承接口, 用于扩展新的抽象方法, 而不是覆盖;
+    2. 可以使用一个类来实现接口中的全部方法, 也可使用一个抽象类来实现部分方法, 这时为覆盖, 使用 implements 来实现继承(相当于extends);
+    3. 因为 extends 继承 在PHP 中一个类 只能继承一个父类; 所以用 implements;
+    4. 一个类在继承另一个类的同时, 可以使用 implements 实现接口(可以多个,使用逗号, 分开多个接口), 一定要先继承,再接口;
+    
+eg: abstract class Person{
+    abstract function say () ;
+}
+    interface Demo{
+        const AAA = "aaa";
+        function test();
+    }
+    interface Demm extends Demo{
+        function tess();
+    }
+    interface Dema extends Demo{
+        function tesa();
+    }
+    abstract class Son extends Person implements Demm,Dema{
+    
+    }
+
+多态:
+    1. 程序扩展准备
+    技术:
+    1. 必须有继承关系, 父类最后是接口或抽象类;
+    2. 数组, 类和接口中的方法, 可以在参数中用类名限制
+
+    <?php
+    interface USB{
+        const WIDTH = 12;
+        const HEIGHT = 3;
+
+        function load();
+        function run();
+        function stop();
+    }
+
+    class Computer{
+        function useUSB(USB $usb){
+            $usb -> load();
+            $usb -> run();
+            $usb -> stop();
+        }
+    }
+    
+    class Mouse implements USB{
+        function load(){ echo "加载鼠标<br>";}
+        function run(){ echo "运行鼠标<br>";}
+        function stop(){ echo "卸载鼠标<br>";}  
+    }
+    class Keyboard implements USB{
+        function load(){ echo "加载键盘<br>";}
+        function run(){ echo "运行键盘<br>";}
+        function stop(){ echo "卸载键盘<br>";}  
+    }
+
+    class Worker{
+        function user(){
+            $c = new Computer();
+            $m = new Mouse;
+            $k = new Keyboard;
+            $c -> useUSB($m);
+            $c -> useUSB($k);
+        }
+    }
+
+    $w = new Worker;
+    $w -> user();

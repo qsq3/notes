@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>a48 DOM表单</title>
+		<script type="text/javascript">
+			
+		function testForm () {
+				//表单
+				//获取
+				/*
+
+				var frm1 = document.getElementById("form1");//通过id,
+				var frm2 = document.form1name;//通过name属性值,form外的id也可直接使用,但是不推荐;
+				alert(frm1 == frm2);//对象比较的是其地址; 
+//				//操作属性,action控制表单提交地址
+//				//frm1.action="https://www.baidu.com";
+//				//method控制表单的提交方式;
+//				//frm1.method = "post";
+//				
+//				//操作方法;重置
+//				//frm1.reset();
+//				//提交表单数据;
+//				//frm1.submit();
+*/
+
+			//表单域(表单内的节点)
+				//获取元素
+				var frm1 = document.getElementById("myname");//通过id
+				
+				var frm2 = document.form1name.uname       //通过链式name属性值
+				//alert(frm1 == frm2);
+				//属性 form,value,type,name,disable(不可提交),readOnly(可以提交);
+				//frm1.form.submit(); // form获取当前元素的父表单;
+				//alert(frm1.value+frm1.type);
+				//type
+				var frm3 = document.getElementById("school");
+//				alert(frm3.value+"--"+frm3.type);
+				//disable;
+				//frm1.disabled=true;//或false
+				var frm4 =document.form1name.check;
+				var frm5 =document.form1name.sub;
+				//alert(frm4.checked);
+//				if (frm4.checked) {
+//					frm5.disabled = false;
+//				} else{
+//					frm5.disabled = true;
+//				}
+				frm5.disabled = !frm4.checked;//直接取反
+				alert(frm4.checked + '|'+frm5.disabled);
+				
+				//方法,focus获取焦点 ,blur失去焦点
+				//frm1.focus();				
+				//document.getElementById("myname").blur();
+				
+			}
+			onload = function(){
+				document.getElementById("myname").focus();
+				setTimeout(function(){
+					document.getElementById("myname").blur();
+					document.getElementById("myname").style.background = "blue";
+
+				},2000)
+			}
+			
+			function operCheckbox () {
+				
+			//获取当前歌曲名单
+				var music =document.getElementsByName("music");
+			//	声明一个数组来存放选择的数值
+				var arr=[];
+				//循环并判断是否选取
+				for (var i=0;i<music.length;i++) {
+					
+					if (music[i].checked) {
+						arr.push(music[i].value);
+
+					}
+				}
+				alert(arr);
+
+			}
+			//全选全否反选
+			function choose01(ch){
+				var music=document.getElementById("music").music;
+				for (var i=0;i<music.length;i++) {
+					switch(ch){
+						case 'all' :	
+						music[i].checked = true;//全选
+						break;
+						case 'qf' :
+						
+						music[i].checked = false;//全否
+						break;
+						case 'fx' :
+						
+						music[i].checked = !music[i].checked;//反选
+						break;
+						default:;
+					};
+				};
+			};
+			//下拉列表
+			function operSelect () {
+				
+			var school=document.getElementById("schoolxl");
+				/**************单选**************/ 
+				//获取值--索引--所有选择项的个数
+			//alert(school.value+"--"+school.selectedIndex+"\n"+school.options.length);
+
+			//				
+			//option是一个对象,包括text,value;
+			//alert(school.options[school.selectedIndex].innerText) == alert(school.options[school.selectedIndex].text)
+			//school.options[school.selectedIndex].value == school.value 
+			//单选列表中,所选项的value就是列表的value;
+
+		
+				/**************复选**************/ 
+			//遍历并判断,类似checkbox
+			var os =school.options;
+			var arr = [];
+			for (var i=0;i<school.length;i++) {
+					
+				if(os[i].selected){
+					arr.push(os[i].text);
+				}
+				
+			};
+			alert(arr);
+			};
+			
+			/*
+				onload onclick ondblclick onresize onscroll
+				onmouseover onmouseenter  onmouseout onmouseleave
+				onkeydown onkeyup
+				onchange  onsubmit onreset
+			*/
+			/*
+				onchange :
+					text -- 当输入内容改变，并且失去焦点的时候
+					radio -- 通过改变本身(点击自己或js改变自己)来使被选中的状态改变的时候, 才会触发(点击兄弟标签来改变其状态不会触发)
+					checkbox -- 选中和去除选中都会触发
+					select -- 选中不同的下拉选项的时候会触发
+					file -- 选中文件时触发
+				onsubmit
+				onreset
+				onfocus
+					按下tab能选中的都能触发,包括a标签,document;
+				onblur
+			<div contenteditable=true id="box" style="width:100px;height:100px;border:1px solid red;">
+				H5属性contenteditable = true 改为可写,就可以获得焦点;
+			</div>
+			
+			onblur: 失去焦点;
+			*/
+			
+			//上传文件 file
+			var files = document.getElementById('file').files //返回filelist列表;
+			
+			
+		</script>
+	</head>
+	<body>
+		<input type="button" name="" id="" value="操作form表单"  onclick="testForm();"/>
+		<hr />
+		<form id="form1" name="form1name" action="" method="get">
+			
+			<input type="text" name="uname" id="myname" value="aaa"/>
+			
+			<select name="" id="school" multiple="multiple">
+				
+				<option value="1">北大</option>
+				
+				<option value="2">清华</option>
+			
+			</select>
+			<input type="checkbox" name="check" id="checkid" value="1" onclick="testForm();"/>阅读并同意协议
+			<input type="submit" name="sub" id="subid" disabled="disabled"  value="提交"/>
+		</form>
+		<hr />
+		<form action="" id='music'>
+		<h2>播放列表</h2>
+		
+		<input type="checkbox" value="1" name="music" />音乐1
+		<br />
+		<input type="checkbox" value="2" name="music" />音乐2
+		<br />
+		<input type="checkbox" value="3" name="music" />音乐3
+		<br />
+		<input type="checkbox" value="4" name="music" />音乐4
+		<br />
+		<input type="checkbox" value="5" name="music" />音乐5
+		<br />
+		<input type="checkbox" value="6" name="music" />音乐6
+		<br />
+		<input type="checkbox" value="7" name="music" />音乐7
+		<br />
+		<input type="checkbox" value="8" name="music" />音乐8
+		<br />	
+		<hr />
+		<input type="button" id="" value="添加到播放列表" onclick="operCheckbox();" />
+		<input type="button" value="全选" onclick="choose01('all');"/>
+		
+		<input type="button" value="全否" onclick="choose01('qf');"/>
+		
+		<input type="button" value="反选" onclick="choose01('fx');"/>
+		
+		<hr />
+		</form>
+		<h2>下拉列表</h2>
+		毕业学校
+		<select name="" id="schoolxl" multiple="multiple">
+			
+			<option value="1">北京大学</option>
+			
+			<option value="2">复旦大学</option>
+			
+			<option value="3">清华大学</option>
+			
+			<option value="4">上海交大</option>
+			
+			<option value="5">南开大学</option>
+		
+		</select>
+		<hr />
+		<input type="button" name="" id="schoolan" value="操作下拉列表" onclick="operSelect();"/>
+		
+
+<!-- 下面是上传文件部分 -->
+
+	<script>
+  //document.getElementById("file").files 返回fileList 列表对象  
+		function showF(){
+			//document.getElementById("file").onclick();  保留问题
+			//怎么样才可以模拟上传
+			 var file;
+			 for(var i=0;i<document.getElementById("file").files.length;i++){
+				file = document.getElementById("file").files[i];
+				//alert(file.lastModifiedDate); //上传时间
+				alert(file.name);
+			 }
+		}
+
+		function showT(){
+			 var file;
+			 file = document.getElementById("file2").files[0];
+			 var size = document.getElementById("size");
+			 var type = document.getElementById("type");
+				size.innerHTML  = file.size;
+				type.innerHTML  = file.type;
+		}
+
+		function showU(){
+			 var file;
+			 for(var i=0;i<document.getElementById("file3").files.length;i++){
+				file = document.getElementById("file3").files[i];
+					if (!/image\/\w+/.test(file.type))
+					{
+						alert("分手快乐:  文件不是我喜欢的类型我只要图片");
+						break;
+					}else{
+						alert("情人快乐： 就是图片");
+					}
+			 }
+		}
+  </script>
+<!-- blob对象 -->
+
+  <!--多文件上传 multiple  -->
+		<form id="textform">
+			<input type="file" id="file" multiple />
+			<input type="button" value="文件上传"  onclick="showF()"/>
+		</form>
+			<br/> <!--上传文件的字节和类型 -->
+		<form id="text2form">
+			<input type="file" id="file2" />
+			<input type="button" value="显示文件信息"  onclick="showT()"/>
+			<br/>
+			文件字节长度 <span id="size"></span> <br/>
+			文件类型 <span id="type"></span>
+		</form>
+
+			<br/> <!--是否是图片是图片就上传 -->
+			 <!--默认显示图片类型 -->
+		<form id="text3form">
+			<input type="file" id="file3" multiple  accept="image/*"/>
+			<input type="button" value="显示文件信息"  onclick="showU()"/>
+			
+		</form>
+	
+<!-- 下面是读取上传文件的接口部分 fileReader接口,IE8-不支持-->
+	 <script>
+	
+		//将文件以Data URL形式进行读入页面
+		function dataURL(){
+			var file = document.getElementById("file").files[0];
+			//alert(file);
+			if (!/image\/\w+/.test(file.type))
+				{
+					alert("分手快乐:  文件不是我喜欢的类型我只要图片");
+					return false;
+				}else{
+					var reader =new FileReader();
+					//将文件以Data URL形式进行读入页面
+					reader.readAsDataURL(file);
+					reader.onload = function(e){
+						var result=document.getElementById("result");
+						result.innerHTML = '<img src="'+this.result+'" alt="?" />';
+					}
+				}
+		}
+		//将文件以文本形式进行读入页面,默认格式utf-8
+		function sText(){
+			var file = document.getElementById("file").files[0];
+			var reader =new FileReader();
+			reader.readAsText(file);
+			reader.onload = function(){
+				var result=document.getElementById("result");
+				result.innerHTML = this.result;
+			}
+		}
+		//将文件以二进制形式进行读入页面
+		function binaryString(){
+			var file = document.getElementById("file").files[0];
+			var reader =new FileReader();
+			reader.readAsBinaryString(file);
+			reader.onload = function(){
+				var result=document.getElementById("result");
+				result.innerHTML = this.result;
+			}
+		}
+		//abort　　　中断
+	</script>
+
+	<form id="textform">
+			<input type="file" id="file"  />
+			<input type="button" value="读取图像"  onclick="dataURL()"/>
+			<input type="button" value="读取二进制数据"  onclick="binaryString()"/>
+			<input type="button" value="读取文本文件"  onclick="sText()"/>
+	</form>
+	<!--结果 -->
+	<div id="result">
+
+
+	</div>
+	</body>
+</html>

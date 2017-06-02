@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>a16 js的函数.html</title>
+		<script type="text/javascript">
+		//函数是由事件驱动的或者当它被调用时执行的可重复使用的代码块。
+		//三种声明函数的方式
+/*		//1.声明式	最常用	
+	
+		function f1 () {alert("lisi")}
+
+		//2.函数也是对象
+		var f2 = new Function("alert('zhangsan')");
+				
+		//3.赋值式,匿名函数 也叫函数表达式
+		var f3 = function () {alert("wangwu")
+};
+
+		//<javascript的语言精粹>
+		//f3();
+		//f2();
+		//
+		//var uname = "zhangsan";
+		
+		/**
+		 * 
+		 * @param {String} uname
+		 * @param {String} uname2
+		 */
+/*
+		function sayHello (uname,uname2) {
+			alert("早上好."+uname+","+uname2);
+			
+		}
+		//形式参数(变量名),实际参数(变量的值).
+		//一般要求形参和实参的数目一致,并一一对应
+		//sayHello("lisisi","王五");
+		//
+		/**
+		 * 把函数的值返回给调用的地方
+		 * 测试返回值
+		 
+		function sayBack () {
+			return "666666";
+			//后面的代码不会被执行
+			alert("333");
+		}
+		var test = sayBack();
+		alert(test);
+		*/
+		//元素.事件 = 匿名函数(也叫方法)
+/*		window.onload =function(){
+		var oh1 =document.getElementsByTagName("h1")[0];
+		
+		oh1.onclick = function (){
+			alert(oh1);
+			oh1.innerText = "改变他的文字了";
+			alert(oh1.innerHTML);
+			oh1.innerHTML = "<div style='color:red;'>也可以改变他的元素</div>"
+			alert(oh1.innerHTML);
+
+
+
+			//[]数组的使用
+		/*	oh1.style["width"] = "200px";
+			var aa = "background-color";
+			oh1["style"][aa] = ["yellow"];
+
+
+		};
+
+
+		//具体见a41,44
+
+
+			/*函数声明
+			function fn(){
+				//这是注释
+				alert( 2 );
+			}
+			//函数声明的执行
+			//fn();注意带括号是主动执行;事件时别带,但可以用表达式'fn()'来传参
+			//document.onclick = fn;
+			//setInterval( 'fn()' , 5000);
+			//setInterval( fn , 5000);
+			*/
+
+			// 函数表达式 ,在函数末尾加括号可直接执行比如var fn = function(){}(); 
+			
+/*			var fn = function(){}
+			!function(){}
+			(function(){})
+			-function(){}
+			+function(){}
+			~function(){}
+
+
+			对于函数声明，js解析器会优先读取，确保在所有代码执行之前声明已经被解析，而函数表达式，如同定义其它基本类型的变量一样，只在执行到某一句时也会对其进行解析，所以在实际中，它们还是会有差异的，具体表现在，当使用函数声明的形式来定义函数时，可将调用语句写在函数声明之前，而后者，这样做的话会报错。
+			*/
+			
+			/*参数类型
+			fn( 3 , 5 );  // 实参
+				//在执行函数的时候，我们可以传入参数   参数 --> 数据类型
+			
+			function fn( a , b ){ // 形参
+				alert( a + b );
+			}
+			fn( function(){alert(123)} );
+			function fn( a ){
+				alert( a );
+			}*/
+
+
+			fn( 3 , 5 , 8 , 9 );  // 实参
+				//在执行函数的时候，我们可以传入参数   参数 --> 数据类型
+			fn( 5 , 4 );
+			
+			function fn(){ 
+				// 不定参 arguments 所有实参的集合
+				
+
+			}
+
+			function fnwork(){
+				var sum = 0;
+				for (var i=0;i<arguments.length;i++){
+					var a = parseFloat(arguments[i]);
+					if(isNaN(a)){
+						continue;
+					}else{
+						sum += a; //加fnwork.arguments也不会报错;
+					};
+				
+				}
+				alert(sum);
+			};
+			fnwork(true,2,"",3,"asd",false,function(){},4,undefined,1,1,1);
+			fnwork(true,2,"",3,"asd",false,function(){},4,undefined);
+			alert(fnwork);
+			alert(fnwork());
+
+			// 一个函数分为 过程 和 结果
+			/*
+			var a = fn();
+			alert( a )
+			function fn(){
+				alert( 5 );
+				return '阿飞';
+			}
+			*/
+			
+			/*
+			fn();
+			function fn(){
+				 alert( 2 );
+				 return undefined;
+			}
+			*/
+			
+			/*
+			alert( sum( 3 , 5 ) );
+			function sum( a , b ){
+				var s = a + b;
+				return 5;
+			}
+			*/
+			
+			
+			//alert( fn() );
+
+			//fn();
+			
+			/*
+			var p = fn();
+			p();
+			function fn(){
+				var a = function(){
+					alert( 2 )
+				};
+				return a;
+			}
+			*/
+			
+			/*
+			var a = fn();
+
+			alert( a )
+
+			function fn(a,b){
+				var s;
+				return s;
+				s = a + b;
+			}
+			fn 声明一个函数,其值是默认undefined,或者所赋值的函数块;
+			fn()是声明一个函数的运行,其值是默认undefined,或者所赋值的内部return参数,return也表示函数的中止;
+			*/
+			转化为数组
+
+            下面的代码将会创建一个新的数组，包含所有 arguments 对象中的元素。
+
+            Array.prototype.slice.call(arguments);
+            这个转化比较慢，在性能不好的代码中不推荐这种做法。
+            var args = Array.prototype.slice.call(arguments);
+			
+//		}
+		</script>
+	</head>
+	<body>
+		<h1 id="aaa">a16 js的函数.html</h1>
+	</body>
+</html>

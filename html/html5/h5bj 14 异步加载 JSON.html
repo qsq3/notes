@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>14. 新增方法: 异步加载, JSON, </title>
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.4.css" />
+    <script type="text/javascript" src="js/baseUtil.js"></script>
+    <style type="text/css">
+      pre{
+        white-space : pre-wrap;
+      }
+
+    </style>
+</head>
+<body class="container">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="row">
+
+      <div class="col-sm-6">
+        <pre>
+JS的加载会影响后面的内容加载
+  很多浏览器都采用了并行加载JS，但还是会影响其他内容
+  Html5的defer和async
+  defer=“defer ”: 延迟加载，会按顺序执行，在onload执行前被触发
+  async =“async”: 异步加载，加载完就触发，有顺序问题
+  浏览器兼容性：Labjs库
+  <script src="js/defer.js" defer="defer"></script>
+  <script src="js/async.js" async="async"></script>
+
+
+获取class列表属性
+classList
+  length :  class的长度
+  add()  :  添加class方法
+  remove()  :  删除class方法
+  toggle() :  切换class方法 
+  contains() : 判断类名是否存在返回bool值
+
+JSON的新方法
+  parse() : 把字符串转成json
+  字符串中的属性要严格的加上引号
+  stringify() : 把json转化成字符串
+  会自动的把双引号加上
+
+  与eval的区别
+    eval()：对任何的字符串进行解析变成js
+    parse()：字符串中的属性要严格的加上引号
+  其他浏览器兼容
+  http://www.json.org/去下载json2.js
+
+
+        </pre>
+      </div>
+      <!-- col-md-6 S-->
+      <div class="col-sm-6">
+
+      </div>
+      <!-- col-md-6 E-->
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    
+  </div>
+  <script type="text/javascript">
+    ;(function(){
+     
+      //2. 新增JSON方法
+      var str1 = {name:{sex:"男",has:[123,455]},age:'16'};
+      //JSON 新方法克隆
+      var str = JSON.stringify(str1);
+      //alert(str);
+      var str2 = JSON.parse(str);
+      //str2.name.sex = "女";
+      console.log(str2.name.has === str1.name.has);//false
+      console.log(str1 === str2); //false
+
+    })()
+  </script>
+</div>
+
+
+
+</body>
+</html>

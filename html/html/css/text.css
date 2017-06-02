@@ -1,0 +1,32 @@
+#header{
+	height:66px;
+	background:url("../img/headerBg.gif") repeat-x;
+}
+#header-nav{
+	width:960px;
+	margin:0 auto;
+}
+#header-nav {
+	text-align:right;
+	font: normal 14px/66px "microsoft Yahei" ;
+	word-spacing:3em;
+	position:relative;
+}
+#header-nav #logo{
+	position:absolute;
+	left:0;
+	top:8px;
+}
+#header-nav a{
+	color:white;
+}
+#header-nav a:hover{
+	font-weight:bold;
+}
+#main{
+	background:url("../img/mainbg.png") repeat-x;
+	height:1000px;}
+#m322{
+	background:url("../img/bg.jpg") center 0 no-repeat;
+	height:1000px;
+}

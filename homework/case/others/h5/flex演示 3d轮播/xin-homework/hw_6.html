@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <style>
+    	*{padding: 0;margin: 0;}
+    	.wrap{width: 1000px;height: 800px;margin: 0 auto;position: relative;}
+    	.box{width: 570px;height: 400px;margin: 20px auto;position: absolute;z-index: 1;left:  -83px;top: 0;right: 0;bottom: 0;
+    	transform: rotateX(52deg) skewX(20deg) translateZ(-150px);transition: all 1.7s;background: rgba(11,11,23,.3);}
+    	.new{width: 190px;height: 100px;float: left;background-image: url('img/lol-1.png');}
+    	.on{transform: rotatey(360deg);transition: all 0.7s;}
+    	.box:hover{transform: rotateX(0deg) skewX(0deg) translateZ(0px);}
+    	.box:hover .shadow{transform: skewx(0deg);left: 0;opacity:0; }
+    	.shadow{transform-style: preserve-3d;perspective: 1500px; opacity:1; transition: all 1.7s;position: absolute;width: 100%;height:  46%;top: 215px;left: -25px;background: rgba(0,0,0,0.1);z-index: -1;  transform: skewx(15deg);}
+    	.desk{box-shadow: -1px 1px 0 #844200,-2px 2px 0 #844200,-3px 3px 0 #844200,-4px 4px 0 #844200,-5px 5px 0 #222; border-radius: 15px; transform-style: preserve-3d; perspective: 2000px; position: absolute;width: 80%;height:  40%;margin: 20px auto;left: 0;top: 0;right: 0;bottom: 0;margin-top: 281px; background:#9f5000; transform: skewx(39deg);z-index: -2;}
+    	.table_leg{border-radius: 5px; position: absolute;width: 7%;height: 80%;background:#9f5000 ;}
+    	.one{top: 0;left:-36px; height:48%!important;  -webkit-transform: skewx(-56deg) translateZ(-3px);-moz-transform: skewx(-56deg) translateZ(-3px);}
+    	.two{top: 156px;left:-42px;  -webkit-transform: skewx(-51deg) translateZ(-3px);-moz-transform: skewx(-51deg) translateZ(-3px); }
+    	.four{top: 222px;left:668px; width:7%!important;height:54%!important;-webkit-transform: skewx(-21deg) translateZ(-3px);-moz-transform: skewx(-21deg) translateZ(-3px);}
+    	p{position: absolute;bottom: 30px;color: #fff;font-size: 40px;font-weight: bold;left: 140px;
+    	text-shadow: 0 0 1px thistle,0 0 2px yellowgreen,0 0 3px aquamarine,0 0 15px darkkhaki;}
+    </style>
+</head>
+
+<body>
+	<div class="wrap">
+		<div class="box">
+		<!--阴影-->
+		<div class="shadow"></div>
+		</div>
+		<!--桌子-->
+		<div class="desk">
+			<p>信 仰 牌 懒 人 桌:仅售199元</p>
+			<!--桌脚-->
+			<div class="table_leg one"></div>
+			<!--桌脚-->
+			<div class="table_leg two"></div>
+			<!--桌脚-->
+			<div class="table_leg four"></div>
+		</div>
+	</div>
+</body>
+<script src="js/jquery-1.11.3.min.js"></script>
+<script>
+	$(function(){
+		for( var i = 0 ; i < 12 ; i++){						
+			var html ="<div class='new'></div>"	
+			$('.box').append(html);		
+		}
+		
+		$('.new').each(function(i){
+			var x = i%3;
+			var y = parseInt( i/3 );
+			$(this).css({
+				'backgroundPosition' : (-190*x)+'px '+(-100*y)+'px'
+			});
+		});
+		
+		var arr = [];
+		for( var i = 0 ; i < 12 ; i++){
+			arr[i] = i;
+		}
+		
+		var mark = 1;
+		var timer = setInterval(function(){
+			mark++;
+			var inn = setInterval(function(){
+				var rd = parseInt( Math.random()*arr.length );
+				$('.new').eq(arr[rd]).css({
+					'backgroundImage' : 'url(img/lol-'+mark+'.png)',
+				});
+				$('.new').eq(arr[rd]).addClass('on');
+				arr.splice(rd,1);
+				console.log(arr)
+				if( arr.length == 0 ){
+					clearInterval( inn );
+					for( var i = 0 ; i < 12 ; i++){
+						arr[i] = i;
+					}
+					setTimeout(function(){
+						$('.new').removeClass('on');
+					},500);
+				}
+			},100);
+			if( mark == 4 ){
+				mark = 1;
+			}
+		},2800);
+	})
+</script>
+</html>

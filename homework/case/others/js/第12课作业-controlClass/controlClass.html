@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<style type="text/css">
+			div{
+				width:500px;
+				height:50px;
+				border:1px solid red;
+				margin-bottom:20px;
+				vertical-align:center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class=" aa aa bb aa cc aa "></div>
+		<input type="text" value='classname aa dd' id='text' class='text'/>
+		<input type="button" value='addClass' id='addClass' />
+		<input type="button" value='removeClass' id='removeClass' />
+		<input type="button" value='toggleClass' id='toggleClass' />
+		<script type="text/javascript">
+			var oA= getClass("aa")[0];	
+			document.getElementById('addClass').onclick = function (){ 
+				var cName = getClass('text')[0].value;	
+				addClass(oA,cName);
+				oA.innerHTML = oA.className;
+			};
+			document.getElementById('removeClass').onclick = function (){
+				var cName = getClass('text')[0].value;	
+				removeClass(oA,cName);
+				oA.innerHTML = oA.className;
+			};
+			document.getElementById('toggleClass').onclick = function (){
+				var cName = getClass('text')[0].value;	
+				toggleClass(oA,cName);
+				oA.innerHTML = oA.className;
+			};
+
+			function addClass(obj , cName){
+				
+				var cArr = obj.className.split(' ');
+				var classArr = cName.split(' ');
+				for (var i= 0;i<classArr.length ; i++ )
+				{
+					var cJudge = true;
+					for (var j= 0;j< cArr.length ; j++ )
+					{
+						
+						if (!cArr[j])
+						{
+							cArr.splice(j,1);
+							continue;
+						}
+						if (classArr[i] == cArr[j])
+						{
+							cJudge = false;
+						}
+					}
+					cJudge &&  cArr.push(classArr[i]) ;
+				}
+				obj.className = cArr.join(' ');
+				
+			};
+
+			function removeClass(obj , cName){
+				var cArr = obj.className.split(' ');
+				var classArr = cName.split(' ');		
+				for (var i= 0;i<classArr.length ; i++ )
+				{
+					for (var j= cArr.length-1 ;j >= 0 ; j--)
+					{
+						if (!cArr[j])
+						{
+							cArr.splice(j,1);
+							continue;
+						}
+						if (classArr[i] == cArr[j])
+						{
+							cArr.splice(j,1);
+						}
+					}
+				}
+				obj.className = cArr.join(' ');
+			};
+			
+
+			function toggleClass(obj , cName){
+				var cArr = obj.className.split(' ');
+				var classArr = cName.split(' ');
+				for (var i= 0;i<classArr.length ; i++ )
+				{
+					var cJudge = true;
+					for (var j= cArr.length-1 ; j >= 0 ; j--)
+					{
+						if (!cArr[j])
+						{
+							cArr.splice(j,1);
+							continue;
+						}
+						if (classArr[i] == cArr[j])
+						{
+							cArr.splice(j,1);
+							cJudge = false;
+						}
+					}
+					cJudge &&  cArr.push(classArr[i]) ;
+				}
+				obj.className = cArr.join(' ');
+			};
+
+			function getClass(cName ,obj){
+				var obj = obj || document;
+				if(obj.getElementsByClassName)
+				{
+					return obj.getElementsByClassName(cName);
+				}
+				var arr=[];
+				var allE = obj.getElementsByTagName("*");
+				for (var i=0;i<allE.length;i++ )
+				{
+					var classArr = allE[i].className .split(" ");
+					for (var j=0;j<classArr.length ;j++ ){
+						if (classArr[j]==cName){
+							arr.push(allE[i]);
+							break;
+						};
+					};
+					
+				};
+				return arr; 
+			};
+
+		</script>
+	</body>
+</html>

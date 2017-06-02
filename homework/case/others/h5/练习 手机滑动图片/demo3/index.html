@@ -1,0 +1,131 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Generator" content="CC1.0®">
+    <meta name="Author" content="CC.成琛">
+    <mate name="copyright" content="版权信息">
+    <title>网站标题</title>
+    <meta name="Keywords" content="关键字,关键字">
+    <meta name="Description" content="网页内容描述信息">
+
+    <link rel="shortcut icon" href="ico.ico">   <!--添加PC网站ICO图标-->
+    <link rel="apple-touch-icon" href="ico.ico"> <!--添加移动网站ICO图标-->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+
+<style>
+	*{margin:0; padding:0;}
+	body{background:#f3f2f3;font-size:0.5rem;}
+	#sectBox{width:100%; overflow:hidden;}
+	#imgList{width:40rem;overflow:hidden;}
+	#imgList img{width:10rem;float:left;}
+	#imgBtns{height:0.3rem;
+			 padding:0.2rem 0;
+			 margin:0;
+			 text-align:center;
+			 font-size:0.25rem;
+			 color:#ff0066;
+			 }
+	#imgBtns span{width:0.3rem;
+				  height:0.3rem;
+				  margin:0 0.1rem;
+				  border:1px solid red;
+				  display:inline-block;
+				  box-sizing:border-box;
+				  border-radius:100%;				 
+				  }
+	#imgBtns .active{background:#00cc00; color:#FFF;}
+</style>
+</head>
+<body>
+<section id="sectBox">
+    <div id="imgList">
+        <img src="img/1.jpg" />
+        <img src="img/2.jpg" />
+        <img src="img/3.jpg" />
+        <img src="img/4.jpg" />
+    </div>
+
+</section>
+<p id="imgBtns">
+	<span class="active"></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</p>
+<script src="js/index.js"></script>
+<script>
+	// 获取 html第0个
+	document.getElementsByTagName("html")[0].style.fontSize=window.screen.width/10+"px";
+
+	document.ontouchmove=function(e){
+		e.preventDefault();
+	};
+
+	window.onload=function(){
+		var oimgList=document.getElementById("imgList");
+		var aBtns=document.getElementById("imgBtns").children;
+		var iScroll=0;
+		var iStartX=0;
+		var iStartPageX=0;
+		var iNow=0;
+		var oTimer=0;
+		oimgList.innerHTML+=oimgList.innerHTML;
+		oimgList.style.width=oimgList.clientWidth*2+"px";
+
+	function autoPlay(){
+		oTimer=setInterval(function(){
+			iNow++;	
+			next();
+		},2000);
+	}
+	autoPlay();
+
+	oimgList.addEventListener("touchstart",fnStart,false);
+	function fnStart(ev){
+		clearInterval(oTimer);
+		clearInterval(oimgList.timer);
+		if(iNow<=0){
+			iNow+=aBtns.length;
+			iScroll=-iNow*window.screen.width;
+			css(oimgList, "translateX", iScroll);
+		}
+		iStartPageX=ev.changedTouches[0].pageX;
+		iStartX=iScroll;
+	};
+
+	oimgList.addEventListener("touchmove",fnMove,false);
+	function fnMove(ev){
+		var iDis=ev.changedTouches[0].pageX-iStartPageX;
+		iScroll=iStartX+iDis;
+		css(oimgList, "translateX", iScroll);
+	};
+
+	oimgList.addEventListener("touchend",fnEnd,false);
+	function fnEnd(ev){
+		var iDis=ev.changedTouches[0].pageX-iStartPageX;
+		var iNub=Math.round(iDis/window.screen.width);
+		iNow-=iNub;
+		next();
+		autoPlay();
+	};
+	function next(){
+		iScroll=-iNow*window.screen.width;
+		for(var i=0;i<aBtns.length;i++){
+			aBtns[i].className="";
+		}
+		aBtns[iNow%aBtns.length].className="active";
+		if(iNow>=aBtns.length){
+			tweenMove(oimgList,{translateX:iScroll},500,"easeOut",function(){
+				iNow=iNow%aBtns.length;
+				iScroll=-iNow*window.screen.width;
+				css(oimgList, "translateX", iScroll);
+			});
+		}else{
+			tweenMove(oimgList,{translateX:iScroll},500,"easeOut");
+		}
+
+	 }
+};
+</script>
+</body>
+</html>

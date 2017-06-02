@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>字体相关,可拖动</title>
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        img{
+            border:0;
+        }
+        ol, ul ,li{list-style: none;} 
+        html,body{
+            font-size:625%;
+        }
+        body{
+            font-size:.16rem;
+        }
+        .con{
+            width:70%;
+            padding:0 5%;
+            height:1.2rem;
+            line-height: 1.2rem;
+            margin:.5rem auto;
+            box-shadow:  0 0 30px -5px #000;
+            text-align: justify;
+            overflow:hidden;
+        }
+        .con::after{
+            content:'';
+            display: inline-block;
+            width:200%;
+        }
+        span{
+            color:#fff;
+            font: .6rem/1.2rem 'Kaiti'; 
+            vertical-align: middle;
+            display:inline-block;
+            /*display:inline-block; */
+            /* 疑问 为何这里把span inline1-block就会产生bug, 两端不能平均分配空间*/
+        }
+        #nav span{    
+            text-shadow: .01rem .01rem 0.02rem #000 ;
+        }
+        #box span{
+            text-shadow:0 0 .01rem #FFC286, 0 0 .02rem #FFC68C ,0 0 .04rem #FF8040,0 0 .06rem #FFA346,0 0 .09rem #FF8000;
+        }
+        /*#box span:nth-child(1)::before {
+            position:absolute;
+            overflow: hidden;
+            top:0;
+            left:0;
+            content:'天';
+            display:inline-block;
+            width:.3rem;
+            height:100%;
+            color:red;
+            padding-left:.3rem;
+        }
+         #box span:nth-child(1)::after {
+            position:absolute;
+            top:0;
+            right:0; 
+            content:'天';
+            display:inline-block;
+            width:.3rem;
+            height:100%;
+            color:blue;
+            overflow: hidden;        
+            padding-right:.3rem;
+            direction:rtl;
+        }
+        #box span:nth-child(2)::before {
+            position:absolute;
+            overflow: hidden;
+            top:0;
+            left:0;
+            content:'气';
+            display:inline-block;
+            width:.3rem;
+            height:100%;
+            color:pink;
+            padding-left:.3rem;
+        }
+         #box span:nth-child(2)::after {
+            position:absolute;
+            top:0;
+            right:0; 
+            content:'气';
+            display:inline-block;
+            width:.3rem;
+            height:100%;
+            color:green;
+            overflow: hidden;        
+            padding-right:.3rem;
+            direction:rtl;
+        }
+        丑哭宝宝了!
+        丑哭宝宝了!!
+        丑哭宝宝了!!!
+        重要的事情说三遍
+        */
+        html {
+              -moz-user-select:none;
+              -webkit-user-select:none;
+              user-select:none;    
+        }
+        
+    </style>
+    <script type="text/javascript">
+        window.onload = function(){
+            (function(){
+                var dragObj = document.getElementsByTagName('span');
+                var dragObjL = dragObj.length;
+                var dragObjArr = [];
+                var dropContainer = document.getElementsByClassName('con');
+                for(var i = 0 ; i< dragObjL; i++){
+                    dragObjArr[i] = dragObj[i];
+                    dragObjArr[i].index = i;
+                    dragObjArr[i].setAttribute('draggable','true');
+                    dragObjArr[i].addEventListener('dragstart', function(e){
+                        var dataT = e.dataTransfer;
+                        dataT.effectAllowedb = 'all';
+                        dataT.setData("text/plain",this.index);
+                    }, false);
+                    dragObjArr[i].addEventListener('drop', function(e){
+                        return false;
+                    }, false);
+                }
+                for (var i = 0; i < dropContainer.length; i++) {
+                    dropContainer[i].addEventListener('dragover',function(e){
+                        e.preventDefault();
+                    },false);
+                    dropContainer[i].addEventListener('dragend',function(e){
+                        e.preventDefault();
+                    },false);
+                    dropContainer[i].addEventListener('drop',function(e){
+                        var dataT = e.dataTransfer;
+                        dataT.dropEffect = 'all';
+                        var index = dataT.getData("text/plain");
+                        this.appendChild(dragObjArr[index]);
+						var space = new Text(' ');
+						this.appendChild(space);
+                        e.preventDefault();
+                    },false)
+                };
+
+
+            })()
+            if(document.onselectstart){document.onselectstart = function(){
+                return false;
+            };};
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <nav id='nav' class='con'>
+            <span>空</span>
+            <span>山</span>
+            <span>新</span>
+            <span>雨</span>
+            <span>后</span>
+        </nav>
+        <div id='box' class='con'>
+            <span>天</span>
+            <span>气</span>
+            <span>晚</span>
+            <span>来</span>
+            <span>秋</span>
+        </div>
+    </header>
+    <p>上面字体可拖动,艺术字体丑哭宝宝了,做完就注释掉了,有疑问:为何把span标签display:inline1-block就会产生bug, 拖拽后两端不能平均分配空间,即使是inline拖拽上来以后空间分配得也不是很平均</p>
+</body>
+</html>

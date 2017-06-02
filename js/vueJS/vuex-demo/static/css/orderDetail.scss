@@ -1,0 +1,38 @@
+.orderDetailPage {
+    margin-top: 0.08rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 0.12rem 0 0.12rem;
+    background: #fff;
+    .item {
+        box-sizing: border-box;
+        padding: 0.1rem 0 0.1rem 0;
+        height: 0.9rem;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #999;
+        img {
+            height: 0.7rem;
+        }
+        .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .right_spec {
+                display: flex;
+                justify-content: space-between;
+                color: #333;
+                .mount {
+                    color: #aaa;
+                    font-size: 0.11rem;
+                }
+                .price {
+                    color: #2e485d;
+                }
+            }
+        }
+    }
+    .item:last-child {
+        border-bottom: 0;
+    }
+}

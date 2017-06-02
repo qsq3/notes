@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+ <head>
+	<meta charset="UTF-8">
+	<title>空山</title>
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+
+	</head>
+	<body>
+	position:relative;  相对定位
+		a、不影响元素本身的特性；
+		b、不使元素脱离文档流；
+		c、如果没有定位偏移量，对元素本身没有任何影响；
+
+		定位元素位置控制
+			top/right/bottom/left  定位元素偏移量。
+	position:absolute;  绝对定位
+		a、使元素完全脱离文档流；
+		b、使内嵌支持宽高；
+		c、块属性标签内容撑开宽度；
+		d、如果有定位父级相对于定位父级发生偏移，没有定位父级相对于整个文档发生偏移；
+		e、相对定位一般都是配合绝对定位元素使用；
+
+		z-index:[number]；  定位层级
+		a、定位元素默认后者层级高于前者；
+		b. 定位元素的宽高值用百分比的情况下,是以其定位父级来计算的;
+		   非定位元素则是以其直接父级来计算;
+	
+    fixed定位会受父元素fixed定位的影响;
+    在chrome22+的浏览器中，position为fixed总是会创建新的重叠上下文，所以子fixed元素在此时会以父fixed元素为层叠上下文，子元素的层叠关系会受到父元素的影响。而在非chrome浏览器下子fixed元素并不会创建新的层叠上下文，fixed元素的层叠上下文为最近的层叠上下文。
+     因此，我们应该尽量避免出现fixed元素相互嵌套的问题。如果必须有嵌套的情况，建议修改fixed父元素的z-index值来修正在chrome下fixed子元素的层叠问题。
+             
+        简单来说：
+        opacity值小于1的元素会创建新的层叠上下文
+        opacity值小于1的元素的层叠级别相当于z-index:0的定位元素。此时设置z-index会失效，除非该元素同时为定位元素
+        opacity值小于1的元素如果同时为定位元素时，则该元素将同时具有定位元素和opacity小于1元素的特性之和。换句话说，就是z-index等于“auto”时会被当成z-index等于“0”时创建新的层叠上下文
+
+	把子级z-index设为负数可以使其在非定位父级之下。
+	定位父子关系是无法用z-index:,来设定上下关系的，一定是定位子级在上定位父级在下,
+	
+	IE67中:z-index失效:
+	第一种z-index无论设置多高都不起作用情况。这种情况发生的条件有三个：1、父标签position属性为relative；2、问题标签无position属性（不包括static）；3、问题标签含有浮动(float)属性。
+	解决方法，解决方法有三，1、position:relative改为position:absolute；2、去除浮动；3、浮动元素添加position属性（如relative，absolute等）。
+	IE67中子元素定位的z-index的优先级是以其祖先(最老的)定位父级依次往下(捕获),优先比较的是最远的那个定位父级,
+
+	脱离文档流的定位div(absolute,fixed),不设置宽高的话,可以利用定位拉开宽高;由此可见定位定的是子元素的外边距;
+	
+	设置此属性值为 relative 会保持对象在正常的HTML流中，但是它的位置可以根据它的前一个对象进行偏移。在相对(relative)定位对象之后的文本或对象占有他们自己的空间而不会覆盖被定位对象的自然空间。
+	与此不同的，在绝对(absolute)定位对象之后的文本或对象在被定位对象被拖离正常文档流之前会占有它的自然空间。
+	放置绝对(absolute)定位对象在可视区域之外会导致滚动条出现。而放置相对(relative)定位对象在可视区域之外，滚动条不会出现。
+	其实对于定位的主要问题是要记住每个定位的意义。相对定位是“相对于“元素在文档流中初始位置的，而绝对定位是”相对于“最近的已经定位的祖先元素
+
+	块级元素的绝对居中可用定位:(IE7-不支持left和right同时存在的属性,)
+	父元素用relative进行相对定位
+	position:absolute;
+	left:0;top:0;bottom:0;right:0;
+	margin:auto;
+
+	9. 父级元素是绝对定位，清除浮动	
+	10. （在IE6不支持）父级元素是固定定位，清除浮动 
+	</body>
+</html>

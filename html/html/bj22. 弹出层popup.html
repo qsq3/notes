@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>标题</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- <meta name="format-detection" content="telephone=no, email=no" /> -->
+
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 禁止系统自动添加效果，直接显示设计原图;-->
+    <link rel="apple-touch-icon-precomposed" href="img/tx_64X64.ico">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="" />
+    <link rel="shortcut icon" href="img/tx_64X64.ico">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" defer async="true"  src=""></script>
+    <style type="text/css">
+        /** 清除内外边距 **/
+        body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+        dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+        pre, /* text formatting elements 文本格式元素 */
+        form, fieldset, legend, button, input, textarea, /* form elements 表单元素 */
+        th, td /* table elements 表格元素 */ {
+          margin: 0;
+          padding: 0;
+        }
+
+        /** 重置列表元素 **/
+        ul, ol { list-style: none; }
+
+        /** 重置文本格式元素 **/
+        a { text-decoration: none; }
+    </style>
+
+</head>
+<body>
+<!-- sidebar -->
+<div class="sidebar">
+  <div class="sidebar_wrap">
+    <div 
+      class="sidebar_child sidebar_weixin" 
+      data-target-title="感谢您订阅郴州百米君" 
+      data-target-img="$webdb[www_url]/ks_extends/img/sidebar/weixin.png" 
+      data-target-text="长按二维码关注我们" 
+      >
+      <div class="site-float">订阅<br>我们</div>
+    </div>
+    <div class="sidebar_child sidebar_kefu"
+      data-target-title="热点消息,招商加盟,请联系我们" 
+      data-target-img="$webdb[www_url]/ks_extends/img/sidebar/kefu.png" 
+      data-target-text="长按二维码添加客服微信" 
+    >
+      <div class="site-float"><img src="$webdb[www_url]/ks_extends/img/sidebar/wx-icon.png" alt=""><br>客服</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sidebar{
+    position: fixed;
+    right: 0;
+    z-index: 900;
+    bottom: 60px;
+  }
+  .sidebar_weixin{
+    position: relative;
+  }
+  .site-float {
+    background: rgba(16,174,255,0.9);
+    color: #FFF;
+    padding: 5px;
+    font-size: 0.6em;
+    line-height:1.2;
+    z-index: 9;
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  .sidebar_kefu .site-float{
+    background-color:rgba(70,189,98,0.9);
+  }
+</style>
+
+<!--S popup-->
+<div class="popup">
+  <div class="popup-mask"></div>
+  <div class="popup-msgbox">
+      <div class="popup-msgbox-close" onclick="$('.popup').hide();">×</div>
+      <div class="popup-msgbox-bd">
+          <div class="popup-msgbox-title">提示:</div>
+          <div class="popup-msgbox-con">
+              <p><img src="" alt="" class="popup-msgbox-img"></p>
+              <p class="popup-msgbox-text"></p>
+          </div>
+      </div>
+      <div  class="popup-msgbox-ft" onclick="$('.popup').hide();"><button class="popup-btn" type="button" id=""><span>确定</span></button></div>
+  </div>
+</div>
+<script>
+  $(function(){
+    var popup = $(".popup");
+    $(".sidebar_child").on("click", function(){
+      var _this = $(this),
+          title = _this.data('target-title'),
+          img = _this.data('target-img'),
+          text = _this.data('target-text');
+          popup.find(".popup-msgbox-title").html(title);
+          popup.find(".popup-msgbox-img").attr('src',img);
+          popup.find(".popup-msgbox-text").html(text);
+          popup.fadeIn();
+    })
+  });
+</script>
+<style>
+  .popup{
+    position: fixed;
+    left: 0;
+    top: 0;
+    right:0;
+    bottom:0;
+    width: 100%;
+    height: 100%;
+    z-index: 998;
+    display: none;
+  }
+  .popup-mask{
+      position: relative;
+      z-index: 998;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      opacity: .6;
+      filter: alpha(opacity=60);
+  }
+  .popup-msgbox{
+      position: absolute;
+      z-index: 999;
+      left: 50%;
+      top: 50%; 
+      transform: translate(-50%,-50%);
+      width:70%;
+      background: #fcfcfc;
+      border-radius: 5px;
+      color: #333;
+  }
+  .popup-msgbox-close {
+      font-family: sans-serif;
+      color: #ACACAC;
+      font-size: 20px;
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      text-align: center;
+      position: absolute;
+      right: 0;
+      top: 0;
+  }
+  .popup-msgbox-bd {
+      padding: 15px 20px;
+      font-size: 13px;
+  }
+  .popup-msgbox-title{
+      font-size: 14px;
+      font-weight: bold;
+      vertical-align: middle;
+  }
+  .popup-msgbox-con {
+      font-size: 12px;
+      text-align: center;
+  }
+  .popup-msgbox-img{
+    width:90%;
+  }
+  .popup-msgbox-ft {
+      overflow: hidden;
+      text-align: center;
+      border-top: 1px solid #eaeaea;
+  }
+  .popup-msgbox-ft .popup-btn {
+      font-weight: bold;
+      height: 40px;
+      line-height: 40px;
+      font-size: 14px;
+      box-sizing: border-box;
+      color: #1E96FD;
+      border: none;
+      background: none;
+      padding: 0;
+      text-align: center;
+      outline: 0 none;
+  }
+</style>
+<!--E popup-->
+<!-- /sidebar -->
+</body>
+</html>

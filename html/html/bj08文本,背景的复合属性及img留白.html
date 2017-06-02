@@ -1,0 +1,91 @@
+<!--声明文档类型 html5-->
+<!doctype html>
+<!--最外层结构,声明语言为中文-->
+<html lang="zh-cn">
+<!--头部------------------------------------------------------------------------------------------------------------->
+<head>
+<!--编码方式,gbk,gb2312中文编码,UTF-8国际编码,注意html文档本身也有编码,需更改为一致-->
+<meta charset="UTF-8"/>
+<!--头部三要素------------------------------------------>
+<!--网页标题,搜索引擎权重最高-->
+<title></title>
+<!--网页关键字-->
+<meta name="keywords" content=""/>
+<!--网页描述,80个字以内-->
+<meta name="discription" content=""/>
+<!--新窗口打开链接------------------------------------->
+<base target="_blank" />
+<!--作者------------------------------------------------>
+<meta name="author" content="空山"/>
+<!--编辑工具-->
+<meta name="generator" content="Editplus"/>
+<link rel="stylesheet" type="text/css" href="css/cssReset.css"/>
+<link rel="stylesheet" type="text/css" href="css/ktbjPage.css"/>
+<style>
+body{background:green;}
+</style>
+</head>
+<!--身体标签---------------------------------------------------------------------------------------->
+<body>
+<div id="header">
+    
+</div>
+<div id="main">
+    <textarea rows="100%" cols="100%" readonly="readonly" autofocus="autofocus">
+        font-size:默认16px, 正常12-14px, 一般最小10px;
+        word-spacing:词间距(只解析空格);
+        letter-spacing:字间距;
+        font-weight:文字粗细;
+        font-style:italic; 文字斜体;bold粗体, body里不能定义;
+        text-indent:2em; 文字首行	缩进2个字体宽度;
+        text-align:center; 文字水平居中
+        line-height:height;文字垂直居中;
+        text-decoration:underline;下划线
+        复合属性
+        font:italic bold font-size/line-height "Microsoft-Yahei";
+
+        <!-- 注意: background-position 背景图片的定位是绝对定位,需要父级元素定位作为参照坐标; -->
+        background:green url("") no-repeat left top/cover fixed;
+        (位移可以用px,%和left,right,top,bottom,center),fixed指固定于屏幕位置显示
+        cover等比例拉伸铺满,如果复合写法没有位移,则不能加入cover;
+        background-size:cover;
+            cover等比例拉伸铺满;
+            contain按比例拉伸,使宽或高最大化,但并不超出浏览器;
+            可设px和%;
+        background-attachment: 默认scroll; fixed指固定于屏幕位置显示
+        
+        background-repeat
+        有时不给宽度,直接padding让元素撑开盒子效果挺好;但一定要注意清除浮动;
+        %用于盒子宽高时,需要注意父级元素有值;
+        html,body,div{height:100%}这样继承下来,可以让浏览器没用滚动条;
+        background-size:100% 100%;这样可以图片拉伸充满屏幕
+        opacity:0.5, 图片和文字50% 透明
+
+        color:transparent; 透明;
+
+        <br />用map属性给图片某块区域添加超链接
+        <img src="img/html5.jpg"  usemap="#imga"/><br />
+        1.用map属性可以给图片某块区域添加超链接,用id属性为map标签定义一个唯一的值;<br />
+        2.为了兼容性,加上name属性,值与id相同;<br />
+        3.为map标签所作用的图片加上usemap属性,属性值为 #id 名称;
+        4.在map标签内嵌套area标签来实现指定区域增加链接
+        <map id="imga" name="imga">
+            <area shape="rect" coords="0,0,40,40" href="01概述.html" alt="123" />
+            <area shape="circle" coords="50,50,20" href="" alt="" />
+        </map>
+
+        
+        (a标签包含)img产生间距的几种解决办法,因为inline 和inline-block会解析空格;
+        1.a{font-size:0}
+        2. a{display:block;line-height:0;}
+        3,a,img{display:block}
+        4,垂直对齐 a{vertical-align:}
+
+        产生原因:内联元素前后会解析空格与换行;而块级元素之间则不会
+    </textarea>
+</div>
+<div id="footer" style="background:blue url('img/xueyuan.jpg') no-repeat;background-size:cover; ">
+    <h1>123</h1>234
+<div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>标题</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 禁止系统自动添加效果，直接显示设计原图;-->
+    <link rel="apple-touch-icon-precomposed" href="img/tx_64X64.ico">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="" />
+    <link rel="shortcut icon" href="img/tx_64X64.ico">
+
+    <style type="text/css">
+
+        /** 清除内外边距 **/
+        body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+        dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+        pre, /* text formatting elements 文本格式元素 */
+        form, fieldset, legend, button, input, textarea, /* form elements 表单元素 */
+        th, td /* table elements 表格元素 */ {
+          margin: 0;
+          padding: 0;
+        }
+
+        /** 重置列表元素 **/
+        ul, ol { list-style: none; }
+
+        /** 重置文本格式元素 **/
+        a { text-decoration: none; }
+        
+    </style>
+</head>
+<body>
+    安装 :
+    1. 更改数据库对应端口 dede/data/common.inc.php
+    系统基本参数设置:
+        0.系统 - 系统设置 - 系统基本参数
+        1. - 其他选项 - 模板引擎禁用标签
+        2. - 站点设置 - 网站名称等
+        3. - 性能选项 - 使用关键词关连文章：是 -seo优化
+        4. - 核心设置 - 邮箱设置
+
+    添加顶级栏目
+        核心 - 栏目管理 - 增加顶级栏目
+        1.目录相对位置
+        2.多站点 : 栏目内容 : 多站点 - 启用 ; 绑定二级域名
+
+    栏目内容内添加文章;
+
+
+
+
+去掉后台验证码
+    dede\data\safe\inc_safe_config.php中设置 :  $safe_gdopen = '1,2,3,4,5,,7';(去掉6)
+
+
+    织梦程序文件夹功能介绍
+        ..../install     安装程序目录，安装完后可删除[安装时必须有可写入权限]
+        ..../dede        默认后台管理目录（可任意改名）
+        ..../include     类库文件目录
+        ..../plus        附助程序目录 
+        ..../member      会员目录
+        ..../images      系统默认模板图片存放目录
+        ..../uploads     默认上传目录[必须可写入]
+        ..../a        默认HTML文件存放目录[必须可写入]
+        ..../templets    系统默认内核模板目录
+        ..../data        系统缓存或其它可写入数据存放目录[必须可写入]
+        ..../special     专题目录[生成一次专题后可以删除special/index.php，必须可写入]
+    1、所有的模板全是放在template/default 这个文件夹内
+
+ 
+
+    常用评论模块 : 多说 畅言
+
+
+
+网站上传到网络和安全性设置
+
+1、空间和域名的购买并解析  
+2、数据库备份和安装 
+3、数据库还原
+4、安全性设置
+
+空间和域名的购买并解析
+一、空间商
+二、域名购买
+三、空间绑定和域名解析
+
+数据库备份和安装
+   一、后台数据库的备份
+  系统->数据库备份->提交    找到后台文件data-backupdata(数据库备份文件)
+  二、dede所有文件打包用Ftp上传到空间
+  三、在空间后台解压文件，并用安装路径访问
+  四、找到织文件 install->index.php.bak  改成index.php 再安装就可以
+  五、找到 install->install_lock.txt文件，把他删除掉
+  六、进入安装流程数据的设置
+
+数据库还原
+    一、数据库还原
+    系统->数据库备份->还原
+    二、站点根网址
+    系统基本参数->站点根网址->改成你的域名
+    三、模板的设置和生成首页静态设置
+
+安全性设置
+    一、删除安装文件  install
+    二、没有使用到的功能文件删除掉(special   member)
+    三、修改默认的后台登录文件夹名称
+    四、data/common.inc.php文件属性设置为444只读（NT）
+    五、强烈建议更改文件夹的默认用户名和密码
+    六、新建目录权限.htaccess
+        1.将data目录转移到非Web目录
+        http://help.dedecms.com/install-use/apply/2011/1110/2129.html
+        我们这里举例“D:\dedecms\v57”为我们系统的根目录,我们需要将目录下的data文件夹(如图1)迁移要上一级目录(非Web目录)，简单的办法直接剪切或者拷贝即可。
+        我们移动上一级目录中,注意观察文件路径。
+        2.修改DEDEDATA目录的配置常量
+        找到系统目录下/include/common.inc.php文件，修改DEDEDATA常量为你的系统目录。
+        3.配置tplcache缓存文件目录
+        进入系统后台，在基本参数-性能选项配置中修改模板缓存目录的tplcache目录为你想对目录。
+        好了，这样我们就将data目录顺利迁移出去了。
+
+    七、防止网站挂马
+    dede可删除文件列表：
+    DEDE管理目录下的
+    file_manage_control.php 
+    file_manage_main.php 
+    file_manage_view.php 
+    media_add.php 
+    media_edit.php 
+    media_main.php 
+    这些文件是后台文件管理器(这俩个功能最多余，也最影响安全，许多HACK都
+    通过它来挂马的。它简直就是小型挂马器，上传编辑木马忒方便了。一般用不上统统删除) 。
+    不需要SQL命令运行器的将dede/sys_sql_query.php 文件删除。避免HACK利用。
+    不需要tag功能请将根目录下的tag.php删除。不需要顶客请将根目录下的digg.php与diggindex.php删除！
+    做到以上三点 保证您的网站安全可靠！
+
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>标题</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 禁止系统自动添加效果，直接显示设计原图;-->
+    <link rel="apple-touch-icon-precomposed" href="">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="" />
+    <link rel="shortcut icon" href="">
+    
+    <style type="text/css">
+
+        /** 清除内外边距 **/
+        body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+        dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+        pre, /* text formatting elements 文本格式元素 */
+        form, fieldset, legend, button, input, textarea, /* form elements 表单元素 */
+        th, td /* table elements 表格元素 */ {
+          margin: 0;
+          padding: 0;
+        }
+
+        /** 重置列表元素 **/
+        ul, ol { list-style: none; }
+
+        /** 重置文本格式元素 **/
+        a { text-decoration: none; }
+        
+    </style>
+</head>
+ <body>
+    <!--
+    把 JavaScript 插入到 HTML 页面中要使用<script>元素。使用这个元素可以把 JavaScript 嵌入到
+HTML页面中，让脚本与标记混合在一起；也可以包含外部的JavaScript文件。而我们需要注意的地方有：  
+ 在包含外部 JavaScript文件时，必须将 src 属性设置为指向相应文件的 URL。而这个文件既可
+以是与包含它的页面位于同一个服务器上的文件，也可以是其他任何域中的文件。 
+ 所有<script>元素都会按照它们在页面中出现的先后顺序依次被解析。在不使用 defer 和
+async 属性的情况下，只有在解析完前面<script>元素中的代码之后，才会开始解析后面<script>元素中的代码。 
+ 由于浏览器会先解析完不使用 defer 属性的<script>元素中的代码，然后再解析后面的内容，
+所以一般应该把<script>元素放在页面最后，即主要内容后面，</body>标签前面。 
+ 使用defer属性可以让脚本在文档完全呈现之后再执行。延迟脚本总是按照指定它们的顺序执行。  
+ 使用 async 属性可以表示当前脚本不必等待其他脚本，也不必阻塞文档呈现。不能保证异步脚
+本按照它们在页面中出现的顺序执行。 
+另外，使用<noscript>元素可以指定在不支持脚本的浏览器中显示的替代内容。但在启用了脚本
+的情况下，浏览器不会显示<noscript>元素中的任何内容。  
+    -->
+JS性能优化笔记
+标签： JavaScript
+2013-08-21 15:11 4131人阅读 评论(0) 收藏 举报
+ 分类： 浏览器兼容（16）   JavaScript（20）   jQuery（7）  
+版权声明：本文为博主原创文章，未经博主允许不得转载。
+
+通过网上查找资料了解关于性能优化方面的内容，现简单整理，仅供大家在优化的过程中参考使用，如有什么问题请及时提出，再做出相应的补充修改。
+ 
+一、 让代码简洁：一些简略的表达方式也会产生很好的优化
+eg：x=x+1;在不影响功能的情况下可以简写为x++;
+ 
+二、 变量名方法名尽量在不影响语意的情况下简单。（可以选择首字母命名）
+eg：定义数组的长度可以取名为：ArrLen而不需要取为ArrayLength。
+ 
+三、 关于JS的循环，循环是一种常用的流程控制。
+JS提供了三种循环：for(;;)、while()、for(in)。在这三种循环中for(in)的效率最差，因为它需要查询Hash键，因此应尽量少用for(in)循环，for(;;)、while()循环的性能基本持平。当然，推荐使用for循环，如果循环变量递增或递减，不要单独对循环变量赋值，而应该使用嵌套的++或–运算符。
+ 
+四、 如果需要遍历数组，应该先缓存数组长度，将数组长度放入局部变量中，避免多次查询数组长度。
+因为我们常常要根据字符串、数组的长度进行循环，而通常这个长度是不变的，比如每次查询a.length，就要额外进行一个操作，而预先把var len=a.length，则就少了一次查询。
+ 
+五、 尽量选用局部变量而不是全局变量。
+局部变量的访问速度要比全局变量的访问速度更快，因为全局变量其实是window对象的成员，而局部变量是放在函数的栈里的。
+ 
+六、 尽量少使用eval。
+每次使用eval需要消耗大量时间，这时候使用JS所支持的闭包可以实现函数模板。
+ 
+七、 减少对象查找
+因为JavaScript的解释性，所以a.b.c.d.e，需要进行至少4次查询操作，先检查a再检查a中的b，再检查b中的c，如此往下。所以如果这样的表达式重复出现，只要可能，应该尽量少出现这样的表达式，可以利用局部变量，把它放入一个临时的地方进行查询。
+ 
+八、 字符串连接。
+如果是追加字符串，最好使用s+=anotherStr操作，而不是要使用s=s+anotherStr。
+如果要连接多个字符串，应该少使用+=，如s+=a;s+=b;s+=c;应该写成s+=a + b + c；
+而如果是收集字符串，比如多次对同一个字符串进行+=操作的话，最好使用一个缓存。怎么用呢？使用JavaScript数组来收集，最后使用join方法连接起来，如下
+var buf = new Array();for(var i = 0; i < 100; i++){ buf.push(i.toString());}var all = buf.join("");
+ 
+九、 类型转换
+1. 把数字转换成字符串，应用"" + 1，虽然看起来比较丑一点，但事实上这个效率是最高的，性能上来说：("" +) > String() > .toString() > new String() 
+尽量使用编译时就能使用的内部操作要比运行时使用的用户操作要快。
+String()属于内部函数，所以速度很快，而.toString()要查询原型中的函数，所以速度逊色一些，new String()用于返回一个精确的副本。
+2. 浮点数转换成整型，这个更容易出错，很多人喜欢使用parseInt()，其实parseInt()是用于将字符串转换成数字，而不是浮点数和整型之间的转换，我们应该使用Math.floor()或者Math.round()。Math是内部对象，所以Math.floor()其实并没有多少查询方法和调用的时间，速度是最快的。
+3. 对于自定义的对象，如果定义了toString()方法来进行类型转换的话，推荐显式调用toString()，因为内部的操作在尝试所有可能性之后，会尝试对象的toString()方法尝试能否转化为String，所以直接调用这个方法效率会更高
+ 
+十、 尽量作用JSON格式来创建对象，而不是var obj=new Object()方法。
+因为前者是直接复制，而后者需要调用构造器，因而前者的性能更好。
+ 
+十一、 当需要使用数组时，也尽量使用JSON格式的语法，
+使用JSON格式的语法即直接使用如下语法定义数组：[parrm,param,param...],而不是采用new Array(parrm,param,param...)这种语法。因为使用JSON格式的语法是引擎直接解释的。而后者则需要调用Array的构造器。
+ 
+十二、 对字符串进行循环操作，例如替换、查找，就使用正则表达式。
+因为JS的循环速度比较慢，而正则表达式的操作是用C写成的API，性能比较好。
+ 
+十三、 插入HTML
+很多人喜欢在JavaScript中使用document.write来给页面生成内容。事实上这样的效率较低，如果需要直接插入HTML，可以找一个容器元素，比如指定一个div或者span，并设置他们的innerHTML来将自己的HTML代码插入到页面中。
+ 
+十四、 对象查询
+使用[“”]查询要比.items()更快
+ 
+十五、 定时器
+如果针对的是不断运行的代码，不应该使用setTimeout，而应该是用setInterval。setTimeout每次要重新设置一个定时器。
+ 
+十六、 尽量减少DOM调用
+在Web开发中，JavaScript的一个很重要的作用就是对DOM进行操作。可是对DOM的操作是非常昂贵的，因为这会导致浏览器执行回流 （reflow）操作。我们应该尽可能的减少DOM操作。 
+回流操作主要会发生在几种情况下： 
+* 改变窗体大小 
+* 更改字体 
+* 添加移除stylesheet块 
+* 内容改变哪怕是输入框输入文字 
+* CSS虚类被触发如 :hover 
+* 更改元素的className 
+* 当对DOM节点执行新增或者删除操作或内容更改时。 
+* 动态设置一个style样式时（比如element.style.width="10px"）。 
+* 当获取一个必须经过计算的尺寸值时，比如访问offsetWidth、clientHeight或者其他需要经过计算的CSS值
+解决问题的关键，就是限制通过DOM操作所引发回流的次数: 
+1.在对当前DOM进行操作之前，尽可能多的做一些准备工作，保证N次创建，1次写入。 
+2.在对DOM操作之前，把要操作的元素，先从当前DOM结构中删除： 
+   2.1. 通过removeChild()或者replaceChild()实现真正意义上的删除。 
+   2.2. 设置该元素的display样式为“none”。 
+3.CSS部分 
+另外一个经常引起回流操作的情况是通过style属性对元素的外观进行修改，如element.style.backgroundColor = "blue"; 
+每次修改元素的style属性，都肯定会触发回流操作，要解决这个问题可以： 
+   3.1.使用更改className的方式替换style.xxx=xxx的方式。 
+   3.2.使用style.cssText = '';一次写入样式。 
+   3.3. 避免设置过多的行内样式 
+   3.4. 添加的结构外元素尽量设置它们的位置为fixed或absolute 
+   3.5. 避免使用表格来布局 
+   3.6. 避免在CSS中使用JavaScript expressions(IE only) 
+4.将获取的DOM数据缓存起来。这种方法，对获取那些会触发回流操作的属性（比如offsetWidth等）尤为重要。 
+5.当对HTMLCollection对象进行操作时，应该将访问的次数尽可能的降至最低，最简单的，你可以将length属性缓存在一个本地变量中，这样就能大幅度的提高循环的效率。
+ 
+十七、 重构<script>和<style> 调用方式或合并js文件来优化请求次数，并尽量使用外部链接方式引用
+我们常常在一个HTML文件头中看到这样标记代码:
+<script src="/scripts/a.js"></script>
+<script src="/scripts/b.js"></script>
+<script src="/scripts/c.js"></script>
+大多是情况下，上述代码可以被简化成：
+<script src="/ scripts /d.js"></script>
+其中d.js中引用了a.js/b.js/c.js。通过document.write方法写入。
+ 
+十八、 对于大的JS对象，因为创建时时间和空间的开销都比较大，因此应该尽量考虑采用缓存。
+ 
+十九、 将脚本放到底部。
+脚本一般是用来于用户交互的，建议可以等页面加载完成之后再加载js文件。所以，脚本和CSS正好相反，脚本应该放在页面的底部。
+ 
+二十、 除去JavaScript中的空白区域
+可以用相关工具去除空白注释等,将所有的名称都重新用一个或两个字母来命名将带来显著的改善。（但需要留有一个未验收的备份文件，方便以后维护）
+
+</body>
+</html>

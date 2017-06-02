@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>menu</title>
+		<meta name="keywords" content=""/>
+		<meta name="description" content=""/>
+		<link rel="stylesheet" type="text/css" href="css/cssReset.css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<style type="text/css">
+			body{
+				width:100%;
+				height:100%;
+				background:url('img/bg.jpg') 0 -280px no-repeat fixed;
+			}
+			#menu{
+				width:210px;
+				background:rgba(0,0,0,0.2);
+				margin:20px auto;
+				color:white;
+			}
+			#menu div#logo a {
+				display:block; 
+				text-align:center;
+				padding:10px 0;
+			}
+			#menu>ul>li{
+				width:210px;
+			}
+
+			.title{
+				height:45px;
+				border:1px solid white;
+				font:700 14px/45px "Microsoft Yahei";
+				text-indent:3em;
+				cursor:pointer;
+
+			}
+			.act{
+				background:rgba(200,200,200,0.3);
+			}
+			.title img{
+				margin:0 20px 0 10px;
+				vertical-align:middle;
+			}
+			.subMenu {
+				display:none;
+				
+			}
+
+			.subMenu li a{
+				display:block;			
+				font:500 12px/30px "Microsoft Yahei";
+				/* background:rgba(200,200,200,0.4); */
+				text-align:center;
+				color:white;
+				border:1px solid #999;
+				
+			}
+		</style>
+
+		<script type="text/javascript">
+			
+			$(function(){
+				/*$("#menu>ul>li").click(function(){
+					$(this).find(".title").addClass("act").parent().siblings().find(".title").removeClass("act");
+					$(this).find(".subMenu").slideToggle().parent().siblings().find(".subMenu").slideUp();
+				});
+				$("#menu ul li .subMenu li a").click(function(event){
+					if(event.stopPropagation){
+						event.stopPropagation(); //最新浏览器→阻止冒泡事件发生 IE并不都认识
+					}else if(window.event){
+						//IE下阻止冒泡事件 window.event.cancelBubble = ture;谷歌 火狐 O不认识
+						window.event.cancelBubble = true;
+					}
+				});*/
+				$("#menu>ul>li").mouseover(function(){
+					$(this).find(".title").addClass("act").siblings().stop().slideDown(500);
+				});
+				$("#menu>ul>li").mouseout(function(){
+					$(this).find(".title").removeClass("act").siblings().stop().slideUp(500);
+				});
+			
+			
+			
+			});
+		</script>
+
+	</head>
+	<body>
+		<div id="menu">
+			<div id="logo">
+				<a href="00.html" target="main">
+					<img src="img/menu1/logo.png" height="50" title="" />
+				</a>			
+			</div>
+			<ul>
+				<li>
+					<div class="title">
+						<img src="img/menu1/img1.png" width="18" height="18" title=""/>第一章
+					</div>
+					<ul class="subMenu">
+						<li><a href="html/homework1.html" target="main">第一节</a>	</li>
+						<li><a href="html/homework2.html" target="main">第二节</a>	</li>
+						<li><a href="html/homework3.html" target="main">第三节</a>	</li>
+						<li><a href="html/homework4/homework4.html" target="main">第四节</a>	</li>
+						<li><a href="html/homework5.html" target="main">第五节</a>	</li>
+						<li><a href="#" target="main">第六节</a>	</li>
+						<li><a href="#" target="main">第七节</a>	</li>
+						<li><a href="#" target="main">第八节</a>	</li>
+						<li><a href="#" target="main">第九节</a>	</li>
+						<li><a href="#" target="main">第十节</a>	</li>
+					</ul>
+				</li>
+
+				<li>
+					<div class="title">
+						<img src="img/menu1/img2.png" width="18" height="18"  title=""/>第二章
+					</div>
+					<ul class="subMenu">
+						<li><a href="#" target="">第一节</a>	</li>
+						<li><a href="#" target="">第二节</a>	</li>
+						<li><a href="#" target="">第三节</a>	</li>
+						<li><a href="#" target="">第四节</a>	</li>
+						<li><a href="#" target="">第五节</a>	</li>
+						<li><a href="#" target="">第六节</a>	</li>
+						<li><a href="#" target="">第七节</a>	</li>
+						<li><a href="#" target="">第八节</a>	</li>
+						<li><a href="#" target="">第九节</a>	</li>
+						<li><a href="#" target="">第十节</a>	</li>
+					</ul>
+				</li>
+
+				<li>
+					<div class="title">
+						<img src="img/menu1/img3.png" width="18" height="18"  title=""/>第三章
+					</div>
+					<ul class="subMenu">
+						<li><a href="#" target="">第一节</a>	</li>
+						<li><a href="#" target="">第二节</a>	</li>
+						<li><a href="#" target="">第三节</a>	</li>
+						<li><a href="#" target="">第四节</a>	</li>
+						<li><a href="#" target="">第五节</a>	</li>
+						<li><a href="#" target="">第六节</a>	</li>
+						<li><a href="#" target="">第七节</a>	</li>
+						<li><a href="#" target="">第八节</a>	</li>
+						<li><a href="#" target="">第九节</a>	</li>
+						<li><a href="#" target="">第十节</a>	</li>
+					</ul>
+				</li>
+
+				<li>
+					<div class="title">
+						<img src="img/menu1/img4.png" width="18" height="18"  title=""/>第四章
+					</div>
+					<ul class="subMenu">
+						<li><a href="" target="">第一节</a>	</li>
+						<li><a href="" target="">第二节</a>	</li>
+						<li><a href="" target="">第三节</a>	</li>
+						<li><a href="" target="">第四节</a>	</li>
+						<li><a href="" target="">第五节</a>	</li>
+						<li><a href="" target="">第六节</a>	</li>
+						<li><a href="" target="">第七节</a>	</li>
+						<li><a href="" target="">第八节</a>	</li>
+						<li><a href="" target="">第九节</a>	</li>
+						<li><a href="" target="">第十节</a>	</li>
+					</ul>
+				</li>
+				
+			
+			
+			
+
+
+
+
+
+
+
+
+
+
+			</ul>
+		</div>
+	</body>
+</html>

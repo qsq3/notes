@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>JS支持</title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+        <script src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/js/lib/jquery-1.10.2_d88366fd.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body class="container">
+	    <div class="row">
+            <div class="h2 page-header">概述</div>
+            <div class="row">
+                BootStrap.js文件其实是有12个js文件组成的
+
+                选项卡  (Tab)  tab.js      动画过渡(Transitions)  transition.js    
+                    
+                模态对话框(Modal)  modal.js           警告框(Alert) alert.js
+                
+                按钮(Buttons) button.js           折叠/手风琴(Collapse) collapse.js
+                
+                轮播图(Carousel)carousel.js    下拉菜单(Dropdown) dropdown.js
+                
+                滚动侦测(Scrollspy)scrollspy.js   自动定位浮标(Affix) affix.js
+                
+                弹出框(Popover) popover.js        提示框 (Toltips) tooltip.js
+                
+            </div>
+            <div class="row">
+                三种触发方式：
+            
+                1：参数声明  data-*;
+                
+                2：javascript事件触发
+                
+                3：javascript监听事件
+                 <!--
+
+            描述：data-toggle 代表触发modal对象
+                  data-target 代标触发哪个modal对象
+                  data-backdrop true 代表单击背景对象框就消失，static则代表单击不会关闭
+                  data-keyboard true 用ESc按键可以关闭弹出框 ，false代表不能关闭弹出框
+                  data-show true代表直接显示 ，false代表不直接显示
+        -->
+            </div>
+            <hr />
+        </div>
+	    <div class="row">
+            <div class="h2 page-header">导航选项卡  (Tab)  tab.js </div>
+            <div class="row">
+            <!--
+                描述：导航JS知识点
+            -->
+            <!--tab页样式导航 nav-tabs样式作用：水平方向展示 出现边框-->
+                <div class="h3 page-header">选项卡导航 tab.js</div>
+                 <ul class = "nav nav-tabs" id = "navTabs"> 
+                    <!--如果不是A标签，就用 data-target属性表示目标内容-->
+                    <li class="active"><a href="#news" data-toggle="tab">新闻</a></li>                
+                    <li><a href="#music" data-toggle="tab">音乐</a></li>
+                    <li><a href="#movie" data-toggle="tab">电影</a></li>
+                    <li><a href="#video" data-toggle="tab">视频</a></li>
+                    <li><a href="#sports" data-toggle="tab">体育</a></li>
+                 </ul>
+                 
+                 <br />
+                 <div class = "tab-content">
+                    <div class ="tab-pane active" id ="news">news content</div>
+                    <div class ="tab-pane" id ="music">music content</div>
+                    <div class ="tab-pane" id ="movie">movie content</div>
+                    <div class ="tab-pane" id ="video">video content</div>              
+                    <div class ="tab-pane" id ="sports">sports content</div>
+    
+                 </div>
+                <script>
+                    //先禁用 data-*属性的触发事件,禁用所有
+                    //$(document).off(".data-api");
+                    
+                    //解除特定插件的事件绑定，只要将插件名和data-api链接在一起作为参数使用。如下所示：
+                    $(document).off('.tab.data-api');//.tab对应上方js组件名
+                    
+                    //调用bootStrap为tab头点击封装的方法。
+                    $("#navTabs a").click(function(){
+                        alert("您确认要进入"+this.href+"页面");
+                        $(this).tab("show");
+                    });
+                    
+                    //给a标签绑定事件  show shown hide hidden
+                    $("#navTabs a").on("show.bs.tab",function(e){
+                        var value ="what is show.bs.tab doing? "
+                        value +="e.target="+e.target;
+                        //value += "---e.relatedTarget="+e.relatedTarget;
+                        console.log(value);
+                    }).on("shown.bs.tab",function(e){
+                        var value ="what is shown.bs.tab doing? "
+                        value +="e.target="+e.target;
+                        //value += "---e.relatedTarget="+e.relatedTarget;
+                        console.log(value);
+                    }).on("hide.bs.tab",function(e){
+                        var value ="what is hide.bs.tab doing? "
+                        value +="e.target="+e.target;
+                        //value += "---e.relatedTarget="+e.relatedTarget;
+                        console.log(value);
+                    }).on("hidden.bs.tab",function(e){
+                        var value ="what is hidden.bs.tab doing? "
+                        value +="e.target="+e.target;
+                        //value += "---e.relatedTarget="+e.relatedTarget;
+                        console.log(value);
+                    }); 
+                </script>
+            </div>
+            <div class="row">
+                <div class="h3 page-header">胶囊式导航 pills 也是用的tab.js</div>
+                 <!--tab页样式导航 nav-tabs样式作用：水平方向展示 出现边框-->
+                 <ul class = "nav nav-pills" id = "navPills"> 
+                    <!--class="active" 表示选中当前tab页,高亮显示 通过js控制tab切换-->
+                    <li class="active"><a href="#news2" data-toggle="pill">新闻</a></li>  <!---->
+                    <li><a href="#music2" data-toggle="pill">音乐</a></li>
+                    <li><a href="#movie2" data-toggle="pill">电影</a></li>
+                    <li><a href="#video2" data-toggle="pill">视频</a></li>
+                    <li><a href="#sports2" data-toggle="pill">体育</a></li>
+                 </ul>
+                 <br />
+                 <div class = "tab-content">
+                    <div class ="tab-pane active" id ="news2">news content</div>
+                    <div class ="tab-pane" id ="music2">music content</div>
+                    <div class ="tab-pane" id ="movie2">movie content</div>
+                    <div class ="tab-pane" id ="video2">video content</div>              
+                    <div class ="tab-pane" id ="sports2">sports content</div>
+                 </div>
+                 <script>
+                    //$(document).off(".tab.data-api");
+                    $("#navPills a").click(function(){
+                        $(this).tab("show");
+                    });
+                </script>
+            </div>
+            <hr />
+        </div>
+        
+        <div class="row">
+            <div class="h2 page-header">动画过渡(Transitions)  transition.js    </div>
+            <div class="row">
+                <a  data-toggle="modal"   href="#myModalA">I am a A click me</a>
+                <div class = "modal fade" id = "myModalA">
+                    <div class = "modal-dialog modal-sm">
+                        <div class = "modal-content">
+                            <div class ="modal-header">
+                                <button type = "button" class = "close" data-dismiss = "modal">
+                                    <span aria-hidden = "true">&times;</span>
+                                    <span class= "sr-only">Close</span>
+                                </button>
+                                <h4 class = "modal-title">PopDiv show</h4>
+                            </div>
+                            <div class = "modal-body">
+                                <p>It would be show  the transition</p>
+                            </div>
+                            <div class = "modal-footer">
+                                <button class ="btn btn-default" type="button" data-dismiss = "modal">Close</button>
+                                <button class ="btn btn-default" type="button">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>           
+            </div>
+            <hr />
+        </div>
+        
+	    <div class="row">
+            <div class="h2 page-header">模态对话框(Modal)  modal.js</div>
+            <!--
+                描述：data-toggle 代表触发modal对象
+                      data-target 代标触发哪个modal对象
+                      data-backdrop true 代表单击背景对象框就消失，static则代表单击不会关闭
+                      data-keyboard true 用空格 回车按键可以关闭弹出框 ，false代表不能关闭弹出框
+                      data-show true代表直接显示 ，false代表不直接显示
+            -->
+            <div class="row">
+                <button class = "btn btn-primary" type="button" id="myBtn"
+                data-toggle="modal"  
+                data-keyboard ="false"
+                data-target="#myModal">I am a button click me</button>
+                
+                <div class = "modal fade" id = "myModal"> <!--fade表示隐藏 -->
+                    <div class = "modal-dialog modal-sm">
+                        <div class = "modal-content">
+                            <div class ="modal-header">
+                                <button type = "button" class = "close" data-dismiss = "modal"> <!--data-dismiss 声明关闭框-->
+                                    <span aria-hidden = "true">&times;</span>
+                                    <span class = "sr-only">Close</span><!--sr-only表示隐藏,只提供给屏幕阅读器正确读取 -->
+                                </button>
+                                <h4 class = "modal-title">PopDiv show</h4>
+                            </div>
+                            <div class = "modal-body">
+                                <p>模态对话框(Modal)的弹框</p>
+                            </div>
+                            <div class = "modal-footer">
+                                <button id ="myBtnClose" class ="btn btn-default" type="button" data-dismiss = "modal">Close</button>
+                                <button class ="btn btn-default" type="button">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+//                  $(document).off(".modal.data-api");
+//                  /*用js事件触发*/
+//                  $(document).ready(function(){
+//                          $("#myBtn,#myBtnClose").click(
+//                              function(){
+//                                  $("#myModal").modal("toggle");
+//                              });
+//                      });
+                </script>
+            </div>
+            <hr />
+        </div>
+        
+	    <div class="row">
+            <div class="h2 page-header">警告框(Alert) alert.js</div>
+            <div class="row">
+                <div class = "alert alert-danger" id= "myAlert">
+                    alert提示信息                
+                    <button class = "close" data-dismiss = "alert"  
+                                id = "myCloseBtn">&times;</button>
+                </div>
+                <script>
+                    $(document).off(".alert.data-api");
+                    $("#myCloseBtn").click(function(){
+                        $("#myAlert").alert("close");
+                    });
+                     
+                    $("#myAlert").on("close.bs.alert",function(){
+                        alert("close.bs.alert");
+                    }).on("closed.bs.alert",function(){
+                        alert("closed.bs.alert");
+                        
+                    })
+                    
+                </script>
+            </div>
+            <hr />
+        </div>
+        
+	    <div class="row">
+            <div class="h2 page-header">按钮(Buttons) button.js </div>
+            <div class="row">
+                <!--
+                描述：buttonJS   应用于下载软件，提示正在下载，下载完成 
+            -->         
+                <div>               
+                    <button type="button" class="btn btn-success active" 
+                        id = "myBtn3" 
+                        data-toggle="button" 
+                        data-complete-text="loaded"     <!--可自定义-->
+                        data-loading-text="loading...">btn按钮</button>   
+                </div>               
+                <script>
+                    /*$("#myBtn3").click(function(){
+                        $(this).button("loading");
+                    });*/
+                    $("#myBtn3").click(function(){
+                        $(this).button("loading");
+                        
+                        //$(this).button("complete");
+                        setTimeout(function(){
+                            $("#myBtn3").button("complete");
+                            },1000);
+                    });
+                </script>
+            </div>
+            <hr />
+        </div>
+        
+	    <div class="row">
+            <div class="h2 page-header">折叠/手风琴(Collapse) collapse.js</div>
+            <div class="row">
+                <div class ="panel-group" id = "panelContainer">
+                    <div class = "panel panel-default">
+                        <div class = "panel-heading">
+                            <div class = "h4 panel-title">                          
+                                <a   id = "collapseA" href="#collapseAContent" 
+                                    data-toggle = "collapse" data-parent="#panelContainer">
+                                    collapse A
+                                </a>
+                            </div>
+                        </div>
+                        <div id = "collapseAContent" class = "panel-collapse collapse in"> <!--in表示默认显示-->
+                            <div class = "panel-body">
+                                <p>内置组件-第一个collpase面板</p>           
+                                <p>内置组件-第一个collpase面板</p>       
+                                <p>内置组件-第一个collpase面板</p>       
+                                <p>内置组件-第一个collpase面板</p>       
+                                <p>内置组件-第一个collpase面板</p>       
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class = "panel panel-default">
+                        <div class = "panel-heading">
+                            <div class = "h4 panel-title">
+                                <!----> 
+                                <a  id ="collapseB" href="#collapseBContent" data-toggle = "collapse" data-parent="#panelContainer">
+                                    collapse B
+                                </a>
+                            </div>
+                        </div>
+                        <div id = "collapseBContent" class = "panel-collapse collapse">
+                            <div class = "panel-body">
+                                <p>内置组件-第二个collpase面板</p>           
+                                <p>内置组件-第二个collpase面板</p>       
+                                <p>内置组件-第二个collpase面板</p>       
+                                <p>内置组件-第二个collpase面板</p>       
+                                <p>内置组件-第二个collpase面板</p>       
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class = "panel panel-default">
+                        <div class = "panel-heading">
+                            <div class = "h4 panel-title">
+                                <!-- -->
+                                <a  id = "collapseC" href="#collapseCContent" data-toggle = "collapse" data-parent="#panelContainer"> <!--data-parent定位自己属于哪个容器-->
+                                    collapse C
+                                </a>
+                            </div>
+                        </div>
+                        <div id = "collapseCContent" class = "panel-collapse collapse">
+                            <div class = "panel-body">
+                                <p>内置组件-第三个collpase面板</p>           
+                                <p>内置组件-第三个collpase面板</p>       
+                                <p>内置组件-第三个collpase面板</p>       
+                                <p>内置组件-第三个collpase面板</p>       
+                                <p>内置组件-第三个collpase面板</p>       
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <script>
+                $(document).off(".collapse.data-api");
+                $('.panel-heading').click(function(){
+                    $(this).next().slideToggle(500).parent().siblings().find(".collapse").slideUp(500);
+                    return false;
+                })
+//                  $("#collapseA").click(function (){
+//                      $(".collapse").hide();
+//                      $("#collapseAContent").show();
+//                  });
+//                  $("#collapseB").click(function (){
+//                      $(".collapse").hide();
+//                      $("#collapseBContent").show();
+//                  });
+//                  $("#collapseC").click(function (){
+//                      $(".collapse").hide();
+//                      $("#collapseCContent").show();
+//                  });
+    
+//                  $(".collapse").on("show.bs.collapse",function(){
+//                      alert("show.bs.collapse");
+//                  }).on("shown.bs.collapse",function(){
+//                      alert("shown.bs.collapse");
+//                  }).on("hide.bs.collapse",function(){
+//                      alert("hide.bs.collapse");
+//                  }).on("hidden.bs.collapse",function(){
+//                      alert("hidden.bs.collapse");
+//                  });
+                </script>
+            </div>
+            <hr />
+        </div>
+        
+	    <div class="row">
+            <div class="h2 page-header"> carousel 轮播图</div>
+            <div class="row">
+                <!--
+                data-slide 接受关键字 prev 或 next，用来改变幻灯片相对于当前位置的位置。用在左右的btn按钮
+                data-slide-to 来向轮播床底一个原始滑动索引，data-slide-to="2"  用在tab按钮
+                    将把滑块移动到一个特定的索引，索引从 0 开始计数。
+                data-ride="carousel" 属性用于标记轮播在页面加载时就开始动画播放。
+                data-interval   自动循环每个项目之间延迟的时间量。如果为 false，轮播将不会自动循环。
+                data-pause  默认ture 鼠标进入时暂停轮播循环， false 鼠标离开时恢复轮播循环。
+                data-wrap   轮播是否连续循环。
+                        data-interval ="5000"
+                        data-pause = "false"
+                        data-wrap = "false"
+                -->
+                <div id ="carouselContainer" data-ride = "carousel" 
+                        class ="carousel slide" style= "width:400px;height:300px;"> <!--slide表示加入过度滑动效果-->
+                    <!--轮播个数-->
+                    <ol class = "carousel-indicators">
+                        <li class ="active" data-target = "#carouselContainer" data-slide-to="0">1</li>
+                        <li data-target = "#carouselContainer" data-slide-to="1">2</li>
+                        <li data-target = "#carouselContainer" data-slide-to="2">3</li>
+                        <li data-target = "#carouselContainer" data-slide-to="3">4</li>
+                    </ol>
+                    <!--轮播区内容-->
+                    <div class = "carousel-inner" style= "width:100%;height:300px;">
+                        <div class = "item active">
+                            <a href ="javascript:void(0);"><img class="img-responsive" src = "img/1.jpg"> </a>
+                            <div class= "carousel-caption">
+                                <h3>石头</h3>
+                                <p>橙色的石头</p>
+                            </div>
+                        </div>
+                        <div class = "item">
+                            <a href ="javascript:void(0);"><img class="img-responsive" src = "img/2.jpg"> </a>
+                        </div>
+                        <div class = "item">
+                            <a href ="javascript:void(0);"><img class="img-responsive" src = "img/3.jpg"> </a>
+                        </div>
+                        <div class = "item">
+                            <a href ="javascript:void(0);"><img class="img-responsive" src = "img/4.jpg"> </a>
+                        </div>
+                    </div>
+                    
+                    <!--轮播区左右控制-->
+                    <a class = "left carousel-control" href="#carouselContainer" data-slide="prev">
+                        <span class = "glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a class = "right carousel-control" href="#carouselContainer" data-slide="next">
+                        <span class = "glyphicon glyphicon-chevron-right"></span>
+                    </a>
+                </div>
+            </div>
+                <script>
+                $('.carousel').carousel({  interval: 2000  });
+                    /*$(document).off(".data-api");
+                     * 
+                    //触发轮播效果
+                    $("#carouselContainer").carousel();
+                    
+                    //触发索引效应 未写
+                    
+                    //触发左右箭头指示
+                    $("#carouselContainer a.left").click(function(){
+                        $("#carouselContainer").carousel("prev");
+                    });     
+                    $("#carouselContainer a.right").click(function(){
+                        $("#carouselContainer").carousel("next");
+                    });
+                    */
+                    /*$("#carouselContainer").on("slide.bs.carousel",function(){
+                        alert("slide.bs.carousel");
+                    }).on("slid.bs.carousel",function(){
+                        alert("slid.bs.dropdown");
+                    });*/
+            
+                </script>
+            <hr />
+        </div>
+        
+	    <div class="row">
+            <div class="h2 page-header">下拉菜单(Dropdown) dropdown.js</div>
+            <div class="row">
+                    <!--
+                    1:声明式触发  data-toggle
+                    2:javascript触发 
+                -->
+                <!-- position:relative 为dropdown—menu的绝对定位做个基准 上拉是dropUp-->
+                <div class="dropdown"> 
+                    <!--data-toggle属性用于下拉动作js控制 首先隐藏dropdown-menu class包含的列表元素 ，点击时 open menu-->
+                    <button  class="btn btn-default dropdown" data-toggle="dropdown"  id="dropmenu"> <!-- -->
+                        下拉菜单<span class = "caret"></span>
+                    </button>
+                    <!--无序列表排列 去掉原点 跟父容器绝对定位 absolute  菜单居左 居右 pull-right-->
+                    <ul class="dropdown-menu"> 
+                        <!--dropdown-header把内容设置为disabled -->
+                        <li><a href="javascript:void(0);">html5</a></li>
+                        <li><a href="javascript:void(0);">css3</a></li>
+                        <li><a href="javascript:void(0);">javascript</a></li>
+                        <li><a href="javascript:void(0);">jquery</a></li>
+                    </ul>
+                 </div>
+                <script type="text/javascript">
+                    $(document).off(".dropdown.data-api");
+                    $(".dropdown").dropdown();
+                        
+                    /*$(".dropdown").on("show.bs.dropdown",function(){
+                        alert("show.bs.dropdown");
+                    }).on("shown.bs.dropdown",function(){
+                        alert("shown.bs.dropdown");
+                    }).on("hide.bs.dropdown",function(){
+                        alert("hide.bs.dropdown");
+                    }).on("hidden.bs.dropdown",function(){
+                        alert("hidden.bs.dropdown");
+                    });*/
+                    
+                </script>
+            </div>
+            <hr />
+        </div>
+        
+	    <div class="row scrollspyTest">
+            <div class="h2 page-header">滚动侦测(Scrollspy)scrollspy.js</div>
+            用途: 1.用在导航条上 2.可切换式标签页(只能用js调用,不能使用data属性接口)
+            <div class="row"> 
+                 <!--第一种 导航条里面包含导航+导航头-->
+                <div id= "navbarbar" class="navbar navbar-default">
+                    <!-- navbar-header :float:left-->
+                    <div class = "navbar-header"> 
+                        <a href="javascript:void(0);" class = "navbar-brand">滚动监听</a>                   
+                    </div>
+                    <div class = "collapse navbar-collapse">
+                        <ul class = "nav navbar-nav">
+                            <li><a href="#news3">新闻</a></li>
+                            <li><a href="#music3">音乐</a></li>
+                            <li><a href="#movie3">电影</a></li>
+                            <li><a href="#video3">视频</a></li>
+                        </ul>
+                    </div>  
+                </div>
+                 <!--第二种样式-->
+                <div id="nav-pills" class="nav-pills3 col-md-3">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="#news3">新闻</a></li>
+                        <li><a href="#music3">音乐</a></li>
+                        <li><a href="#movie3">电影</a></li>
+                        <li><a href="#video3">视频</a></li>
+                    </ul> 
+                 </div>
+                 
+                 <!--注意,data-target必须指向nav的父级或以上 这里 .nav-pills3  #nav-pills #navbarbar等都可以
+                     data-spy="affix" 为附加导航。然后使用偏移量来控制其位置。;
+                 -->
+                <div class = "container  col-md-9" id = "scrollContent" data-spy="scroll" data-target=".scrollspyTest"  
+                        style="height: 300px;overflow: auto;position: relative;border:1px solid red;">  
+                    <h3 id="news3">新闻</h3>
+                        <p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p>
+                        <p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p>
+                        <p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p>
+                        <p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p><p>新闻</p>
+                    <h3 id="music3">音乐</h3>
+                        <p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p>
+                        <p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p>
+                        <p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p>
+                        <p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p><p>音乐</p>
+                    <h3 id="movie3">电影</h3>
+                        <p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p>
+                        <p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p>
+                        <p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p>
+                        <p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p><p>电影</p>
+                    <h3 id="video3">视频</h3>
+                        <p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p>
+                        <p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p>
+                        <p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p>
+                        <p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p><p>视频</p>
+                     
+                </div>            
+                <script>
+                    $(document).off(".scrollspy.data-api"); //不能用此方法禁用
+                    /*$("#scrollContent").scrollspy({target: "#navbarbar'});*/
+                    /*$("#navbarbar").on("activate.bs.scrollspy",function(){
+                        alert(" scroll to next");
+                    })
+                    */
+                    
+                </script>
+            </div>
+            <hr />
+        </div>
+        
+	    <div class="row">
+            <div class="h2 page-header">提示框 (Toltips) tooltip.js</div>
+            <div class="row">
+                <!--
+                描述：Tip   应用于简单的提示信息，其实就是原html的title属性
+                but 不能通过data-* 方式进行触发
+                
+                data-animation  boolean 提示工具使用 CSS 渐变滤镜效果。
+                data-html   boolean 向提示工具插入 HTML
+                data-placement  规定如何定位提示工具（即 top|bottom|left|right|auto）。
+                data-original-title 如果未指定 title 属性，则 title 选项是默认的 title 值。
+                data-trigger    定义如何触发提示工具： click| hover | focus | manual。 默认hover
+                data-delay  延迟显示和隐藏提示工具的毫秒数 
+                            delay:
+                            { show: 500, hide: 100 }
+                
+                -->
+                <br />  <br />  <br />  <br />  <br /> 
+                <div >              
+                    <button type="button" class="btn btn-success "  
+                        data-toggle = "tooltip"
+                        title='我是老大' 
+                        data-original-title="<html>老大不在我才显示,我知道你是个按钮呢<html>" 
+                        data-placement="top"
+                        data-animation = "false"    
+                        data-html ="true"
+                        data-delay = "100"
+                        id = "myBtn5">                   
+                        我是一个用于tooltip的按钮
+                    </button>       
+                      
+                </div>               
+                <script>
+                    //$(document).off(".data-api");
+                    //$("[data-toggle='tooltip']").tooltip();
+                    $("#myBtn5").tooltip();
+                    
+                    /*$("[data-toggle='tooltip']").tooltip({
+                        placement:"right"            
+                    });
+                    */
+                    
+                    $("[data-toggle='tooltip']").on("show.bs.tooltip",function(){
+                        alert("show.bs.tooltip");
+                    }).on("shown.bs.tooltip",function(){
+                        alert("shown.bs.tooltip");
+                    }).on("hide.bs.tooltip",function(){
+                        alert("hide.bs.tooltip");
+                    }).on("hidden.bs.tooltip",function(){
+                        alert("hidden.bs.tooltip");
+                    })
+                    
+                </script>
+            </div>
+            <hr />
+        </div>
+        
+	    <div class="row">
+            <div class="h2 page-header">弹出框(Popover) popover.js</div>
+            <div class="row">
+                  <!--
+                描述：popover 不同与title的是因为可以有内容提示              
+                data-animation  boolean 提示工具使用 CSS 渐变滤镜效果。
+                data-html   boolean 向提示工具插入 HTML
+                data-placement  规定如何定位提示工具（即 top|bottom|left|right|auto）。
+                data-title  如果未指定 title 属性，则 title 选项是默认的 title 值。
+                data-trigger    定义如何触发提示工具： click| hover | focus | manual。 
+                data-content    如果未指定 data-content 属性，则使用默认的 content 值。
+                data-delay  延迟显示和隐藏提示工具的毫秒数 
+                            delay:
+                            { show: 500, hide: 100 }
+            -->
+            <div class="h3 page-header">popover 提示框</div>   
+            <br />
+            <br />
+            <br />
+            <br />
+            <div>               
+                <button type="button" class="btn btn-success "  
+                    data-toggle = "popover"
+                    data-original-title="<html>title:我知道你是个popover按钮呢<html>" 
+                    data-content = "content:要做一个button,需要学习好多的内容"
+                    data-palcement="top"
+                    data-animation = "false"    
+                    data-html ="true"
+                    data-delay = "1000"
+                    data-trigger = "hover" 
+                    id = "myBtn">
+                    我是一个用于popover的按钮
+                </button>                    
+            </div>               
+
+            <script>
+                     
+                
+                $("[data-toggle='popover']").popover();
+                
+                $("[data-toggle='popover']").on("show.bs.popover",function(){
+                    alert("show.bs.popover");
+                }).on("shown.bs.popover",function(){
+                    alert("shown.bs.popover");
+                }).on("hide.bs.popover",function(){
+                    alert("hide.bs.popover");
+                }).on("hidden.bs.popover",function(){
+                    alert("hidden.bs.popover");
+                });
+                
+            </script>
+            </div>
+            <hr />
+        </div>
+        
+	    
+	</body>
+</html>

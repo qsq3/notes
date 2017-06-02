@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>a21 event事件对象,this,call(),clientX pageX拖拽;冒泡捕获.html</title>
+		<style type="text/css">
+			
+
+			#one{
+				height:300px;
+				width:300px;
+				background:yellow;
+				position: relative;
+			}
+			#two{
+				height:200px;
+				width:200px;
+				background:green;
+				position: absolute;
+				margin:20px;
+				top:300px;
+			}
+				
+			#three{
+				height:100px;
+				width:100px;
+				background:red;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>给元素绑定事件,解绑,冒泡和捕获 </h2>
+		<input type="text" name="" id="" value="" />
+		<div id="show" style="height: 300px;width: 500px;border: 2px solid black;">
+	
+		</div>	
+		<div id="one">
+			<div id="two"></div>
+			<div id="three"></div>
+		</div> 
+		<!--给元素绑定事件,解绑,冒泡和捕获 ,阻止默认事件-->
+		<script type="text/javascript">
+			
+			/***绑定****
+
+			1,obj.addEventListener(事件名(去掉on),事件函数,是否捕获(默认false为冒泡)),IE8-不支持;同一个对象可绑定多个事件函数;
+			2,IE8- obj.attachEvent(事件名(保留on),事件函数); 但事件函数里this默认指向window. 
+			3,事件触发顺序: 1,子父元素间的顺序按捕获/冒泡顺序,同一元素的事件触发按绑定的顺序; 
+			4,兼容写法:*/
+			function on (obj , eName , eFn ){
+				obj.addEventListener?obj.addEventListener(eName,eFn,false):obj.attachEvent("on"+eName,function(){eFn.call(obj)});
+			}
+			/***解绑***
+			1,obj.onclick = fn;	  //同一个对象的相同事件会覆盖之前,只能绑定一个;
+			  obj.onclick = null; //只能解绑所有
+			2.obj.attachEvent(事件名,事件函数);
+			  obj.detachEvent(事件名,事件函数);
+			3.obj.addEventListener(eName,eFn,false);
+			  obj.removeEventListener(eName,eFn,false);
+			  //true - 事件句柄在捕获阶段执行
+			  //false- 默认。事件句柄在冒泡阶段执行
+			4兼容:*/
+			function off (obj , eName , eFn ){
+				obj.removeEventListener ? obj.removeEventListener(eName,eFn,false) : obj.detachEvent("on"+eName,eFn); 
+				//注意,删不掉兼容写法on中的function(){eFn.call(obj)},除非on改成eFn;
+			}
+			//5.另一种兼容
+			function unbind( obj , eName , eFn ){
+				for ( var i=0;i<obj.bindFn.length;i++ )
+				{
+					if ( eFn == obj.bindFn[i].bool )
+					{
+						eFn = obj.bindFn[i].fn;
+					}
+				};
+				obj.attachEvent?obj.detachEvent('on'+eName,eFn):obj.removeEventListener(eName , eFn , false);
+			};
+			function bind(obj , eName , eFn ){
+				obj.bindFn?obj.bindFn.push({bool:eFn}):obj.bindFn=[{bool:eFn}];
+				obj.bindFn[obj.bindFn.length-1].fn=function(){
+					eFn.call( obj );
+				};
+				obj.attachEvent?obj.attachEvent('on'+eName,obj.bindFn[obj.bindFn.length-1].fn):obj.addEventListener(eName ,obj.bindFn[obj.bindFn.length-1].fn , false);
+			};
+
+			/*设置事件的终止冒泡的两种方式;
+				1,eve.cancelBubble= true; 不符合W3C标准.只支持IE.
+				2,eve.stopPropagation(); 符合W3C标准.适用于FireFox等浏览器,不支持IE.
+				3.不是所有的事件都能冒泡，例如：blur、focus、load、unload，（未测试）。
+				4.兼容写法:
+				5.注意 ,只能阻止同种事件函数的冒泡,即:子元素mouseover触发的事件函数内的阻止冒泡,只能阻止父元素的mouseover事件函数, 而不能阻止父元素其他触发事件, 比如mouseenter,click;*/
+				function cBubble(event){
+					if (event.stopPropagation) { 
+							event.stopPropagation(); 
+					}else if (window.event) { 
+						window.event.cancelBubble = true; 
+					};
+				};
+
+
+			//添加一个标识来描述是事件冒泡还是事件捕获,false为冒泡,true为捕获
+			var useCapture = false;
+			//事件的冒泡,从子元素开始向父元素传递;只于DOM结构有关,即使定位远离父元素,依然会触发;
+			var onOne = document.getElementById("one");
+			var onTwo = document.getElementById("two");
+			var onThree = document.getElementById("three");
+			var fn2 = function  () {alert("two2");};
+			/*onOne.addEventListener("click",function(event) { 
+				alert("one");
+				//获取事件对象;
+				var eve = window.event || event;
+			},useCapture);
+
+			onTwo.addEventListener("click",function  () {
+				alert("two");
+			},useCapture); */
+
+		
+			on(onThree,"click",function  () {
+				alert("three");
+			});
+			on(onTwo,"click",fn2);
+			off(onTwo,"click",fn2);
+			
+			/*阻止事件的默认行为，例如click <a>后的跳转~原理: 找到事件的源头-阻止; 
+				• 在W3c中，使用preventDefault（）方法,可以阻止默认行为,但不会阻止冒泡；
+				• 在IE下设置window.event.returnValue = false; 这个未测试;
+
+				* 直接使用return false;的方式会阻止默认行为和冒泡;
+				*/
+				
+			//描述: 通过返回false来取消默认的行为并阻止事件起泡。
+			$("form").bind("submit", function() { return false; })
+			//描述: 通过使用 preventDefault() 方法只取消默认的行为。
+			$("form").bind("submit", function(event){
+			  event.preventDefault();
+			});
+			//描述: 通过使用 stopPropagation() 方法只阻止一个事件起泡。
+			$("form").bind("submit", function(event){
+			  event.stopPropagation();
+			});
+			
+		//	1.禁止选择:
+			//onselectstart 不兼容火狐;可放标签内;
+			var h2 = document.getElementsByTagName("h2")[0];
+			/*h2.onmousedown = function(){
+				return false;
+			}
+			document.onselectstart = function(){
+				return false;
+			}*/
+			
+		//	2,屏蔽右键/自定义右键:
+			var oDiv;
+			document.oncontextmenu = function(e){
+				e = e || window.event;
+				var x = e.clientX;
+				var y = e.clientY;
+				oDiv && oDiv.parentNode.removeChild(oDiv);
+				oDiv = document.createElement("div");
+				oDiv.style.cssText = "height:300px; width:200px; border:3px solid black; background:#eee;position:fixed;left:"+ x+"px; top:"+ y +"px";
+				document.body.appendChild(oDiv);
+				return false;
+			}
+			document.onclick = function(){
+				oDiv.parentNode.removeChild(oDiv);
+				oDiv= null;
+			}
+		
+        
+
+		</script> 
+        //网页中的内容不可选
+        使用 JS 阻止整个网页的内容被选中
+        document.body.onselectstart = function () { 
+            return false; 
+        }
+        // 或
+        document.body.onmousedown = function () { 
+            return false; 
+        }
+
+        css3方法:
+        仅支持非 IE10+的浏览器。IE9-请使用 onselectstart=”return false;” 的方式来实现。
+       .unselect{
+        moz-user-select: -moz-none;
+        -moz-user-select: none;
+        -o-user-select:none;
+        -khtml-user-select:none;
+        -webkit-user-select:none;
+        -ms-user-select:none;
+        user-select:none;
+        }
+        
+        第二种:
+        ::selection {
+            background:transparent;
+            opacity:0;
+        }
+        ::-moz-selection {
+            background:transparent;opacity:0;
+            }
+        ::-webkit-selection {
+            background:transparent;opacity:0;
+        }
+
+         清除选中
+
+        有时候用户选中文字进行复制后，我们使用手动的方式进行选中的清除。
+        使用 JS 清除选中
+        function clearSelections () {
+            if (window.getSelector) {
+                // 获取选中
+                var selection = window.getSelection();
+                // 清除选中
+                selection.removeAllRanges();
+            } else if (document.selection && document.selection.empty) {
+               // 兼容 IE8 以下，但 IE9+ 以上同样可用
+                document.selection.empty();
+                // 或使用 clear() 方法
+                // document.selection.clear();
+            }       
+        }
+        使用 CSS 清除选中
+
+        不考虑低版本 IE 的情况下，我们简单给选中元素添加以上 .unselect 的样式即可。
+
+        简短办法
+        if(window.getSelection){
+
+            window.getSelection().removeAllRanges(); //w3c
+
+        }else  if(document.selection){
+
+            document.selection.empty();//IE
+
+        }
+
+        Js禁止右键菜单 ，禁止选中内容,，禁止拖拽选择 ,禁止复制网页内容
+        <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onbeforecopy="return false" oncopy=document.selection.empty() onselect=document.selection.empty() > 
+
+	</body>
+</html>

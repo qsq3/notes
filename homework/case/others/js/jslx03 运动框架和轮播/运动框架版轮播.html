@@ -1,0 +1,386 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<link rel="stylesheet" href="css/reset.css">
+		<style type="text/css">
+			*{
+				-moz-user-select: none;
+				-o-user-select:none;
+				-khtml-user-select:none;
+				-webkit-user-select:none;
+				-ms-user-select:none;
+				user-select:none;
+				margin:0;
+				padding:0;
+			} 
+			::selection {
+				background:transparent;
+				opacity:0;
+			}
+			::-moz-selection {
+				background:transparent;opacity:0;
+				}
+			::-webkit-selection {
+				background:transparent;opacity:0;
+			}
+			ul{
+				margin:0;
+				padding:0;
+				list-style:none;
+			}
+			#box{
+				width:100px;
+				height:100px;
+				background-color:blue;
+				position:absolute;
+				top:0;
+				left:500px;
+				color:white;
+			}
+			.promo{
+				position:relative;
+				margin:100px auto;
+				width:520px;
+				height:280px;
+				overflow:hidden;
+			}
+			.promo ul.img{
+				position:absolute;
+				top:0;
+				left:-520px;
+				width:5200px;
+				z-index:1;
+			}
+			.promo ul.img li{
+				width:520px;
+			}
+			.promo ul li{
+				float:left;
+			}
+			.promo ul.tab{
+				position:absolute;
+				bottom:6px;
+				left:50%;
+				margin-left:-50px;
+				z-index:10;
+				
+			}
+			.promo ul.tab li{
+				background:#999;
+				width:12px;
+				height:12px;
+				margin:4px;
+				opacity:0.8;
+				border-radius:50%;
+			}
+			.promo .btn p{
+				position:absolute;
+				top:50%;
+				z-index:10;
+				width:24px;
+				height:36px;
+				margin-top:-18px;
+				background-color:#666;
+				opacity:0;
+				font:24px/36px "Microusoft Yahei";
+				text-align:center;
+				color:white;
+			}
+			.promo .btn p.btnR{
+				right:0;
+			}
+			.promo:hover .btn p{
+				opacity:0.8;	
+			}
+			.promo:hover {
+				cursor:pointer;
+			}
+			
+		</style>
+		<script type="text/javascript">
+			window.onload = function(){
+				/*var oBox = document.getElementById("box");
+				act(oBox,"left","100px",1500);
+				function getStyle( obj , attr ){
+					return obj.currentStyle.attr ? obj.currentStyle.attr : getComputedStyle(obj)[attr];
+				}
+				//速度版
+				function act (obj,attr,end,speed){
+					var start = parseInt(getStyle(obj,attr));
+					var end = parseInt(end);
+					if (start >= end){speed = -speed};
+					var timer = setInterval(function(){
+						start += speed;
+						var aspect = speed >= 0 ? start>=end : start<= end
+						if (aspect)
+						{
+							start =end;
+							clearInterval(timer);
+						}
+						obj.style[attr] = start+"px";
+					},15)
+				}*/
+				
+				var index = 0;
+				var oPromo = document.getElementsByClassName("promo")[0];
+				var oImg = document.getElementsByClassName("img")[0];
+				var oTabLi = document.getElementsByClassName("tab")[0].getElementsByTagName("li");
+				var oBtnP =document.getElementsByClassName("btn")[0].getElementsByTagName("p");
+				var oImgw =parseInt(getStyle(oImg.getElementsByTagName("li")[0],"width"));
+				var autoTimer,timer;
+
+				//清除timer,并赋值最终位置;
+				function timerClear(){
+						clearInterval(timer);
+						oImg.style.left = -((index+1)*oImgw)+"px";
+				}
+				//获取样式
+				function getStyle(obj , attr){
+					return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj)[attr];
+				};
+
+				//运行函数
+				function run( ){
+					var last = -((index+1)*oImgw)+"px";	
+					move(oImg,"left",last,1000,"easeOutStrong");
+					index = (index < 0)? oTabLi.length - 1 : index % oTabLi.length;
+					for (var j=0;j<oTabLi.length ;j++  )
+					{
+						oTabLi[j].style.backgroundColor = "#666";
+					}
+					oTabLi[index].style.backgroundColor ="red";
+				}
+
+				//运动框架,时间版
+				function move (obj,attr,last,time,cv){
+					time = time || 500 ;
+					var timeS = new Date();
+					var attrS = parseInt(getStyle(obj ,attr));
+					var attrL = parseInt(last);
+					timer = setInterval(function(){
+						var timeL =new Date();
+						var t = timeL - timeS;
+						if (t >= time)
+						{	
+							t = time;
+							timerClear();
+						}
+						obj.style[attr] = Tween[cv](t,attrS,attrL-attrS,time)+"px";
+						
+					},13)
+				};
+
+				//监听事件
+				for (var i=0;i<oTabLi.length ;i++ )
+				{
+					oTabLi[i].i = i;
+					oTabLi[i].onclick = function(){
+						timerClear();
+						if(index == 0 && this.i == oTabLi.length -1){
+							index = -1;
+						}else if(index == oTabLi.length -1 && this.i == 0){
+							index = oTabLi.length;
+						}else{
+							index = this.i;
+						};
+						run();
+					};
+				}
+				oBtnP[0].onclick = function(){
+					timerClear();
+					index--;
+					run();
+				}
+
+				oBtnP[1].onclick = oBtnP1;
+				function oBtnP1(){
+					timerClear();
+					index++;
+					run();
+				}
+
+				//自动播放
+				autoplay();
+				function autoplay (){
+					autoTimer = setInterval(oBtnP1,2000);
+				};
+				oPromo.onmouseover = function(){
+					clearInterval(autoTimer);
+				};
+				oPromo.onmouseout = function(){
+					autoplay();
+				};
+
+
+				/*
+				** t=已运行的时间(现在时间-初始时间),
+				** b=初始坐标值,
+				** c=移动总距离(结束坐标-初始坐标),
+				** d=运行总时间;
+				*/
+				var Tween = {
+					linear: function (t, b, c, d){  //匀速 
+						return c*t/d + b;
+					},
+					easeIn: function(t, b, c, d){  //加速曲线
+						return c*(t/=d)*t + b;
+					},
+					easeOut: function(t, b, c, d){  //减速曲线
+						return -c *(t/=d)*(t-2) + b;
+					},
+					easeBoth: function(t, b, c, d){  //加速减速曲线
+						if ((t/=d/2) < 1) {
+							return c/2*t*t + b;
+						}
+						return -c/2 * ((--t)*(t-2) - 1) + b;
+					},
+					easeInStrong: function(t, b, c, d){  //加加速曲线
+						return c*(t/=d)*t*t*t + b;
+					},
+					easeOutStrong: function(t, b, c, d){  //减减速曲线
+						return -c * ((t=t/d-1)*t*t*t - 1) + b;
+					},
+					easeBothStrong: function(t, b, c, d){  //加加速减减速曲线
+						if ((t/=d/2) < 1) {
+							return c/2*t*t*t*t + b;
+						}
+						return -c/2 * ((t-=2)*t*t*t - 2) + b;
+					},
+					elasticIn: function(t, b, c, d, a, p){  //正弦衰减曲线（弹动渐入）
+						if (t === 0) { 
+							return b; 
+						}
+						if ( (t /= d) == 1 ) {
+							return b+c; 
+						}
+						if (!p) {
+							p=d*0.3; 
+						}
+						if (!a || a < Math.abs(c)) {
+							a = c; 
+							var s = p/4;
+						} else {
+							var s = p/(2*Math.PI) * Math.asin (c/a);
+						}
+						return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+					},
+					elasticOut: function(t, b, c, d, a, p){    //正弦增强曲线（弹动渐出）
+						if (t === 0) {
+							return b;
+						}
+						if ( (t /= d) == 1 ) {
+							return b+c;
+						}
+						if (!p) {
+							p=d*0.3;
+						}
+						if (!a || a < Math.abs(c)) {
+							a = c;
+							var s = p / 4;
+						} else {
+							var s = p/(2*Math.PI) * Math.asin (c/a);
+						}
+						return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+					},    
+					elasticBoth: function(t, b, c, d, a, p){
+						if (t === 0) {
+							return b;
+						}
+						if ( (t /= d/2) == 2 ) {
+							return b+c;
+						}
+						if (!p) {
+							p = d*(0.3*1.5);
+						}
+						if ( !a || a < Math.abs(c) ) {
+							a = c; 
+							var s = p/4;
+						}
+						else {
+							var s = p/(2*Math.PI) * Math.asin (c/a);
+						}
+						if (t < 1) {
+							return - 0.5*(a*Math.pow(2,10*(t-=1)) * 
+									Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+						}
+						return a*Math.pow(2,-10*(t-=1)) * 
+								Math.sin( (t*d-s)*(2*Math.PI)/p )*0.5 + c + b;
+					},
+					backIn: function(t, b, c, d, s){     //回退加速（回退渐入）
+						if (typeof s == 'undefined') {
+						   s = 1.70158;
+						}
+						return c*(t/=d)*t*((s+1)*t - s) + b;
+					},
+					backOut: function(t, b, c, d, s){
+						if (typeof s == 'undefined') {
+							s = 3.70158;  //回缩的距离
+						}
+						return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+					}, 
+					backBoth: function(t, b, c, d, s){
+						if (typeof s == 'undefined') {
+							s = 1.70158; 
+						}
+						if ((t /= d/2 ) < 1) {
+							return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
+						}
+						return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+					},
+					bounceIn: function(t, b, c, d){    //弹球减振（弹球渐出）
+						return c - Tween['bounceOut'](d-t, 0, c, d) + b;
+					},       
+					bounceOut: function(t, b, c, d){
+						if ((t/=d) < (1/2.75)) {
+							return c*(7.5625*t*t) + b;
+						} else if (t < (2/2.75)) {
+							return c*(7.5625*(t-=(1.5/2.75))*t + 0.75) + b;
+						} else if (t < (2.5/2.75)) {
+							return c*(7.5625*(t-=(2.25/2.75))*t + 0.9375) + b;
+						}
+						return c*(7.5625*(t-=(2.625/2.75))*t + 0.984375) + b;
+					},      
+					bounceBoth: function(t, b, c, d){
+						if (t < d/2) {
+							return Tween['bounceIn'](t*2, 0, c, d) * 0.5 + b;
+						}
+						return Tween['bounceOut'](t*2-d, 0, c, d) * 0.5 + c*0.5 + b;
+					}
+				}
+
+			}
+		</script>
+	</head>
+	<body>
+		<!-- <div id="box">
+			div1
+		</div> -->
+		<div class="promo">
+			<ul class="img">
+				<li><a href="javascript:;"><img src="images/5.jpg" alt=""></a></li>
+				<li><a href="javascript:;"><img src="images/1.jpg" alt=""></a></li>
+				<li><a href="javascript:;"><img src="images/2.jpg" alt=""></a></li>
+				<li><a href="javascript:;"><img src="images/3.jpg" alt=""></a></li>
+				<li><a href="javascript:;"><img src="images/4.jpg" alt=""></a></li>
+				<li><a href="javascript:;"><img src="images/5.jpg" alt=""></a></li>
+				<li><a href="javascript:;"><img src="images/1.jpg" alt=""></a></li>
+			</ul>
+			<ul class="tab">
+				<li style="background-color:red"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<div class="btn">
+				<p>&lt;</p>
+				<p class="btnR">&gt;</p>
+			</div>
+		</div>
+	  
+	</body>
+</html>

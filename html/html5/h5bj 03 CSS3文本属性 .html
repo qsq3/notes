@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+ </head>
+ <body>
+	复习 CSS 文本属性
+white-space：对象内空格的处理方式
+direction：文本流的方向
+unicode-bidi：用于同一个页面里存在从不同方向读进的文本显示。与direction属性一起使用
+
+white-space：对象内空格的处理方式
+	normal	默认。空白会被浏览器忽略
+	nowrap 控制文本不换行
+	pre 空白会被浏览器保留
+	pre-line 合并空白  保留换行符
+	pre-wrap 保留空白  正常换行
+	inherit	规定应该从父元素继承 white-space 属性的值。
+
+direction：文本流的方向
+	ltr 文本从左向右 默认
+	rtl  文本从右往左
+unicode-bidi：用于同一个页面里存在从不同方向读进的文本显示。与direction属性一起使用
+	bidi-override
+
+css3 新增文本属性
+	color:rgba();
+	text-overflow:是否使用一个省略标记（...）标示对象内文本的溢出
+	text-align:文本的对齐方式
+	text-transform:文字的大小写
+	text-decoration:文本的装饰线，复合属性
+	text-shadow:文本阴影
+	text-fill-color:文字填充颜色
+	text-stroke:复合属性。设置文字的描边
+	tab-size:制表符的长度
+	word-wrap:当前行超过指定容器的边界时是否断开单词转行
+rgba()
+	r        red       红色     0-255
+	g        green     绿色     0-255
+	b        blue      蓝色     0-255
+	a        alpha     透明     0-1
+
+
+text-overflow:是否使用一个省略标记（...）标示对象内文本的溢出
+	clip： 默认值 无省略号
+ 	ellipsis：当对象内文本溢出时显示省略标记（...）。
+	注意：该属性需配合over-flow:hidden属性(超出处理)还有	white-space:nowrap(禁止换行)配合使用，否则无法看到效果
+例: .ellipsis{overflow: hidden; text-overflow: ellipsis;white-space: nowrap;} 
+只能用于单行文本,多行用<br/>换行但是效果不行(每行都会有省略并且不能自动换行),后面会讲
+
+text-align:文本的对齐方式
+    css1
+	left:默认值 左对齐
+	right:右对齐
+	center:居中
+	justify： 内容两端对齐(直接子元素需要英文)。(由子行内元素间的空格来均分父元素剩下的空间;由于js添加的元素不会产生行内元素间的空格,使用时要注意额外添加空格)
+    text-justify:inter-ideograp(IE专用,可中文,需测试)
+:after伪类 配合实现导航栏自适应对齐; 
+.nav:after{content:"";display:inline-block;idth:100%;}
+		
+    css3
+	start:开始边界对齐
+	end:结束边界对齐
+
+text-transform:文字的大小写
+    css1
+	none：	默认值 无转换 
+	capitalize： 	将每个单词的第一个字母转换成大写 
+	uppercase：	转换成大写 
+	lowercase：	转换成小写
+    css3
+	full-width：	将左右字符设为全角形式。不支持
+ 	full-size-kana：将所有小假名字符转换为普通假名。不支持
+			例如：土耳其语。
+text-decoration:文本的装饰线，复合属性不兼容,
+  	text-decoration-line ：
+ 	指定文本装饰的种类。相当于CSS1时的text-decoration属性
+	text-decoration-style ：
+	指定文本装饰的样式。
+	text-decoration-color：
+	指定文本装饰的颜色。
+ 	blink： 指定文字的装饰是闪烁。  仅opera和firefox
+text-decoration : #F00 double overline   CSS3实例
+
+text-shadow:文本阴影
+      取值：x   y   blur    color,......
+  	x    	横向偏移
+   	y    	纵向偏移
+	blur      模糊距离(灰度)
+	color    阴影颜色
+
+    案例: 模糊文字
+	p{
+		width:500px;height:100px;margin:100px auto;font-weight:bold;
+		color:blue;font-size:100px;text-align:center;
+		transition:2s;/*css3动画过渡*/
+	}
+	p:hover{
+		color:rgba(0,0,0,0);
+		text-shadow:0 0 20px blue;
+	}
+
+text-fill-color:文字填充颜色,不兼容需前缀 -webkit-;-o-;-moz-;
+text-stroke:复合属性。设置文字的描边,配合前者实现
+	text-stroke-width:文字的描边厚度 
+	text-stroke-color:文字的描边颜色 
+
+tab-size:制表符的长度   默认值为8(一个tab键的空格字节长度)，在pre标签之内才会有显示
+
+
+word-wrap:当前行超过指定容器的边界时是否断开单词转行
+	normal： 默认值
+	允许内容顶开或溢出指定的容器边界。 
+word-wrap:break-word;
+	 内容将在边界内换行。如果需要，单词内部允许断行,(默认尽可能不中断单词,会在行尾空出多余空格,让长单词与URL地址自动换行)。
+break-word : break-all; 设置切断单词的模式,配合word-wrap:break-word;使用(尽量填充每行,不会在行尾空出多余空格);
+/*break-all 分开单词 浏览器任意换行*/
+/*break-word  保留单词*/
+
+//多行文本溢出:
+
+<p>百度（Nasdaq：BIDU）是全球最大的中文搜索引擎、最大的中文网站。2000年1月由李彦宏创立于北京中关村，致力于向人们提供“简单，可依赖”的信息获取方式。“百度”二字源于中国宋朝词人辛弃疾的《青玉案·元夕》词句“众里寻他千百度”，象征着百度对中文信息检索技术的执著追求。</p>
+多行文本溢出实例</p>
+
+//方法1:
+<style>
+p{
+    display:-webkit-box;
+    width:200px;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:5;/*设置文本显示的行数*/
+    overflow:hidden;
+}
+</style>
+
+
+//方法二
+<style>
+    p{
+        position:relative;
+        width:300px;
+        line-height:20px;
+        max-height:100px;
+        overflow:hidden;
+    }
+    p:after{
+        content:"...";
+        position:absolute;
+        right:0;
+        bottom:0;
+        padding-left:20px;
+        background:linear-gradient(to right,transparent 0%,#fff 43%);
+    }
+</style>
+<script>
+    var txt = document.getElementById("txt");
+    var css = document.getElementById("css");
+    var h = txt.scrollHeight;//获取p的滚内容高度
+    if (h <= 100)
+    {
+        css.innerHTML += "#txt:after{content:'';}";
+    }
+</script>
+
+
+/*服务器字体引入自定义字体 -》 svg*/
+@font-face{ /*定义我们自己的字体名称*/
+    font-family:myFont;  /*字体名称*/
+    src:url('font/Fontin_Sans_I_45b.otf') format("opentype");/*字体的地址 格式*/
+    font-weight:normal;/*italic oblique inherit */
+
+}
+h1.font_my{font-family:myFont; font-size:60px;}
+
+修改字体种类字体大小不变
+font-size-adjust  IE不支持 font-size-adjust 属性。
+
+
+.text p{font-size:2em; font-family:'微软雅黑';font-size-adjust:0.43; }
+.text p:nth-child(2){ font-family:'宋体'; }
+.text p:nth-child(3){ font-family:'方正黄草简体'; }
+.text p:nth-child(4){ font-family:'方正小篆体'; }
+.text p:nth-child(5){ font-family:'方正彩云简体'; }
+    /* c = (a / b) s  font-size-adjust:0.43;
+    * c 浏览器中实际显示时的大小
+    * a aspect  值
+    * b 修改之前的aspect  值
+    * s 字体大小
+    */
+
+ </body>
+</html>

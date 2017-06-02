@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> </title>
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    
+</head>
+<body>
+     <!-- HTML -->
+<table id="out" border="1" style="cursor: pointer;">
+    <tr>
+    　　<td>table01</td>
+    　　<td>table02</td>
+    　　<td>table03</td>
+    　　<td>table04</td>
+    　　<td>table05</td>
+    　　<td>table06</td>
+    　　<td>table07</td>
+    　　<td>table08</td>
+    　　<td>table09</td>
+    　　<td>table10</td>
+    </tr>
+</table>
+
+  // JS
+  var out = document.getElementById("out");
+  if(out.addEventListener){
+      out.addEventListener("click",function(e){
+          var e = e||window.event;
+          //IE没有e.target，有e.srcElement
+          var target = e.target||e.srcElement;
+          //判断事件目标是否是td，是的话target即为目标节点td
+          if(target.tagName.toLowerCase()=="td"){
+              changeStyle(target);
+              console.log(target.innerHTML);
+          }
+      },false);
+  }else{
+      out.attachEvent("onclick",function(e){
+          var e = e||window.event;
+          //IE没有e.target，有e.srcElement
+          var target = e.target||e.srcElement;
+          //判断事件目标是否是td，是的话target即为目标节点td
+          if(target.tagName.toLowerCase()=="td"){
+              changeStyle(target);
+              console.log(target.innerHTML);
+          }
+      });
+  };
+};
+
+  function changeStyle(ele){
+      ele.innerHTML = "已点击"
+      ele.style.background="#900";
+      ele.style.color = "#fff"; 
+  }        
+
+
+///////
+原理
+使用事件代理机制，当事件被抛到更上层的父节点的时候，我们通过检查事件的目标对象（target）来判断并获取事件源Li。下面的代码可以完成我们想要的效果：
+
+复制代码
+// 获取父节点，并为它添加一个click事件
+document.getElementById("parent-list").addEventListener("click",function(e) {
+  // 检查事件源e.targe是否为Li
+  if(e.target && e.target.nodeName.toUpperCase == "LI") {
+    // 真正的处理过程在这里
+    console.log("List item ",e.target.id.replace("post-")," was clicked!");
+  }
+});
+复制代码
+为父节点添加一个click事件，当子节点被点击的时候，click事件会从子节点开始向上冒泡。父节点捕获到事件之后，通过判断e.target.nodeName来判断是否为我们需要处理的节点。并且通过e.target拿到了被点击的Li节点。从而可以获取到相应的信息，并作处理。
+/////////////
+
+
+
+  //JQ
+  最新on()方法取替了delegate()方法
+
+复制代码
+$(function(){ 
+        $('#ul1,#ul2').on('click','li',function(){ 
+                if(!$(this).attr('s')) { 
+                $(this).css('background','red'); 
+                $(this).attr('s',true); 
+                }else { 
+                        $(this).css('background','#fff'); 
+                        $(this).removeAttr('s'); 
+                } 
+        }) 
+});
+</body>
+</html>

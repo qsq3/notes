@@ -1,0 +1,278 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CSS Filter属性特效大全-懒人图库</title>
+</head>
+<body bgcolor="#9EB6D8">
+<script language="javascript">
+var styon,ck,co;
+ck=0;
+co=0;
+
+function stya(){
+	if(styon==1){
+		if(ck==60){
+			co=1;
+		}
+		if(ck==0){
+			co=0;
+		}
+		if(co==0){
+			ck=ck+1;
+		}else{
+			ck=ck-1;
+		}
+		document.getElementById('layer1').style.filter="blur(add=true,direction="+ck+",strength="+ck+")";
+		setTimeout("stya()",10);
+	}else{
+		ck=0;
+		co=0;
+		document.getElementById('layer1').style.filter="";
+	}
+}
+
+function styb(){
+	if(styon==2){
+		if(ck==100){
+			co=1;
+		}
+		if(ck==0){
+			co=0;
+		}
+		if(co==0){
+			ck=ck+1;
+		}else{
+			ck=ck-1;
+		}
+		document.getElementById('layer1').style.filter="Wave(Add=0, Freq="+ck+", LightStrength=1, Phase=0,Strength=3)";
+		setTimeout("styb()",10);
+	}else{
+		ck=0;
+		co=0;
+		document.getElementById('layer1').style.filter="";
+	}
+}
+
+function styc(){
+	if(styon==3){
+		if(ck==100){
+			co=1;
+		}
+		if(ck==0){
+			co=0;
+		}
+		if(co==0){
+			ck=ck+1;
+		}else{
+			ck=ck-1;
+		}
+		document.getElementById('layer1').style.filter="Alpha(Opacity="+ck+")";
+		setTimeout("styc()",10);
+	}else{
+		ck=0;
+		co=0;
+		document.getElementById('layer1').style.filter="";
+	}
+}
+
+function styd(){
+	if(styon==4){
+		if(ck==120){
+			co=1;
+		}
+		if(ck==0){
+			co=0;
+		}
+		if(co==0){
+			ck=ck+1;
+		}else{
+			ck=ck-1;
+		}
+		document.getElementById('layer1').style.filter="Alpha(Opacity=0, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX="+ck+", FinishY="+ck+")";
+		setTimeout("styd()",10);
+	}else{
+		ck=0;
+		co=0;
+		document.getElementById('layer1').style.filter="";
+	}
+}
+
+function stye(){
+	if(styon==5){
+		if(ck==50){
+			co=1;
+		}
+		if(ck==0){
+			co=0;
+		}
+		if(co==0){
+			ck=ck+1;
+		}else{
+			ck=ck-1;
+		}
+		document.getElementById('layer1').style.filter="progid:dXImageTransform.Microsoft.Pixelate(maxsquare="+ck+")";
+		setTimeout("stye()",10);
+	}else{
+		ck=0;
+		co=0;
+		document.getElementById('layer1').style.filter="";
+	}
+}
+
+function styf(){
+	if(styon==6){
+		if(ck==12){
+			co=1;
+		}
+		if(ck==0){
+			co=0;
+		}
+		if(co==0){
+			ck=ck+1;
+		}else{
+			ck=ck-1;
+		}
+		document.getElementById('layer1').style.filter="progid:dXImageTransform.Microsoft.Glow(color=#ffffff,Strength="+ck+")";
+		setTimeout("styf()",10);
+	}else{
+		ck=0;
+		co=0;
+		document.getElementById('layer1').style.filter="";
+	}
+}
+
+function styg(){
+	if(styon==7){
+		if(ck==100){
+			co=1;
+		}
+		if(ck==0){
+			co=0;
+		}
+		if(co==0){
+			ck=ck+1;
+		}else{
+			ck=ck-1;
+		}
+		document.getElementById('layer1').style.filter="Wave(Add=0, Freq=60, LightStrength=1, Phase=0, Strength="+ck+")";
+		setTimeout("styg()",1);
+	}else{
+		ck=0;
+		co=0;
+		document.getElementById('layer1').style.filter="";
+	}
+}
+
+function styh(){
+	if(styon==8){
+		if(ck==100){
+			co=1;
+		}
+		if(ck==0){
+			co=0;
+		}
+		if(co==0){
+			ck=ck+1;
+		}else{
+			ck=ck-1;
+		}
+		document.getElementById('layer1').style.filter="Wave(Add=0, Freq=60, LightStrength="+ck+", Phase=0, Strength=3)";
+		setTimeout("styh()",1);
+	}else{
+		ck=0;
+		co=0;
+		document.getElementById('layer1').style.filter="";
+	}
+}
+
+function styi(){
+	if(styon==9){
+		if(ck==100){
+			co=1;
+		}
+		if(ck==0){
+			co=0;
+		}
+		if(co==0){
+			ck=ck+1;
+		}else{
+			ck=ck-1;
+		}
+		document.getElementById('layer1').style.filter="Wave(Add=0, Freq="+ck+", LightStrength="+ck+", Phase=0,Strength="+ck+")";
+		setTimeout("styi()",1);
+	}else{
+		ck=0;
+		co=0;
+		document.getElementById('layer1').style.filter="";
+	}
+}
+
+</script>
+<table width="888" border="1">
+  <tr>
+    <td><div id="layer1" style="width:574px; height:762px; border: 1px none #000000;">
+<img src="../../img/1.jpg" width="574" height="762">
+</div></td>
+    <td><table align=center height=535 width=300>
+      <tr align=center>
+        <td><input type="button" value="黑白照片" onClick="document.getElementById('layer1').style.filter='gray';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        <td><input type="button" value="X 光照片" onClick="document.getElementById('layer1').style.filter='Xray';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="半透明类" onClick="document.getElementById('layer1').style.filter='Alpha(Opacity=50)';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        <td><input type="button" value="线型透明" onClick="document.getElementById('layer1').style.filter='Alpha(Opacity=0, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX=100, FinishY=140)';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="降低色彩" onClick="document.getElementById('layer1').style.filter='grays';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        <td><input type="button" value="底片效果" onClick="document.getElementById('layer1').style.filter='invert';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="投影效果" onClick="document.getElementById('layer1').style.filter='progid:dXImageTransform.Microsoft.DropShadow(color=#cccccc,offX=5,offY=5,positives=true)';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        <td><input type="button" value="马赛克类" onClick="document.getElementById('layer1').style.filter='progid:dXImageTransform.Microsoft.Pixelate(maxsquare=3)';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="风动模糊" onClick="document.getElementById('layer1').style.filter='blur(add=true,direction=45,strength=30)';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        <td><input type="button" value="正弦波纹" onClick="document.getElementById('layer1').style.filter='Wave(Add=0, Freq=60, LightStrength=1, Phase=0, Strength=3)';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="放射透明" onClick="document.getElementById('layer1').style.filter='Alpha(Opacity=10, FinishOpacity=100, Style=2, StartX=30, StartY=30, FinishX=200, FinishY=200)';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        <td><input type="button" value="白色透明" onClick="document.getElementById('layer1').style.filter='Chroma(Color=#FFFFFF)';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="左右翻转" onClick="document.getElementById('layer1').style.filter='fliph';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        <td><input type="button" value="垂直翻转" onClick="document.getElementById('layer1').style.filter='flipv';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="发光效果" onClick="document.getElementById('layer1').style.filter='progid:dXImageTransform.Microsoft.Glow(color=#ffffff,Strength=5)';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        <td><input type="button" value="柔边效果" onClick="document.getElementById('layer1').style.filter='alpha(opacity=100, finishOpacity=0,style=2)';var cont=document.getElementById('layer1').style.filter;alert('div的风格代码为 style=\'filter:'+cont+'\'')"></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="动态例 A" onClick="styon=1;stya();this.disabled=true" ></td>
+        <td><input type="button" value="动态例 B" onClick="styon=2;styb();this.disabled=true" ></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="动态例 C" onClick="styon=3;styc();this.disabled=true" ></td>
+        <td><input type="button" value="动态例 D" onClick="styon=4;styd();this.disabled=true" ></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="动态例 E" onClick="styon=5;stye();this.disabled=true" ></td>
+        <td><input type="button" value="动态例 F" onClick="styon=6;styf();this.disabled=true" ></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="动态例 G" onClick="styon=7;styg();this.disabled=true" ></td>
+        <td><input type="button" value="动态例 H" onClick="styon=8;styh();this.disabled=true" ></td>
+        </tr>
+      <tr align=center>
+        <td><input type="button" value="组合例 1" onClick="styon=9;styi();this.disabled=true" ></td>
+        <td></td>
+        </tr>
+      <tr align=center>
+        <td height="179" colspan=2 align=center><p>提示：此代码仅适用于IE浏览器</p>
+          <p>查找更多代码，请访问：<a href="http://www.lanrentuku.com/" target="_blank">懒人图库</a></p></td>
+      </tr>
+    </table></td>
+  </tr>
+  </table>
+<p> </p>
+</body>
+</html>

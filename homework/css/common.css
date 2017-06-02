@@ -1,0 +1,94 @@
+*{
+    margin:0;
+    padding:0;
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select:none;
+    -khtml-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+li{
+    list-style:none;
+}
+a{
+    text-decoration:none;
+}
+html,body{
+    width:100%;
+    height:100%;
+    font-size:625%;
+}
+body{
+    background:url("../img/bg.jpg") center/cover;
+    font: .16rem/1.5 "Microsoft YaHei";
+}
+.content{
+    position: relative;
+    width:100%;
+    left:0;
+    top:0;
+    height: 88%;
+    margin-bottom: 2%;
+}
+.footer{
+    position: relative;
+    width:94%;
+    padding: 0 3%;
+    height: 10%;
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:.14rem;
+    line-height:.3rem;
+}
+.footer input[type *=text]{
+    width:.4rem;
+    height:.3rem;
+    font:.2rem/.3rem "Microsoft YaHei";
+    text-align: center;
+    vertical-align: middle;
+}
+.footer .btn{
+    display: inline-block;
+    transition: .3s;
+    background: #ccc;
+    color: white;
+    width:.6rem;
+    height:.3rem;
+    line-height:.3rem;
+    text-align: center;
+    vertical-align:middle;
+    border-radius: .2rem;
+    border:1px solid #ccc;
+    cursor: pointer;
+}
+.footer i.btn{
+    font-size:.3rem;
+    font-style: normal;
+    line-height:.26rem;
+}
+.footer .btn:hover{
+    background-color: #f60;
+}
+.footer .jump{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.pageFoot{
+    color:#000;
+    position: absolute;
+    bottom:.1rem;
+    right: .1rem;
+    display: inline-block;
+    width:.4rem;
+    height:.3rem;
+    text-indent: 0;
+    line-height:.3rem;
+    text-align: center;
+    vertical-align:middle;
+    border-radius: .2rem;
+    border:1px solid #ccc;
+}

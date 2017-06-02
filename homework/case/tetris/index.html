@@ -1,0 +1,451 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>俄罗斯方块 空山</title>
+    <meta name="keywords"  content="" />
+    <meta name="discription" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <style type="text/css">
+        body,div,p,h1,h2,h3,h4,h5,h6,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,table,th,td {
+            margin:0;
+            padding:0;
+        }
+        .clearfix{
+            zoom:1;
+        }
+        .clearfix:after{
+            content:'';
+            display: block;
+            clear:both;
+            height: 0;
+            visibility: hidden;
+        }
+        html{
+            font:12px/1.5 'Microsoft Yahei' 'Arial';
+        }
+        .tetris{
+            margin:1vh auto;
+            border:1px solid #000/9;
+            box-shadow: 0 0 30px -5px #000;
+            position: relative;
+        }
+        .mainWidow{
+            position:absolute;
+            left:0;
+            top: 1vh;
+            border:1px solid blue;
+        }
+        .preview{
+            position:absolute;
+            right:0;
+            top: 1vh;
+            border:1px solid blue;
+        }
+        .scorebox{
+            position:absolute;
+            right:0;
+            border:1px solid blue;
+            text-align:left;
+            text-indent:1vh;
+            line-height:8vh;
+            font-size: 1em;
+        }
+        .scorebox p{
+            overflow: hidden; 
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .block{
+            position:absolute;
+            top:0;
+        }
+        .blockette{
+            -webkit-transform: all 0.3s;
+               -moz-transform: all 0.3s;
+                -ms-transform: all 0.3s;
+                 -o-transform: all 0.3s;
+                    transform: all 0.3s;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function(){
+            var Tetris = {
+                size : {
+                    x : 12,
+                    y : 18,
+                    a : 4,
+                    l : 5
+                },
+                shapes :[
+                    [
+                        [[1,1],[2,1],[1,2],[2,2]]
+                    ],
+                    [
+                        [[0,1],[1,1],[2,1],[3,1]],
+                        [[1,0],[1,1],[1,2],[1,3]]
+                    ],
+                    [
+                        [[0,1],[1,1],[1,2],[2,2]],
+                        [[2,0],[1,1],[2,1],[1,2]]
+                    ],
+                    [
+                        [[1,1],[2,1],[0,2],[1,2]],
+                        [[1,0],[1,1],[2,1],[2,2]]
+                    ],                   
+                    [
+                        [[1,0],[1,1],[1,2],[2,2]],
+                        [[2,1],[1,1],[0,1],[0,2]],
+                        [[1,2],[1,1],[1,0],[0,0]],
+                        [[0,1],[1,1],[2,1],[2,0]]
+                    ],
+                    [
+                        [[1,0],[1,1],[1,2],[0,2]],
+                        [[2,1],[1,1],[0,1],[0,0]],
+                        [[1,2],[1,1],[1,0],[2,0]],
+                        [[0,1],[1,1],[2,1],[2,2]]
+                    ]
+                ],
+                init : function(){
+                    this.createMap();                    
+                },
+
+                createMap : function(){
+                    //初始化
+                    this.score = 0;
+                    this.level = 0;
+                    this.delay = 1000;
+                    this.block = null;
+                    this.blockpre = null;
+                    document.getElementsByTagName('body')[0].innerHTML = '';
+					document.getElementsByTagName('body')[0].focus();
+
+                    //创建地图
+                    this.box = document.createElement('div');
+                    this.box.id = 'tetris';
+                    this.box.className = 'tetris';
+                    this.box.style.width = (this.size.x+this.size.a)*this.size.l +2+ 'vh';
+                    this.box.style.height = (this.size.y)*this.size.l +2+ 'vh';
+                    document.getElementsByTagName('body')[0].appendChild(this.box);
+
+                    this.main = document.createElement('div');
+                    this.main.className = 'mainWidow';
+                    this.main.style.height = this.size.y*this.size.l + 'vh';
+                    this.main.style.width = this.size.x*this.size.l + 'vh';
+                    this.box.appendChild(this.main);
+
+                    this.preview = document.createElement('div');
+                    this.preview.className = 'preview';
+                    this.preview.style.height = this.size.a*this.size.l + 'vh';
+                    this.preview.style.width = this.size.a*this.size.l + 'vh';
+                    this.box.appendChild(this.preview);
+
+                    this.scorebox = document.createElement('div');
+                    this.scorebox.className = 'scorebox';
+                    this.scorebox.style.width = this.size.a*this.size.l + 'vh';
+                    this.scorebox.style.height = (this.size.y - this.size.a)*this.size.l-1 + 'vh';
+                    this.scorebox.style.top = this.size.a*this.size.l +2+ 'vh';
+                    this.scorebox.innerHTML = "<p>积分:</p> <p id='score'>0</p><br/><p>等级:</p><p id='level'>0</p><p>上/W:旋转<br />&nbsp; 左/A 右/D <br />&nbsp; 下/S:移动</p>"
+                    this.box.appendChild(this.scorebox);
+                    this.scoreP = document.getElementById('score');
+                    this.levelP = document.getElementById('level');
+
+				 //this.audio = document.createElement('audio');
+				 // this.audio.src ="mp3/1.mp3";
+				 //this.audio.style.display = 'none';
+				 //this.scorebox.appendChild(this.audio);
+
+                    this.blockpre || this.addShapes();
+                },
+                //控制函数
+                controlFn : function(obj){
+                    var This =this;
+                    document.onkeydown = function(e){
+                        e = e || window.event;
+                        This.controlP(e.keyCode,obj);
+                        switch(e.keyCode){
+                            case 38:
+                            case 39:
+                            case 40:
+                            case 37:
+							case 65:
+							case 68:
+							case 83:
+							case 87:
+                                return false;
+                                break;
+                            default:
+                                break;
+                        };
+                    };
+                },
+                //控制
+                controlP : function(k,obj){
+                    //a 移动, b 旋转 ,c 下落
+                    obj.xa = obj.x;
+                    obj.ya = obj.y;
+                    obj.xc = obj.x;
+                    obj.yc = obj.y;
+                    obj.nb = obj.n;
+                    switch(k){
+                        case 39:
+						case 68:
+                            obj.xa++;
+                            if(this.collisionMove(obj,'a')){
+                                this.move(obj);
+                            };
+                            break;
+                        case 37:
+						case 65:
+                            obj.xa--;
+                            if(this.collisionMove(obj,'a')){
+                                this.move(obj);
+                            };
+                            break;
+                        case 38:
+						case 87:
+                            obj.nb++;
+                            obj.nb %= this.shapes[obj.m].length;
+                            if(this.collisionMove(obj,'b')){
+                                this.change(obj);
+                            };
+                            break;
+                        case 40:
+						case 83:
+                            obj.yc++;
+                            if(this.collisionMove(obj,'c')){
+                                this.move(obj);
+                            }else{
+                                this.falltimer && clearInterval(this.falltimer);
+                                this.deter(obj);
+                            };
+                            break;
+                        default:
+                            break;
+                    };
+                },
+                //改变形状
+                change : function(obj){
+                    obj.n = obj. nb;
+                    for (var i = 0; i < obj.children.length; i++) {
+                        obj.children[i].x = this.shapes[obj.m][obj.n][i][0];
+                        obj.children[i].y = this.shapes[obj.m][obj.n][i][1];
+                        this.move(obj.children[i]);
+                    };
+                },
+                //下落
+                fall : function(obj){
+                    var This = this;
+                    this.falltimer =setInterval(function(){
+                        obj.yc = obj.y+1;
+                        obj.xc = obj.x;
+                        if(This.collisionMove(obj,'c')){
+                            This.move(obj);
+                        }else{  
+                            clearInterval(This.falltimer);
+                            This.deter(obj);
+                        }
+                    }, this.delay);  
+                },
+                //碰撞判断
+                collisionMove : function(obj,mode){
+                    var objL = obj.children.length;
+                    var blockette = getClass('blockette',this.main);
+                    var blocketteL = blockette.length;
+                    var a ,b;
+                    switch(mode){
+                        case 'a' : a='xa';b='ya';break;
+                        case 'c' : a='xc';b='yc';break;
+                        case 'b' : a='x';b='y';
+                            for (var i = 0; i < objL; i++) {
+                                obj.children[i].xb = this.shapes[obj.m][obj.nb][i][0];
+                                obj.children[i].yb = this.shapes[obj.m][obj.nb][i][1];
+                                this.move(obj.children[i]);
+                                var x = obj.children[i].xb+obj[a]; 
+                                var y = obj.children[i].yb+obj[b]; 
+                                if (x<0 || x>=this.size.x || y<0 || y>=this.size.y) {
+                                    return false;
+                                };
+                                for (var j = 0; j < blocketteL; j++) {
+                                    if (blockette[j].x == x && blockette[j].y == y && blockette[j].parentNode != obj) {
+                                        return false;
+                                    };
+                                };
+                            };
+                            return true;
+                        break;
+                    };
+                    for (var i = 0; i < objL; i++) {
+                        var x = obj.children[i].x+obj[a];
+                        var y = obj.children[i].y+obj[b];
+                        if (x<0 || x>=this.size.x || y<0 || y>=this.size.y) {
+                            return false;
+                        };
+                        for (var j = 0; j < blocketteL; j++) {
+                            if (blockette[j].x == x && blockette[j].y == y && blockette[j].parentNode != obj) {
+                                return false;
+                            };
+                        };
+                    };
+                    obj.x = obj[a];
+                    obj.y = obj[b];
+                    return true;
+                },
+                //移动坐标
+                move : function(obj){
+                    obj.style.top = obj.y * this.size.l + "vh";
+                    obj.style.left = obj.x * this.size.l + "vh";
+                },
+
+                //落地函数
+                deter : function(obj){
+                    var objL = obj.children.length;
+                    for (var i = objL-1 ; i >= 0 ;i--) {
+                        obj.children[i].style.backgroundColor='#666';
+                        obj.children[i].x += obj.x;
+                        obj.children[i].y += obj.y;
+                        this.move(obj.children[i]);
+                        this.main.appendChild(obj.removeChild(obj.children[i]));
+                    };
+                    this.main.removeChild(obj);
+                    this.block = null;
+                    this.dispel();
+                },
+                //落地消除
+                dispel : function(){
+                    var blockette = getClass('blockette',this.main);
+                    var blocketteL = blockette.length;
+                    var disp = [];
+					var scoreY = 0;
+                    for (var y = 0; y < this.size.y; y++) {
+                        disp[y]=[];
+                        for (var x = 0; x < this.size.x; x++) {
+                            for (var i = 0; i < blocketteL; i++) {
+                                if (blockette[i].x == x && blockette[i].y == y && blockette[i].parentNode!= this.block) {
+                                    disp[y].push(blockette[i]);
+                                };
+                            };
+                        };
+                        if (disp[y].length == this.size.x) {
+							scoreY++;
+					    //this.playAudio(7);
+                            for (var j = 0; j < disp[y].length; j++) {
+                                this.main.removeChild(disp[y][j]);
+                            }
+                            for (var a = 0;  a < y; a++) {
+                                for (var b = 0; b < disp[a].length; b++) {
+                                    disp[a][b].y++;
+                                    this.move(disp[a][b]);
+                                }
+                            };
+                        }else{
+					    //this.playAudio();
+                        }
+						
+                    };
+					switch (scoreY)
+					{
+						case 1:scoreY=100;break;
+						case 2:scoreY=300;break;
+						case 3:scoreY=600;break;
+						case 4:scoreY=1000;break;
+					}
+					this.score += scoreY;
+					this.level = parseInt(this.score/5000);
+					this.level >10 &&(this.level =10);
+					this.delay = 1000 - this.level*80;
+					this.scoreP.innerHTML = this.score;
+					this.levelP.innerHTML = this.level;
+                    //结束判断
+                    blockette = getClass('blockette',this.main);
+                    blocketteL = blockette.length;
+                    for (var j = 0; j < blocketteL; j++) {
+                        if (blockette[j].y <= 0 && blockette[j].parentNode!= this.block) {
+                            if (confirm('胜败乃兵家常事,大侠请重新来过')) {
+                                this.init();
+                            }else{
+                                return;
+                            }
+                        };
+                    };
+                    this.addShapes();
+                },
+                //增加方块
+                addShapes : function(){ 
+                    if (!this.blockpre) { 
+                        this.blockpre = document.createElement('div');
+                        this.blockpre.m = Math.floor(Math.random()*1000) % this.shapes.length;
+                        this.blockpre.n = Math.floor(Math.random()*1000) % this.shapes[this.blockpre.m].length;
+                        this.blockpre.c = getRandomColor();
+                        this.creatShape(this.blockpre,this.blockpre.m,this.blockpre.n,this.blockpre.c);
+                        this.preview.appendChild(this.blockpre);
+                    };
+                    if (!this.block) {
+                        //this.block = this.preview.removeChild(this.blockpre);
+						this.block = this.blockpre;
+                        this.main.appendChild(this.block);
+                        this.block.className = 'block';
+                        this.block.x=(this.size.x-this.size.a)/2;
+                        this.block.y = 0;
+                        this.move(this.block);
+                        this.fall(this.block);
+                        this.controlFn(this.block);
+                        this.blockpre =null;
+                        this.addShapes();
+                    };
+					function getRandomColor(){
+						return "#"+(function(color){
+							return new Array(7-color.length).join("0")+color
+						})((Math.random()*0x1000000 << 0).toString(16))
+					};
+                },
+                //创造方块
+                creatShape : function(box,m,n,c){
+                    c = c || this.block.c || "#000";
+                    var l = this.shapes[m][n].length;
+                    for (var i = 0; i < l; i++) {
+                        var blockette = document.createElement('div');
+                        blockette.x = this.shapes[m][n][i][0];
+                        blockette.y = this.shapes[m][n][i][1];
+                        blockette.className = 'blockette';
+                        blockette.style.cssText="position:absolute;top:"+blockette.y*this.size.l +"vh;left:"+blockette.x*this.size.l +"vh;width:"+this.size.l +"vh;height:"+this.size.l +"vh;background-color:"+c;
+                        box.appendChild(blockette);
+                    };
+                    
+                },
+                playAudio : function(r){
+                    r = r || Math.floor(Math.random()*1000) % 6 + 1;
+                    this.audio.src = "mp3/"+r+".mp3";
+                    this.audio.play();
+                }
+
+            };
+
+            Tetris.init();
+
+            function getClass(cName ,obj){ 
+                var arr =[]
+                var obj = obj || document;
+                if(obj.getElementsByClassName){
+                    var objc = obj.getElementsByClassName(cName);
+                    for (var i=0;i<objc.length ;i++ ){
+                        arr[i] = objc[i];
+                    }
+                }else{
+                    var allE = obj.getElementsByTagName("*");
+                    var reg = new RegExp('(^|\\s)'+cName+'(\\s|$)')
+                    for (var i=0;i<allE.length;i++ ){
+                        if(reg.test(allE.className)){   
+                            arr.push(allE[i]);
+                        };
+                    };
+                }
+                return arr; 
+            };
+        };
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

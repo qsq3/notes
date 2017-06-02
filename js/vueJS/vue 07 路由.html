@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>vue 07 路由</title>
+  <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css" />
+  <script type="text/javascript" src="js/vue.2.1.3.js"></script>
+  <script type="text/javascript" src="js/vue-router-2.1.1.js"></script>
+</head>
+<body class="container">
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      
+    </ul>
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      router 
+    </div>
+  </div>
+  <div class="panel-body">
+    <div id="demo-01">
+      <h1>Hello Router !</h1>
+      <ul>
+        <li>复用组件时，想对路由参数的变化作出响应的话，可以 watch（监测变化） $route 对象：</li>
+        <li>router.push、 router.replace 和 router.go </li>
+        <li>window.history.pushState、 window.history.replaceState 和 window.history.go</li>
+        <li>同一个路径可以匹配多个路由，此时，匹配的优先级就按照路由的定义顺序：谁先定义的，谁的优先级就最高。</li>
+      </ul>
+      <p>
+        <!-- 使用 router-link 组件来导航. -->
+        <!-- 通过传入 `to` 属性指定链接. -->
+        <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+        <router-link to="/foo">Go to Foo</router-link>
+        <router-link to="/bar">Go to Bar</router-link>
+
+        <router-link to="/user/bar">/user/bar</router-link>
+        <router-link to="/user/foo">/user/foo</router-link>
+
+        <router-link to="/user/foo/profile">/user/foo/profile</router-link>
+        <router-link to="/user/foo/posts">/user/foo/posts</router-link>
+
+        <router-link to="/user/foo/redirect">重定向</router-link>
+      </p>
+      <p>
+        使用编程式:
+        <button @click="goto('/bar')">Go to Bar(字符串)</button>
+        <button @click="goto({ path: '/user/foo/' })">Go to Foo(对象)</button>
+        <button @click="goto({ name: 'user' , params: { id: 'foo' }})">Go to user/foo(命名的路由)</button>
+        <button @click="goto({ path: '/user/foo', query: { plan: 'private' }})">Go to user/foo(带查询参数)</button>
+        <button @click="goto(1)">前进</button>
+        <button @click="goto(-1)">后退</button>
+      </p>
+      <!-- 路由出口 -->
+      <!-- 路由匹配到的组件将渲染在这里 -->
+      <router-view></router-view>
+      <!-- <pre>{{ JSON.stringify($route, null, 2) }}</pre>  -->
+    </div>
+    <script type="text/javascript">
+    const __dirname = 'D:/WWW/lx/vueJS/vue 07 路由.html#'
+    ;(function(){
+
+      // 0. 如果使用模块化机制编程，導入Vue和VueRouter，要调用 Vue.use(VueRouter)
+      /*
+      import Vue from 'vue'
+      import VueRouter from 'vue-router'
+      Vue.use(VueRouter)
+      */
+
+      // 1. 定义（路由）组件。
+      // 可以从其他文件 import 进来
+      const Foo = { template: '<div>foo</div>' }
+      const Bar = { template: '<div>bar</div>' }
+
+      const UserHome = { template: '<div>Home</div>' }
+      const UserProfile = { template: '<div>Profile {{ $route.params.id }}</div>' }
+      const UserPosts = { template: '<div>Posts {{ $route.params.id }}</div>' }
+
+      //动态路由+嵌套路由
+      const User = {
+        template: `
+                  <div class="user">
+                    <h2>User {{ $route.params.id }}</h2>
+                    <router-view></router-view>
+                  </div>
+                  `,
+
+        //当使用动态路由参数时，原来的组件实例会被复用, 不会再调用其生命周期钩子;
+        //如果需要对路由参数的变化作出响应,可以在组件定义时使用: watch（监测变化） $route 对象,;
+        watch : {
+          '$route' (to , from) {
+            // 对路由变化作出响应..
+            console.log(from , to );
+          }
+        }
+      }
+
+      // 2. 定义路由
+      // 每个路由应该映射一个组件。 其中"component" 可以是
+      // 通过 Vue.extend() 创建的组件构造器， 或者，只是一个组件配置对象。
+      const routes = [
+
+        //静态路径
+        { path: '/foo', component: Foo },
+        { path: '/bar', component: Bar },
+
+        // 动态路径参数 以冒号开头
+        { 
+          path: '/user/:id', component: User ,
+
+          //命名路由
+          //name: 'user',
+          //如果有默认子路由的话, 应该给子路由命名, 而不是命名父路由
+
+          //嵌套路由:在 VueRouter 的参数中使用 children 配置
+          children : [
+
+            {
+            // 当 /user/:id 匹配成功，
+            // UserHome 会被渲染在 User 的 <router-view> 中
+             path: '', 
+             //如果有默认子路由的话, 应该给子路由命名, 而不是命名父路由
+             name: 'user',
+             component: UserHome 
+            },
+            {
+              // 当 /user/:id/profile 匹配成功，
+              // UserProfile 会被渲染在 User 的 <router-view> 中
+              path: 'profile',
+              component: UserProfile
+            },
+            {
+              // 当 /user/:id/posts 匹配成功
+              // UserPosts 会被渲染在 User 的 <router-view> 中
+              path: 'posts',
+              component: UserPosts
+            },
+            {
+              // 重定向
+              path: 'redirect',
+              redirect: { name: 'user' }
+            }
+          ]
+        }
+      ]
+
+      // 3. 创建 router 实例，然后传 `routes` 配置
+      // 你还可以传别的配置参数, 不过先这么简单着吧。
+      const router = new VueRouter({
+        routes // （缩写）相当于 routes: routes
+      })
+
+      // 4. 创建和挂载根实例。
+      // 记得要通过 router 配置参数注入路由，
+      // 从而让整个应用都有路由功能
+      const demo01 = new Vue({
+        router,
+        methods : {
+          goto : function( url ){
+            if((typeof url).toLowerCase() === 'number' ) {
+              router.go(url);
+              return;
+            }
+            router.push(url);
+          }
+        }
+      }).$mount('#demo-01')
+
+    })();
+
+    </script>
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      高级匹配模式 <code> path-to-regexp </code>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div id="demo-02"></div>
+  </div>
+  <script type="text/javascript">
+
+  ;(function(){
+    const router = new VueRouter({
+      mode: 'history',
+      base: __dirname,
+      routes: [
+        { path: '/' },
+        // params are denoted with a colon ":"
+        { path: '/params/:foo/:bar' },
+        // a param can be made optional by adding "?"
+        { path: '/optional-params/:foo?' },
+        // a param can be followed by a regex pattern in parens
+        // this route will only be matched if :id is all numbers
+        { path: '/params-with-regex/:id(\\d+)' },
+        // asterisk can match anything
+        { path: '/asterisk/*' },
+        // make part of th path optional by wrapping with parens and add "?"
+        { path: '/optional-group/(foo/)?bar' }
+      ]
+    })
+
+    new Vue({
+      router,
+      template: `
+        <div id="demo-02">
+          <h1>Route Matching</h1>
+          <ul>
+            <li><router-link to="/">/</router-link></li>
+            <li><router-link to="/params/foo/bar">/params/foo/bar</router-link></li>
+            <li><router-link to="/optional-params">/optional-params</router-link></li>
+            <li><router-link to="/optional-params/foo">/optional-params/foo</router-link></li>
+            <li><router-link to="/params-with-regex/123">/params-with-regex/123</router-link></li>
+            <li><router-link to="/params-with-regex/abc">/params-with-regex/abc</router-link></li>
+            <li><router-link to="/asterisk/foo">/asterisk/foo</router-link></li>
+            <li><router-link to="/asterisk/foo/bar">/asterisk/foo/bar</router-link></li>
+            <li><router-link to="/optional-group/bar">/optional-group/bar</router-link></li>
+            <li><router-link to="/optional-group/foo/bar">/optional-group/foo/bar</router-link></li>
+          </ul>
+          <p>Route context</p>
+          <pre>{{ JSON.stringify($route, null, 2) }}</pre>
+        </div>
+      `
+    }).$mount('#demo-02')
+
+  })();
+
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      命名视图(多个视图) <code>name</code>
+    </div> 
+  </div>
+  <div class="panel-body">
+    <div id="demo-03">
+      <h1>Named Views</h1>
+      <ul>
+        <li><router-link to="/">/</router-link></li>
+        <li><router-link to="/other">/other</router-link></li>
+      </ul>
+      <router-view class="view one"></router-view>
+      <router-view class="view two" name="a"></router-view>
+      <router-view class="view three" name="b"></router-view>
+    </div>
+  </div>
+  <script type="text/javascript">
+    ;(function(){
+      const Foo = { template: '<div>foo</div>' }
+      const Bar = { template: '<div>bar</div>' }
+      const Baz = { template: '<div>baz</div>' }
+
+      const router = new VueRouter({
+        //mode: 'history',
+        routes: [
+          { path: '/',
+            // a single route can define multiple named components
+            // which will be rendered into <router-view>s with corresponding names.
+            components: {
+              default: Foo,
+              a: Bar,
+              b: Baz
+            }
+          },
+          {
+            path: '/other',
+            components: {
+              default: Baz,
+              a: Bar,
+              b: Foo
+            }
+          }
+        ]
+      })
+
+      new Vue({
+        router,
+        el: '#demo-03'
+      })
+    })()
+  </script>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      重定向 <code>redirect</code>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div id="demo-04"></div>
+  </div>
+  <script type="text/javascript">
+  ;(function(){
+    const Home = { template: '<router-view></router-view>' }
+    const Default = { template: '<div>default</div>' }
+    const Foo = { template: '<div>foo</div>' }
+    const Bar = { template: '<div>bar</div>' }
+    const Baz = { template: '<div>baz</div>' }
+    const WithParams = { template: '<div>{{ $route.params.id }}</div>' }
+
+    const router = new VueRouter({
+      //mode: 'history',
+      //base: __dirname,
+      routes: [
+        { path: '/', component: Home,
+          children: [
+            { path: '', component: Default },
+            { path: 'foo', component: Foo },
+            { path: 'bar', component: Bar },
+            { path: 'baz', name: 'baz', component: Baz },
+            { path: 'with-params/:id', component: WithParams },
+            // relative redirect to a sibling route
+            { path: 'relative-redirect', redirect: 'foo' }
+          ]
+        },
+        // absolute redirect
+        { path: '/absolute-redirect', redirect: '/bar' },
+        // dynamic redirect, note that the target route `to` is available for the redirect function
+        { path: '/dynamic-redirect/:id?',
+          redirect: to => {
+            const { hash, params, query } = to
+            if (query.to === 'foo') {
+              return { path: '/foo', query: null }
+            }
+            if (hash === '#baz') {
+              return { name: 'baz', hash: '' }
+            }
+            if (params.id) {
+              return '/with-params/:id'
+            } else {
+              return '/bar'
+            }
+          }
+        },
+        // named redirect
+        { path: '/named-redirect', redirect: { name: 'baz' }},
+
+        // redirect with params
+        { path: '/redirect-with-params/:id', redirect: '/with-params/:id' },
+
+        // catch all redirect 这里会干涉全局的路由参数,暂时注释掉
+        //{ path: '*', redirect: '/' }
+      ]
+    })
+
+    new Vue({
+      router,
+      template: `
+        <div id="demo-04">
+          <h1>Redirect</h1>
+          <ul>
+            <li><router-link to="/relative-redirect">
+              /relative-redirect (redirects to /foo)
+            </router-link></li>
+            <li><router-link to="/relative-redirect?foo=bar">
+              /relative-redirect?foo=bar (redirects to /foo?foo=bar)
+            </router-link></li>
+            <li><router-link to="/absolute-redirect">
+              /absolute-redirect (redirects to /bar)
+            </router-link></li>
+            <li><router-link to="/dynamic-redirect">
+              /dynamic-redirect (redirects to /bar)
+            </router-link></li>
+            <li><router-link to="/dynamic-redirect/123">
+              /dynamic-redirect/123 (redirects to /with-params/123)
+            </router-link></li>
+            <li><router-link to="/dynamic-redirect?to=foo">
+              /dynamic-redirect?to=foo (redirects to /foo)
+            </router-link></li>
+            <li><router-link to="/dynamic-redirect#baz">
+              /dynamic-redirect#baz (redirects to /baz)
+            </router-link></li>
+            <li><router-link to="/named-redirect">
+              /named-redirect (redirects to /baz)
+            </router-link></li>
+            <li><router-link to="/redirect-with-params/123">
+              /redirect-with-params/123 (redirects to /with-params/123)
+            </router-link></li>
+            <li><router-link to="/not-found">
+              /not-found (redirects to /)
+            </router-link></li>
+          </ul>
+          <router-view class="view"></router-view>
+        </div>
+      `
+    }).$mount('#demo-04')
+  })();
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      别名 <code>alias</code>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div id="demo-05"></div>
+  </div>
+  <script type="text/javascript">
+  ;(function(){
+    const Home = { template: '<div><h1>Home</h1><router-view></router-view></div>' }
+    const Foo = { template: '<div>foo</div>' }
+    const Bar = { template: '<div>bar</div>' }
+    const Baz = { template: '<div>baz</div>' }
+    const router = new VueRouter({
+      mode: 'history',
+      base: __dirname,
+      routes: [
+        { path: '/home', component: Home,
+          children: [
+            // absolute alias
+            { path: 'foo', component: Foo, alias: '/foo' },
+            // relative alias (alias to /home/bar-alias)
+            { path: 'bar', component: Bar, alias: 'bar-alias' },
+            // multiple aliases
+            { path: 'baz', component: Baz, alias: ['/baz', 'baz-alias'] }
+          ]
+        }
+      ]
+    })
+
+    new Vue({
+      router,
+      template: `
+        <div id="demo-05">
+          <h1>Route Alias</h1>
+          <ul>
+            <li><router-link to="/foo">
+              /foo (renders /home/foo)
+            </router-link></li>
+            <li><router-link to="/home/bar-alias">
+              /home/bar-alias (renders /home/bar)
+            </router-link></li>
+            <li><router-link to="/baz">
+              /baz (renders /home/baz)</router-link>
+            </li>
+            <li><router-link to="/home/baz-alias">
+              /home/baz-alias (renders /home/baz)
+            </router-link></li>
+          </ul>
+          <router-view class="view"></router-view>
+        </div>
+      `
+    }).$mount('#demo-05');
+    
+  })()
+  </script>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      导航钩子 
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li>
+        全局 <code>router.beforeEach</code>
+        <pre>
+          const router = new VueRouter({ ... })
+          router.beforeEach((to, from, next) => {
+            // ...
+          })
+          当一个导航触发时，全局的 before 钩子按照创建顺序调用。钩子是异步解析执行，此时导航在所有钩子 resolve 完之前一直处于 等待中。
+          每个钩子方法接收三个参数：
+          to: Route: 即将要进入的目标 路由对象
+          from: Route: 当前导航正要离开的路由
+          next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。
+            next(): 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 confirmed （确认的）。
+            next(false): 中断当前的导航。如果浏览器的 URL 改变了（可能是用户手动或者浏览器后退按钮），那么 URL 地址会重置到 from 路由对应的地址。
+            next('/') 或者 next({ path: '/' }): 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航。
+            确保要调用 next 方法，否则钩子就不会被 resolved。
+        </pre>
+      </li>
+      <li>
+          路由独享的钩子 在路由配置上直接定义 <code>beforeEnter</code> 钩子：
+          <pre>
+            const router = new VueRouter({
+              routes: [
+                {
+                  path: '/foo',
+                  component: Foo,
+                  beforeEnter: (to, from, next) => {
+                    // ...
+                  }
+                }
+              ]
+            })
+          这些钩子与全局 before 钩子的方法参数是一样的。
+          </pre>
+      </li>
+      <li>
+          组件内的钩子 使用 <code>beforeRouteEnter</code> 和 <code>beforeRouteLeave</code>，在路由组件内直接定义路由导航钩子
+          <pre>
+            const Foo = {
+              template: `...`,
+              beforeRouteEnter (to, from, next) {
+                // 在渲染该组件的对应路由被 confirm 前调用
+                // 不！能！获取组件实例 `this`
+                // 因为当钩子执行前，组件实例还没被创建
+                //不过，可以通过传一个回调给next来访问组件实例。在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数
+                next(vm => {
+                  // 通过 `vm` 访问组件实例
+                })
+              },
+              beforeRouteLeave (to, from, next) {
+                // 导航离开该组件的对应路由时调用
+                // 可以访问组件实例 `this`
+                //这个 leave 钩子通常用来禁止用户在还未保存修改前突然离开。可以通过 next(false) 来取消导航。
+              }
+            }
+          </pre>
+      </li>
+    </ul>
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      路由元信息 : 定义路由的时候可以配置 <code>meta</code>  字段：
+    </div>
+  </div>
+  <div class="panel-body">
+    <pre>
+      const router = new VueRouter({
+        routes: [
+          {
+            path: '/foo',
+            component: Foo,
+            children: [
+              {
+                path: 'bar',
+                component: Bar,
+                // a meta field
+                meta: { requiresAuth: true }
+              }
+            ]
+          }
+        ]
+      });
+
+      下面例子展示在全局导航钩子中检查 meta 字段：
+
+      router.beforeEach((to, from, next) => {
+        if (to.matched.some(record => record.meta.requiresAuth)) {
+          // this route requires auth, check if logged in
+          // if not, redirect to login page.
+          if (!auth.loggedIn()) {
+            next({
+              path: '/login',
+              query: { redirect: to.fullPath }
+            })
+          } else {
+            next()
+          }
+        } else {
+          next() // 确保一定要调用 next()
+        }
+      })
+    </pre>
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      过渡动效
+    </div>
+  </div>
+  <div class="panel-body">
+    <div id="demo-06"></div>
+  </div>
+  <style type="text/css">
+    .parent{
+      position: relative;
+    }
+    .child-view{
+      position: absolute;
+    }
+    .sfade-enter-active {
+      transition: all .3s ease;
+    }
+    .fade-leave-active {
+      transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .fade-enter, .fade-leave-active {
+      opacity: 0;
+    }
+    .slide-left-enter-active,
+    .slide-right-enter-active {
+      transition: all .8s ease;
+    }
+    .slide-left-leave-active,
+    .slide-right-leave-active{
+      transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+
+    .slide-left-enter, 
+    .slide-right-leave-active
+     {
+      transform: translateX(31px);
+      opacity: 0;
+    }
+    .slide-right-enter, 
+    .slide-left-leave-active
+     {
+      transform: translateX(-31px);
+      opacity: 0;
+    }
+  </style>
+  <script type="text/javascript">
+  ;(function(){
+    const Home = {
+      template: `
+        <div class="home">
+          <h2>Home</h2>
+          <p>hello</p>
+        </div>
+      `
+    }
+
+    const Parent = {
+      data () {
+        return {
+          transitionName: 'slide-left'
+        }
+      },
+      // dynamically set transition based on route change
+      watch: {
+        '$route' (to, from) {
+          const toDepth = to.path.split('/').length
+          const fromDepth = from.path.split('/').length
+          this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+        }
+      },
+      template: `
+        <div class="parent">
+          <h2>Parent</h2>
+          <transition :name="transitionName" mode="in-out">
+            <router-view class="child-view"></router-view>
+          </transition>
+        </div>
+      `
+    }
+
+    const Default = { template: '<div class="default">default</div>' }
+    const Foo = { template: '<div class="foo">foo</div>' }
+    const Bar = { template: '<div class="bar">bar</div>' }
+
+    const router = new VueRouter({
+      mode: 'history',
+      base: __dirname,
+      routes: [
+        { path: '/', component: Home },
+        { path: '/parent', component: Parent,
+          children: [
+            { path: '', component: Default },
+            { path: 'foo', component: Foo },
+            { path: 'bar', component: Bar }
+          ]
+        }
+      ]
+    })
+
+    new Vue({
+      router,
+      template: `
+        <div id="demo-06">
+          <h1>Transitions</h1>
+          <ul>
+            <li><router-link to="/">/</router-link></li>
+            <li><router-link to="/parent">/parent</router-link></li>
+            <li><router-link to="/parent/foo">/parent/foo</router-link></li>
+            <li><router-link to="/parent/bar">/parent/bar</router-link></li>
+          </ul>
+          <transition name="fade" mode="out-in">
+            <router-view class="view"></router-view>
+          </transition>
+        </div>
+      `
+    }).$mount('#demo-06')
+  })();
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      数据获取
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li>导航完成之后获取：先完成导航，然后在接下来的组件生命周期钩子中获取数据。在数据获取期间显示『加载中』之类的指示。
+      <pre>
+        当你使用这种方式时，我们会马上导航和渲染组件，然后在组件的 created 钩子中获取数据。这让我们有机会在数据获取期间展示一个 loading 状态，还可以在不同视图间展示不同的 loading 状态。
+        假设我们有一个 Post 组件，需要基于 $route.params.id 获取文章数据：
+        <template>
+          <div class="post">
+            <div class="loading" v-if="loading">
+              Loading...
+            </div>
+
+            <div v-if="error" class="error">
+              {{ error }}
+            </div>
+
+            <div v-if="post" class="content">
+              <h2>{{ post.title }}</h2>
+              <p>{{ post.body }}</p>
+            </div>
+          </div>
+        </template>
+        export default {
+          data () {
+            return {
+              loading: false,
+              post: null,
+              error: null
+            }
+          },
+          created () {
+            // 组件创建完后获取数据，
+            // 此时 data 已经被 observed 了
+            this.fetchData()
+          },
+          watch: {
+            // 如果路由有变化，会再次执行该方法
+            '$route': 'fetchData'
+          },
+          methods: {
+            fetchData () {
+              this.error = this.post = null
+              this.loading = true
+              // replace getPost with your data fetching util / API wrapper
+              getPost(this.$route.params.id, (err, post) => {
+                this.loading = false
+                if (err) {
+                  this.error = err.toString()
+                } else {
+                  this.post = post
+                }
+              })
+            }
+          }
+        }
+      </pre>
+      </li>
+      <li>导航完成之前获取：导航完成前，在路由的 enter 钩子中获取数据，在数据获取成功后执行导航。
+        <pre>
+          通过这种方式，我们在导航转入新的路由前获取数据。我们可以在接下来的组件的 beforeRouteEnter 钩子中获取数据，当数据获取成功后只调用 next 方法。
+
+          export default {
+            data () {
+              return {
+                post: null,
+                error: null
+              }
+            },
+            beforeRouteEnter (to, from, next) {
+              getPost(to.params.id, (err, post) => 
+                if (err) {
+                  // display some global error message
+                  next(false)
+                } else {
+                  next(vm => {
+                    vm.post = post
+                  })
+                }
+              })
+            },
+            // 路由改变前，组件就已经渲染完了
+            // 逻辑稍稍不同
+            watch: {
+              $route () {
+                this.post = null
+                getPost(this.$route.params.id, (err, post) => {
+                  if (err) {
+                    this.error = err.toString()
+                  } else {
+                    this.post = post
+                  }
+                })
+              }
+            }
+          }
+          在为后面的视图获取数据时，用户会停留在当前的界面，因此建议在数据获取期间，显示一些进度条或者别的指示。如果数据获取失败，同样有必要展示一些全局的错误提醒。
+        </pre>
+      </li>
+    </ul>
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      滚动行为 <code>scrollBehavior</code> 注意: 这个功能只在 HTML5 history 模式下可用。
+      如果不想要很丑的 hash，我们可以用路由的 history 模式，
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      
+    </ul>
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="" />
+		<meta name="Description" content="" />
+		
+	</head>
+	<body>
+	标签嵌套规范
+	/*
+			1、所有书写均在英文半角状态下的小写；
+			2、id，class必须以字母开头；
+			3、所有标签必须闭合；
+			4、html标签用tab键缩进；
+			5、属性值必须带引号；
+			6、<!-- html注释 -->
+			7、/* css注释 */
+			8、ul,li/ol,li/dl,dt,dd拥有父子级关系的标签；
+			9、p,dt,h标签  里面不能嵌套块属性标签；
+			10、a标签不能嵌套a；
+			11、内联元素不能嵌套块；
+	
+	CSS优先级 * < 标签 < class < id < 行间 <  js <  !important;
+	(JS其实就是写在行间,只不过把之前的行间覆盖了)
+		
+	CSS hack的目的就是使你的CSS代码兼容不同的浏览器。
+	我们也可以反过来利用CSS hack为不同版本的浏览器定制编写不同的CSS效果。
+
+	CSS hack 
+	\9 IE10和IE10以下的浏览器解析
+	* + IE6、7 解析
+	_ IE6 或者IE6以下解析
+
+	
+		*/
+
+
+		height兼容性问题
+
+IE6下高度小于19px，都会被当成19px处理
+解决方法：
+	overflow:hidden;超出隐藏
+	
+border 边框问题
+dotted在IE6下不支持
+解决方法
+	用ps切背景平铺
+
+margin 外边距问题
+在IE6下解决margin的传递  要出发haslayout
+在IE6下父级有边框的时候，子元素的margin会消失
+解决方法
+	overflow:hidden;zoom:1;
+	float
+	border+zoom
+
+在IE6下双倍边距  在IE下，块元素有浮动和横向的margin  横向的margin值会被放大成2倍
+margin-left  一行左边第一个元素有双边距
+margin-right  一行右边第一个元素有双边距
+
+解决办法 对内嵌元素没影响
+	display:inline;
+
+float 浮动问题
+IE6内容会撑开设置好的宽度
+解决方法
+	计算好宽度
+
+在IE6下元素浮动，如果宽度需要内容撑开，就给内容加浮动
+在IE67下元素要通过浮动并且在一行，就给这行元素都要加浮动
+
+
+
+在IE67下，li本身没浮动，但是内容有浮动，li外下面就会有间隙
+解决方法：
+	给父级li加浮动
+	给li加vertical-align:top;
+
+当一行子元素占有的宽度之和和父级的宽度大于或等于3px时；IE6下边距margin-bottom消失
+
+IE6下的文字溢出问题
+两个浮动子元素之间有注释和内嵌元素
+解决方法：
+	用DIV把内嵌或者内联元素包起来
+
+position:relative;
+在IE 6 、7 下子元素有相对定位，父级的overflow包不住子元素
+解决办法：给父级也加相对定位
+如果超出父元素部分在父元素的同级元素内,这个同级元素也没有定位的话,也会无视父元素的overflow:hidden和auto属性;
+解决办法:给父元素的同级元素也定位
+
+position:absolute;
+bug0: 在IE6 绝对定位的元素的父级是奇数的时候 ，元素的right值和bottom的值会1px的偏差;
+bug1 :子元素绝对定位无视父元素的overflow:hidden和auto属性;
+解决办法:给父元素定位;
+bug2: 如果超出父元素部分在父元素的同级元素内,这个同级元素也没有定位的话,也会无视父元素的overflow:hidden和auto属性;
+解决办法:给父元素的同级元素也定位
+bug3: 无法使用绝对定位左右或上下强制拉伸,然后margin:auto居中的办法;
+
+position:fixed; : IE6不支持 用js代替;
+
+IE67中:z-index失效:
+	第一种z-index无论设置多高都不起作用情况。这种情况发生的条件有三个：1、父标签position属性为relative；2、问题标签无position属性（不包括static）；3、问题标签含有浮动(float)属性。
+	解决方法，解决方法有三，1、position:relative改为position:absolute；2、去除浮动；3、浮动元素添加position属性（如relative，absolute等）。
+	IE67中子元素定位的z-index的优先级是以其祖先(最老的)定位父级依次往下(捕获),优先比较的是最远的那个定位父级,
+
+
+
+表单元素:
+
+1.在IE6 7 8下表单元素上下各有1px 间隙 解决办法：给表单元素加 浮动 ; 
+2 IE67下边框轮廓 用border:none;outline:none;无法消除, 解决办法 :border:none 0 ;outline:none 0;或背景色透明;
+3, input 标签背景图片之类有兼容问题, 解决办法 :尽量加给父级div;
+	
+
+条件注释语句
+	<!--[if IE 9]>
+		你用的是IE浏览器9
+	<![endif]-->
+	<!--[if IE 8]>
+		你用的是IE浏览器8
+	<![endif]-->
+	<!--[if IE 7]>
+		你用的是IE浏览器7
+	<![endif]-->
+	<!--[if IE 6]>
+		你用的是IE浏览器6
+	<![endif]-->
+
+	<!--[if IE 6]>
+		<script src="./js/DD_belatedPNG_0.0.8a.js"></script>
+		<script>
+			DD_belatedPNG.fix('#png');
+		</script>
+	<![endif]-->
+	</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>a24-26 对象string,date,math.html</title>
+		<meta name='keywords' content=''/>
+		<meta name='description' content=''/>
+		<link rel='stylesheet' href='' />
+		<script type='text/javascript' src=''></script>
+		<script type="text/javascript" >
+			
+			function testString(){
+			//声明一个对象 ,string对象的方法,除了split()分割外,大多不改变原字符串;
+				var s1 =new String("Zhangsan123");//不建议,会在底层创建两个对象;
+				var s2 = "lisisi";
+/*				alert(s1+"\n"+s1.search(/A/g));
+				//string对象,用于处理文本(字符串),
+				
+				//查看属性length,字符串的长度,只能读不能写;
+				//alert(s1.length);
+				
+				//string对象的常见方法;
+				alert(s1.toUpperCase()+"\n"+s1.toLowerCase());
+				toUpperCase() 把字符串转换为大写,不改变原字符串
+				toLowerCase() 把字符串转换为小写,不改变原字符串
+
+				//查看方法
+				s1[];返回在指定位置的字符,只能读不能写,重要: 而且IE7-不支持;
+				s1.charAt();返回指定位置的字符;
+				s1.charCodeAt();返回指定位置的字符 的ASCII码;
+				s1 = String.fromCharCode(65,66);返回括号内ASCII码(可多个,逗号隔开)所代表的字符;
+				alert(s1.charAt(2));
+
+				//检索,不改变原字符串;
+				//检索返回序号
+				indexOf()检索字符串中匹配的值的位置,找到第一个就停止,找不到返回-1,后面第二个可设置从哪一位置开始找,位置负数时当成位置0处理.
+				lastIndexOf()从后向前检索字符串
+				alert(s1.indexOf("a","-4")+"\n"+s1.lastIndexOf("a")); //从第5位开始找
+				search(); 检索字符串中与正则表达式匹配的值的位置;返回相匹配的子串的起始位置,如没有则返回 -1。search() 方法不执行全局匹配，即忽略标志g,同时忽略 regexp 的 lastIndex 属性，并且总是从字符串的开始进行检索，这意味着它总是返回 stringObject 的第一个匹配的位置。
+
+				//替换
+				replace();默认只替换第一个,但是可用正则表达式匹配的子串;
+				alert(s1.replace("a",",")+"\n"+s1.replace(/a/ig,","));
+				
+
+				//复制片段,不改变原字符串,在新的字符串中返回被提取的部分,不写第二个参数则默认到词尾。
+				substr(2,3);从2开始,共3个; 
+				substring(2,3);从2开始,到序号3之前(不包括3),(2,3)从2到3,(3,2)从2到3,(-9,3)从0到3;
+				//slice()切分, 不改变原对象,在新的对象中返回被提取的部分。可用于array和string对象,
+				slice(2,3);从2开始,到序号3之前(不包括3),(3,2)找不到,(-9,3)从倒数第9个(不是序号了)到序号3(不包括3),必须保证-9的位数在3前;如果没有指定end参数，那么切分的包含从 start 到结束的所有元素。
+
+
+
+				//检索返回数组
+				march(); 返回存放匹配一个或多个正则表达式结果的数组。该数组的内容依赖于 regexp 是否具有全局标志 g。在全局检索模式下，match() 即不提供与子表达式匹配的文本的信息，也不声明每个匹配子串的位置。如果您需要这些全局检索的信息，可以使用 RegExp.exec()。类似 indexOf() 和 lastIndexOf()，但是它返回指定的值所组成的数组，而不是字符串的位置,没有则返回null。
+
+				alert(s1.substr(2,3)+"\n"+s1.substring(2,3)+"\n"+s1.slice(-2));
+				
+				
+				//split();返回一个字符串分割成的新数组,不改变原对象;对应数组方法join();
+				var a = s1.split("an");//以"an"为边界分割字符串s1为数组;以空字符分割则每个字母都会被分开;注意会解析多余的空格,因此需先replace(/\s+/g,' ').replayce(/^\s+/,''),replace(/\s+$/,'');
+				alert(s1+" "+a);
+
+				/eval()计算js的字符串,并把它作为脚本代码来执行
+				//
+				function testEval () {
+					
+					var str="var num = 666;";
+					eval(str);
+					alert(num);
+				}
+				// 将一个单词的首字母大写
+				 function wordUpperCase(word){
+				  var wLength = word.length;  
+				  if(wLength > 0){
+				   var ss = (word.substring(0,1).toUpperCase()) + (word.substring(1,wLength).toLowerCase()+" ");
+				  }
+				  return ss;
+				 }
+				 
+				 // 将一个句子的每个单词的首字母大写
+				 function sentenceUpperCase(sentence){
+				  var upperSentence = '';
+				  var array = sentence.split(' ');
+				  for(i = 0 ;i < array.length ; i++){
+				   upperSentence += wordUpperCase(array[i]);     
+				  }
+				  return upperSentence; 
+				 }
+*/	
+			};
+
+				
+		</script>
+		
+	</head>
+	<body>
+		<input type="button" name="" id="" value="测试字符串对象的属性与方法" onclick="testString();"/>
+		<input type="button" value="测试date对象" onclick="testDate();"/>
+		
+		<input type="button" value="测试Math对象" onclick="testMath();"/>
+		<input type="text" value="" size="30" id="date">
+	</body>
+</html>

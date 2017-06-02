@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> </title>
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <style type="text/css">
+    *{
+        margin:0;
+        padding:0;
+    }
+    li{
+        list-style:none;
+    }
+    a{
+        text-decoration:none;
+    }
+    hr{
+        margin:20px 0;
+    }
+    hr.dotted{
+        height:1px;border:none;border-top:1px dotted #ccc;
+    }
+    </style>
+</head>
+<body>
+CSS3-过渡属性
+transition: property duration timing-function delay;
+默认: transition: all duration linear 0;
+
+transition-property:过渡属性的名称
+transition-duration:过渡属性花费的时间
+transition-timing-function:过渡效果速度曲线
+transition-delay:过渡效果延迟时间
+
+transition-property:过渡属性的名称
+	none   没有过渡属性
+	all        所有属性都过渡(默认值)
+	property    具体属性名称(property1,property2...)
+
+transition-duration:过渡所花费的时间
+	time   秒或毫秒
+	
+transition-delay:过渡效果延迟时间
+	time 秒或毫秒
+
+transition-timing-function:过渡效果速度曲线
+	linear:规定以相同速度开始至结束的过渡效果（等于 cubic-bezier(0,0,1,1)）。
+	ease:规定慢速开始，然后变快，然后慢速结束的过渡效果（cubic-bezier(0.25,0.1,0.25,1)）。
+	ease-in:规定以慢速开始的过渡效果（等于 cubic-bezier(0.42,0,1,1)）。
+	ease-out	:规定以慢速结束的过渡效果（等于 cubic-bezier(0,0,0.58,1)）。
+	ease-in-out :规定以慢速开始和结束的过渡效果（等于 cubic-bezier(0.42,0,0.58,1)）。
+	cubic-bezier(n,n,n,n):在 cubic-bezier 函数中定义自己的值。可能的值是 0 至 1 之间的数值。
+
+实例:
+    transition-property:width,height,left,top;/**/
+    transition-duration:2s,1s;/*2s,1s == 2s,1s,2s,1s*/
+    transition-delay:0s,2s;
+
+    transition:left 2s linear ,background-color 1s linear 2s , rotate 3s 3s;/*注意 可以直接使用rotate,不必transform*/
+
+过渡完成事件：
+Webkit内核： obj.addEventListener('webkitTransitionEnd',function(){});
+标准:  obj.addEventListener('transitionend',function(){});
+<hr class="dotted">
+实例:
+//进度条
+
+<style>
+    .box{
+        width:0px;
+        height:20px;
+        background:red;
+        border-radius:10px;
+        transition:10ms linear;
+    }
+</style>
+    <div class="box"></div>
+    <button id="play">播放</button>
+    <button id="pause">暂停</button>
+    <script>
+        var oBox = document.getElementsByClassName("box")[0];
+        var play = document.getElementById("play");
+        var pause = document.getElementById("pause");
+
+        play.onclick = function(){
+            progress();
+            addEnd(oBox,progress)
+        }
+        pause.onclick = function(){
+            removeEnd(oBox,progress);
+        }
+        function progress(){
+            if (oBox.offsetWidth >= 500)
+            {
+                oBox.style.width = "500px";
+                removeEnd(oBox,progress);
+            }else{
+                oBox.style.width = oBox.offsetWidth + 1 + "px";
+            }
+            
+        }
+        function addEnd(obj,fn){
+            obj.addEventListener("webkitTransitionEnd",fn);//当动画过渡完成之后调用一个功能函数
+            obj.addEventListener("transitionend",fn);
+        }
+    
+        function removeEnd(obj,fn){
+            obj.removeEventListener("webkitTransitionEnd",fn);
+            obj.removeEventListener("transitionend",fn);
+        }
+    </script>
+<hr>
+CSS3-动画
+animation: name duration timing-function delay iteration-count direction;
+	animation-name: 动画名称
+	animation-duration: 动画执行时间
+	animation-timing-function: 动画速度曲线
+	animation-delay:动画效果延迟时间
+	animation-iteration-count: 动画执行次数
+	animation-direction:动画执行方向
+	animation-play-state:动画执行状态
+	animation-fill-mode:动画执行过程效果是否可见
+	@keyframes:规定动画
+
+animation-name: keyframename|none;
+	keyframename  自定义的名字
+	none  无动画效果
+animation-duration: time;
+	time  秒或毫秒
+animation-delay:time;
+	time 秒或毫秒
+
+animation-timing-function: value;	
+	linear:规定以相同速度开始至结束的过渡效果（等于 cubic-bezier(0,0,1,1)）。
+	ease:规定慢速开始，然后变快，然后慢速结束的过渡效果（cubic-bezier(0.25,0.1,0.25,1)）。
+	ease-in:规定以慢速开始的过渡效果（等于 cubic-bezier(0.42,0,1,1)）。
+	ease-out:规定以慢速结束的过渡效果（等于 cubic-bezier(0,0,0.58,1)）。
+	ease-in-out :规定以慢速开始和结束的过渡效果（等于 cubic-bezier(0.42,0,0.58,1)）。
+	cubic-bezier(n,n,n,n):在 cubic-bezier 函数中定义自己的值。可能的值是 0 至 1 之间的数值。
+    steps(n):阶跃函数
+
+animation-iteration-count: n|infinite;
+	n  具体的次数
+	infinite 无限重复
+animation-direction: normal|alternate;
+	normal  正常顺序(默认值)
+	alternate  动画轮流反向播放
+animation-play-state: paused|running;
+	paused  暂停动画 
+	running  运行动画
+
+animation-fill-mode : none | forwards | backwards | both;	
+	none  不改变(默认值)
+	forwards 当动画完成后，保持最后一个属性值（在最后一个关键帧中定义）
+	backwards 在 animation-delay 所指定的一段时间内，在动画显示之前，应用开始属性值（在第一个关键帧中定义）
+	both 向前和向后填充模式都被应用
+
+@keyframes animationname {keyframes-selector {css-styles;}}
+	animationname 定义动画的名称。
+	keyframes-selector 动画时长的百分比。
+	    0-100%
+        from（与 0% 相同）
+        to（与 100% 相同）
+        可以只有to
+	css-styles  一个或多个合法的 CSS 样式属性。
+
+动画事件：
+	动画开始：
+	 obj.addEventListener("webkitAnimationStart", fn);
+     obj.addEventListener("animationstart", fn);
+	动画执行过程中触发：
+    obj.addEventListener("webkitAnimationIteration", fn);
+    obj.addEventListener("animationiteration", fn);
+    动画结束是触发：
+    obj.addEventListener('webkitAnimationEnd',fn);
+    obj.addEventListener('animationend',fn);
+
+.observe .pupil{
+    animation: observe 10s ease-out infinite; 
+    
+}
+ @keyframes observe {
+    5% {
+        transform: none;
+    }
+    10% {
+        transform: translateX(-.25rem) translateY(.11rem) skewX(15deg) skewY(-10deg) scale(0.95);
+    }
+    12%, 22% {
+        transform: none;
+    }
+    25%, 32%,42% {
+        transform: translateX(.25rem) translateY(-.15rem) skewX(5deg) skewY(2deg) scaleX(0.94);
+    }
+    30% {
+        transform: none;
+    }
+    46%,50%
+    {
+        transform:translateX(-.11rem) translateY(-.21rem) skewX(-10deg) skewY(0deg)  scaleX(0.96);
+    }
+    60%,66%{
+        transform: translateX(-.25rem) translateY(.08rem) skewX(15deg) skewY(-10deg) scale(0.95);
+    }
+    72%, 80% {
+        transform: translateX(.22rem) translateY(.12rem) skewX(3deg) skewY(-10deg) scaleX(0.93);
+    }
+    83%, 100% {
+        transform: none;
+    }
+}
+</body>
+</html>

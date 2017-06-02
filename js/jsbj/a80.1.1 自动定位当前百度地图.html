@@ -1,0 +1,52 @@
+<!DOCTYPE html> 
+<html lang="zh-cn"> 
+<head> 
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title></title> 
+<style type="text/css"> 
+*{ 
+height: 100%; //设置高度，不然会显示不出来 
+} 
+</style> 
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script> 
+<script src="http://apps.bdimg.com/libs/fastclick/1.0.0/fastclick.min.js"></script> 
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=DNbYBM3B9ANr8MlAPOiGVGhTU6b5B2z5"></script> 
+</head> 
+<body> 
+<div id="map"></div> 
+
+<script> 
+$(function(){ 
+FastClick.attach(document.body);
+var map = new BMap.Map("map");
+var point = new BMap.Point(116.331398,39.897445);
+var mk;
+map.centerAndZoom(point,15);
+map.addControl(new BMap.NavigationControl());        // 添加平移缩放控件
+map.addControl(new BMap.ScaleControl());             // 添加比例尺控件
+map.addControl(new BMap.OverviewMapControl());       //添加缩略地图控件
+map.addEventListener("click",mPanTo);
+
+function mPanTo(e){
+    alert(e.point.lng + "," + e.point.lat);
+    map.removeOverlay(mk);
+    mk = new BMap.Marker(e.point);
+    map.addOverlay(mk);
+    map.panTo(e.point);
+}
+
+var geolocation = new BMap.Geolocation();
+geolocation.getCurrentPosition(function(e){
+    if(this.getStatus() == BMAP_STATUS_SUCCESS){
+        mPanTo(e)
+    }
+    else {
+        alert('定位失败'+this.getStatus());
+    }        
+},{enableHighAccuracy: true})
+
+})
+</script> 
+</body> 
+</html> 

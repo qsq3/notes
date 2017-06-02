@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<title>16.history(需服务器环境)</title>
+		<style>
+			*{
+				margin:0px;
+				padding:0px;
+			}
+			#nav{
+				width:600px;
+				margin:100px auto;
+			}
+		</style>
+	</head>
+	<body>
+
+		<button id="btn">生成随机数</button>
+		<div id="nav"></div>
+	</body>
+	<script>
+    //history扩展
+		var nav = document.querySelector("#nav");
+		var btn = document.querySelector("#btn");
+		btn.onclick = function(){
+			var num = randNum(35,7);
+			history.pushState(num, " ", num);//pushState :  三个参数 ：数据  标题(都没实现)  地址(可选)
+			nav.innerHTML = num;
+		}
+		window.onpopstate = function(ev){ //onpopstate事件 :  读取数据   event.state
+			nav.innerHTML = ev.state;
+		}
+		function randNum(a,b){
+			var arr = [];
+			var arrs = [];
+			for (var i = 0;i < a ;i++ )
+			{
+				arr.push(i);//0 1 2 3 34 4 a
+			}
+			for (var i = 0;i < b ;i++ )
+			{
+				var n = Math.floor(Math.random()*arr.length);
+				arrs.push(arr.splice(n,1));
+			}
+			return arrs;
+		}
+		//console.log(randNum(35,7));
+	</script>
+</html>

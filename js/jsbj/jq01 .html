@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<script type='text/javascript' src='js/jquery.js' ></script>
+		<script type="text/javascript">
+			$(function(){
+/*		一.
+		$(function(){ 内容 }) === jQuery(function(){ 内容 }) === $(document).ready(function(){ 内容 })
+		
+		二.$()的内容,JQ对象是个类数组:
+			1.选择DOM节点返回JQ对象:
+				$('Css选择器') -->选择DOM对象,返回为JQ对象;
+			2.把JS对象转为JQ对象:
+				$(JS对象) ->选择JS对象,返回为JQ对象;
+				语法:
+				var oBox = document.getElementById('box');
+				var $Box = $(oBox);
+			3.把JQ对象转为JS对象,JQ对象本来就是类数组型的集合 :
+				1,单个:
+					通过下标:
+					var oBox = $Box[0];
+				    或者get()方法:
+					var oBox = $Box.get(0);
+					//注意eq()方法获得的是JQ对象,因此要这样用:
+					var oBox = $Box.eq(0)[0];
+
+				2,多个: 
+					var $Box = $(' .box ');					
+					var oBox = [];
+					for (var i=0;i<$Box.length; i++ )
+					{
+						oBox.push($Box[i]);
+					}
+
+			4. JQ的属性length为其子节点对象的个数,用for in可遍历JQ对象的成员;
+					console.log($Box.length);
+					for (var k in $Box ){
+						console.log( k +"\n"+$Box[k] );
+					}
+						
+					
+/*		三,	JQ的方法,无参数一般为读取,读取都是第一个子元素的数值:
+			1.操作样式 css();
+				$Box.css('width')  //读取,注意是读取第一个子元素的数值;
+	*/			$Box.css({
+				 	width : '200px',
+					height : '100px',
+					background : 'red',
+					border : '1px solid blue'
+				});  //多个属性写入,JSON;
+				//$Box.eq(0).css('width','500px')  //单个写入,不注释这个则弹出500px;
+				$Box.eq(1).css('width','800px')  //单个写入
+				$Box.eq(2).css('width','300px')  //单个写入
+				//alert($Box.css('width') ) // 200px;
+
+			//2.操作内容 html();
+				$Box.html(); //读取,注意是读取第一个子元素的数值;
+				$Box.html('1'); //写入
+			//3.循环方法 each();
+				//each(function(i){}),this按顺序指向:所有匹配的元素,并执行函数;
+				$Box.each(function(i){
+					$(this).html(this.id + '\t' + i );
+					//this --> JS对象;
+					//$(this) --> JQ对象;
+					//i --> 第一个传参,默认值为其执行对象的数组下标;
+				});
+				//alert($Box.html());
+		
+			});	
+		</script>
+	</head>
+	<body>
+		<div class="box" id="box1"></div>
+		<div class="box" id="box2"></div>
+		<div class="box" id="box3"></div>
+	</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>a41 DOM 获取节点.html</title>
+	<style type="text/css">
+			
+		.male{
+			color:red;
+		}
+		
+	</style>
+	<script type="text/javascript">
+	
+    	如何访问HTML元素（节点）：
+        通过使用 getElementById() 方法
+        通过使用 getElementsByTagName() 方法
+        通过使用 getElementsByClassName() 方法
+
+        querySelector和querySelectorAll IE8+浏览器支持。
+        querySelector返回的是单个DOM元素；querySelectorAll返回的是NodeList.
+        我们一般用的多的是document.querySelectorAll, 实际上，也支持dom.querySelectorAll; IE7-不支持;
+        实例:
+       
+        <img id="outside">
+        <div id="my-id">
+            <img id="inside">
+            <div class="lonely"></div>
+            <div class="outer">
+                <div class="inner"></div>
+            </div>
+        </div>
+        <script>
+            document.querySelector("#my-id").querySelectorAll("img");
+            document.querySelectorAll("#my-id div div").length === 1;
+            document.querySelector("#my-id").querySelectorAll("div div").length === 3;
+            $("#my-id").find("div div").length === 1;
+            可见,和JQuery的find不一样,querySelector是从父级开始筛选;
+        </script>
+
+        如何访问节点属性（获取、修改）、节点内容（获取、修改）
+        如何创建、删除、移动节点：
+        createElement
+        removeChild
+        insertBefore
+        appendChild
+        cloneNode
+        replaceChild
+
+        
+
+可以通过window.id ,form.name的方式直接访问该节点元素;
+为什么可以通过id直接访问对象，是因为所有的元素ID都相当于一个保存对象的全局变量。
+通过id直接访问对象还存在兼容问题。
+建议用document.getElementById标准的形式获取对象。
+
+如果一个元素符合下面两条规则中的任一条,则window对象中必须要有与之对应的一个属性,属性值就是这个对象。
+如果一个元素拥有ID属性,那么ID属性的属性值就会成为window对象的属性名. 
+如果一个元素拥有name属性,那么name属性的属性值就会成为window对象的属性名.但这个元素的标签名必须是: a, applet, area, embed, form, frame, frameset, iframe, img, object,其中的一个。
+ 
+但是如果网页有两个相同ID的元素，就有点差异了：
+    <script type="text/javascript">
+        function getInput() {
+            var mydiv = document.getElementById("div1");
+            alert(mydiv.length);//mydiv是DispHTMLElement
+            alert(div1.length);//div1是DispHTMLElementCollection
+        }
+    </script>
+
+    <div id="div1">123</div>
+    <div id="div1">456</div>
+    <input type="button" value="Test" onclick="getInput()" />
+
+<script type="text/javascript">
+		function testId () {
+				
+			var ele = document.getElementById("uname");				
+				
+			alert(ele.value);
+		}
+		//byname 常用于获取表单元素;
+		//表单内可用oForm.name方法获得节点;
+		function testName () {
+			var ele = document.getElementsByName("sex");				
+			alert(ele.length);
+		}
+		function testTagName () {
+				
+		var ele = document.getElementsByTagName("input");
+			alert(ele.length);
+			}
+		function testClassNmae () {
+			var ele = document.getElementsByClassName("male");
+			alert(ele.length); //注意获取的是节点列表对象NodeList
+		}
+		//getElmentById是静态的,其指向的对象其实是其地址,获取的对象不会随后续的事件(如更改Id名称)而更改;
+		//getElementsByTagName函数是动态的,执行的时候才会调用,此时for循环的i已经是5了,所以必须提前赋值存起来对应下标;
+		//见练习作业jslx02
+
+		//IE678不兼容getElementsByClassName, 下为兼容写法;
+
+		//统一成数组类型://注, var reg = new RegExp('\\b'+cName+'\\b') 转义符号\b会识别符号-,有问题,
+
+		function getClass(cName ,node){ 
+			var arr =[]
+			node = node || document;
+			if(node.getElementsByClassName){
+				node = node.getElementsByClassName(cName);
+				for (var i=0;i<node.length;i++ ){
+					arr[i] = nodes[i];
+				}
+			}else{
+				node = node.getElementsByTagName("*");
+				var reg = new RegExp('(^|\\s)'+cName+'(\\s|$)')
+				for (var i=0;i<node.length;i++ ){
+					if(reg.test(node[i].className)){	
+						arr.push(node[i]);
+					};
+				};
+			}
+			return arr; 
+		};
+
+/*
+		var var ele = document.getElementById("uname");	
+		alert(getClass("male")[0].className);
+		function getClass(cName ,obj){
+			var obj = obj || document;
+			if(obj.getElementsByClassName)
+			{
+				return obj.getElementsByClassName(cName);
+			}
+			var arr=[];
+			var allE = obj.getElementsByTagName("*");
+			for (var i=0;i<allE.length;i++ )
+			{
+				var classArr = allE[i].className .split(" ");
+				for (var j=0;j<classArr.length ;j++ ){
+					if (classArr[j]==cName){
+						arr.push(allE[i]);
+						break;
+					};
+				};
+				
+			};
+			return arr; 
+		};
+*/			
+			
+		function testChildren () {
+				
+		var ela = document.getElementById("ul1");
+			//通过父子关系获取子元素 ,这是属性不是方法;
+			var elb = ela.childNodes; //兼容性问题:IE6,7,8会忽略文本节点;其他浏览器获取文本和元素节点
+
+			//兼容写法;
+			var elbArr= [];
+			for (var i=0; i< ela.childNodes.length ;i++ )
+			{
+				if (ela.childNodes[i].nodeType === 1)
+				{
+					elbArr.push(ela.childNodes[i]);
+				}
+			}
+
+			var elb1 = ela.firstChild; //第一个节点;和childNodes一样,会有是否忽略文本节点的兼容性问题;
+			var elb2 = ela.lastChild; //最后一个节点;
+			var elc = ela.children; //无兼容问题,只获取元素节点;children[0]有可能报错;
+			var elc1 = ela.firstElementChild; //第一个元素节点;IE8不兼容,
+			var elc2 = ela.lastElementChild;//最后一个元素节点;IE8不兼容,
+			//
+			alert(elb.length +"\n"+ elc.length)	;
+			for(var i=0; i<elb.length; i++){
+				console.log("childNodes"+i+" : "+elb[i]+" nodeType: " +elb[i].nodeType);
+			}
+			for(var i=0; i<elc.length; i++){
+				console.log("children"+i+" : "+elc[i]+" nodeType: " +elc[i].nodeType);
+			}
+			//兼容性写法
+			function getChildren(obj){
+				if(obj.firstElementChild){
+					return obj.firstElementChild;
+				}else{
+					return obj.firstChild;  //兼容IE678,忽略文本节点;
+				}
+			}
+						
+		};
+		
+		function testParent(){
+			//子父也都是属性;
+			var ela = document.getElementById("vali1");
+			var elb = ela.parentNode;
+			//console.log(elb.id);
+			//寻根之旅
+			//console.log(parents(ela));
+			function parents(obj){
+				var arr=[];
+				while (obj != document.body )
+				{
+					obj = obj.parentNode; 
+					arr.push(obj);
+				}
+				return arr;
+			}
+			//寻找定位父级节点
+			//这些属性都是可读不可写的;
+			var elc =ela.offsetParent; //寻找最近的一个定位父级节点,如没有一直往上找到body为止;
+			var elcL=ela.offsetLeft; //当前元素到其定位父级左边的距离;(注意,定位位移是以外边距框为准线,但这里获取的是边框为准线;)
+			var elcT=ela.offsetTop; //当前元素到其定位父级上边的距离;
+			//offsetWidth 不会被子元素超出范围所影响
+			var elcW=ela.offsetWidth;//实际宽度(有误差)(包括内边框,边距的数值)width+padding+border;
+			var elcH=ela.offsetHeight;//实际高度(有误差)(包括内边框,边距的数值)
+			//clientWidth 不会被子元素超出范围所影响
+			var elcCW=ela.clientWidth;//width+padding
+			var elcCH=ela.clientHeight;//height+padding
+			//scrollHeight; height+padding,会被子元素超出范围所影响,兼容性问题不同浏览器数值不同
+			console.log(elc+" | "+elcL+" | "+elcT);
+
+			//获取样式 currentStyle for IE 注意前4个返回number类型的值; 最后兼容方法返回带单位的字符串在;
+			function getStyle( node , attr ){
+				switch (attr){
+					case "width" :
+						return node.clientWidth;
+						break;
+					case "height" :
+						return node.clientHeight;
+						break;
+					case "top" :
+						return node.offsetTop;
+						break;
+					case "left" :
+						return node.offsetLeft;
+						break;
+					case "opacity" :
+						return getOpacity(node);
+						break;
+					default:
+						return node.currentStyle ? node.currentStyle[attr] : getComputedStyle(node)[attr];
+						break;
+					function getOpacity( node ){
+						var val = parseFloat(node.currentStyle ? node.currentStyle.opacity : getComputedStyle(node).opacity) ;
+						if (isNaN(val)) {
+							var reg = /opacity=(\d+)/;
+							val = node.currentStyle.filter.match(reg);
+							val = val ? (parseInt(val[1]))/100 : 1;
+						}
+						return val;
+					};
+				}
+			}
+
+			getBoundingClientRect : 用于获得页面中某个元素的左，上，右和下分别相对浏览器!视窗!的位置 , 是DOM元素到浏览器可视范围的距离（不包含文档卷起的部分）。该函数返回一个Object对象，该对象有6个属性：top,lef,right,bottom,width,height；这里的top、left和css中的理解很相似，width、height是元素自身的宽高，但是right，bottom和css中的理解有点不一样。right是指元素右边界距窗口最左边的距离，bottom是指元素下边界距窗口最上面的距离。
+			兼容问题 : IE只返回top,lef,right,bottom四个值，不够可以通过以下方法来获取width,height的值：
+			var ro = object.getBoundingClientRect();
+			var Width = ro.right - ro.left;
+			var Height = ro.bottom - ro.top;
+
+			var box=document.getElementById('box');         // 获取元素
+			alert(box.getBoundingClientRect().top);         // 元素上边距离页面上边的距离
+			alert(box.getBoundingClientRect().right);       // 元素右边距离页面左边的距离
+			alert(box.getBoundingClientRect().bottom);      // 元素下边距离页面上边的距离
+			alert(box.getBoundingClientRect().left);        // 元素左边距离页面左边的距离
+
+			注意：IE、Firefox3+、Opera9.5、Chrome、Safari支持，在IE中，默认坐标从(2,2)开始计算，导致最终距离比其他浏览器多出两个像素，我们需要做个兼容。
+			document.documentElement.clientTop;  // 非IE为0，IE为2
+			document.documentElement.clientLeft; // 非IE为0，IE为2
+
+			function getRect (element) {
+				var rect = element.getBoundingClientRect();
+				var top = document.documentElement.clientTop;
+				var left= document.documentElement.clientLeft;
+				return{
+					top    :   rect.top - top,
+					bottom :   rect.bottom - top,
+					left   :   rect.left - left,
+					right  :   rect.right - left,
+					width  :   rect.right -  rect.left,
+					height :   rect.bottom - rect.top
+				}
+			};
+			分别加上外边据、内边距、边框和滚动条，用于测试所有浏览器是否一致。
+			有了这个方法，获取页面元素的位置就简单多了:
+			var X= this.getBoundingClientRect().left+document.documentElement.scrollLeft;
+			var Y =this.getBoundingClientRect().top+document.documentElement.scrollTop;
+			
+		};
+
+		getClientRects 获取元素占据页面的所有矩形区域 
+		描述
+		获取元素占据页面的所有矩形区域。
+		语法
+			var rectCollection = object.getClientRects();
+
+		值
+		getClientRects 返回一个TextRectangle集合，就是TextRectangleList对象。TextRectangle对象包含了, top left bottom right width height 六个属性
+		TextRectangle
+		对于文本对象，W3C提供了一个 TextRectangle 对象，这个对象是对文本区域的一个解释。这里的文本区域只针对inline 元素，比如：a, span, em这类标签元素。
+		浏览器差异
+		getClientRects() 最先由MS IE提出，后被W3C引入并制订了标准。目前主流浏览器都支持该标准，而IE只支持TextRectangle的top left bottom right四个属性。IE下可以通过right-left来计算width、bottom-top来计算height。
+		ie 和非ie浏览器在使用getClientRects还是有些差别的，ie获取TextRectangleList的范围很大。而非ie获取的范围比较小， 只有display:inline的对象才能获取到TextRectangleList，例如em i span 等标签。
+		应用场景
+		getClientRects常用于获取鼠标的位置，如放大镜效果。微博的用户信息卡也是通过改方法获得的。
+
+		function testSibling(){
+			var ele = document.getElementById("uname");
+			var elb = ele.nextElementSibling;//拿的下个兄弟元素,忽略空文本,但是IE不兼容
+			var elc = ele.nextSibling;//拿的是下个兄弟元素,即使是空格也被视为文本,即兄弟元素;
+			alert(elb.value+"\n"+elc.value);
+			//同理
+			var prb = ele.previousElementSibling;//拿的上个兄弟元素,忽略空文本,但是IE不兼容
+			var prc = ele.previousSibling; //拿的是上个兄弟元素,但是是空格也被视为文本,即兄弟元素;
+			alert(prb.alt+"\n"+prc.length);
+		};
+		
+		//nextSibling兼容
+		function getNextSibling (node){
+			do{
+				node = node.nextSibling;
+			}
+			while(node.nodeType !== 1 && node.nextSibling);
+			return node;
+		}
+	</script>
+</head>
+<body>
+	直接方式
+		通过id
+		通过元素的name属性
+		通过标签名div
+		通过样式的类名
+	间接方式:
+		父子关系
+		子父关系
+		兄弟关系
+	<hr />直接方式direct<br/>
+	<input type="button" name="" id="" value="通过<id>获取节点" onclick="testId();">
+	<input type="button" name="" id="" value="通过<元素名name>获取节点" onclick="testName();">
+	<input type="button" name="" id="" value="通过<标签名>获取节点" onclick="testTagName();">
+	<input type="button" name="" id="" value="通过<类名>获取节点" onclick="testClassNmae();">
+	<br/>
+	<img src="#" class="male" alt="zhangsan" />123123133211
+		
+	<input type="text" name="" id="uname" class="male" value="zhangsan" />
+	<input type="radio" name="sex" id="" class="male" value="1" />男
+		
+	<input type="radio" name="sex" class="female" id="" value="2" />女
+		
+	<input type="radio" name="sex" id="" value="3" />未知,单选框通过 name分组;
+	<hr />间接方式indirect<br/>
+	<br/>父子关系<br/>
+	<input type="button" value="通过(父子关系)获取元素节点" onclick="testChildren();" />
+	<input type="button" value="通过(子父)获取元素节点" onclick="testParent();" />
+	<input type="button" value="通过(兄弟)获取元素节点" onclick="testSibling()" />
+	<input type="button" value="通过()获取元素节点" onclick="" />
+	
+	<div id="a1" style="position:relative; left:0;top:0;border:1px solid black;">
+		<div id="ul1" style="position:absolute; left:0;top:0; border:1px solid red;">
+			<div value="vali1" id="vali1" style="position:relative; left:0;top:0;  border:1px solid blue;margin:100px">li1</div>
+			<li value="vali2">li2</li>
+			<li value="vali3">li3</li>
+		</div>
+		<p id="p1">p1</p>
+			<p>p2</p>
+	</div>
+	
+
+	
+</body>
+</html>

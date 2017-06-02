@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> </title>
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    
+</head>
+<body>
+    CSS滤镜主要是用来实现图像的各种特殊效果。它在网站制作中具有非常神奇的作用。通过CSS滤镜可以使网站变得更加漂亮，在CSS中，filter属性就代表了滤镜的意思，它可以设置文字、图片和表格的滤镜效果。
+　　语法:STYLE={"filter:filtername(fparameter1,fparameter2...)}
+　　标注：Filtername为滤镜的名称，fparameter1、fparameter2等是滤镜的参数。
+　　13种CSS滤镜效果
+　　1.滤镜:chroma --制作专用颜色透明.
+　　语法:STYLE="filter:Chroma(Color=color)"
+　　标注:color:#rrggbb格式，任意.
+　　2.滤镜:blur——创建高速度移动效果，即模糊效果.
+　　语法:STYLE="filter:Blur(Add=add,Direction=direction,Strength=strength)"
+　　标注：Add:一般为1，或0；Direction:角度,0-315度，步长为45度；Strength:效果增长的数值,一般5即可.
+　　3.滤镜:FlipV--创建垂直镜像图片.
+　　语法:STYLE="filter:FlipV"
+　　4.滤镜:alpha--设置透明层次
+　　语法:STYLE="filter:Alpha(Opacity=opacity,FinishOpacity=finishopacity,Style=style,StartX=startX,StartY=startY,FinishX=finishX,FinishY=finishY)"
+　　标注：Opacity:起始值，取值为0-100,0为透明，100为原图；FinishOpacity:目标值；Style：1或2或3；StartX：任意值；StartY：任意值
+　　5.滤镜:FlipH ——创建水平镜像图片.
+　　语法:STYLE="filter:FlipH"
+　　6.滤镜:glow--加光辉在附近对象的边外.
+　　语法:STYLE="filter:Glow(Color=color,Strength=strength)"
+　　标注:Color:发光颜色；Strength:强度(0-100)
+　　7.滤镜:mask--创建透明掩膜在对象上.
+　　语法:STYLE="filter:Mask(Color=color)"
+　　8.滤镜:滤镜:Xray--使对象变的像被x光照射一样.
+　　语法:STYLE="filter:Xray"
+　　9.滤镜:invert——反色.
+　　语法:STYLE="filter:Invert"
+　　10.滤镜:DropShadow --创建对象的固定影子.
+　　语法:STYLE="filter:DropShadow(Color=color,OffX=offX,OffY=offY,Positive=positive)"
+　　标注:Color:#rrggbb格式，任意；Offx:X轴偏离值；Offy:Y轴偏离值；Positive:1或0.
+　　11.滤镜:gray--把图片灰度化.
+　　语法:STYLE="filter:Gray"
+　　12.滤镜:wave——波纹效果.
+　　语法:filter:Wave(Add=add,Freq=freq,LightStrength=strength,Phase=phase,Strength=strength)
+　　标注:Add:一般为1，或0；Freq:变形值；LightStrength:变形百分比；Phase:角度变形百分比；Strength:变形强度.
+　　13.shadow--创建偏移固定影子.
+　　语法:filter:Shadow(Color=color,Direction=direction)
+　　标注:Color:#rrggbb格式；Direction:角度,0-315度，步长为45度.
+　　在使用CSS滤镜应该注意一点的是，现在的网站制作布局中，往往是在div上附加滤镜的，如果单单的在html代码里面给div设置一个id，这样子滤镜是不会有作用的，必须要在style或者css中定义这个id属性，否者不会起作用。
+
+
+
+
+　　只需要一句话代码，网站制作时就可以让图片像PPT文档那样可以自由切换，很简单！在转换之前，我们要先了解三个基本代码：
+　　旋　转 ：style="filter: progid:DXImageTransform.Microsoft.BasicImage(rotation:1)"
+　　去背景色：style="filter:Chroma(Color=#000000)"
+　　设置渐变色：style="position:relative;left:0px;top:0px;filter:progid:DXImageTransform.Microsoft.gradient(startcolorstr=#ff0000,endcolorstr=#ffff00,gradientType=1)"
+　　精彩回顾：网站制作之CSS滤镜效果大全
+　　下面是图片转换滤镜大全，希望可以帮助朋友们~！！！
+　　随机变换：progid:DXImageTransform.Microsoft.RevealTrans(enabled=true,transition=23)
+　　方形渐小：progid:DXImageTransform.Microsoft.Iris(irisstyle=square,motion=in)
+　　方形渐大：progid:DXImageTransform.Microsoft.Iris(irisstyle=square,motion=out)
+　　交叉渐小：progid:DXImageTransform.Microsoft.Iris(irisstyle=cross,motion=in)
+　　交叉渐大：progid:DXImageTransform.Microsoft.Iris(irisstyle=cross,motion=out)
+　　星形渐大：progid:DXImageTransform.Microsoft.Iris(irisstyle=star,motion=out)
+　　星形渐小：progid:DXImageTransform.Microsoft.Iris(irisstyle=star,motion=in)
+　　圆形渐大：progid:DXImageTransform.Microsoft.Iris(irisstyle=circle,motion=out)
+　　圆形渐小：progid:DXImageTransform.Microsoft.Iris(irisstyle=circle,motion=in)
+　　菱形渐小：progid:DXImageTransform.Microsoft.Iris(irisstyle=diamond,motion=in)
+　　菱形渐大：progid:DXImageTransform.Microsoft.Iris(irisstyle=diamond,motion=out)
+　　加号渐大：progid:DXImageTransform.Microsoft.Iris(irisstyle=plus,motion=out)
+　　加号渐小：progid:DXImageTransform.Microsoft.Iris(irisstyle=plus,motion=in)
+　　向上擦除：progid:DXImageTransform.Microsoft.Blinds(bands=1,direction=up)
+　　向下擦除：progid:DXImageTransform.Microsoft.Blinds(bands=1,direction=down)
+　　向左擦除：progid:DXImageTransform.Microsoft.Blinds(bands=1,direction=left)
+　　向右擦除：progid:DXImageTransform.Microsoft.Blinds(bands=1,direction=right)
+　　左右中部收缩：progid:DXImageTransform.Microsoft.Barn(motion=in,orientation=vertical)
+　　随机溶解：progid:DXImageTransform.Microsoft.RandomDissolve(enable=true)
+　　中部上下展开：progid:DXImageTransform.Microsoft.Barn(motion=out,orientation=horizontal)
+　　中部左右展开：progid:DXImageTransform.Microsoft.Barn(motion=out,orientation=vertical)
+　　随机水平线：progid:DXImageTransform.Microsoft.RandomBars(orientation=horizontal)
+　　随机垂直线：progid:DXImageTransform.Microsoft.RandomBars(orientation=vertical)
+　　上下中部收缩：progid:DXImageTransform.Microsoft.Barn(motion=in,orientation=horizontal)
+　　标准渐变转化：BlendTrans(enabled=true,percent=10)
+　　可调渐变转化：progid:DXImageTransform.Microsoft.Fade(enabled=ture,overlap=1.0)
+　　向右下插入：progid:DXImageTransform.Microsoft.Inset(enabled=ture)
+　　隐藏式伸展：progid:DXImageTransform.Microsoft.Stretch(stretchstyle=hide)
+　　推动伸展：progid:DXImageTransform.Microsoft.Stretch(stretchstyle=push)
+　　旋转伸展：progid:DXImageTransform.Microsoft.Stretch(stretchstyle=spin)
+　　反时钟：progid:DXImageTransform.Microsoft.RadialWipe(wipestyle=wedge)
+　　辐射射线：progid:DXImageTransform.Microsoft.RadialWipe(wipestyle=radial)
+　　马赛克效果：progid:DXImageTransform.Microsoft.Pixelate(maxSquare=20)
+　　时　钟：progid:DXImageTransform.Microsoft.RadialWipe(wipestyle=clock)
+　　阶梯左下：progid:DXImageTransform.Microsoft.Strips(motion=leftdown)
+　　阶梯右上：progid:DXImageTransform.Microsoft.Strips(motion=rightup)
+　　阶梯左上：progid:DXImageTransform.Microsoft.Strips(motion=leftup)
+　　阶梯右下：progid:DXImageTransform.Microsoft.Strips(motion=rightdown)
+　　螺旋形收缩：progid:DXImageTransform.Microsoft.Spiral(gridSizeX=20,gridSizeY=20)
+　　风车转动：progid:DXImageTransform.Microsoft.Wheel(spokes=20)
+　　Ｚ形曲折：progid:DXImageTransform.Microsoft.Zigzag(gridSizeX=20,gridSizeY=20)
+　　Ｈ百叶窗：progid:DXImageTransform.Microsoft.Blinds(bands=6,direction=down)
+　　：progid:DXImageTransform.Microsoft.Blinds(bands=6,direction=up)
+　　：progid:DXImageTransform.Microsoft.Blinds(bands=60,direction=down)
+　　：progid:DXImageTransform.Microsoft.Blinds(bands=60,direction=up)
+　　Ｖ百叶窗：progid:DXImageTransform.Microsoft.Blinds(bands=6,direction=right)
+　　：progid:DXImageTransform.Microsoft.Blinds(bands=6,direction=left)
+　　：progid:DXImageTransform.Microsoft.Blinds(bands=60,direction=right)
+　　：progid:DXImageTransform.Microsoft.Blinds(bands=60,direction=left)
+　　交换式幻灯片：progid:DXImageTransform.Microsoft.Slide(slidestyle=swap,bands=1)
+　　：progid:DXImageTransform.Microsoft.Slide(slidestyle=swap,bands=20)
+　　推动式幻灯片：progid:DXImageTransform.Microsoft.Slide(slidestyle=push,bands=1)
+　　：progid:DXImageTransform.Microsoft.Slide(slidestyle=push,bands=20)
+　　隐藏式幻灯片：progid:DXImageTransform.Microsoft.Slide(slidestyle=hide,bands=1)
+　　：progid:DXImageTransform.Microsoft.Slide(slidestyle=hide,bands=20)
+　　模糊推进：progid:DXImageTransform.Microsoft.GradientWipe(GradientSize=0.5,wipestyle=0,motion=forward)
+　　：progid:DXImageTransform.Microsoft.GradientWipe(GradientSize=0.5,wipestyle=0,motion=reverse)
+　　：progid:DXImageTransform.Microsoft.GradientWipe(GradientSize=0.5,wipestyle=1,motion=forward)
+　　：progid:DXImageTransform.Microsoft.GradientWipe(GradientSize=0.5,wipestyle=1,motion=reverse)
+　　纵向棋盘：progid:DXImageTransform.Microsoft.CheckerBoard(direction=right,squaresX=12,squaresY=12)
+　　：progid:DXImageTransform.Microsoft.CheckerBoard(direction=left,squaresX=12,squaresY=12)
+　　：progid:DXImageTransform.Microsoft.Checkerboard(direction=right,squaresX=2,squaresY=2)
+　　：progid:DXImageTransform.Microsoft.Checkerboard(direction=left,squaresX=2,squaresY=2)
+　　：progid:DXImageTransform.Microsoft.Checkerboard(direction=right,squaresX=60,squaresY=60)
+　　：progid:DXImageTransform.Microsoft.Checkerboard(direction=left,squaresX=60,squaresY=60)
+　　横向棋盘：progid:DXImageTransform.Microsoft.CheckerBoard(direction=down,squaresX=12,squaresY=12)
+　　：progid:DXImageTransform.Microsoft.CheckerBoard(direction=up,squaresX=12,squaresY=12)
+　　：progid:DXImageTransform.Microsoft.Checkerboard(direction=down,squaresX=2,squaresY=2)
+　　：progid:DXImageTransform.Microsoft.Checkerboard(direction=up,squaresX=2,squaresY=2)
+　　：progid:DXImageTransform.Microsoft.Checkerboard(direction=down,squaresX=60,squaresY=60)
+　　：progid:DXImageTransform.Microsoft.Checkerboard(direction=up,squaresX=60,squaresY=60)
+</body>
+</html>

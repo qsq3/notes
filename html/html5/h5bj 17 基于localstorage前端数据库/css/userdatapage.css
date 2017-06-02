@@ -1,0 +1,79 @@
+
+/** S 会员资料页面 **/
+
+.userdataPage .container{
+    width:100%;
+    background: #fff;
+    position: relative;
+    
+}
+.userdataPage .regtitle{
+    font-size: 1.4em;
+    line-height: 2;
+    text-align: center;
+    border-bottom: 4px solid #d9d9d9;
+    color: #7d7d7d;
+}
+.userdataWrap{
+    width: 90%;
+    margin:auto;
+    position: relative;
+    overflow: hidden;
+}
+.userdataWrap .weui_cells {
+    margin-top: .2em;
+}
+.userdataWrap .weui_cells:before {
+    border-top-width: 0;
+}
+.userdataWrap .weui_cells:after {
+    border-bottom-width: 0px;
+    border: 0 none !important;
+}
+.userdataWrap .weui_cells{
+    background-color: rgba(255,255,255,0.3);
+}
+.userdataWrap .weui_cells .weui_label{
+   
+}
+.userdataWrap .weui_cells .weui_label img{
+    width: 26px;
+    height: 26px;
+}
+
+.userdataPage .weui_btn_primary{
+    background-color: rgba(24,151,183,0.6);
+}
+.userdataPage .weui_btn_primary:not(.weui_btn_disabled):active {
+    background-color: rgba(4,131,160,1);
+}
+
+.userdataPage .weui_btn_plain_primary {
+    color: rgb(24,151,183);
+    border: 1px solid rgb(24,151,183);
+}
+
+.userdataPage .reglogo{
+    position: relative;
+    display: block;
+    width: 80px;    
+    left:50%;
+    top:50px;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.userdataPage .touxiang  .weui_cell_ft{
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+.userdataPage .touxiang img{
+    width:100%;
+}
+
+.userdataPage .weui_cells_access .weui_cell_ft:after {
+    content: "";
+    display: none;
+}
+/** E 会员资料页面 **/

@@ -1,0 +1,48 @@
+
+/** S 登录页面 **/
+html,body{
+	height:100%;
+}
+
+.loginPage .container{
+    width:100%;
+	min-height: 100%;
+    background: #fff url("../images/bg.jpg") no-repeat center center/cover;
+    overflow: hidden;
+    position: relative;
+}
+.loginWrap{
+    width: 90%;
+    margin:auto;
+    position: absolute;
+    left: 5%;
+    bottom:40%
+}
+.loginPage .regtitle{
+	margin: 0 auto 60px;
+    font-size: 24px;
+    line-height: 2;
+    text-align: center;
+    color: #fff;
+}
+.loginWrap .weui_cells{
+    background-color: rgba(255,255,255,0);
+}
+.loginWrap .weui_cells .weui_label{
+    width: 40px;
+}
+.loginWrap .weui_cells .weui_label img{
+    width: 26px;
+}
+
+.loginPage .weui_btn_area{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.loginPage .weui_cell{
+	background-color: rgba(255,255,255,0.8);
+	margin-bottom: 6px;
+}
+
+/** E 登录页面 **/

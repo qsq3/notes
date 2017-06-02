@@ -1,0 +1,233 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>有序列表的建立</title>
+		<meta name="keywords" content=""/>
+		<meta name="discription" content=""/>
+		<style type="text/css">
+			body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, textarea, p {
+				margin: 0px;
+				padding: 0px;
+			}
+			ul,ol{
+				list-style:none;
+			}
+			img,a{
+				border:none;
+				text-decoration:none;
+				
+			}
+			h1,h2,h3,hr{
+				text-align:center;
+				margin:20px auto;
+				clear:both;
+			}
+			div#nav{
+				margin:20px auto;
+				width:1000px;
+				height:39px;
+
+			}
+			#nav ul li a{
+				color:black;
+				display:block;
+				float:left;
+				width:106px;
+				height:37px;
+				line-height:37px;
+				text-align:center;
+				border:1px solid #CCC;
+				text-indent:1em;
+			}
+		
+			#nav1{
+				background:url(img/nav360.png) no-repeat 8px 10px;
+			}
+			#nav2{
+				background:url(img/nav360.png) no-repeat 8px -28px;
+			}
+			#nav3{
+				background:url(img/nav360.png) no-repeat 8px -66px;
+			}
+			#nav4{
+				background:url(img/nav360.png) no-repeat 8px -107px;
+			}
+			#nav5{
+				background:url(img/nav360.png) no-repeat 8px -147px;
+			}
+			#nav6{
+				background:url(img/nav360.png) no-repeat 8px -187px;
+			}
+			#nav7{
+				background:url(img/nav360.png) no-repeat 8px -227px;
+			}
+			#nav8{
+				background:url(img/nav360.png) no-repeat 8px -267px;
+			}
+			#nav9{
+				background:url(img/nav360.png) no-repeat 8px -309px;
+			}
+			#nav ul li a:hover{
+				background:rgba(204,204,204,0.2) url(img/nav360.png) no-repeat 8px -351px;
+			}
+			
+			.div2{
+				width:300px;
+				height:300px;
+				margin:50px 0 0 100px;
+				padding:0 50px;
+				border: 2px dashed #CCC;
+				float:left;
+			}
+			.div2 ol{
+				list-style:decimal;
+			}
+			.div2 ul{
+				list-style:disc;
+			}
+			.div2 ul li.div2-ul{
+				margin-left:3em;
+				list-style:circle;
+			}
+
+			.div3{
+				width:300px;
+				margin:0 0 0 50px;
+				border:2px dashed #CCC;
+				padding:20px 0 0 80px;
+				float:left;
+			}
+			#div3-center{
+				background:url("img/drb2.png") no-repeat 50px 20px;
+			}
+			#div3-center ul li a,#div3-center ul li dl dd{
+				line-height:34px;
+			}
+
+			#div3-right{
+				width:290px;
+				height:400px;
+				margin:0 0 0 50px;
+				border:2px dashed #CCC;
+				float:left;
+			}
+			#div3-right-bottom{
+				padding-left:80px;
+				line-height:30px;
+			}
+			@font-face {font-family: 'iconfont';
+				src: url('css/tmallfonts/iconfont.eot'); /* IE9*/
+				src: url('css/tmallfonts/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+				url('css/tmallfonts/iconfont.woff') format('woff'), /* chrome、firefox */
+				url('css/tmallfonts/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+				url('css/tmallfonts/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+			}
+
+			.iconfont{
+				font-family:"iconfont" !important;
+				font-size:16px;font-style:normal;
+				-webkit-font-smoothing: antialiased;
+				-webkit-text-stroke-width: 0.2px;
+				-moz-osx-font-smoothing: grayscale;
+			}
+
+		</style>
+	</head>
+	<body>
+		<h1>第六节课作业</h1>
+		<h2>一.360导航:</h2>
+		<div id="nav">
+			<ul>
+				<li><a id="nav1" href="javascript:;" target="_blank">我的主页</a></li>
+				<li><a id="nav2" href="javascript:;" target="_blank">新闻头条</a></li>
+				<li><a id="nav3" href="javascript:;" target="_blank">电视剧</a></li>
+				<li><a id="nav4" href="javascript:;" target="_blank">最新电影</a></li>
+				<li><a id="nav5" href="javascript:;" target="_blank">小游戏</a></li>
+				<li><a id="nav6" href="javascript:;" target="_blank">小说大全</a></li>
+				<li><a id="nav7" href="javascript:;" target="_blank">旅游度假</a></li>
+				<li><a id="nav8" href="javascript:;" target="_blank">网上购物</a></li>
+				<li><a id="nav9" href="javascript:;" target="_blank">好药特惠</a></li>
+			</ul>
+			
+		</div>
+		<hr/>
+		
+		<h2>二.列表基本效果:</h2>
+		
+		<div class="div2">
+			<h3>1.有序列表</h3>
+			本学期所学课程如下
+			<ol start="3">
+				<li>计算机基础</li>
+				<li>Photoshop</li>
+				<li>html网页设计</li>
+				<li>计算机教学</li>
+				<li>英语</li>
+				<li>思修</li>
+			</ol>
+		</div>
+		<div class="div2">
+			<h3>2.无序列表</h3>
+			<ul>
+				<li>水果</li>
+				<li class="div2-ul">榴莲</li>
+				<li class="div2-ul">荔枝</li>
+				<li>蔬菜</li>
+				<li class="div2-ul">菠菜</li>
+				<li class="div2-ul">黄瓜</li>
+				<li>咖啡</li>
+				<li>红酒</li>
+				<li>奶酪</li>
+			</ul>
+		</div>
+		<hr/>
+		<h2>三:</h2>
+		<div class="div3" id="div3-left">
+			<ul style="list-style:disc">
+				<li><a href="javascript:;" target="_blank">一箱油半箱税究竟要怪谁</a></li>
+				<li><a href="javascript:;" target="_blank">斯诺登为啥愿意回国受审</a></li>
+				<li><a href="javascript:;" target="_blank">中国人和德国人谁更敬业?</a></li>
+				<li><a href="javascript:;" target="_blank">中产阶级能托起中国经济吗</a></li>
+				<li><a href="javascript:;" target="_blank">万科争夺令人担心的三结果</a></li>
+				<li><a href="javascript:;" target="_blank">铁总获定价权后票价会涨吗</a></li>
+				<li><a href="javascript:;" target="_blank">贷款创历史新高背后存隐忧</a></li>
+				<li><a href="javascript:;" target="_blank">哪八个字评价张学良最恰当</a></li>
+				<li><a href="javascript:;" target="_blank">职务升最快的中国将军是谁</a></li>
+				<li><a href="javascript:;" target="_blank">历史上共侍一夫的姐妹皇后</a></li>
+			</ul>
+			
+		</div>
+		<div class="div3" id="div3-center">
+			<ul>
+				<li>
+					<dl>
+						<dt><a href="javascript:;" target="_blank">达人帮阅读主讲王毅</a></dt>
+						<dd><img src="img/drb.png" width=97 height=57 alt="达人帮" title="达人帮" style="display:block; float:left;"></dd>
+						<dd style="color:red;">&nbsp;￥688.00</dd>
+						<dd>&nbsp;傲佛来了</dd>
+					</dl>
+				</li>
+				<li><a href="javascript:;" target="_blank" style="display:block;clear:left;">达人帮口语主讲</a></li>
+				<li><a href="javascript:;" target="_blank">考研技巧强化</a></li>
+				<li><a href="javascript:;" target="_blank">达人帮听力主讲</a></li>
+				<li><a href="javascript:;" target="_blank">屠鸭联盟黄翰生</a></li>
+				<li><a href="javascript:;" target="_blank">屠鸭联盟张涛</a></li>	
+			</ul>
+		</div>
+		<div id="div3-right">
+			<div id="div3-right-top">
+				<img src="img/tmall01.png" width=290 height=153 title="tmall"/>
+			</div>
+			<div id="div3-right-bottom">
+				<ol>
+					<li><i class="iconfont">&#x3459;</i><i class="dot fp-iconfont"></i><a href="javascript:;" target="_blank">女装/内衣</a></li>
+					<li><i class="iconfont">&#x344f;</i><i class="dot fp-iconfont"></i><a href="javascript:;" target="_blank">鞋/箱包</a></li>
+					<li><i class="iconfont">&#x345c;</i><i class="dot fp-iconfont"></i><a href="javascript:;" target="_blank">化妆品/个人护理</a></li>
+					<li><i class="iconfont">&#x3452;</i><i class="dot fp-iconfont"></i><a href="javascript:;" target="_blank">腕表/珠宝</a></li>
+					<li><i class="iconfont">&#x3448;</i><i class="dot fp-iconfont"></i><a href="javascript:;" target="_blank">手机/数码</a></li>
+				</ol>
+			</div>
+		</div>
+	</body>
+</html>

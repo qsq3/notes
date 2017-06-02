@@ -1,0 +1,13 @@
+@import "base/base";
+
+
+html,body{
+  width: 100%;
+  overflow-x:hidden;
+  min-width: 320px;
+  height:100%;
+  background-color:#f4f4f4;
+  .iconfont{
+    font-size: 0.18rem;
+  }
+}

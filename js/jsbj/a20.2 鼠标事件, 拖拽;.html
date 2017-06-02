@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>a21 event事件对象,this,call(),clientX pageX拖拽;冒泡捕获.html</title>
+		<style type="text/css">
+			
+
+			#one{
+				height:300px;
+				width:300px;
+				background:yellow;
+				position: relative;
+			}
+			#two{
+				height:200px;
+				width:200px;
+				background:green;
+				position: absolute;
+				margin:20px;
+				top:300px;
+			}
+				
+			#three{
+				height:100px;
+				width:100px;
+				background:red;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<h3>鼠标点击事件</h3>
+		<input type="button" id="" value="测试单击事件" onclick="alert('单击')" />
+		<input type="button" id="" value="测试双击事件" ondblclick="alert('双击')" />
+		
+		<h3>鼠标移动事件</h3>
+		<div id="div1" onmouseover="alert('我进来了!')" onmouseenter="alert('我进来了2!')"  onmouseout="alert('我出去了!')"  onmouseleave="alert('我出去了2!')">
+		</div>
+		<!-- 
+		区别onmouseover,onmouseout 子元素间,子父元素间移动时也触发事件,即冒泡/捕获触发,注:两个都会触发,而不仅仅是over; 
+		但是onmouseenter,onmouseleave 不会冒泡/捕获触发;但是兼容有问题(老版本火狐), 而且不捕获仅仅是子元素与父元素相连的情况下,比如:子元素定位离开父元素并且中间有空隙, 在子元素上依然会触发onmouseenter和leave ,并且, IE11会触发两次-->
+		<h1>a21 event事件对象,this,call(),clientX pageX拖拽</h1>
+		<input type="text" name="" id="" value="" />
+		<div id="show" style="height: 300px;width: 500px;border: 2px solid black;">
+	
+		</div>	
+
+		<div id="one">
+			<div id="two"></div>
+			<div id="three"></div>
+		</div> 
+		<script type="text/javascript">
+			var oBox = document.getElementById('three');
+			var oWrap = document.getElementById('two');
+			/*
+				event 事件对象 -- 事件函数里面才有的对象
+					ie / chrome 
+						event 初始是有的  null / undefined
+					firefox
+						event 初始是不存在的 报错
+			*/
+			
+			// alert( event );
+			
+			/*
+			document.onclick = function(){
+				aa( this ); //this指向触发事件的对象,没有事件自运行的则指向window;
+			}
+
+			function aa( abcd ){
+				alert( abcd )//this指向触发事件的对象;
+			}
+			
+			
+				event: 事件对象 -- 触发事件时,存储和事件有关的一些信息;
+
+				IE8- ： window.event 
+				chrome ： window.event   事件函数的第一个参数
+				firefox ：事件函数的第一个参数
+				事件函数只能传event,不能传其他参数;
+				定时器不算事件;
+			
+			oBox.onclick = function( ev ){
+				ev = ev || window.event;
+				for ( var key in ev )
+				{
+					document.write( key + ' : ' + ev[key] + '<br>' );
+				}
+			}
+			/*
+				ev.clientX  
+				ev.clientY
+					// 鼠标相对于浏览器窗口的偏移
+				
+				ev.pageX
+				ev.pageY
+					// 鼠标相对于文档的偏移
+			
+			
+			document.onmousedown = function(){
+				this.onmousemove = function(ev){
+					ev = ev || window.event;
+
+					var x = ev.pageX;
+					var y = ev.pageY;
+
+					this.body.innerHTML += '<div class="test" style="left:'+ x +'px;top:'+ y +'px;"></div>'
+				}
+
+				this.onmouseup = function(){
+					this.onmousemove = null;
+				}
+			}
+
+//Firefox支持属性pageX,与pageY属性，这两个属性已经把页面滚动计算在内了, 
+//在Chrome可以通过document.body.scrollLeft，document.body.scrollTop计算出页面滚动位移， 
+//而在IE下可以通过document.documentElement.scrollLeft ，document.documentElement.scrollTop 
+function getMousePos(e) { 
+	e = e || window.event; 
+	var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft; 
+	var scrollY = document.documentElement.scrollTop || document.body.scrollTop; 
+	var x = e.pageX || e.clientX + scrollX; 
+	var y = e.pageY || e.clientY + scrollY; 
+	return { 'x': x, 'y': y }; 
+};
+			//拖拽;
+
+
+			oBox.onmousedown = drag;
+			oWrap.onmousedown = drag;
+			function getStyle(obj,attr){
+				return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+			}
+			
+			
+			function drag(ev){
+				
+				var This = this;
+				//修正外边距bug;
+				var marginL =parseInt( getStyle(this ,"margin-top") || 0);
+				var marginT =parseInt( getStyle(this ,"margin-left") || 0);
+					//鼠标按下的时候改变鼠标的样式；
+				this.style.cursor = 'move';
+					
+					//得到鼠标按下时候的坐标值 初始坐标；
+				ev = ev || window.evnet;
+				var x = ev.pageX;
+				var y = ev.pageY;
+					
+					//得到盒子初始的left top值,当盒子有外边距时会有bug,
+				var leftStart = this.offsetLeft - marginL;
+				var topStart = this.offsetTop - marginT;
+
+					//注册鼠标移动时候的事件
+					//为什么是docuemnt 因为假如是oBox 拖得太快跑出oBox就失效了
+				document.onmousemove = function(ev){
+						
+						//获取鼠标在移动时 当前坐标
+					ev = ev || window.evnet;
+					var x_ = ev.pageX;  //注意这个是没有单位的;
+					var y_ = ev.pageY;
+						
+						//得到鼠标当前坐标和初始坐标的差值
+					var xN = x_ - x;
+					var yN = y_ - y;
+						
+						//盒子位置初始值 + 变化量 = 现在的位置
+					This.style.left = leftStart + xN + 'px';
+					This.style.top = topStart + yN + 'px';
+					
+				}
+					
+					//鼠标抬起后，改变指针样式 以及 清空onmousemove事件
+				this.onmouseup = function(){
+					this.style.cursor = 'default';
+					document.onmousemove = null;
+				}
+			}*/
+			
+		</script>
+
+	</body>
+</html>

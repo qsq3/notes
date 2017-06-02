@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+
+	</head>
+	<body>
+	<script type="text/javascript">
+克隆JS对象的三个实用方法
+function Clone( obj ){
+    for ( var key in obj )
+    {
+        this[key] = (typeof obj[key]=='object')?new Clone( obj[key] ):obj[key];
+    };
+};
+
+ 
+/*
+function Clone( obj ){
+    for ( var key in obj )
+    {
+        if ( typeof obj[key] == 'object' )
+        {
+            this[key] = Clone( obj[key] );
+        }
+        this[key] = obj[key];
+    };
+};
+*/
+ 
+/*
+function Clone( obj ){
+     
+    var newObj = {};
+
+    for ( var key in obj )
+    {
+        newObj[key] = obj[key];
+    };
+
+    return newObj;
+};*/
+博客分类： Core JS
+prototypeJavaScript 
+方法一
+Js代码  收藏代码
+function clone(obj){  
+    var o;  
+    switch(typeof obj){  
+    case 'undefined': break;  
+    case 'string'   : o = obj + '';break;  
+    case 'number'   : o = obj - 0;break;  
+    case 'boolean'  : o = obj;break;  
+    case 'object'   :  
+        if(obj === null){  
+            o = null;  
+        }else{  
+            if(obj instanceof Array){  
+                o = [];  
+                for(var i = 0, len = obj.length; i < len; i++){  
+                    o.push(clone(obj[i]));  
+                }  
+            }else{  
+                o = {};  
+                for(var k in obj){  
+                    o[k] = clone(obj[k]);  
+                }  
+            }  
+        }  
+        break;  
+    default:          
+        o = obj;break;  
+    }  
+    return o;     
+}  
+ 
+方法二
+Js代码  收藏代码
+function clone2(obj){  
+    var o, obj;  
+    if (obj.constructor == Object){  
+        o = new obj.constructor();   
+    }else{  
+        o = new obj.constructor(obj.valueOf());   
+    }  
+    for(var key in obj){  
+        if ( o[key] != obj[key] ){   
+            if ( typeof(obj[key]) == 'object' ){   
+                o[key] = clone2(obj[key]);  
+            }else{  
+                o[key] = obj[key];  
+            }  
+        }  
+    }  
+    o.toString = obj.toString;  
+    o.valueOf = obj.valueOf;  
+    return o;  
+}  
+ 
+ 
+方法三 推荐,通过构造函数继承原型,并遍历递归克隆对象属性;
+Js代码  收藏代码
+function clone(obj){  
+    function Clone(){}  
+    Clone.prototype = obj;  
+    var o = new Clone();  
+    for(var a in o){  
+        if(typeof o[a] == "object") {  
+            o[a] = clone(o[a]);  
+        }  
+    }  
+    return o;  
+}  
+	  
+同方法三 给Object原型添加方法;
+Javascript代码  收藏代码
+Object.prototype.deepClone=function(){  
+    function Clone(){}  
+    Clone.prototype=this;  
+    var obj=new Clone();  
+    for(var o in obj){
+		if(typeof(obj[o])=="object"){
+			obj[o]=obj[o].deepClone();
+		}
+	}  
+    return obj;  
+}  
+
+
+同方法一
+function copy ( obj ){
+	if ((typeof obj).toLowerCase() != 'object'){
+		return obj;
+	}else if (obj === null){
+		return null;
+	};
+	var newObj ={};
+	for(var k in obj){
+		newObj[k] = copy(obj[k]);
+	};
+	return newObj;
+};
+</script>
+	</body>
+</html>

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> </title>
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    
+</head>
+<body>
+    Js window.document 的属性、方法和事件汇总【转】 (2013-01-15 21:09:00)转载▼
+标签： 杂谈	分类： js.jquery.css.ajax
+属性:
+
+Attributes 存储节点的属性列表(只读)
+childNodes 存储节点的子节点列表(只读)
+dataType 返回此节点的数据类型
+Definition 以DTD或XML模式给出的节点的定义(只读)
+Doctype 指定文档类型节点(只读)
+documentElement 返回文档的根元素(可读写)
+firstChild 返回当前节点的第一个子节点(只读)
+Implementation 返回XMLDOMImplementation对象
+lastChild 返回当前节点最后一个子节点(只读)
+nextSibling 返回当前节点的下一个兄弟节点(只读)
+nodeName 返回节点的名字(只读)
+nodeType 返回节点的类型(只读)
+nodeTypedValue 存储节点值(可读写)
+nodeValue 返回节点的文本(可读写)
+ownerDocument 返回包含此节点的根文档(只读)
+parentNode 返回父节点(只读)
+Parsed 返回此节点及其子节点是否已经被解析(只读)
+Prefix 返回名称空间前缀(只读)
+preserveWhiteSpace 指定是否保留空白(可读写)
+previousSibling 返回此节点的前一个兄弟节点(只读)
+Text 返回此节点及其后代的文本内容(可读写)
+url 返回最近载入的XML文档的URL(只读)
+Xml 返回节点及其后代的XML表示(只读)
+
+方法: 
+
+appendChild 为当document.write() //动态向页面写入内容
+document.createElement_x(Tag) //创建一个html标签对象
+document.getElementByIdx_x(ID) //获得指定ID值的对象
+document.getElementsByName(Name) //获得指定Name值的对象 前节点添加一个新的子节点,放在最后的子节点后
+cloneNode 返回当前节点的拷贝
+createAttribute 创建新的属性
+createCDATASection 创建包括给定数据的CDATA段
+createComment 创建一个注释节点
+createDocumentFragment 创建DocumentFragment对象
+createElement_x 创建一个元素节点
+createEntityReference 创建EntityReference对象
+createNode 创建给定类型,名字和命名空间的节点
+createPorcessingInstruction 创建操作指令节点
+createTextNode 创建包括给定数据的文本节点
+getElementsByTagName 返回指定名字的元素集合
+hasChildNodes 返回当前节点是否有子节点
+insertBefore 在指定节点前插入子节点
+Load 导入指定位置的XML文档
+loadXML 导入指定字符串的XML文档
+removeChild 从子结点列表中删除指定的子节点
+replaceChild 从子节点列表中替换指定的子节点
+Save 把XML文件存到指定节点
+selectNodes 对节点进行指定的匹配,并返回匹配节点列表
+selectSingleNode 对节点进行指定的匹配,并返回第一个匹配节点
+transformNode 使用指定的样式表对节点及其后代进行转换
+transformNodeToObject 使用指定的样式表将节点及其后代转换为对象
+
+body-主体子对象 
+
+document.body //指定文档主体的开始和结束等价于body>/body>
+document.body.bgColor //设置或获取对象后面的背景颜色
+document.body.link //未点击过的链接颜色
+document.body.alink //激活链接(焦点在此链接上)的颜色
+document.body.vlink //已点击过的链接颜色
+document.body.text //文本色
+document.body.innerText //设置body>…/body>之间的文本
+document.body.innerHTML //设置body>…/body>之间的HTML代码
+document.body.topMargin //页面上边距
+document.body.leftMargin //页面左边距
+document.body.rightMargin //页面右边距
+document.body.bottomMargin //页面下边距
+document.body.background //背景图片
+
+document.body.appendChild(oTag) //动态生成一个HTML对象
+
+常用对象事件
+
+document.body.onclick=”func()” //鼠标指针单击对象是触发
+document.body.onmouseover=”func()” //鼠标指针移到对象时触发
+document.body.onmouseout=”func()” //鼠标指针移出对象时触发
+———————————————————————
+location-位置子对象
+
+document.location.hash // #号后的部分
+document.location.host // 域名+端口号
+document.location.hostname // 域名
+document.location.href // 完整URL
+document.location.pathname // 目录部分
+document.location.port // 端口号
+document.location.protocol // 网络协议(http:)
+document.location.search // ?号后的部分
+
+documeny.location.reload() //刷新网页
+document.location.reload(URL) //打开新的网页
+document.location.assign(URL) //打开新的网页
+document.location.replace(URL) //打开新的网页
+———————————————————————
+selection-选区子对象
+document.selection
+———————————————————————
+
+images集合(页面中的图象)
+
+a)通过集合引用
+document.images //对应页面上的img标签
+document.images.length //对应页面上img标签的个数
+document.images[0] //第1个img标签
+document.images[i] //第i-1个img标签
+
+b)通过nane属性直接引用
+img name=”oImage”
+document.images.oImage //document.images.name属性
+
+c)引用图片的src属性
+document.images.oImage.src //document.images.name属性.src
+
+d)创建一个图象
+var oImage
+oImage = new Image()
+document.images.oImage.src=”1.jpg”
+同时在页面上建立一个img /标签与之对应就可以显示
+
+———————————————————————-
+
+forms集合(页面中的表单) 
+
+a)通过集合引用
+document.forms //对应页面上的form标签
+document.forms.length //对应页面上/formform标签的个数
+document.forms[0] //第1个/formform标签
+document.forms[i] //第i-1个/formform标签
+document.forms[i].length //第i-1个/formform中的控件数
+document.forms[i].elements[j] //第i-1个/formform中第j-1个控件
+
+b)通过标签name属性直接引用
+/formform name=”Myform”>input name=”myctrl”/>/form
+document.Myform.myctrl //document.表单名.控件名
+
+c)访问表单的属性
+document.forms[i].name //对应form name>属性
+document.forms[i].action //对应/formform action>属性
+document.forms[i].encoding //对应/formform enctype>属性
+document.forms[i].target //对应/formform target>属性
+
+document.forms[i].appendChild(oTag) //动态插入一个控件
+document.all.oDiv //引用图层oDiv
+document.all.oDiv.style.display=” //图层设置为可视
+document.all.oDiv.style.display=”none” //图层设置为隐藏
+document.getElementId(”oDiv”) //通过getElementId引用对象
+document.getElementId(”oDiv”).style=”
+document.getElementId(”oDiv”).display=”none”
+
+
+图层对象的4个属性
+document.getElementByIdx_x(”ID”).innerText //动态输出文本
+document.getElementByIdx_x(”ID”).innerHTML //动态输出HTML
+document.getElementByIdx_x(”ID”).outerText //同innerText
+document.getElementByIdx_x(”ID”).outerHTML //同innerHTML
+
+document属性作为window对象的一个子对象被创建，是用于访问页面中所有元素的对象。其主要具有以下一些应用特性：
+ 
+referrer	指定referral URL.
+title	标题文字
+URL	指定文档的URL
+vlinkColor	指定相关标签的vlink属性
+属性/方法/事件	描述
+onClick	当文档被点击时触发
+onDblClick	当文档被双击时触发
+onKeyDown	当按下任意键时触发。优先于onKeyPress事件触发器
+onKeyPress	参见onKeyDown
+onKeyUp	当释放按下的键时触发
+onMouseDown	当按下鼠标键时触发
+onMouseUp	当释放鼠标键时触发
+captureEvents()	捕获所有与文档相关的事件
+close()	关闭文档流
+getSelection()	返回当前选中的文本
+handleEvent()	调用事件处理器给指定的事件
+open()	打开文档流
+releaseEvents()	释放所捕获的事件
+routeEvent()	通过正常的处理程序来传递所捕获的事件
+write()	向文档中写入内容
+writeln()	在文档中写入带有换行符的字符串
+alinkColor	指定相关标签的alink属性
+anchors	包含了文档中所有anchor标签的数组
+bgColor	指定相关标签的背景颜色。
+cookie	指定cookie
+domain	指定服务于文档的域
+embeds	包含了文档中所有embed标签的数组
+fgColor	指定相关标签的text属性
+formName	文档中每个form的实际名称
+forms	包含了文档中所有form标签的数组
+images	包含了文档中所有image标签的数组
+lastModified	指定文档最后更改的日期
+layers	包含了文档中layer的所有标签的数组
+linkColor	指定相关标签的link属性
+</body>
+</html>
+
+document.open():
+重要事项：调用 open() 方法打开一个新文档并且用 write() 方法设置文档内容后，必须记住用 close 方法关闭文档，并迫使其内容显示出来。
+注释：属于被覆盖的文档的一部分的脚本或事件句柄不能调用该方法，因为脚本或事件句柄自身也会被覆盖。
+
+open() 方法打开一个新文档，并擦除当前文档的内容。语法如下：
+document.open(mimetype,replace)
+参数	说明
+mimetype	可选。设定即将写入的文档类型，默认值是 "text/html"
+replace	可选。当此参数设置后，可引起新文档从父文档继承历史条目。
+提示：新文档用 document.write() 方法或 document.writeln() 方法写入内容，写入内容后，必须用 document.close() 方法关闭文档，并迫使其内容显示出来。
+open() 方法实例
+
+<script type="text/javascript">
+function createNewDoc()
+{
+    var new_doc = document.open("text/html","replace");
+    var txt = "<html><body>这是新的文档</body></html>";
+    new_doc.write(txt);
+    new_doc.close();
+}
+</script>
+<button onclick="createNewDoc()">点击写入新文档</button>

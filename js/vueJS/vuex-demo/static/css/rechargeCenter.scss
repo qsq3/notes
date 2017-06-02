@@ -1,0 +1,20 @@
+.rechargeCenter {
+    width: 100%;
+    background: #f6f6f6;
+    box-sizing: border-box;
+    padding: 0.2rem 0.15rem 0.4rem 0.15rem;
+    .header {
+        width: 100%;
+        font-size: 0.16rem;
+        color: #666;
+        margin-bottom: 0.2rem;
+        img {
+            width: 0.15rem;
+            height: 0.15rem;
+            margin-right: 0.1rem;
+        }
+        .money {
+            color: #f45440;
+        }
+    }
+}

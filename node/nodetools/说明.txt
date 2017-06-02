@@ -1,0 +1,15 @@
+先安装 node.js
+
+命令行安装 cnpm
+npm install cnpm -g --registry=https://registry.npm.taobao.org
+
+选装清除插件 rimraf
+npm install rimraf -g 用法：rimraf node_modules 
+
+安装gulp
+
+gulp目录下运行.bat文件
+
+安装http-server -g --save-dev 
+安装karma --save-dev 
+安装jasmine -g

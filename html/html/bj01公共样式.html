@@ -1,0 +1,325 @@
+首页尽量不要超过125kb
+
+CSS 公共样式分享  
+
+global.css | reset.css（格式化样式） 
+common.css（公共组件样式） 
+layout.css（当前页面样式）
+
+清除全站所有页面的浏览器默认样式，保证在初始样式在所有浏览器下一致。
+
+common.css（公共组件样式）
+
+一般一个网站所有页面头部、底部样式都是一致的，而且很长时间不会有大的改变，改变的大概就是产品、运营的经常需要添加、去掉某些入口的需求，要保证全站所有页面头部一次替换生效，只要把头文件，已经对应的样式一发，马上生效，很快就有响应。
+
+比如翻页、表单（输入框、按钮）等样式也是全站统一的，把这些样式都放到common.css里面，如果哪天所有的按钮样式要变更，一次替换就成功了。
+
+layout.css（当前页面样式）
+
+公共组件以外的所有样式都写到这个样式文件里面，并且保证一个页面一个独立样式，页面html和css写法要模块化，保证迅速响应项目频繁的迭代。
+
+为什么要保证一个页面一个独立样式，而且要模块化，肯定有朋友和我有过一样的经历，修改一行样式代码，整个页面甚至N个页面都会受影响，搞了半天还不知道哪里出了问题，返回到修改前的版本，就没问题了。终于找到原因了，却不能改以前的样式，更不能删除，只能增加，时间一长，css样式文件越来越大，最后是不堪重负，整个页面代码只能重写。
+
+其实global.css和common.css也可以合并到一个文件，毕竟格式化样式也就那么几十行代码，而且格式化样式、头部、底部样式每个页面都会用到。
+
+这样每个页面就只有2个样式：
+
+common.css 
+layout.css 
+如果common.css里面组件太多，而且很多组件也不是常用的，也可以像下面这样做：
+
+heads.css（格式话样式、头部、底部） 
+common.css（公共组件样式） 
+layout.css（当前页面样式） 
+一般情况下也只有2个样式，当需要用到组件的时候才去link组件样式，也不会有太多问题。
+
+最后，不要把什么东西都往组件样式里面塞，有写东西宁愿每个页面重复拷贝也不要塞到组件样式里面去。某一天，你会发现这个组件样式大得让你可怕，而且很多都是无用的。
+
+/***********通用基本类1************/
+
+/*格式化样式*/
+/** 清除内外边距 **/
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+pre, /* text formatting elements 文本格式元素 */
+form, fieldset, legend, button, input, textarea, /* form elements 表单元素 */
+th, td /* table elements 表格元素 */ {
+  margin: 0;
+  padding: 0;
+}
+
+/** 重置列表元素 **/
+ul, ol { list-style: none; }
+
+/** 重置文本格式元素 **/
+a { text-decoration: none; }
+
+/** 设置默认字体 **/
+body,
+button, input, select, textarea /* for ie */ {
+  font: 12px/1.5 tahoma, arial, \5b8b\4f53, sans-serif;
+}
+h1, h2, h3, h4, h5, h6 { font-size: 100%; }
+address, cite, dfn, em, var { font-style: normal; } /* 将斜体扶正 */
+code, kbd, pre, samp { font-family: courier new, courier, monospace; } /* 统一等宽字体 */
+small { font-size: 12px; } /* 小于 12px 的中文很难阅读，让 small 正常化 */
+
+/** 重置表单元素 **/
+legend { color: #000; } /* for ie6 */
+fieldset, img { border: 0; } /* img 搭车：让链接里的 img 无边框 */
+button, input, select, textarea { font-size: 100%; } /* 使得表单元素在 ie 下能继承字体大小 */
+/* 注：optgroup 无法扶正 */
+
+/** 重置表格元素 **/
+table { border-collapse: collapse; border-spacing: 0; }
+
+/* 清除浮动 */
+.clearfix:after { content: ""; display: block; visibility: hidden; height: 0; font-size: 0; clear: both; }
+.clearfix { zoom:1; }
+.clear { display: block; visibility: hidden; height: 0; font-size: 0; clear: both; }
+
+/*常用样式*/
+a ,img, input, button { border: 0 none; outline: 0 none; } /*outline 默认选中边框*/
+:active { outline: 0 none; }  
+a, img, span, i { vertical-align: middle; } /*内联元素间解析空格回车产生间隙*/
+.ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* word-wrap:break-word; */
+
+/*定位*/
+.tl{text-align:left}
+.tc{text-align:center}
+.tr{text-align:right}
+.fl{float:left;}
+.fr{float:right;}
+.cb{clear:both}
+.cl{clear:left}
+.cr{clear:right}
+.vm{vertical-align:middle} 
+.pr{position:relative} 
+.pa{position:absolute}
+.ptl{position:absolute;left:0;top:0}
+.ptr{position:absolute;right:0;top:0}
+.zoom{zoom:1} 
+.vh{visibility:hidden} 
+.oh{overflow:hidden;}
+.none{display:none}
+
+/*文字排版、颜色*/
+.f12{font-size:12px}
+.f13{font-size:13px}
+.f14{font-size:14px}
+.f16{font-size:16px}
+.f20{font-size:20px}
+.fb{font-weight:bold}
+.fn{font-weight:normal}
+.t2{text-indent:2em}
+.red,a.red{color:#cc0031}
+.darkblue,a.darkblue{color:#039}
+.gray,a.gray{color:#878787}
+.lh150{line-height:150%}
+.lh180{line-height:180%}
+.lh200{line-height:200%}
+.unl{text-decoration:underline;}
+.no_unl{text-decoration:none;}
+
+/*长度高度*/
+.w10{width:10px}
+.w20{width:20px}
+.w50{width:50px}
+.w90{width:90px}
+.w100{width:100px}
+.w200{width:200px}
+.w250{width:250px}
+.w500{width:500px}
+.w800{width:800px}
+.w{width:100%}
+.h50{height:50px}
+.h80{height:80px}
+.h100{height:100px}
+.h200{height:200px}
+.h{height:100%}
+
+/*边距*/
+.m10{margin:10px}
+.m15{margin:15px}
+.m30{margin:30px}
+.mt5{margin-top:5px}
+.mt10{margin-top:10px}
+.mt15{margin-top:15px}
+.mt50{margin-top:50px}
+.mt100{margin-top:100px}
+.mb5{margin-bottom:5px}
+.mb10{margin-bottom:10px}
+.mb15{margin-bottom:15px}
+.mb100{margin-bottom:100px}
+.ml5{margin-left:5px}
+.ml10{margin-left:10px}
+.ml15{margin-left:15px}
+.ml20{margin-left:20px}
+.ml30{margin-left:30px}
+.ml50{margin-left:50px}
+.ml100{margin-left:100px}
+.mr5{margin-right:5px}
+.mr10{margin-right:10px}
+.mr15{margin-right:15px}
+.mr50{margin-right:50px}
+.mr100{margin-right:100px}
+.p10{padding:10px;}
+.p15{padding:15px;}
+.p30{padding:30px;}
+.pt5{padding-top:5px}
+.pt10{padding-top:10px}
+.pt15{padding-top:15px}
+.pt20{padding-top:20px}
+.pt30{padding-top:30px}
+.pt50{padding-top:50px}
+.pb5{padding-bottom:5px}
+.pb100{padding-bottom:100px}
+.pl5{padding-left:5px}
+.pl10{padding-left:10px}
+.pl50{padding-left:50px}
+.pl100{padding-left:100px}
+.pr5{padding-right:5px}
+.pr10{padding-right:10px}
+.pr15{padding-right:15px}
+.pr100{padding-right:100px}
+
+/***********通用基本类2************/
+
+/* Copyright 2008 TSXMLOVE. All Rights Reserved. */
+* {
+padding: 0px;
+margin: 0px;
+text-align: left;
+font-family:Arial, Verdana, Tahoma, "宋体", Helvetica, sans-serif;
+line-height: 150%;
+}
+body {
+font-size: 14px;
+text-align: center;
+color: #000000;
+background-color: #DEEBF3;
+background-image: url(../Images/body_bg.jpg);
+background-repeat: repeat-x;
+}
+table {
+border-collapse: collapse;
+}
+td {
+padding: 3px;
+}
+img {
+border: none;
+}
+input {
+padding: 1px;
+vertical-align: middle;
+line-height: normal;
+}
+.main-box {
+margin-right: auto;
+margin-left: auto;
+width: 960px;
+clear: both;
+zoom:1;
+overflow:hidden;
+background-color: #CCCCCC;
+}
+.text-overflow-hidden {
+white-space: nowrap;
+word-spacing: normal;
+letter-spacing: normal;
+overflow: hidden;
+}
+.box-align-center {
+margin-right: auto;
+margin-left: auto;
+}
+/*css定义超链接四个状态也有顺序的。*/
+
+a:link, a:visited {
+text-decoration: none;
+color: #1F376D;
+}
+a:hover, a:active {
+text-decoration: underline;
+color: #BD0A01;
+border: none;
+}
+/*以上语句分别定义了"链接、已访问过的链接、鼠标停在上方时、点下鼠标时"的样式。
+注意，必须按以上顺序写，否则显示可能和你预想的不一样。记住它们的顺序是“LVHA”。*/
+ul {
+clear:both;
+overflow:hidden;
+width: 100%;
+}
+ul, li {
+list-style:none;
+}
+.valign {
+display:table-cell;
+*display: inline;
+zoom:1;
+vertical-align:middle;
+}
+.text{word-wrap:break-word;overflow:hidden;word-break:break-all;}
+/*======================CSS垂直居中=======================*/
+.holder {
+width:740px;
+height:300px;
+border:1px solid #777;
+text-align:center;
+display:table-cell;
+vertical-align:middle;
+}
+/*以下样式针对IE*/
+.edge {
+width:0;
+height:100%;
+display:inline-block;
+vertical-align:middle;
+}
+.container {
+vertical-align:middle;
+display:inline-block;
+}
+/*===============================================*/
+
+/*CSS Hack*/
+.class {
+background-color:#FFFF00;/*所有浏览器*/
+*background-color:#00FF00;/*IE*/
+_background-color:#00FFFF;/*IE6*/
+}
+/*======万能Float闭合======*/
+.clear:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+    }
+
+.clear {display: inline-block;} /* for IE/Mac */
+
+/*<!-- main stylesheet ends, CC with new stylesheet below... -->*/
+
+.clear {
+    zoom: 1;     /* triggers hasLayout */
+    display: block;     /* resets display for IE/Win */
+    } /* Only IE can see inside the conditional comment
+    and read this CSS rule. Don't ever use a normal HTML
+    comment inside the CC or it will close prematurely. */
+/*======万能Float闭合2======*/
+.overflow-hidden{overflow:hidden;}         /*控制背景溢出*/
+.equal-height{margin-bottom:-32800px;padding-bottom:32800px;}      /*控制高度足够小*/
+
+/*======万能Float闭合3======*/
+
+.clear 
+{
+ height:0px;
+ clear:both;
+ font-size:0px;
+ line-height:0px;
+ zoom: 1;
+}

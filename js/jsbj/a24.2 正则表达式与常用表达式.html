@@ -1,0 +1,617 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+
+	</head>
+	<body>
+		<script type="text/javascript">
+     
+	支持正则表达式的 String 对象的方法
+	方法	描述	FF	IE
+	search	检索与正则表达式相匹配的值。	1	4
+	match	找到一个或多个正则表达式的匹配。	1	4
+	replace	替换与正则表达式匹配的子串。
+	replace里第二个参数可以是字符串,也可以是带return的函数,函数的默认传入参数:匹配整体,第一个子项,第二个子项
+	var strA = 'sadfasdffdd';
+	var reg = /f(as)(d)/;
+	var strB = strA.replace(reg , function(){
+		arguments[0] === 匹配成功的字符串;
+		arguments[1] === 第一个匹配子项;
+		arguments[2] === 第二个匹配子项;
+		以此类推...
+		return '123';
+	})
+	split	把字符串分割为字符串数组。	1	4
+
+	正则表达式的写法:
+		var reg = /abc/;/abc/g;
+		var reg = new RegExp('abc','g');
+	用法:
+		1.	test方法:正则.test("字符串");如果匹配成功,则返回true,否则返回false;
+		2.	转义: \d \D \s \S 独立部分(开始|结束|空格)
+			量词: {} + * ?
+			子类: ()
+			或:	  | : 12|34,12或34;
+			字符集:[] ,字符集内^为取反,/[1234]/1或2或3或4,[^1234],1和2和3和4以外的字符;
+			标识: /i /g /m
+			位置: ^ $
+
+			var str = '1123\r\n456';
+			var reg = /(11)(24)?/;
+			alert(reg.test(str) +" "+  str.match(reg));
+		
+			var RegE = {
+				qq : /^[1-9]\d{4,9}$/,
+				email: /^\w+@[0-9a-zA-Z]+(\.[a-zA-Z]{2,}){1,3}$/,
+				IDcard: /^[1-9]\d{16}[\dx]$/,
+			};
+			//var reg = RegE.qq;
+
+
+正则表达式中第二个/后标识的含义
+/i (忽略大小写)
+/g (全文查找出现的所有匹配字符)
+/m (多行查找)
+/gi(全文查找、忽略大小写)
+/ig(全文查找、忽略大小写)
+
+m 影响对行首、行尾的解释，也就是影响 ^、$。
+若不指定 m，则：^ 只在字符串的最开头，$ 只在字符串的最结尾。
+若指定 m，则：^ 在字符串每一行的开头，$ 在字符串第一行的结尾。
+var str = '123\r\n456';
+var reg0 = new RegExp('\b123\b');  //出错
+var reg1 = new RegExp('\\b123\\b'); // true 正常;引号内需对 \转义,写成 \\ ,
+//可以理解为引号内,转义字符\需多加一个转义符\保证不被解析转义;
+var reg2 = new RegExp('^123$\r\n^456$', 'm'); // true ,这里\r\n加不加\\都不会出错,是因为什么;
+var reg3 = new RegExp('^123$\r\n^456$', ''); // false
+var reg4 = new RegExp('123\r\n456', 'm'); // true
+var reg5 = new RegExp('123\r\n456', ''); // true
+var reg6 = new RegExp('\\b123\\b'); // true 字符串在解开时会运行一次, \\把\转义了,就从'\\b123\\b'变成了 \b123\b ,没有多一个\就会被运行成123,然后\b还会变成特殊字符导致出错 ;
+alert(reg1.test(str) + '\r\n' + reg2.test(str) + '\r\n' + reg3.test(str) + '\r\n' + reg4.test(str)+ '\r\n' + reg5.test(str));
+// () 子类: 匹配子字符串,表示子字符与,
+			如存在且无全局标识g,返回值自动push所有存在的匹配子字符串;
+		例如，“d(o)(es)?”可以匹配“do”中的“do”,或“doe”的“doe,o”,或“doesss”的“doe,o,es”
+// [] 字符集: 匹配子字符集,表示子字符或,
+			注意,()在[]里面就是字符;
+//	| :或者符号 :d(oe|s) 表示doe,或者ds;后push匹配子字符 ,(e|s)和[es]类似,但(oe|s)和[oes]不同;
+	
+'\r'是回车，'\n'是换行，前者使光标到行首，后者使光标下移一格，通常敲一个回车键，即是回车，又是换行（\r\n）。Unix中每行结尾只有“<换行>”，即“\n”；Windows中每行结尾是“<换行><回车>”，即“\r\n”；Mac中每行结尾是“<回车>”。
+
+
+
+	正则表达式速查表
+
+	修饰符
+修饰符	描述
+i	执行对大小写不敏感的匹配。
+g	执行全局匹配（查找所有匹配而非在找到第一个匹配后停止）。
+m	执行多行匹配。
+
+方括号
+方括号用于查找某个范围内的字符：
+表达式	描述
+[abc]	查找方括号之间的任何字符。
+[^abc]	查找任何不在方括号之间的字符。
+[0-9]	查找任何从 0 至 9 的数字。
+[a-z]	查找任何从小写 a 到小写 z 的字符。
+[A-Z]	查找任何从大写 A 到大写 Z 的字符。
+[A-z]	查找任何从大写 A 到小写 z 的字符。
+[adgk]	查找给定集合内的任何字符。
+[^adgk]	查找给定集合外的任何字符。
+(red|blue|green)	查找任何指定的选项。
+
+元字符
+元字符（Metacharacter）是拥有特殊含义的字符：
+元字符	描述
+.	查找单个字符，除了换行和行结束符。
+\w	查找单词字符。
+\W	查找非单词字符。
+\d	查找数字。
+\D	查找非数字字符。
+\s	查找空白字符。
+\S	查找非空白字符。
+\b	匹配单词边界。
+\B	匹配非单词边界。
+\0	查找 NUL 字符。
+\n	查找换行符。
+\f	查找换页符。
+\r	查找回车符。
+\t	查找制表符。
+\v	查找垂直制表符。
+\xxx	查找以八进制数 xxx 规定的字符。
+\xdd	查找以十六进制数 dd 规定的字符。
+\uxxxx	查找以十六进制数 xxxx 规定的 Unicode 字符。
+
+量词
+量词	描述
+n+	匹配任何包含至少一个 n 的字符串。
+n*	匹配任何包含零个或多个 n 的字符串。
+n?	匹配任何包含零个或一个 n 的字符串。
+n{X}	匹配包含 X 个 n 的序列的字符串。
+n{X,Y}	匹配包含 X 或 Y 个 n 的序列的字符串。
+n{X,}	匹配包含至少 X 个 n 的序列的字符串。
+n$	匹配任何结尾为 n 的字符串。
+^n	匹配任何开头为 n 的字符串。
+?=n	匹配任何其后紧接指定字符串 n 的字符串。
+?!n	匹配任何其后没有紧接指定字符串 n 的字符串。
+
+RegExp 对象属性
+属性	描述	FF	IE
+global	RegExp 对象是否具有标志 g。	1	4
+ignoreCase	RegExp 对象是否具有标志 i。	1	4
+lastIndex	一个整数，标示开始下一次匹配的字符位置。	1	4
+multiline	RegExp 对象是否具有标志 m。	1	4
+source	正则表达式的源文本。	1	4
+
+RegExp 对象方法
+方法	描述	FF	IE
+compile	编译正则表达式。	1	4
+exec	检索字符串中指定的值。返回找到的值，并确定其位置。	1	4
+test	检索字符串中指定的值。返回 true 或 false。	1	4
+
+支持正则表达式的 String 对象的方法
+方法	描述	FF	IE
+search	检索与正则表达式相匹配的值。	1	4
+match	找到一个或多个正则表达式的匹配。	1	4
+replace	替换与正则表达式匹配的子串。	1	4
+split	把字符串分割为字符串数组。	1	4
+
+
+\ 将下一个字符标记为一个特殊字符、或一个原义字符、或一个向后引用、或一个八进制转义符。例如，“n”匹配字符“n”。“\n”匹配一个换行符。串行“\\”匹配“\”而“\(”则匹配“(”。 
+^ 匹配输入字符串的开始位置。如果设置了RegExp对象的Multiline属性，^也匹配“\n”或“\r”之后的位置。 
+$ 匹配输入字符串的结束位置。如果设置了RegExp对象的Multiline属性，$也匹配“\n”或“\r”之前的位置。 
+* 匹配前面的子表达式零次或多次。例如，zo*能匹配“z”以及“zoo”。*等价于{0,}。 
++ 匹配前面的子表达式一次或多次。例如，“zo+”能匹配“zo”以及“zoo”，但不能匹配“z”。+等价于{1,}。 
+? 匹配前面的子表达式零次或一次。例如，“doe?”可以匹配“do”中的“do”或“does”中的“doe”,?等价于{0,1}。 
+{n} n是一个非负整数。匹配确定的n次。例如，“o{2}”不能匹配“Bob”中的“o”，但是能匹配“food”中的两个o。 
+{n,} n是一个非负整数。至少匹配n次。例如，“o{2,}”不能匹配“Bob”中的“o”，但能匹配“foooood”中的所有o。“o{1,}”等价于“o+”。“o{0,}”则等价于“o*”。 
+{n,m} m和n均为非负整数，其中n<=m。最少匹配n次且最多匹配m次。例如，“o{1,3}”将匹配“fooooood”中的前三个o。“o{0,1}”等价于“o?”。请注意在逗号和两个数之间不能有空格。 
+? 当该字符紧跟在任何一个其他限制符（*,+,?，{n}，{n,}，{n,m}）后面时，匹配模式是非贪婪的。非贪婪模式尽可能少的匹配所搜索的字符串，而默认的贪婪模式则尽可能多的匹配所搜索的字符串。例如，对于字符串“oooo”，“o+?”将匹配单个“o”，而“o+”将匹配所有“o”。 
+. 匹配除"\r"“\n”之外的任何单个字符。要匹配包括“\n”在内的任何字符，请使用像“(.|\r|\n)”的模式。 
+(pattern) 匹配pattern并获取这一匹配。所获取的匹配可以从产生的Matches集合得到，在VBScript中使用SubMatches集合，在JScript中则使用$0…$9属性。要匹配圆括号字符，请使用“\(”或“\)”。 
+(?:pattern) 匹配pattern但不获取匹配结果，也就是说这是一个非获取匹配，不进行存储供以后使用。这在使用或字符“(|)”来组合一个模式的各个部分是很有用。例如“industr(?:y|ies)”就是一个比“industry|industries”更简略的表达式。 
+(?=pattern) 正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串。这是一个非获取匹配，也就是说，该匹配不需要获取供以后使用。例如，“Windows(?=95|98|NT|2000)”能匹配“Windows2000”中的“Windows”，但不能匹配“Windows3.1”中的“Windows”。预查不消耗字符，也就是说，在一个匹配发生后，在最后一次匹配之后立即开始下一次匹配的搜索，而不是从包含预查的字符之后开始。 
+(?!pattern) 正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串。这是一个非获取匹配，也就是说，该匹配不需要获取供以后使用。例如“Windows(?!95|98|NT|2000)”能匹配“Windows3.1”中的“Windows”，但不能匹配“Windows2000”中的“Windows”。预查不消耗字符，也就是说，在一个匹配发生后，在最后一次匹配之后立即开始下一次匹配的搜索，而不是从包含预查的字符之后开始 
+            JS只支持正向预查,不支持反向预查;
+(?<=pattern) 反向肯定预查，与正向肯定预查类拟，只是方向相反。例如，“(?<=95|98|NT|2000)Windows”能匹配“2000Windows”中的“Windows”，但不能匹配“3.1Windows”中的“Windows”。 
+(?<!pattern) 反向否定预查，与正向否定预查类拟，只是方向相反。例如“(?<!95|98|NT|2000)Windows”能匹配“3.1Windows”中的“Windows”，但不能匹配“2000Windows”中的“Windows”。 
+x|y 匹配x或y。例如，“z|food”能匹配“z”或“food”。“(z|f)ood”则匹配“zood”或“food”。 
+[xyz] 字符集合。匹配所包含的任意一个字符。例如，“[abc]”可以匹配“plain”中的“a”。 
+[^xyz] 负值字符集合。匹配未包含的任意字符。例如，“[^abc]”可以匹配“plain”中的“p”。 
+[a-z] 字符范围。匹配指定范围内的任意字符。例如，“[a-z]”可以匹配“a”到“z”范围内的任意小写字母字符。 
+[^a-z] 负值字符范围。匹配任何不在指定范围内的任意字符。例如，“[^a-z]”可以匹配任何不在“a”到“z”范围内的任意字符。 
+\b 匹配一个单词边界，也就是指单词和空格间的位置。例如，“er\b”可以匹配“never”中的“er”，但不能匹配“verb”中的“er”。 
+\B 匹配非单词边界。“er\B”能匹配“verb”中的“er”，但不能匹配“never”中的“er”。 
+\cx 匹配由x指明的控制字符。例如，\cM匹配一个Control-M或回车符。x的值必须为A-Z或a-z之一。否则，将c视为一个原义的“c”字符。 
+\d 匹配一个数字字符。等价于[0-9]。 
+\D 匹配一个非数字字符。等价于[^0-9]。 
+\f 匹配一个换页符。等价于\x0c和\cL。 
+\n 匹配一个换行符。等价于\x0a和\cJ。 
+\r 匹配一个回车符。等价于\x0d和\cM。 
+\s 匹配任何空白字符，包括空格、制表符、换页符等等。等价于[ \f\n\r\t\v]。 
+\S 匹配任何非空白字符。等价于[^ \f\n\r\t\v]。 
+\t 匹配一个制表符。等价于\x09和\cI。 
+\v 匹配一个垂直制表符。等价于\x0b和\cK。 
+\w 匹配包括下划线的任何单词字符。等价于“[A-Za-z0-9_]”。 
+\W 匹配任何非单词字符。等价于“[^A-Za-z0-9_]”。 
+\xn 匹配n，其中n为十六进制转义值。十六进制转义值必须为确定的两个数字长。例如，“\x41”匹配“A”。“\x041”则等价于“\x04&1”。正则表达式中可以使用ASCII编码。. 
+\num 匹配num，其中num是一个正整数。对所获取的匹配的引用。例如，“(.)\1”匹配两个连续的相同字符。 
+\n 标识一个八进制转义值或一个向后引用。如果\n之前至少n个获取的子表达式，则n为向后引用。否则，如果n为八进制数字（0-7），则n为一个八进制转义值。 
+\nm 标识一个八进制转义值或一个向后引用。如果\nm之前至少有nm个获得子表达式，则nm为向后引用。如果\nm之前至少有n个获取，则n为一个后跟文字m的向后引用。如果前面的条件都不满足，若n和m均为八进制数字（0-7），则\nm将匹配八进制转义值nm。 
+\nml 如果n为八进制数字（0-3），且m和l均为八进制数字（0-7），则匹配八进制转义值nml。 
+\un 匹配n，其中n是一个用四个十六进制数字表示的Unicode字符。例如，\u00A9匹配版权符号（©）。 
+
+
+常用正则表达式
+
+说明	正则表达式
+//全局匹配空格与换行;
+	html=html.replace(/<(div|p)[^>]*>s*(?=<img)/gi,'<$1 style="text-align: center;">');
+网址（URL）	[a-zA-z]+://[^\s]*
+IP地址(IP Address)	((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)
+电子邮件(Email)	\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*
+QQ号码	[1-9]\d{4,}
+HTML标记(包含内容或自闭合)	<(.*)(.*)>.*<\/\1>|<(.*) \/>
+密码(由数字/大写字母/小写字母/标点符号组成，四种都必有，8-16位)	(?=^.{8,16}$)(?=.*\d)(?=.*\W+)(?=.*[A-Z])(?=.*[a-z])(?!.*\n).*$
+日期(年-月-日)	(\d{4}|\d{2})-((1[0-2])|(0?[1-9]))-(([12][0-9])|(3[01])|(0?[1-9]))
+日期(月/日/年)	((1[0-2])|(0?[1-9]))/(([12][0-9])|(3[01])|(0?[1-9]))/(\d{4}|\d{2})
+时间(小时:分钟, 24小时制)	((1|0?)[0-9]|2[0-3]):([0-5][0-9])
+汉字(字符)	[\u4e00-\u9fa5]
+中文及全角标点符号(字符)	[\u3000-\u301e\ufe10-\ufe19\ufe30-\ufe44\ufe50-\ufe6b\uff01-\uffee]
+中国大陆固定电话号码	(\d{4}-|\d{3}-)?(\d{8}|\d{7})
+中国大陆手机号码	1\d{10}
+中国大陆邮政编码	[1-9]\d{5}
+中国大陆身份证号(15位或18位)	\d{15}(\d\d[0-9xX])?
+非负整数(正整数或零)	\d+
+正整数	[0-9]*[1-9][0-9]*
+负整数	-[0-9]*[1-9][0-9]*
+整数	-?\d+
+小数	(-?\d+)(\.\d+)?
+不包含abc的单词	\b((?!abc)\w)+\b
+
+用户名 /^[a-z0-9_-]{3,16}$/ 
+密码 /^[a-z0-9_-]{6,18}$/ 
+十六进制值 /^#?([a-f0-9]{6}|[a-f0-9]{3})$/ 
+电子邮箱 /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/
+/^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/ 
+URL /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/ 
+IP 地址 /((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)/
+/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/ 
+HTML 标签 /^<([a-z]+)([^<]+)*(?:>(.*)<\/\1>|\s+\/>)$/ 
+删除代码\\注释 (?<!http:|\S)//.*$ 
+Unicode编码中的汉字范围 /^[\u2E80-\u9FFF]+$/ 
+验证汉字/[\u4E00-\u9FA5]/
+验证数字的正则表达式集 
+验证数字：^[0-9]*$ 
+验证n位的数字：^\d{n}$ 
+验证至少n位数字：^\d{n,}$ 
+验证m-n位的数字：^\d{m,n}$ 
+验证零和非零开头的数字：^(0|[1-9][0-9]*)$ 
+验证有两位小数的正实数：^[0-9]+(.[0-9]{2})?$ 
+验证有1-3位小数的正实数：^[0-9]+(.[0-9]{1,3})?$ 
+验证非零的正整数：^\+?[1-9][0-9]*$ 
+验证非零的负整数：^\-[1-9][0-9]*$ 
+验证非负整数（正整数 + 0） ^\d+$ 
+验证非正整数（负整数 + 0） ^((-\d+)|(0+))$ 
+验证长度为3的字符：^.{3}$ 
+验证由26个英文字母组成的字符串：^[A-Za-z]+$ 
+验证由26个大写英文字母组成的字符串：^[A-Z]+$ 
+验证由26个小写英文字母组成的字符串：^[a-z]+$ 
+验证由数字和26个英文字母组成的字符串：^[A-Za-z0-9]+$ 
+验证由数字、26个英文字母或者下划线组成的字符串：^\w+$ 
+验证用户密码:^[a-zA-Z]\w{5,17}$ 正确格式为：以字母开头，长度在6-18之间，只能包含字符、数字和下划线。 
+验证是否含有 ^%&',;=?$\"" 等字符：[^%&',;=?$\x22]+ 
+验证汉字：^[\u4e00-\u9fa5],{0,}$ 
+验证Email地址：^\w+[-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$ 
+验证InternetURL：^http://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$ ；^[a-zA-z]+://(w+(-w+)*)(.(w+(-w+)*))*(?S*)?$ 
+验证电话号码：^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$：--正确格式为：XXXX-XXXXXXX，XXXX-XXXXXXXX，XXX-XXXXXXX，XXX-XXXXXXXX，XXXXXXX，XXXXXXXX。 
+验证身份证号（15位或18位数字）：^\d{15}|\d{}18$ 
+验证一年的12个月：^(0?[1-9]|1[0-2])$ 正确格式为：“01”-“09”和“1”“12” 
+验证一个月的31天：^((0?[1-9])|((1|2)[0-9])|30|31)$ 正确格式为：01、09和1、31。 
+整数：^-?\d+$ 
+非负浮点数（正浮点数 + 0）：^\d+(\.\d+)?$ 
+正浮点数 ^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$ 
+非正浮点数（负浮点数 + 0） ^((-\d+(\.\d+)?)|(0+(\.0+)?))$ 
+负浮点数 ^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$ 
+浮点数 ^(-?\d+)(\.\d+)?
+
+
+
+下面是具体的函数写法，不会的可以参考下。
+复制代码 代码如下:
+
+function check() 
+{ 
+var bb = document.getElementById("txt_id").value;//txt_id为文本框的ID 
+alert(ismobile(bb));//ismobile 代表以下任何一个函数名称 
+} 
+HTML代码： 
+<input type="text" name="textfield" id="txt_id" /> 
+<input type="submit" name="Submit" value="提交" onclick="check()" /> 
+
+
+**************************
+// 判断输入是否是一个由 0-9 / A-Z / a-z 组成的字符串 
+function isalphanumber(str) 
+{ 
+var result=str.match(/^[a-zA-Z0-9]+$/); 
+if(result==null) return false; 
+return true; 
+} 
+
+// 判断输入是否是一个数字--(数字包含小数)-- 
+function isnumber(str) 
+{ 
+return !isNaN(str); 
+} 
+
+
+// 判断输入是否是一个整数 
+function isint(str) 
+{ 
+var result=str.match(/^(-|\+)?\d+$/); 
+if(result==null) return false; 
+return true; 
+} 
+
+
+// 判断输入是否是有效的长日期格式 - "YYYY-MM-DD HH:MM:SS" || "YYYY/MM/DD HH:MM:SS" 
+function isdatetime(str) 
+{ 
+var result=str.match(/^(\d{4})(-|\/)(\d{1,2})\2(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/); 
+if(result==null) return false; 
+var d= new Date(result[1], result[3]-1, result[4], result[5], result[6], result[7]); 
+return (d.getFullYear()==result[1]&&(d.getMonth()+1)==result[3]&&d.getDate()==result[4]&&d.getHours()==result[5]&&d.getMinutes()==result[6]&&d.getSeconds()==result[7]); 
+} 
+
+
+// 检查是否为 YYYY-MM-DD || YYYY/MM/DD 的日期格式 
+function isdate(str){ 
+var result=str.match(/^(\d{4})(-|\/)(\d{1,2})\2(\d{1,2})$/); 
+if(result==null) return false; 
+var d=new Date(result[1], result[3]-1, result[4]); 
+return (d.getFullYear()==result[1] && d.getMonth()+1==result[3] && d.getDate()==result[4]); 
+} 
+
+
+// 判断输入是否是有效的电子邮件 
+function isemail(str) 
+{ 
+var result=str.match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/); 
+if(result==null) return false; 
+return true; 
+} 
+
+
+// 去除字符串的首尾的空格 
+function trim(str){ 
+return str.replace(/(^\s*)|(\s*$)/g, ""); 
+} 
+
+
+// 返回字符串的实际长度, 一个汉字算2个长度 
+function strlen(str){ 
+return str.replace(/[^\x00-\xff]/g, "**").length; 
+} 
+
+
+//匹配中国邮政编码(6位) 
+function ispostcode(str) 
+{ 
+var result=str.match(/[1-9]\d{5}(?!\d)/); 
+if(result==null) return false; 
+return true; 
+} 
+//匹配国内电话号码(0511-4405222 或 021-87888822) 
+function istell(str) 
+{ 
+var result=str.match(/\d{3}-\d{8}|\d{4}-\d{7}/); 
+if(result==null) return false; 
+return true; 
+} 
+
+//校验是否为(0-10000)的整数 
+function isint1(str) 
+{ 
+var result=str.match(/^[0-9]$|^([1-9])([0-9]){0,3}$|^10000$/); 
+if(result==null) return false; 
+return true; 
+} 
+
+
+//匹配腾讯QQ号 
+function isqq(str) 
+{ 
+var result=str.match(/[1-9][0-9]{4,}/); 
+if(result==null) return false; 
+return true; 
+} 
+
+
+//匹配身份证(15位或18位) 
+function isidcard(str) 
+{ 
+var result=str.match(/\d{15}|\d{18}/); 
+if(result==null) return false; 
+return true; 
+} 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+//校验文本是否为空 
+function checknull(field,sval) 
+{ 
+if (field.value =="") 
+{ 
+alert("请填写" + sval + "！"); 
+field.focus(); 
+return false; 
+} 
+return true; 
+} 
+
+
+//屏蔽输入字符 
+/*********************** 
+调用方法： 
+在文本框中加上 onkeypress="return checkChar()" 
+*************************/ 
+function checkChar() 
+{ 
+var keycode = event.keyCode; 
+if(!(keycode>=48&&keycode<=57)) 
+{ 
+return false; 
+} 
+} 
+
+
+/*************************************************************************************************************************** 
+中国电话号码验证 
+匹配形式如:0511-4405222 或者021-87888822 或者 021-44055520-555 或者 (0511)4405222 
+正则表达式 "((d{3,4})|d{3,4}-)?d{7,8}(-d{3})*" 
+
+中国邮政编码验证 
+匹配形式如:215421 
+正则表达式 "d{6}" 
+
+电子邮件验证 
+匹配形式如:justali@justdn.com 
+正则表达式 "w+([-+.]w+)*@w+([-.]w+)*.w+([-.]w+)*" 
+
+身份证验证 
+匹配形式如:15位或者18位身份证 
+正则表达式 "d{18}|d{15}" 
+
+常用数字验证 
+正则表达式 
+"d{n}" n为规定长度 
+"d{n,m}" n到m的长度范围 
+
+非法字符验证 
+匹配非法字符如:< > & / ' | 
+正则表达式 [^<>&/|'\]+ 
+
+日期验证 
+匹配形式如:20030718,030718 
+范围:1900--2099 
+正则表达式((((19){1}|(20){1})d{2})|d{2})[01]{1}d{1}[0-3]{1}d{1} 
+
+
+
+匹配中文字符的正则表达式： [\u4e00-\u9fa5] 
+评注：匹配中文还真是个头疼的事，有了这个表达式就好办了 
+
+匹配双字节字符(包括汉字在内)：[^\x00-\xff] 
+评注：可以用来计算字符串的长度（一个双字节字符长度计2，ASCII字符计1） 
+
+匹配空白行的正则表达式：\n\s*\r 
+评注：可以用来删除空白行 
+
+匹配HTML标记的正则表达式：< (\S*?)[^>]*>.*?|< .*? /> 
+评注：网上流传的版本太糟糕，上面这个也仅仅能匹配部分，对于复杂的嵌套标记依旧无能为力 
+
+匹配首尾空白字符的正则表达式：^\s*|\s*$ 
+评注：可以用来删除行首行尾的空白字符(包括空格、制表符、换页符等等)，非常有用的表达式 
+
+匹配Email地址的正则表达式：\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)* 
+评注：表单验证时很实用 
+
+匹配网址URL的正则表达式：[a-zA-z]+://[^\s]* 
+评注：网上流传的版本功能很有限，上面这个基本可以满足需求 
+
+匹配帐号是否合法(字母开头，允许5-16字节，允许字母数字下划线)：^[a-zA-Z][a-zA-Z0-9_]{4,15}$ 
+评注：表单验证时很实用 
+
+匹配国内手机号码: \^1[3578]\d{9}$\
+
+匹配国内电话号码：\d{3}-\d{8}|\d{4}-\d{7} 
+评注：匹配形式如 0511-4405222 或 021-87888822 
+
+匹配腾讯QQ号：[1-9][0-9]{4,} 
+评注：腾讯QQ号从10000开始 
+
+匹配中国邮政编码：[1-9]\d{5}(?!\d) 
+评注：中国邮政编码为6位数字 
+
+匹配身份证：\d{15}|\d{18} 
+评注：中国的身份证为15位或18位 
+
+匹配ip地址：\d+\.\d+\.\d+\.\d+ 
+评注：提取ip地址时有用 
+
+提取信息中的ip地址: 
+(\d+)\.(\d+)\.(\d+)\.(\d+) 
+
+提取信息中的中国手机号码: 
+(86)*0*13\d{9} 
+
+提取信息中的中国固定电话号码: 
+(\(\d{3,4}\)|\d{3,4}-|\s)?\d{8} 
+
+提取信息中的中国电话号码（包括移动和固定电话）: 
+(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14} 
+
+提取信息中的中国邮政编码: 
+[1-9]{1}(\d+){5} 
+
+提取信息中的中国身份证号码: 
+\d{18}|\d{15} 
+
+提取信息中的整数： 
+\d+ 
+
+提取信息中的浮点数（即小数）： 
+(-?\d*)\.?\d+ 
+
+提取信息中的任何数字 ： 
+(-?\d*)(\.\d+)? 
+
+提取信息中的中文字符串： 
+[\u4e00-\u9fa5]* 
+
+提取信息中的双字节字符串 (汉字)： 
+[^\x00-\xff]* 
+
+提取信息中的英文字符串： 
+\w* 
+提取信息中的网络链接: 
+(h|H)(r|R)(e|E)(f|F) *= *('|")?(\w|\\|\/|\.)+('|"| *|>)? 
+
+提取信息中的邮件地址: 
+\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)* 
+
+提取信息中的图片链接: 
+(s|S)(r|R)(c|C) *= *('|")?(\w|\\|\/|\.)+('|"| *|>)? 
+
+
+匹配特定数字： 
+^[1-9]\d*$　 　 //匹配正整数 
+^-[1-9]\d*$ 　 //匹配负整数 
+^-?[1-9]\d*$　　 //匹配整数 
+^[1-9]\d*|0$　 //匹配非负整数（正整数 + 0） 
+^-[1-9]\d*|0$　　 //匹配非正整数（负整数 + 0） 
+^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$　　 //匹配正浮点数 
+^-([1-9]\d*\.\d*|0\.\d*[1-9]\d*)$　 //匹配负浮点数 
+^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$　 //匹配浮点数 
+^[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0$　　 //匹配非负浮点数（正浮点数 + 0） 
+^(-([1-9]\d*\.\d*|0\.\d*[1-9]\d*))|0?\.0+|0$　　//匹配非正浮点数（负浮点数 + 0） 
+评注：处理大量数据时有用，具体应用时注意修正 
+
+匹配特定字符串： 
+^[A-Za-z]+$　　//匹配由26个英文字母组成的字符串 
+^[A-Z]+$　　//匹配由26个英文字母的大写组成的字符串 
+^[a-z]+$　　//匹配由26个英文字母的小写组成的字符串 
+^[A-Za-z0-9]+$　　//匹配由数字和26个英文字母组成的字符串 
+^\w+$　　//匹配由数字、26个英文字母或者下划线组成的字符串 
+评注：最基本也是最常用的一些表达式 
+
+
+
+////////////////////前4行程序用于保护js代码不被下载 
+// ////////////////////基本正则表达式/////////////////// 
+//非空验证 function NotNull (str) { return (str!=""); } 
+//邮件地址验证 
+function checkEmail (str) { 
+//邮件地址正则表达式 isEmail1=/^\w+@\w+([\.\-]\w+)*\.\w+$/; 
+//邮件地址正则表达式 isEmail1=/^\w+([\.\-]\w+)*\@\w+([\.\-]\w+)*\.\w+$/; 
+//邮件地址正则表达式 isEmail2=/^.*@[^_]*$/; 
+//验证邮件地址，返回结果 return (isEmail1.test(str)&&isEmail2.test(str)); 
+} //身份证验证 function checkIDCard (str) { 
+//身份证正则表达式(15位) 
+isIDCard1=/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/; 
+//身份证正则表达式(18位)      isIDCard2=/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{4}$/; 
+//验证身份证，返回结果 return (isIDCard1.test(str)||isIDCard2.test(str)); } 
+//IP验证 function checkIP (str) 
+{ //IP正则表达式 IP='(25[0-5]|2[0-4]\\d|1\\d\\d|\\d\\d|\\d)'; 
+IPdot=IP+'\\.'; isIPaddress=new RegExp('^'+IPdot+IPdot+IPdot+IP+'$'); 
+//验证IP，返回结果 return (isIPaddress.test(str)); } 
+//主页（网址）验证 function checkHomepage (str) { 
+//主页正则表达式 //isHomepage=/^\w+([\.\-]\w)*$/; isHomepage=/^\w+(\.\w+)+\.\w+$/; 
+//验证主页，返回结果 return (isHomepage.test(str)); } 
+//是否数字 function isNum (str) { //isNumber=/^([1-9]\d*(\.\d+)?)|(\d+(\.\d+))$/; isNumber=/^\d+(\.\d+)?$/; 
+//验证并返回结果 return (isNumber.test(str)); } 
+//是否整数 function isInt (str) { isInteger=/^\d+$/; 
+//验证并返回结果 return (isInteger.test(str)); } 
+//是否字母 function isChar (str) { isCharacter=/^[A-Za-z]+$/; 
+//验证并返回结果 return (isCharacter.test(str)); } 
+/////////////////////基本弹出窗口/////////////////// 
+function checkBoolean(bv,i,w) { if(bv==false) { try{i.focus();}catch(e){} alert(w); return false; } return true } 
+////////////////////元素和取值判断//////////////////// // 
+已选择 function checkElement_selected(item,alert_str) { if(item.type=="select-one")return checkElement_NotNull(item,alert_str); if(alert_str.length==0)alert_str=item.title+"为必选项！"; rt=false; if(item.length>0) { for(i=0;i<item.length;i++){rt=rt||item[i].checked;} } else { rt=item.checked } return checkBoolean(rt,item[0],alert_str); return true; } // 
+不为空 function checkElement_NotNull(a,alert_str,g) { v=a.value; w=alert_str; if(alert_str.length==0)w=a.title+"不能为空！"; return(checkValue_NotNull(v,a,w,g)); } function checkValue_NotNull(v,i,w,g) { if(g!="NOT_TRIM")v=v.replace(/(^\s*)|(\s*$)/g, ""); bv=NotNull(v); return(checkBoolean(bv,i,w)); } 
+// 合法邮箱 function checkElement_IsEmail(a,alert_str,g) { v=a.value; w=alert_str; if(alert_str.length==0)w=a.title+"不能为空！"; return(checkValue_IsEmail(v,a,w,g)); } 
+function checkValue_IsEmail(v,i,w,g) { if(g!="NOT_TRIM")v=v.replace(/(^\s*)|(\s*$)/g, ""); bv=checkEmail(v); return(checkBoolean(bv,i,w)); } // 合法身份证 function checkElement_IsIDCard(a,alert_str,g) { v=a.value; w=alert_str; if(alert_str.length==0)w=a.title+"不能为空！"; return(checkValue_IsIDCard(v,a,w,g)); } 
+function checkValue_IsIDCard(v,i,w,g) { if(g!="NOT_TRIM")v=v.replace(/(^\s*)|(\s*$)/g, ""); bv=checkIDCard(v); return(checkBoolean(bv,i,w)); } // 合法IP function checkElement_IsIP(a,alert_str,g) { v=a.value; w=alert_str; if(alert_str.length==0)w=a.title+"不能为空！"; return(checkValue_IsIP(v,a,w,g)); } function checkValue_IsIP(v,i,w,g) { if(g!="NOT_TRIM")v=v.replace(/(^\s*)|(\s*$)/g, ""); bv=checkIP(v); return(checkBoolean(bv,i,w)); } 
+// 验证数字 function checkElement_IsNum(a,alert_str,g) { v=a.value; w=alert_str; if(alert_str.length==0)w=a.title+"不能为空！"; return(checkValue_IsNum(v,a,w,g)); } function checkValue_IsNum(v,i,w,g) { if(g!="NOT_TRIM")v=v.replace(/(^\s*)|(\s*$)/g, ""); bv=isNum(v); return(checkBoolean(bv,i,w)); } 
+// 验证整数 function checkElement_IsInt(a,alert_str,g) { v=a.value; w=alert_str; if(alert_str.length==0)w=a.title+"不能为空！"; return(checkValue_IsInt(v,a,w,g)); } function checkValue_IsInt(v,i,w,g) { if(g!="NOT_TRIM")v=v.replace(/(^\s*)|(\s*$)/g, ""); bv=isInt(v); return(checkBoolean(bv,i,w)); } // 验证字母 function checkElement_IsChar(a,alert_str,g) { v=a.value; w=alert_str; if(alert_str.length==0)w=a.title+"不能为空！"; return(checkValue_IsChar(v,a,w,g)); } function checkValue_IsChar(v,i,w,g) { if(g!="NOT_TRIM")v=v.replace(/(^\s*)|(\s*$)/g, ""); bv=isChar(v); return(checkBoolean(bv,i,w)); } 
+// 合法主页 function checkElement_IsHomepage(a,alert_str,g) { v=a.value; w=alert_str; if(alert_str.length==0)w=a.title+"不能为空！"; return(checkValue_IsHomepage(v,a,w,g)); } function checkValue_IsHomepage(v,i,w,g) { if(g!="NOT_TRIM")v=v.replace(/(^\s*)|(\s*$)/g, ""); bv=checkHomepage(v); return(checkBoolean(bv,i,w)); }
+*/
+		</script>
+	</body>
+</html>

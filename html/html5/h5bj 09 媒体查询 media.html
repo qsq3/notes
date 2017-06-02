@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>响应式布局 </title>
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    
+</head>
+<body>
+    媒体类型
+	all 所有媒体 *
+    braille 盲文触觉设备
+    embossed 盲文打印机
+    print 打印
+    handheld    手持设备  *
+    projection 打印预览
+    screen 彩屏设备 *
+    speech '听觉'类似的媒体类型
+    tty 不适用像素的设备
+    tv  电视
+
+    关键字
+    and
+    not      not关键字是用来排除某种制定的媒体类型
+    only     only用来定某种特定的媒体类型
+
+    媒体特性
+    (max-width:600px) 
+    (max-device-width: 480px)  	设备输出宽度
+    (orientation:portrait)  		竖屏
+    (orientation:landscape)		横屏
+    (-webkit-min-device-pixel-ratio: 2) 像素比
+    devicePixelRatio 			设备像素比 
+    window.devicePixelRatio = 物理像素 / dips
+
+    样式引入
+    <link rel="stylesheet" href="css/index.css" media="print" />
+     @import url("css/demo.css") screen;
+     @media screen{    }
+    <link rel=”stylesheet” media=”all and (orientation:portrait)” href=”portrait.css”>
+    <link rel=”stylesheet” media=”all and (orientation:landscape)”href=”landscape.css”>
+    @media screen and (min-width:360px) and (max-width:500px) {}
+
+    样式引入
+    <link rel="stylesheet" type="text/css" href="indexA.css"  media="screen and (min-width: 800px)">
+    <link rel="stylesheet" type="text/css" href="indexB.css" media="screen and (min-width: 600px) and (max-width: 800px)">
+    <link rel="stylesheet" type="text/css" href="indexC.css"    media="screen and (max-width: 600px)">
+
+
+    
+    例子:
+
+    
+<!-- Media Queries
+1> 980 -》++++++++++++++  pc
+720-980            平板
+320-720             手机
+
+2> 设备类型
+	all  全部 screen  电脑显示器  print 打印机   handheld  便携设备 
+@media  设备类型 and ( 标志) {样式}
+@media  screen and()
+/*笔记上来  标志： 宽度 width 高度 height  屏幕分辨率宽度 device-width  横  landscape  纵  portrait 
+横纵 比例 aspect-ratio  color   32色 。。。 剩下自己去
+*/
+/*条件筛选*/   and 前后必须空格 条件一点要有交界点 （小于720 大于980 ）这样的条件 谁做了 六项精进20
+
+<mera name="viewport" content="width=600px"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+<meta name="viewport" content="width=640PX, initial-scale=1, user-scalable=2.0">  指定 样式宽度
+content属性值 :
+     width:可视区域的宽度，值可为数字或关键词device-width
+     height:同width
+     intial-scale:页面首次被显示是可视区域的缩放级别，取值1.0则页面按实际尺寸显示，无任何缩放
+     maximum-scale=1.0 , minimum-scale=1.0;可视区域的缩放级别，
+              maximum-scale用户可将页面放大的程序，1.0将禁止用户放大到实际尺寸之上。
+     user-scalable:是否可对页面进行缩放，no 禁止缩放
+
+
+viewport 语法介绍：
+
+  <meta name="viewport" 
+
+      content=" 
+
+         height = [pixel_value | device-height] , 
+
+          width = [pixel_value | device-width ] , 
+
+          initial-scale = float_value , 
+
+          minimum-scale = float_value , 
+
+         maximum-scale = float_value , 
+
+         user-scalable = [yes | no] , 
+
+         target-densitydpi = [dpi_value | device-dpi | high-dpi | medium-dpi | low-dpi] 
+
+      " 
+
+  /> 
+
+width
+控制 viewport 的大小，可以指定的一个值或者特殊的值，如 device-width 为设备的宽度（单位为缩放为 100% 时的 CSS 的像素）。
+
+height
+和 width 相对应，指定高度。
+
+target-densitydpi
+一个屏幕像素密度是由屏幕分辨率决定的，通常定义为每英寸点的数量（dpi）。Android支持三种屏幕像素密度：低像素密度，中像素密度，高像素密度。一个低像素密度的屏幕每英寸上的像素点更少，而一个高像素密度的屏幕每英寸上的像素点更多。Android Browser和WebView默认屏幕为中像素密度。
+
+下面是 target-densitydpi 属性的 取值范围
+
+device-dpi –使用设备原本的 dpi 作为目标 dp。 不会发生默认缩放。 
+high-dpi – 使用hdpi 作为目标 dpi。 中等像素密度和低像素密度设备相应缩小。 
+medium-dpi – 使用mdpi作为目标 dpi。 高像素密度设备相应放大， 像素密度设备相应缩小。 这是默认的target density. 
+low-dpi -使用mdpi作为目标 dpi。中等像素密度和高像素密度设备相应放大。 
+<value> – 指定一个具体的dpi 值作为target dpi. 这个值的范围必须在70–400之间。 
+
+2 <meta name="viewport" content="target-densitydpi=device-dpi" /> 
+
+3 <meta name="viewport" content="target-densitydpi=high-dpi" /> 
+
+4 <meta name="viewport" content="target-densitydpi=medium-dpi" /> 
+
+5 <meta name="viewport" content="target-densitydpi=low-dpi" /> 
+
+6 <meta name="viewport" content="target-densitydpi=200" /> 
+
+为了防止Android Browser和WebView 根据不同屏幕的像素密度对你的页面进行缩放，你可以将viewport的target-densitydpi 设置为 device-dpi。当你这么做了，页面将不会缩放。相反，页面会根据当前屏幕的像素密度进行展示。在这种情形下，你还需要将viewport的width定义为与设备的width匹配，这样你的页面就可以和屏幕相适应。
+
+initial-scale
+初始缩放。即页面初始缩放程度。这是一个浮点值，是页面大小的一个乘数。例如，如果你设置初始缩放为“1.0”，那么，web页面在展现的时候就会以target density分辨率的1:1来展现。如果你设置为“2.0”，那么这个页面就会放大为2倍。
+
+maximum-scale
+最大缩放。即允许的最大缩放程度。这也是一个浮点值，用以指出页面大小与屏幕大小相比的最大乘数。例如，如果你将这个值设置为“2.0”，那么这个页面与target size相比，最多能放大2倍。
+
+user-scalable
+用户调整缩放。即用户是否能改变页面缩放程度。如果设置为yes则是允许用户对其进行改变，反之为no。默认值是yes。如果你将其设置为no，那么minimum-scale 和 maximum-scale都将被忽略，因为根本不可能缩放。
+
+所有的缩放值都必须在0.01–10的范围之内。
+
+例：
+
+(设置屏幕宽度为设备宽度，禁止用户手动调整缩放)
+
+ <meta name="viewport" content="width=device-width,user-scalable=no" />
+
+(设置屏幕密度为高频，中频，低频自动缩放，禁止用户手动调整缩放)
+
+<meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+
+<!-- 媒体查询 css3  -->
+  <link  rel='stylesheet' media="screen and (max-width:720px)" href="style.css"/>
+  <link  rel='stylesheet' media="screen and (min-width:720px) and (max-width:980px)" href="style_720.css"/>
+  <link  rel='stylesheet' media="screen and (max-width:980px)" href="style_980.css"/>
+  style.css 只有在小于640的时候才显示 
+
+  实例:
+
+        window.onload=function(){
+            $(".body img").each(function() {
+               if($(this).width()>800){
+                   $(this).width(800);
+               }
+            });
+        }
+		
+		$(window).scroll(function(){
+			if(!isMobile()){
+				var s = $(window).scrollTop();
+				if(s>100){
+				   $(".nav").css({"position":"fixed","z-index":"99999","top":"0"});
+		
+				}else{
+					 $(".nav").css("position","relative");
+					 
+				}
+			}
+		});
+		
+		function isMobile(){
+		 var sUserAgent= navigator.userAgent.toLowerCase(),
+		 bIsIpad= sUserAgent.match(/ipad/i) == "ipad",
+		 bIsIphoneOs= sUserAgent.match(/iphone os/i) == "iphone os",
+		 bIsMidp= sUserAgent.match(/midp/i) == "midp",
+		 bIsUc7= sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4",
+		 bIsUc= sUserAgent.match(/ucweb/i) == "ucweb",
+		 bIsAndroid= sUserAgent.match(/android/i) == "android",
+		 bIsCE= sUserAgent.match(/windows ce/i) == "windows ce",
+		 bIsWM= sUserAgent.match(/windows mobile/i) == "windows mobile",
+		 bIsWebview = sUserAgent.match(/webview/i) == "webview";
+		 return (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM);
+		}
+    
+
+
+
+    media type(媒体类型)是css 2中的一个非常有用的属性，通过media type我们可以对不同的设备指定特定的样式，从而实现更丰富的界面。media query(媒体查询)是对media type的一种增强，是CSS 3的重要内容之一。随着移动互联网的发展，media query开始得到大家的重视。
+media type
+让我们先了解一下media type，其实这个大家会比较熟悉一点，我们通常会用到的media type会是all 和screen，然后是print，一些网站会专门通过print类型为页面的打印格式提供更友好的界面。
+其实，media type有很多种：
+类型	解释
+all	所有设备
+braille	盲文
+embossed	盲文打印
+handheld	手持设备
+print	文档打印或打印预览模式
+projection	项目演示，比如幻灯
+screen	彩色电脑屏幕
+speech	演讲
+tty	固定字母间距的网格的媒体，比如电传打字机
+tv	电视
+media type的几种使用方法
+我们可以通过几种方法来声明media type：
+
+方法一
+<link href="style.css" media="screen print" ...
+
+方法二
+<?xml-stylesheet media="screen" href="style.css"...
+
+方法三
+@import url("style.css") screen;
+
+方法四
+<style media="screen">
+@import url("style.css");
+
+</style>
+方法五
+@media screen{
+selector{rules}
+}
+
+当然，这几种方法各有利弊，而我们常用的是第一种和最后一种方法。
+media type的浏览器支持
+IE5.5/6/7不支持在@import中使用媒体类型
+Safari/firefox只支持all,screen,print三种类型(包括iphone)
+Opera 完全支持
+Opera mini  支持handheld，未指定则使用screen
+Windows Mobile系统中的IE支持handheld，其它支持不明…
+media query
+正如前文所说，media query是CSS 3对media type的增强，事实上我们可以将media query看成是media type+css属性判断。
+请注意，下面提到的一些关键字等内容，有些是在media type中就可用的，但是放到media query中将能更好的发挥其作用，所以我就在适当的地方引入。
+css属性判断可以只是某个CSS属性的名称，也可以是属性+值：
+<link rel="stylesheet" media="screen and (animation)” herf=“…”"
+如果设备支持CSS动画，那么就能执行这个外部样式表文件。
+
+
+@media screen and (max-width:240px){
+	body{font-size:medium;}
+}
+如果设备的浏览器的最大宽度是240px，则页面将使用中号字体。
+PS:属性和值之间是用冒号连接的，而不是等号，这与正常的CSS的写法一致。
+媒体查询语句结构
+我们可以将上述语句称为媒体查询语句，这样也更能理解一些。从上面的例子也可以看出，媒体查询语句一般由media type+一到多个CSS属性判断组成，而多个CSS属性判断可以用关键字and连接：
+
+@media screen and (min-width:1024px) and (max-width:1280px){
+	body{font-size:medium;}
+}
+其中media type可以省略，属性值也可以为空：
+@media (color:4){}
+@media (color){}
+当然，请注意，有属性值和没有属性值的情况代表的意义是不一样的，所以上面的这两条规则不是等价的。
+而针对多个媒体类型的CSS规则，可以用逗号来隔开：
+
+@media handheld and (min-width:360px),screen and (min-width:480px){
+body{font-size:large;}
+}
+
+@media screen and (min-width:800px),print and (min-width:7in){
+body{font-size:small;}
+}
+media query支持的属性
+事实上，media query支持的属性和我们常用的CSS属性是不太一样的，它们是一些特别定义的条目：
+属性	值	Min/Max	描述
+color	整数	yes	每种色彩的字节数
+color-index	整数	yes	色彩表中的色彩数
+device-aspect-ratio	整数/整数	yes	宽高比例
+device-height	length	yes	设备屏幕的输出高度
+device-width	length	yes	设备屏幕的输出宽度
+grid	整数	no	是否是基于格栅的设备
+height	length	yes	渲染界面的高度
+monochrome	整数	yes	单色帧缓冲器中每像素字节
+resolution	分辨率(“dpi/dpcm”)	yes	分辨率
+scan	Progressive interlaced	no	tv媒体类型的扫描方式
+width	length	yes	渲染界面的宽度
+orientation	Portrait/landscape	no	横屏或竖屏
+从这些属性中我们可以看出，media query就是为了更好的适配各种设备而生的。
+浏览器扩展
+webkit
+webkit是最早实现media query支持的浏览器内核之一，同时它也根据自己的需要搞了一些特有的扩展属性，最常用的有：
+transform-2d	只用于支持使用 -webkit-transform实现2D变换的浏览器
+transform-3d	只用于支持使用 -webkit-transform实现3D变换的浏览器
+transition	只用于支持使用-webkit-transition实现变换效果的浏览器
+animation	只用于支持使用-webkit-animation实现动画的浏览器
+详情请看这里：http://webkit.org/specs/MediaQueriesExtensions.html
+firefox
+firefox也提供一些自己的扩展，不过由于firefox浏览器的手机版现在还很弱，所以很少会用到，感兴趣的同学可以到https://developer.mozilla.org/En/CSS/Media_queries查阅。
+max与min
+细心的同学可能已经注意到前面用到的这两个关键词，他们是要配合支持它们的属性使用的，它们的意义与我们常用的max-width和minwidth等类似。
+各属性对max和min的支持在前面的属性列表中有给出，这里是一个详细的列表：
+height	min-height	max-height
+device-width	min-device-width	max-device-width
+device-height	min-device-height	max-device-height
+aspect-ratio	min-aspect-ratio	max-aspect-ratio
+device-aspect-ratio	min-device-aspect-ratio	max-device-aspect-ratio
+color	min-color	max-color
+color-index	min-color-index	max-color-index
+Monochrome	min-monochrome	max-monochrome
+Resolution	min-resolution	max-resolution
+not/only
+媒体类型还支持 not和only关键字，它们可以用来更方便的定位某个媒体设备：
+not：排除某种制定的媒体类型
+@media not print and (color){
+}
+only：指定某种特定的媒体类型，可以用来排除不支持媒体查询的浏览器：
+@media only screen and (color){
+}
+media query的浏览器支持：
+IE 9以下不支持
+Firefox 3.5+(Gecko 1.9.1+)支持
+Opera 9.5+完全支持
+Opera mini 5支持
+webkit 支持大部分属性(safari 3.0的内核版本是522，iPhone 1代的safari的内核版本是524，webkit大概从这个时候开始支持media query，但是对部分属性比如projection支持不好)
+iPhone OS 3.2之前的版本不支持orientation属性，iPad和iPhone 4支持该属性。
+iPhone Safari不支持orientation(iPhone 4支持)
+实例：
+现在让我们来看一些典型的例子：
+检测iPhone safari：
+<link media="only screen and (max-device-width: 480px)" href="style.css">
+这是apple官方网站推荐的一种定位iPhone safari浏览器的方法，在iPhone一代和2代的时代，这条规则的确能够正确的判断出iPhone的浏览器，但是后来出现了Android的大屏幕手机，比如Nexus One和HTC desire，这条规则也能适配这些480px宽度的机器。
+Google的iPhone横屏样式：
+Google之前通过以下方式为iPhone手机提供横屏样式(因为最早的3代iPhone手机不支持orientation属性)：
+
+@media screen and (max-height:300px){
+    #linksDiv{
+        margin-top:10px;
+    }
+    ...
+}
+android手机的多分辨率问题：
+android系统的开放性导致其终端的多样性，那么对于各种各样的android手机来说，屏幕分辨率的差异导致针对android手机的页面重构复杂性增加，那么我们可以用media query为每种分辨率提供特定样式：
+
+/* for 240 px width screen */
+@media only screen and (max-device-width:240px){
+    selector{
+    }
+}
+ 
+/* for 360px width screen */
+@media only screen and (min-device-width:241px) and (max-device-width:360px){
+    selector{
+    }
+}
+ 
+/* for 480 px width screen */
+@media only screen (min-device-width:361px)and (max-device-width:480px){
+    selector{
+    }
+}
+device-aspect-ratio
+device-aspect-ratio可以用来适配特定屏幕长宽比的设备，这也是一个很有用的属性，比如，我们的页面想要对长宽比为4:3的普通屏幕定义一种样式，然后对于16:9和16:10的宽屏，定义另一种样式，比如自适应宽度和固定宽度：
+
+/* for 4:3 screen */
+@media only screen and (device-aspect-ratio:4/3){
+    selector{
+    }
+}
+ 
+/* for 16:9 and 16:10 screen */
+@media only screen and (device-aspect-ratio:16/9) and (device-aspect-ratio:16/10){
+    selector{
+    }
+}
+当然，对于手机也可以使用这个属性，比如对于480px*800px的Nexus One和Desire等手机，可以用下面的样式来匹配：
+
+/* for 480px*800px width screen */
+@media only screen (device-aspect-ratio:5/3){
+    selector{
+    }
+}
+O’Reilly区分iPhone和iPad的方法
+O’Reilly为其网站制作了针对iPad和iPhone设备的不同版本，从而提供最适合相关设备阅读的界面，他们的做法就是使用media query：
+
+<link rel="stylesheet" media="all and (max-device-width: 480px)" href="iphone.css">
+<link rel="stylesheet" media="all and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)" href="ipad-portrait.css">
+<link rel="stylesheet" media="all and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)" href="ipad-landscape.css">
+<link rel="stylesheet" media="all and (min-device-width: 1025px)" href="ipad-landscape.css">
+详细介绍可以查看这里：http://broadcast.oreilly.com/2010/04/using-css-media-queries-ipad.html
+总结
+CSS 3的media query是一个很强大也很好用的工具，它为我们在不同的设备和环境下实现丰富的界面提供了一种快捷方法，虽然现在各个浏览器对它的支持还有些差异，但是大家都在改进，IE 9已经开始支持media query了。不过目前media query的最大舞台是在高端手持设备，相信随着移动互联网的快速发展，media query也会很好发挥自己的作用。
+
+在手机上的显示
+<mera name="viewport" content="width=600px"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+

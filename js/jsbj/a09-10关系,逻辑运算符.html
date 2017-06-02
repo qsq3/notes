@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script type="text/javascript">
+		
+		//非等值关系
+		var a = 3000;
+		var b = 2000;
+		//比较关系
+		/*
+		alert(a > b);
+		alert(a >= b);
+		alert(a != b);
+		alert(a < b);
+		alert(a <= b);
+		
+		//等值关系 ==（等值符，先转换为相同类型，然后再比较值） ===（等同符,先比较类型，类型相同再比较值）
+		//基本数据类型同时向Number靠拢，调用Number全局函数；
+		//NaN自己不等于自己；NaN与任意字符进行数学运算后得到的还是NaN;
+		var aa = 1;
+		var bb = true;// 任何非0数字和非空字符都为true
+		var bc = false;// 0或空字符的布尔值都为false;
+		var cc = 1; // == 1
+		var dd = '1';
+		var ee = "ture";// == NaN
+		
+		var ff = "ture";
+		//alert(ee === ff); //全等
+		/*
+		alert(cc === dd);//全等,值为false;
+		
+		alert(aa == bb);
+
+		浮点数的相等比较：
+		1 / 3 === (1 - 2 / 3); // false
+		这不是JavaScript的设计缺陷。浮点数在运算过程中会产生误差，因为计算机无法精确表示无限循环小数。要比较两个浮点数是否相等，只能计算它们之差的绝对值，看是否小于某个阈值：
+		Math.abs(1 / 3 - (1 - 2 / 3)) < 0.0000001; // true
+		
+		
+		//取余 %=,取反=!,不等!=
+		//系统默认函数
+		//function testNumber () {
+			
+		var aaa = "ture";
+		//	alert(Number(aaa));
+		}
+		//js的内存分析；
+		//堆内存和栈内存。对象声明变量名时把其放在栈内存。对象放在堆内存；
+		//alert([] == [])//不等
+,数组对象判断的是其地址;		alert({} == {})//不等*/
+
+
+		//与或非逻辑运算符
+		var zhangsan = 160;
+		var lisi = 170;
+		var wangwu = 180;
+		var zhaoliu = 200;
+	
+		//alert(wangwu>lisi && wangwu > zhangsan);//逻辑与运算符
+		//alert(wangwu>lisi || wangwu > zhaoliu);//逻辑或运算符
+		
+		//ture && false || falss  // false
+		//false  || ture && true // true
+		alert( 2 || 0 && 0); //2
+		alert( 2 && 0 || 1); //1
+		alert( 0 && 2 || 1 && 3) ; //3
+		&& 运算优先级高于 ||，并且当&&的时候遇到一个false直接取false不执行后一个，而||遇到一个true的时候，后面的也不再执行后一个。
+		//alert(!(wangwu > zhaoliu));//逻辑非运算符（对现在的结果取反）
+		
+		// 与运算分为： 短路与&&,只要前面有假值则后面不在运算 ;逻辑与&；
+		var a = false && 0 ;
+		alert(a); //值为第一个,false;假值立刻停止;
+		var a = false & 0 ;
+		alert(a); //值为最后一个0,始终运算到最后一个;
+
+
+		//同理或运算也分
+				//var a = 3 || 4 
+				//alert(a);//如果有真,则在第一个真值停止,因为3,4都为true,3的时候就中止了,值为3
+				
+				var a = false || false || 0; 
+				//alert(a); //a = 0, 如果全为假,短路或取最后一个值,即使为假;
+
+			
+		var str = null;
+		//alert(str.length) 
+		//Cannot read property 'length' of null
+		
+		if (str != null && str.length > 3) {
+			
+			alert("qwer")
+		}	
+		
+		
+</script>
+	<body>
+		<h1>关系运算符</h1>
+		<input type="button" id="number" value="testNumber" onclick="testNumber();" />
+	</body>
+</html>

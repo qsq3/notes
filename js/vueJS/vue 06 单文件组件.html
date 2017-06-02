@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>vue 06 单文件组件</title>
+  <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css" />
+  <script type="text/javascript" src="js/vue.2.1.3.js"></script>
+</head>
+<body class="container">
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <a href="http://vuejs.org.cn/guide/application.html" target="_blank">vue1.0教程</a>
+    </div>
+  </div>
+  <div class="panel-body">
+    
+    <style>
+      .my-component h2{
+        color : red;
+      }
+    </style>
+    <template>
+      <div class="my-component">
+        <h2>{{ msg }}</h2>
+      </div>
+    </template>
+    <script>
+      module.exports = {
+        data : function () {
+          return {
+            msg : 'hello'
+          }
+        }
+      }
+    </script>
+
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+
+</body>
+</html>

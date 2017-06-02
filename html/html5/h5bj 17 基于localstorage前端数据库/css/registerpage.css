@@ -1,0 +1,59 @@
+
+/** S 注册页面 **/
+.registerPage .container{
+	width:100%;
+	min-height: 100%;
+    background: #fff url("../images/bg.jpg") no-repeat center center/cover;
+    overflow: hidden;
+    position: relative;
+    
+}
+.registerPage .regtitle{
+	margin: 40px auto;
+    font-size: 24px;
+    line-height: 2;
+    text-align: center;
+    color: #fff;
+}
+.registerWrap{
+    width: 90%;
+    margin:auto;
+    position: relative;
+}
+.registerWrap .weui_cells {
+    margin-top: .2em;
+}
+.registerWrap .weui_cells:before {
+    border-top-width: 0;
+}
+.registerWrap .weui_cells:after {
+    border-bottom-width: 0px;
+    border: 0 none !important;
+}
+.registerWrap .weui_cells{
+    background-color: rgba(255,255,255,0);
+}
+.registerWrap .weui_cell{
+	background-color: rgba(255,255,255,0.8);
+	margin-bottom: 6px;
+}
+.registerWrap .weui_cells .weui_label{
+    width: 40px;
+}
+.registerWrap .weui_cells .weui_label img{
+    width: 26px;
+    height: 26px;
+}
+
+.registerWrap .weui_btn_area{
+	margin-left: auto;
+	margin-right: auto;
+}
+.registerPage .reglogo{
+    position: relative;
+    display: block;
+    width: 80px;    
+    margin:80px auto 0;
+}
+
+/** E 注册页面 **/

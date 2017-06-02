@@ -1,0 +1,233 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Asynchronous Javascript And XML</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<style type="text/css">
+			*{
+				margin:0;
+				padding:0;	
+			}
+			#search{
+				width:480px;
+				height:30px;
+				margin:10px auto;
+				font-family:"Microsoft Yahei";
+			}
+			#txt{
+				width:400px;
+				height:26px;
+				font-family:"Microsoft Yahei";
+			}
+			#btn{
+				width:50px;
+				height:30px;
+				font-family:"Microsoft Yahei";
+			}
+			#tip{
+				display:none;
+			}
+			#tip li{
+				list-style:none;
+				font-size:16px;
+				line-height:24px;
+				background:#eee;
+				width:400px;
+			}
+			#tip li:hover{
+				background:#ccc;
+			}
+
+			#tip li a{
+				color:#000;
+                display:block;
+				text-decoration:none;
+                width:100%;
+			}
+		</style>
+	</head>
+	<body>
+		<p>AJAX即“Asynchronous Javascript And XML”（异步JavaScript和XML），是指一种创建交互式网页应用的网页开发技术。
+		只能在服务器环境运行;同域;
+		应用 : 不刷新整个网页也可以传送数据,用来更新局部内容;</p>
+		<input type="button" value="获取文档" id="btn1" /><br /><br />
+
+		<form action="a26ajaxtest.php" method='post'>
+			用户名:<input type="text" name='user'/><br />
+			密&nbsp;码:<input type="password" name='pw'/><br />
+			男<input type="radio" name='sex'/> &nbsp;
+			女<input type="radio" name='sex'/> <br />
+			<input type="submit"/>
+		</form>
+        <!--
+			get ：会把发送的数据放在url里面  ?name=value&name=value
+            表单的作用只是拿到数据并放到url,返回并跳转到该后台页面;
+		-->
+
+		<br />
+		<p>仿百度搜索框</p>
+		<div id='search'>	
+			<input type="text" id='txt' /><input type="submit" id='btn' />
+			<ul id="tip">
+				<li>123</li>
+				<li>123</li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+
+
+
+
+		<script type="text/javascript">
+			var oBtn = document.getElementById('btn1');
+			oBtn.onclick = function(){
+				ajax({
+					'method' : 'get',
+					'url' : 'array.php',
+					'data' : 'user=afei&pw=123',
+					'success' : function(d){
+						var arr = eval(d);
+						alert (arr[0].name);
+					},
+					'error' :  function(){
+						alert('error');
+					}
+				});
+			}
+			/*封装
+				方法
+				路径
+				是否异步
+				数据
+				请求成功以后
+				请求不成功以后
+			*/
+			function ajax(aJson){
+				var xhr = window.XMLHttpRequest ? new XMLHttpRequest(): new ActiveXObject('Microsoft.XMLHttp');
+				var method = aJson.method || 'get',
+					url = aJson.url,
+					aysn = aJson.aysn || true,
+					data = aJson.data || '',
+					success = aJson.success,
+					error = aJson.error;
+				if (method.toLowerCase() == 'get'){
+					url += '?'+data+'&'+new Date().getTime();
+				};
+				xhr.open( method , url , aysn );
+				xhr.setRequestHeader('content-type' , 'application/x-www-form-urlencoded');
+				xhr.send(data);
+				xhr.onreadystatechange = function(){
+					if ( xhr.readyState == 4 )
+					{
+						if ( xhr.status >= 200 && xhr.status<300 )
+						{
+							success && success(xhr.responseText);
+						}
+						else
+						{
+							error && error();
+						};
+					};
+				};
+			};			
+
+			/*
+			var oBtn = document.getElementById('btn1');
+			oBtn.onclick = function(){
+				//第一步 :新建一个ajax对象;
+				var xhr = new XMLHttpRequest(); Mozilla和Safari
+				var xhr = new ActiveXObject('Microsoft.XMLHTTP'); 低版本IE 
+				//兼容写法,需插件;
+				var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+
+				第二步 :准备工作 
+					1.获取方式:
+						get:会把发送数据放到url里面;?name=value&name=value...
+						post:会把发送数据放到头文件里面;	
+					2.目标路径,
+					3.是否异步:true异步,false同步;
+				
+				//xhr.open('get' , 'a26ajaxtest.php?user=afei&pw=123' ,true);//get方法;
+				xhr.open('post','a26ajaxtest.php' ,true); //post方法
+				xhr.setRequestHeader('content-type' , 'application/x-www-form-urlencoded');//post方法需要设置请求头
+				//第三步:发送请求
+				//xhr.send();//get方法
+				xhr.send('user=afei&pw=123'); //post方法
+
+				/*第四步:
+				onreadystatechange:当readyState发生改变时触发
+				readyState:
+				 // 请求的状态有5个值：0=未初始化；1=正在加载；2=已经加载；3=交互中；4=完成；
+					0 : 请求还没初始化(还没执行open)
+					1 : 请求已经建立,但还没发送(执行了open,还没执行send)
+					2 : 请求已经发送.正在处理(执行了send)
+					3 : 请求处理中,有部分数据已经可以用了,但是还没完全响应
+					4 : 请求响应完成;
+				responseText:服务器返回的数据;
+				
+				xhr.onreadystatechange = function(){
+					if ( xhr.readyState == 4 )
+					{
+						if ( xhr.status >= 200 && xhr.status<300 )
+						{
+							alert( xhr.responseText );
+						}
+						else
+						{
+							alert('请求不成功，错误代码' + xhr.status)
+						}
+					}
+				};
+			};
+			
+			
+			
+			Jsonp 跨域
+https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=aa
+			*/
+			var oText = document.getElementById('txt');
+			var oTip = document.getElementById('tip');
+			
+			
+			oText.onkeyup = function(){
+				var val = this.value;
+                if (!val){return false};
+				var oS = document.createElement('script');
+					//百度的链接里 cb=getTip 为执行getTip函数,并默认传入一个json;
+					oS.src = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd='+val+'&cb=getTip&_='+new Date().getTime();
+				document.body.appendChild(oS);
+			
+			};
+            oText.onblur = function(){
+                setTimeout(function(){
+                    oTip.style.display = 'none';
+                },200)                
+            }
+            oText.onfocus = function(){
+                var val = this.value;
+                if (!val){return false};
+                oTip.style.display = 'block';
+            }
+			function getTip(oJson){
+				oTip.style.display = 'block';
+				oTip.innerHTML = '';
+                var l = Math.min(5,oJson.s.length)
+					for (var i = 0; i< l;i++)
+					{
+						var oLi = document.createElement('li');
+						var	oA =document.createElement('a');
+                        oA.target = '_blank'
+						oA.href = 'https://www.baidu.com/s?wd='+oJson.s[i];
+						oA.innerHTML = oJson.s[i];
+						oLi.appendChild(oA);
+						oTip.appendChild(oLi);
+					};
+			};
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>白虎联盟成员作业</title>
+  <link rel="shortcut icon" href="logo.ico" />
+  <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+  <header class="clearfix">
+    <div class="logo clearfix">
+      <img src="img/tiger_logo.jpg" alt="" />
+      <h1>白虎联盟各成员作业</h1>
+    </div>
+  </header>
+  <section></section>
+  <script src="js/jquery-1.11.3.min.js"></script>
+  <script src="js/index.js"></script>
+  <script>
+	$(function(){
+		//获取页面宽度
+		var w_w = $(window).width();
+		$(window).resize(function(){
+			w_w = $(window).width();
+		});
+		
+		//生成雪花并且赋予随机位置
+		function creat(){
+			for( var i = 0 ; i < 5 ; i++ ){
+				var html = "<div style='border-radius:30px 0 30px 0;opacity:1;top:0;width:4px;height:4px;background:#ccc;position:fixed;' class='star'></div>";
+				$('body').append( html );
+			};
+			
+			$('.star').each(function(){
+				$(this).css({
+					'left' : ( Math.random()*w_w )+'px'
+				});				
+			});
+		};
+		
+		//雪花降落动画
+		function play(){
+			$('.star').each(function(){
+				$(this).animate({
+					'top' : '500px' ,
+					'left' : ( ( parseInt( $(this).css('left') ) )- 300 ) +'px' ,
+					'opacity' : '0'
+				},3000,function(){
+					$(this).remove();
+				});
+			});
+		}
+		
+		creat();
+		play();
+		
+		var timer = setInterval(function(){
+			creat();
+			play();
+		},800);				
+	});
+  </script>
+</body>
+</html>

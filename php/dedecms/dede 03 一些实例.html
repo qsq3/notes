@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+
+    1、新建模板文件夹  (下templets文件夹下新建模板，命名Moban)
+    2、新建Images (图片文件夹) Js (Js文件夹) css (样式文件) 新建首页模板 index.htm
+    3、生成->更新主页HTML->选择主页模板
+    地址改成:Moban/index.htm
+    4、首页模式
+    点击选项:生成静态   ，之后点击更新主页HTML
+    5、系统->系统基本参数->默认模板风格:default 改成 Moban
+
+    模板位置(即首页位置): {dede:global.cfg_templets_skin/}/
+    或者用根目录+安装目录: {dede:global.cfg_basehost/}{dede:global.cfg_cmspath/}/
+
+生成头部和底部模板:
+    模板管理 - 默认模板管理 - 
+
+单页页面介绍和调用
+    1、单页模板上传和设置
+        1、什么是单页
+        2、单页的模板设置
+              单击栏目后面的确 “更改” -->把栏目属性改成  “频道封面" -  ->高级选项 ->
+              封面模板 增写自定义模板
+        3、单页的内容调用标签  {dede:field.content/} 
+
+导航页面模板设置
+    一、新建栏目
+        1、单个栏目新建  (核心->网站栏目管理->增加顶级栏目)
+        2、批量新建栏目  (核心->网站栏目管理->批量增加栏目 )
+        3、新建二级栏目(子栏目)  (核心->网站栏目管理->增加子类(当前栏目的后台) )
+
+    二、导航的调用 
+            {dede:channel type='top' row='8' }{/dede:channel}
+        type = 'son | sun' son表示下级栏目,self表示同级栏目,top顶级栏目
+        row = '100' 调用栏目数
+        1、[field:typelink/]  栏目链接地址
+        2、[field:typename/]  栏目名称   栏目的排序，值越小，越在前面
+
+后台如何新建广告位+调用
+    一、如何新增广告
+        模块--广告管理--增加一个新广告--广告位标识
+
+    二、广告的调用
+        {dede:myad name='广告位标识'/}
+
+底部系统标签的调用 
+    1、底部版权的调用  {dede:global.cfg_powerby/}
+
+    2、底部备案号调用 {dede:global.cfg_beian/}
+            
+            备注:系统基本参数的调用格式: {dede:global.变量名/}  
+
+自定义系统标签的调用
+    一、如何新建系统标签
+        系统->系统基本参数 ->添加新变量 
+        备注：变量名一定要以cfg_开头
+
+删除自定义变量 ：
+第一种：执行SQL语句。在织梦后台执行-系统-SQL命令行工具，输入下面的命令：
+Delete FROM dede_sysconfig where varname=”这里写你自己写的名称”
+例如：
+Delete FROM dede_sysconfig where varname=”cfg_dianhua”
+第二种：手动删除。
+进入phpmyadmin后，打开您所在数据库，找到表：dede_sys_config（dede_是默认表前缀，请根据您的表前缀查找），单击“浏览”进入，一般您要删除的新变量在最后一页。找到你自己添加的变量后，把前面的勾打上，然后点X号删除。
+
+    二、系统标签的调用
+            
+                 调用标签格式: {dede:global.变量名}
+
+
+友情链接的调用
+    一、后台如何添加友情链接
+	模块->友情链接->增加链接
+    一、友情链接调用标签	
+        {dede:flink type='textall'} {/dede:flink}
+        [参数说明]：	
+    [1]type：链接类型，值：
+    a. textall 全部用文字显示；
+    b. textimage 文字和图得混合排列；
+    c. text 文字链接,仅显示不带Logo的链接；
+    d. image 图片链接,仅显示带Logo的链接。
+
+    [参数说明]：	
+    [2]row：链接调用数量。
+    [3]linktype：链接显示位置:
+    linktype='2'表示调用首页友情链接，
+    linktype='1'调用内页友情链接,此值在添加友情链接的时候有选择提示
+    [4]titlelen：站点文字的长度，'24'表示调用友情链接的汉字为24个字节，12个汉字长。
+    [5]typeid：链接分类类型,typeid='0'表示调用所有类型的友情链接，可以在系统后台[模块]-[友情链接]中的“网站类型管理”中查看。
+    [field:link/]
+
+自定义字段/新建字段名称-步骤
+    核心-频道模型-内容模型管理-普通文章-字段管理-添加新字段
+    实例:
+    提示文字: 店名
+    字段名称: shopname
+    
+    调用方法: {dede:field.shopname/} 
+自定义字段也就是添加了个附加的表；
+
+要调用附加表的内容，官网给的解释文档说的是：
+
+要获取附加表内容，必须符合两个条件
+
+1、指定 channelid 属性
+
+2、指定要获得的字段 addfields="字段1,字段"
+
+
+    
+
+搜索调用
+    <form  name="formsearch" action="{dede:global.cfg_cmsurl/}/plus/search.php">
+        <div class="form">
+          <h4>搜索</h4>
+           <input type="hidden" name="kwtype" value="0" />
+           <input name="q" type="text" id="search-keyword" />
+           <select name="searchtype" class="search-option" id="search-option">
+               <option value="title" selected='1'>检索标题</option>
+               <option value="titlekeyword">智能模糊</option>
+           </select>
+          <button type="submit" class="search-submit">搜索</button>
+        </div>
+        </form>
+搜索调用2
+<form  name="formsearch"  action="{dede:global.cfg_cmsurl/}/plus/search.php" class="formsearch">
+  <div class="row form">
+    <!-- 关键字匹配模式, 0 并且, 1 或者-->
+    <input type="hidden" name="kwtype" value="0" />
+    <!--关键字匹配类型, title 为标题, titlekeyword为模糊匹配-->
+    <input type="hidden" name="searchtype" value="title" />
+    <!--搜索栏目id, 0 为全部-->
+    <input type="hidden" name="typeid" value="23" />
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <input  name="q" type="text" class="form-control search-keyword" placeholder="学员查询">
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <button type="submit" class="btn btn-success btn-search">
+          <i class="glyphicon glyphicon-search"></i> 查询
+        </button>
+    </div>
+  </div>
+</form>
+
+搜索结果页的调用
+{dede:list  row='10' titlelen='30' infolen='122'} 
+	<li>
+	<a href="[field:arcurl/]" title='[field:fulltitle/]' class="img">
+		<img src="[field:litpic/]" width="210" height="210" alt="[field:alttext/]" />
+	</a>
+
+	<h3><a href="[field:arcurl/]">[field:title/]</a></h3>
+	
+	<a href="[field:arcurl/]" class="des">[field:description/]...</a>
+	<p>
+		<a href="[field:arcurl/]">[详细内容]</a>
+	</p>
+	</li>
+{/dede:list} 
+
+
+{dede:arclist typeid='25'  alt='' flag='c' row='10'}
+{/dede:arclist}
+
+超链接：[field:arcurl/] 
+缩略图地址：[field:litpic/]
+Alt：[field:alttext/]
+标题：[field:title/]
+描述：[field:description/]
+
+{dede:field.body/} 内容调用
+
+{dede:field.shopname/} 新建字段名称
+
+
+
+//织梦调用
+代码样式:
+{dede:标记名称 属性='值'/}
+{dede:标记名称 属性='值'}{/dede:标记名称}
+{dede:标记名称 属性='值'}自定义样式模板(InnerText){/dede:标记名称}
+
+{dede:global.cfg_templets_skin/}/
+模板文件命名规范
+①　index_识别ID.htm：表示板块（栏目封面）模板；
+②　list_识别ID.htm：表示栏目列表模板；
+③　article_识别ID.htm：表示内容查看页（文档模板，包括专题查看页）；
+④　search.htm：搜索结果列表模板；
+⑤　index.htm：主页模板；
+
+共同
+
+引用头部模板 {dede:include filename='head.htm'/}                           
+引用底部模板 {dede:include filename='footer.htm'/}
+
+
+一.首页(板块（封面）模板):
+1.
+{dede:global.cfg_webname/}_______标题调用
+{dede:global.cfg_keywords/}_______关键词标签
+{dede:global.cfg_description/}_____描述标签
+{dede:global.cfg_templets_skin/}/____ css路径,图片路径，JS路径
+{dede:field.content/}_______单页调用
+alt="[field:shorttitle/]"   图片alt(用于轮展图Alt以外的标签)
+title="[field:title/]"  图片title
+[field:alttext/] （轮展图的Alt）
+广告的调用 {dede:myad name='广告位标识'/}
+底部版权的调用  {dede:global.cfg_powerby/}
+底部备案号调用 {dede：global.cfg_beian/}	
+
+备注:系统基本参数的调用格式: {dede:global.变量名/}
+
+备注:系统基本参数的调用方法 {dede:global.参数变量名/}
+首页列表调用标签	(全站通用标签)
+{dede:arclist typeid='17' row='10' titlelen='32' flag='h' addfields='jiage' channelid='1'}
+                                                                ↓             ↓ 
+{/dede:arclist}                                              （新建字段名称）   （内容模型）
+
+2.实例 : 
+
+导航标签循环调用:
+{dede:channel type='top' row='8' }
+ <a href="[field:typelink/]">[field:typename/]</a>
+{/dede:channel}
+
+
+
+二、内页:
+标题:  {dede:field.seotitle /}   Seo标题
+关键词：{dede:field name='keywords'/}
+描述: {dede:field name='description' function='html2text(@me)'/}	
+
+
+
+
+友情链接调用标签	
+<!--[field:link/] 相等于<a href="url">名称</a>-->
+{dede:flink type='textall'} 
+[field:link/]
+{/dede:flink}
+[参数说明]：	
+[1]type：链接类型，值：
+a. textall 全部用文字显示；
+b. textimage 文字和图得混合排列；
+c. text 文字链接,仅显示不带Logo的链接；d. image 图片链接,仅显示带Logo的链接。
+
+二级栏目调用
+{dede:channel type='son' typeid='3'  row='2'}
+{/dede:channel}
+
+底层模板
+[field:typelink/]    链接地址     	
+[field:typename/]  栏目名称
+2>参数说明
+typeid = '0' 栏目ID
+type = 'son | sun' 
+son表示下级栏目 , self表示同级栏目 ,  top顶级栏目
+row = '100' 调用栏目数
+	
+
+
+
+二 .内页: 列表模板(中层,二级菜单跳转页面):
+注:个列表页调用的内容页位置各个不同 ; 因此需为每个栏目设置不同的列表页模板,对应其不同的栏目typeid;
+{dede:list pagesize="10"}（内页列表标签）
+{/dede:list}
+pagesize="10" 显示分页调用条数      
+
+              
+1>底层模板	                                         
+[field:arcurl/]  链接地址
+[field:title/] 链接标题
+[field:新建字段名/]新建字段
+imit='起始ID,记录数'  （起始ID从0开始）表示限定的记录范围
+
+2>参数说明
+[1]、typeid='' 栏目ID,栏目ID"	
+注:在首页模板中允许用","分开表示多个栏目
+[2]、row='10' 返回文档列表总数
+[3]、titlelen = '30' 标题长度长度 等同于titlelength
+[4]、infolen='160' 表示内容简介长度 等同于infolength（只控制infos，并不控制description的内容）
+[5]、flag = 'h' 自定义属性值：头条[h]推荐[c]图片[p]幻灯[f]滚动[s]跳转[j]图文[a]加粗[b]
+[6]、orderby='hot' 文档排序方式
+orderby='hot' 或 orderby='click' 表示按点击数排列
+orderby='sortrank' 或 orderby='pubdate' 按出版时间排列
+orderby='rand' 随机获得指定条件的文档列表
+
+
+更多底层字段:
+（addfields='jiage' channelid='1' ）（新建字段名称） （在{dede:arclist}首页标签需要加上自建字段名称 在列表里面不需要添加）
+[field:arcurl/]  链接地址		
+[field:title/] 链接标题
+[field:pubdate function="MyDate('y-m-d',@me)"/]  文章更新时间
+[field:description/] 描述		
+[field:litpic/]缩略图片地址
+[field:source/] 文章来源		
+[field:writer/] 作者
+[field:fulltitle/] 显示完整标题
+
+参数:
+pagesize='10'
+titlelen=30 标题长度
+infolen=250 内容摘要长度
+orderby='default' 排序方式，有效的排序方式有 
+senddate、pubdate、id、click、lastpost（最后回贴）、postnum(回贴数量) 
+	，默认为 sortrank 
+[field:click/] 点击量调用
+orderby='click' 按点击排序
+orderby='rand' 随机排序
+
+织梦DedeCMS列表页调用文章正文的第一种方法,代码如下:
+
+复制代码代码如下:
+{dede:arclist flag='h' row='10′} 
+<h1><a href='[field:arcurl/]'>[field:title/]</a></h1> 
+<p>[field:id runphp='yes'] $aid = @me; $row = $GLOBALS['dsql']->GetOne("Select body From 'dede_addonarticle' where aid='$aid' "); @me = 
+cn_substr(strip_tags("{$row['body']}"),400);[/field:id]<a href='[field:arcurl/]'>【阅读详细】</a></p>
+{/dede:arclist}
+
+代码中的数字400是用来设置需要调用多少内容的,因为调用的是body里面的内容,如果有里面包含代码的话也会被调用出来,这点比较不好,不过可以使用html2tex()函数解决一下.
+第二种方法则是利用了织梦可以自定义模型内容数据,并调用的原理,把文章模板的body字段看做在自定义的,调用的代码如下:
+
+复制代码代码如下:
+{dede:arclist row='10' addfields='body' channelid='1'} 
+<p> [field:body function='cn_substr(html2text(@me),600)'/]...</p> 
+<span class="more"> 
+<a href=" [field:arcurl/]" style="text-decoration:none; color:#990000;"& gt; [详 情] 
+</a> 
+</span> 
+{/dede:arclist}
+
+以下是这种方法的详细说明： 
+1.addrields=”字段一,字段二…”
+2.idlist:文章编号，调用指定内容
+3.function=’cn_substr(html2text(@me),600)’ 将文章内容转化为文字格式
+4.channelid，模型编号，文章默认为1，查看位置：后台–核心–内容模型管理
+两种方法各有优劣,第一种方法比较繁琐,不是那么容易看懂,还是比较推荐采用第二种方法实现织梦DedeCMS列表页调用文章正文的功能的.
+谁说dede:list 标签不能调用body内容,现在就告诉你,直接就可以调用
+第一步,打开后台 核心-->频道模型-->内容模型管理-->普通文章,在列表附加字段中添加body.
+第二步,在dede:list语句中指定addfields='body',然后直接用[field:body/]调用全部内容.
+实例代码如下:
+
+复制代码代码如下:
+{dede:list pagesize='18' addfields='body'} 
+<li> 
+<p>[field:body/]</p> 
+<p><a href="[field:arcurl/]" title="[field:title/]">[field:title/]</a></p> 
+</li> 
+{/dede:list}
+
+另外,如果像摘要一样调用可以用,代码如下:
+
+复制代码代码如下:
+[field:body function='cn_substr(html2text(@me),200)'/]
+
+替代：
+复制代码代码如下:
+[field:description /]
+
+调出文章前200个字符内容,经过这两步,可以彻底关掉系统默认的文章摘要功能,最后还有就是官方的一个[field:description/]字段了,这个如果对于要求几十个字的完全可以了,但是如果太多字此字段就无效了.
+
+实例:
+    轮播图列表:
+    {dede:arclist typeid='25' name='imgurls' alt='' flag='h' row='10'}
+    {/dede:arclist}
+    超链接：[field:arcurl/] 
+    缩略图片地址：[field:litpic/]
+    Alt：[field:alttext/]
+    标题：[field:title/]
+    描述：[field:description/]
+    
+    织梦获取当前栏目ID..适用于做banner判断不同的图片
+    {dede:field.typeid function= 'GetTopid(@me)'/}
+
+实例1:
+    //图片为某个栏目下的几个文档里
+    {dede:arclist typeid='栏目id' flag='c,p' name='imgurls' alt='' row='5'}
+        <a href="[field:arcurl/] ">
+            <img src="[field:litpic/]" width="1000" height="564">
+        </a>
+        <div class="title-mask">
+            <a href="[field:arcurl/] ">[field:title/]</a>
+            <div class="des">[field:description/]
+            </div>
+        </div> 
+    {dede:arclist/}
+
+实例2:
+    {dede:arclist row='30' titlelen='60'}
+        <li><a href="[field:arcurl /]"><img src="[field:litpic/]" border="0" alt="[field:fulltitle /]"></a>
+        <span><a href="[field:arcurl /]" title="[field:fulltitle /]">[field:title /]</a></span>
+        </li>
+     {/dede:arclist}
+
+实例3 html结构里也是父菜单包含子菜单:
+    <ul class="nav navbar-nav" id="nav">
+        <li class="dropdown active"><a class="dropdown-toggle" href="/">网站首页<small>Home</small></a></li>
+        {dede:channelartlist typeid='top'}
+        <li class="dropdown "><a class="dropdown-toggle" data-toggle="dropdown" href="{dede:field name='typeurl'/}">{dede:field name='typename'/}<small>{dede:field.typenameen/}</small></a>
+          <ul class="dropdown-menu dropdown-menu-left">
+            {dede:channel type='son' noself='yes'}
+            <li><a href="[field:typeurl/]">[field:typename/]</a></li>
+            {/dede:channel}
+          </ul>
+        </li>
+        {/dede:channelartlist} 
+      </ul>
+
+    新闻列表：
+    {dede:arclist typeid='114,25' row='10' titlelen='18'}
+    <li><a href="[field:arcurl/]" title="[field:fulltitle/]">[field:title/]...</a><span></span></li>
+    {/dede:arclist}
+    文章标题长度：titlelen
+    文章链接：[field:arcurl/]
+    文章标题：[field:title/]
+    文章完整标题 : [field:fulltitle/]    //给a标签的title
+    缩略图片地址：[field:litpic/]
+    图片Alt：[field:alttext/]
+    描述：[field:description/]
+
+    产品列表:
+    {dede:arclist typeid='26'  row='10' titlelen='30'} 
+    <li>
+        <a href="[field:arcurl/]" title='[field:fulltitle/]' class="img"><img src="[field:litpic/]" width="210" height="210" alt="[field:alttext/]" /></a>
+        <h3><a href="[field:arcurl/]">[field:title/]</a></h3>
+        <a href="[field:arcurl/]" class="des">[field:description/]...</a>
+        <p>
+            <a href="[field:arcurl/]">[详细内容]</a>
+        </p>
+    </li>
+    {/dede:arclist}
+
+
+
+
+三 . 内页:文章模板(底层):
+标题: {dede:field.title/}
+内容: {dede:field.body/} 
+作者: {dede:field.writer/}
+时间: {dede:field.pubdate function="MyDate('Y-m-d',@me)"/}
+来源: {dede:field.source/}
+点击量:{dede:field.click/}
+
+缩略图片地址：:[field:litpic/]
+显示完整标题: [field:fulltitle/] 
+新建/自定义字段: {dede:field.新建字段名 /} 内页字段，不需要循环标签
+（addfields='jiage' channelid='1' ）（新建字段名称） （在{dede:arclist}首页标签需要加上自建字段名称 在列表里面不需要添加）
+[field:arcurl/]  链接地址		
+[field:title/] 链接标题
+[field:pubdate function="MyDate('y-m-d',@me)"/]  文章更新时间
+[field:description/] 描述		
+
+[field:source/] 文章来源		
+[field:writer/] 作者
+
+实例:{dede:arclist typeid='30' alt='' flag='p' addfields='kehucode' channelid='1'}
+        <figure class="col-xs-6 col-sm-4 col-md-3 col-lg-20">
+          <a href="[field:wLink/]" target="_blank" title="[field:fulltitle /]">
+            <img src="[field:litpic/]" class="ylw-img-responsive" alt="[field:fulltitle /]" />
+            <p>
+                <img src="[field:kehucode/]" class="weixinkehu" alt="[field:fulltitle /]" />
+            </p>
+            </a>
+        </figure>
+    {/dede:arclist}
+
+上下分页:
+{dede:prenext get='pre'/} 
+{dede:prenext get='end'/}
+分页显示条数标签 （注：只在在列表页使用分页 把他添加到调用字段底部）
+<div class="dede_pages">
+<ul class="pagelist">
+    {dede:pagelist listitem="info,index,end,pre,next,pageno,option" listsize="5"/}
+</ul>
+</div>
+↑ （dede自带页面分页样式属性）参数说明:
+listsize=3 表示 [1][2][3] 
+这些项的长度 x 2 
+listitem='index,pre,pageno,next,end,option' 表示页码样式，可以把下面的值叠加
+index首页
+pre 上一页
+pageno 页码
+next 下一页
+end 末页
+option 下拉跳转框
+
+
+
+
+
+一、阅读内容上下分页标签
+{dede:pagebreak/}
+参考:
+一、当前栏目名称调用
+{dede:field name='typename' /}
+
+二、面包屑导航的调用	栏目地址	
+{dede:field name='position'/}
+
+三、去掉前面的  >
+//原字符，开始位置，结束位置
+{dede:field name='position' runphp='yes'}
+@me=substr(@me,0,-2);  
+
+{/dede:field} 
+
+
+
+
+幻灯片调用
+代码的调用
+第一张大图:{dede:field.litpic/}
+
+图片集调用:
+{dede:field name='imgurls' alt='图片输出区'} 
+    <img src='[field:imgsrc/]'  alt='[field:alttext /]'  />
+{/dede:field}
+
+search.htm  (搜索模板是固定的)
+
+{dede:field:id/} 多说ID
+{dede:field:title/}  多说标题
+{dede:field:arcurl} 多说链接
+
+
+
+{dede:channelartlist}
+{dede:channel type=’son’ }
+<ul>
+<li><a href="”[field:typeurl/]“"><span>[field:typename/]</span></a></li>
+</ul>
+{/dede:channel}
+{/dede:channelartlist}

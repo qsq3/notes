@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> </title>
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    
+</head>
+<body>
+1）简要说明  
+       with 语句可以方便地用来引用某个特定对象中已有的属性，但是不能用来给对象添加属性。要给对象创建新的属性，必须明确地引用该对象。  
+
+2）语法格式  
+with(object instance)  
+{  
+        //代码块  
+}  
+       有时候，我在一个程序代码中，多次需要使用某对象的属性或方法，照以前的写法，都是通过:对象.属性或者对象.方法这样的方式来分别获得该对象的属性和方法，着实有点麻烦，学习了with语句后，可以通过类似如下的方式来实现：  
+with(objInstance)  
+{  
+       var str = 属性1;  
+.....  
+} 去除了多次写对象名的麻烦。  
+
+3）举例  
+<script language="javascript">  
+<!--  
+function Lakers() {  
+       this.name = "kobe bryant";  
+       this.age = "28";  
+       this.gender = "boy";  
+}  
+var people=new Lakers();  
+
+with(people)  
+{  
+       var str = "姓名: " + name + "<br>";  
+       str += "年龄：" + age + "<br>";  
+       str += "性别：" + gender;  
+       document.write(str);  
+}  
+//-->  
+</script>  
+代码执行效果如下:  
+姓名: kobe bryant  
+年龄：28  
+性别：boy
+
+另外一个会改变作用域链的是try-catch语句中的catch语句。当try代码块中发生错误时，执行过程会跳转到catch语句，然后把异常对象推入一个可变对象并置于作用域的头部。在catch代码块内部，函数的所有局部变量将会被放在第二个作用域链对象中。示例代码：
+
+try{
+    doSomething();
+}catch(ex){
+    alert(ex.message); //作用域链在此处改变
+}
+　　请注意，一旦catch语句执行完毕，作用域链机会返回到之前的状态。try-catch语句在代码调试和异常处理中非常有用，因此不建议完全避免。你可以通过优化代码来减少catch语句对性能的影响。一个很好的模式是将错误委托给一个函数处理，例如：
+
+try{
+    doSomething();
+}catch(ex){
+    handleError(ex); //委托给处理器方法
+}
+　　优化后的代码，handleError方法是catch子句中唯一执行的代码。该函数接收异常对象作为参数，这样你可以更加灵活和统一的处理错误。由于只执行一条语句，且没有局部变量的访问，作用域链的临时改变就不会影响代码性能了。
+
+
+
+伪装的 eval
+
+定时函数 setTimeout 和 setInterval 都可以接受字符串作为它们的第一个参数。 这个字符串总是在全局作用域中执行，因此 eval 在这种情况下没有被直接调用。
+
+安全问题
+
+eval 也存在安全问题，因为它会执行任意传给它的代码， 在代码字符串未知或者是来自一个不信任的源时，绝对不要使用 eval 函数。
+</body>
+</html>

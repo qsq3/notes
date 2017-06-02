@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<style type="text/css">
+			*{
+				margin:0;
+				padding:0;
+			}
+			ul{
+				list-style:none;
+			}
+			a img{
+				border:0;
+			}
+			.clearfix:after{
+				content:"";
+				display:block;
+				clear:both;
+				height:0;
+				visibility:hidden;
+			}
+			.clearfix{
+				zoom:1;
+			}
+			#box{
+				position:relative;
+				margin:50px auto;
+				height:360px;
+				cursor:pointer;
+				overflow:hidden;
+			}
+			#boxImg{
+				width:3000px;
+			}
+			#boxImg a{
+				float:left;
+				font-size:0;
+			}
+			#boxBtn p{
+				position:absolute;
+				top:50%;
+				margin-top:-25px;
+				width:30px;
+				height:50px;
+				background:rgba(0,0,0,0.3);
+				font:bold 22px/50px "Microsoft Yahei";
+				text-align:center;
+			}
+			#boxBtn p:nth-child(2){
+				right:0;
+			}
+			#boxTab{
+				position:absolute;
+				bottom:0;
+				left:50%;
+				margin-left:-65px;
+				margin-bottom:8px;
+			}
+			#boxTab li{
+				width:12px;
+				height:12px;
+				border:3px solid white;
+				border-radius:50%;
+				margin:4px;
+				float:left;
+			}
+			.act{
+				background-color:white;
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload=function(){
+				var oBoxImg = document.getElementById("boxImg");
+				var oBoxBtn = document.getElementsByTagName("p");
+				var oBoxTab = document.getElementsByTagName("li");
+				var oBoxW = parseInt(document.getElementById("box").style.width);
+				var index =0;
+				
+				function play(){
+					(index<0) && (index=4);
+					index%=5;
+					oBoxImg.style.marginLeft = -index*oBoxW +"px";
+					for (var i=0;i< oBoxTab.length; i++ )
+					{
+						oBoxTab[i].className="";
+					};
+					oBoxTab[index].className="act";
+				};
+				oBoxBtn[0].onclick = function(){
+					index--;
+					play();
+				};
+				oBoxBtn[1].onclick = function(){
+					index++;
+					play();
+				};
+				for (var i=0;i< oBoxTab.length; i++ )
+				{
+					oBoxTab[i].index = i;
+					oBoxTab[i].onclick=function(){
+						index =this.index;
+						play();
+					};
+				};
+			};
+		</script>
+	</head>
+	<body>
+	  <div id="box" style="width:500px;">
+			<div id="boxImg" class="clearfix">
+				<a href="javascript:;"><img src="img/1.jpg" alt=""></a>
+				<a href="javascript:;"><img src="img/2.jpg" alt=""></a>
+				<a href="javascript:;"><img src="img/3.jpg" alt=""></a>
+				<a href="javascript:;"><img src="img/4.jpg" alt=""></a>
+				<a href="javascript:;"><img src="img/5.jpg" alt=""></a>
+			</div>
+			<div id="boxBtn">
+				<p>&lt;</p>
+				<p>&gt;</p>
+			</div>
+			<div id="boxTab" class="clearfix">
+				<ul>
+					<li class="act"></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
+	  </div>
+	</body>
+</html>

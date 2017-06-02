@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			div{
+				float:left;
+				width:30px;
+				margin:10px;
+				background:yellow;
+				height:30px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<h1>学习使用Javascript的引入文件</h1>
+		<div id="div0">
+			<div class="div1">
+		
+			</div>
+			<div class="div2 a">
+		
+			</div>
+		</div>
+	
+		<div id="div1">
+			<div class="div3 a">
+		
+			</div>
+			<div class="div4 a">
+		
+			</div>
+		</div>
+
+
+		<script type="text/javascript" src="js/util.js"></script>
+		<script type="text/javascript">
+		
+	/*		//setTimeout实现setInterval
+		setTimeout(function(){ 
+			//processing 执行的函数内容;
+			setTimeout(arguments.callee, interval); 
+		}, interval); 
+
+
+		//递归实现阶乘;
+			function fn(n){
+				if(n < 1 || isNaN(n) || n!=parseInt(n,10)){
+					alert("错误的输入");
+				}else if(n == 1){
+					return n;
+				}else{
+					return n*fn(n-1);
+				}
+			}
+			alert(fn(3));
+*/
+//递归实现1-100求和
+function fn (start ,end ){
+	if ( start ==6 || start ==29 ||start==38 ){
+		start++;
+	};
+	return (end-start) ? (start +fn (start+1, end )) : end;
+};
+alert(fn(1,100));
+			
+	/*		//闭包
+			function fn(a){
+				alert(a);
+				return function(b){
+					alert(a+=b);
+					return arguments.callee;
+				}
+			}
+			fn(1)(2)(3)("a");
+
+//利用闭包保存变量
+function test1() {     //通过闭包，每次能传入不同的j值。
+    for (var j = 0; j < 3; j++) {
+        (function (j) {
+            setTimeout(function () { console.log(j) }, 1000);
+        })(j);                                                 
+    }
+}
+test1();
+
+var oDiv = document.getElementsByTagName("div");
+for (var i=0; i< oDiv.length ; i++ )
+{	
+    (function(a){
+        oDiv[a].onclick = function(){ //只要局部函数在全局留下句柄,可能被调用,就会产生闭包;
+            this.innerHTML = a ;
+        }
+    })(i);
+}
+//once函数
+var increment = function(num) { return num + 1; }; 
+var incrementOnce = once(increment); 
+
+function once (fn){
+   var flag , result;
+   return function(){
+        if(flag){
+            return result;
+        };
+        flag = true;
+        result = fn.apply(this,arguments);
+        fn = null;
+        return result;
+   };
+} 
+
+console.log(incrementOnce(5)); // 6 
+console.log(incrementOnce(10));// 6 
+
+			
+			//递归+闭包+JSON
+			function fun (n,o) {
+				console.log(o);
+				return {
+					fun:function(m){
+						return fun(m,n);
+					}				
+				}
+			};
+			var a = fun(0); a.fun(1); a.fun(2); a.fun(3);//undefined,0,0,0;
+			var b = fun(0).fun(1).fun(2).fun(3) //underfined,0,1,2
+			var c =fun(0).fun(1); c.fun(2);c.fun(3)	 //underfined,0,1,1
+
+
+/*		
+
+		//闭包占用栈内存" 函数的作用对象
+		var add;
+		function fn(){
+			var a =1;
+			var b =[a];
+			add = function (){a++;b[0]++;};
+			function d(){
+				console.log(a+'\t'+b);
+			};
+			return d;
+		}
+		var fn2 =fn();
+		fn2(); //1 1
+		add(); 
+		add();
+		fn2(); // 3 3
+		fn()(); // 1 1
+		add(); 
+		fn2(); // 3 3
+		fn2 = fn(); 
+		add();
+		fn2(); // 2 2
+	*/
+	//函数名传参:
+	function fn (x){ alert(x)};
+
+	obj.onclick = 'fn(x)';
+	也可以:
+	obj.onclick = function(x){fn(x)};
+
+//尾递归优化
+function tco(f) {
+  var value;
+  var active = false;
+  var accumulated = [];
+
+  return function accumulator() {
+    console.log("0: "+ accumulated.length+" : " + " : "+ active);
+    accumulated.push(arguments);
+    console.log("1: "+ accumulated.length+" : " +accumulated[0][0] + " : "+ active);
+    if (!active) {
+      console.log("2: "+ value+" : "+ active);
+      active = true;
+      while (accumulated.length) {
+        console.log("3: "+ accumulated.length+" : "+ active);
+        value = f.apply(this, accumulated.shift());
+      }
+      console.log("4: "+ value+" : "+ active);
+      active = false;
+      return value;
+    }
+  };
+}
+
+var sum = tco(function(x, y) {
+  if (y > 0) {
+    return sum(x + 1, y - 1)
+  }
+  else {
+    return x
+  }
+});
+    console.time("控制台计时器一");
+    console.log(sum(1, 10));
+    console.timeEnd("控制台计时器一");
+
+	</script>
+</body>
+
+</html>

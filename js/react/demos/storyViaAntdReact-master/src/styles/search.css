@@ -1,0 +1,105 @@
+@import "./variables.css";
+.bookListContainer{
+    position: absolute;
+    top: 56px;
+    left:0px;
+    bottom:0px;
+    right:0;
+}
+.bookListContainer ul{
+    width:100%;
+    height:100%;
+    overflow: auto;
+}
+
+.bookListItem{
+    width:100%;
+    overflow: hidden;
+    padding:.5rem .5rem 1rem;
+    cursor: pointer;
+}
+
+.itemImg{
+    width:5rem;
+    height:5rem;
+}
+.bookIntro{
+    padding:1rem;
+}
+.subTitle{
+    color: var(--gray-light);
+}
+.card-content{
+    display: flex;
+    width:100%;
+}
+.shortIntro{
+    text-indent: 1rem;
+    color:var(--gray-light);
+    padding:1rem .6rem;
+}
+
+.autoComplete{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+}
+.autoCompleteSearchInput{
+    width:100%;
+    display: flex;
+}
+
+.recommend{
+    width:100%;
+}
+.recommend .h{
+    padding:.5rem;
+    border-bottom:1px solid var(--gray-lighter);
+}
+
+.h h3{
+    font-size: .8rem;
+    color:var(--gray-light);
+    font-weight:400;
+}
+.cards{
+    padding:.5rem;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.cards li{
+    padding: .5rem .5rem;
+}
+
+.searchHistory{
+    margin-top:2rem;
+}
+
+.searchHistoryHead{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 .5rem .5rem;
+    border-bottom: 1px solid var(--gray-lighter);
+}
+
+.leftHead, .rightHead{
+    font-size: .8rem;
+    color:var(--gray-light);
+    cursor:pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

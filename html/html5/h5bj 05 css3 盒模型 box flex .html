@@ -1,0 +1,409 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+    *{
+        margin:0;
+        padding:0;
+    }
+    li{
+        list-style:none;
+    }
+    a{
+        text-decoration:none;
+    }
+    hr{
+        margin:20px 0;
+    }
+    hr.dotted{
+        height:1px;border:none;border-top:1px dotted #ccc;
+    }
+    </style>
+</head>
+<body>
+回顾CSS中的盒模型
+display:
+    block
+    inline
+    inline-block
+    inline-table
+    run-in
+    compact
+    none
+对于盒子中容纳不下的内容
+    overflow
+    overflow-x
+    overflow-y
+    text-overflow
+要把块元素进行并排 float  position    第三种并排模式：inline-block
+    float:left  必须要清除浮动  否则 一定要给高度 和内容对应的高 动态就不行
+    position  定位  浏览器兼容  父亲   div+Css
+    inline-block 会有间隙
+
+vertical-align 字体的对齐 方式  top  bottom  middle  {浏览器兼容问题 为了保证兼容=》元素和文字对齐}
+
+CSS3弹性盒模型和多列属性
+
+css3自动居中样式;
+父元素{display:-webkit-box;display:box;  -webkit-box-align:center;  -webkit-box-pack:center; width:100%;}
+css3自动排列样式;
+父元素{padding-left:20px; -webkit-column-width:240px;}
+
+    CSS3弹性盒模型 (IE不兼容)
+        box：将对象作为弹性伸缩盒显示。（伸缩盒最老版本）（css3）
+        inline-box：将对象作为内联块级弹性伸缩盒显示。（伸缩盒最老版本）（CSS3）
+        flexbox：将对象作为弹性伸缩盒显示。（伸缩盒过渡版本）（CSS3）(andriod 4.4-支持,兼容性稍好点)
+        inline-flexbox：将对象作为内联块级弹性伸缩盒显示。（伸缩盒过渡版本）（CSS3）
+        flex：将对象作为弹性伸缩盒显示。（伸缩盒最新版本）（CSS3）(andriod 4.4+)
+        inline-flex：将对象作为内联块级弹性伸缩盒显示。（伸缩盒最新版本）（CSS3）
+
+        请注意：
+        1.css 列（CSS columns）在弹性盒子中不起作用
+        2.float, clear and vertical-align 在flex项目中不起作用
+        
+    下面为 box 和 inline-box的 设置:
+    初始设置:
+	display:box(私有:display:-webkit-box) 父元素宽度auto默认贪婪(尽可能大,占据整行);子元素高度auto默认贪婪(尽可能多,占据margin,父元素padding外的剩余空间),自适应并排;
+
+    display:inline-box(私有:display:-webkit-inline-box) 父元素宽度auto默认懒惰(尽可能小,由子元素撑开);子元素高度auto默认贪婪(尽可能多,占据margin,父元素padding外的剩余空间),自适应并排;
+
+    排序部分:
+    box-orient 定义盒模型的布局方向   设置给父元素
+            horizontal 水平显示(默认)
+            vertical 垂直方向
+    box-direction 元素排列顺序     设置给父元素
+            normal  正序
+            reverse  反序
+    box-ordinal-group  设置元素的具体位置   设置子元素
+        
+    空间部分:
+	box-flex:number 定义盒子的弹性空间  设置给子元素
+		子元素的尺寸=(父元素盒子的尺寸-所有子元素所占的尺寸(包括margin))*(子元素的box-flex属性值 / 所有子素的box-flex属性值的和) + 子元素本身的尺寸(默认宽度为0了);
+    也就是按flex值来分父元素的剩余空间;
+
+	box-pack 在水平方向上对子元素的位置进行管理  设置给父元素(管理富余空间);
+		  start 所有子元素在盒子左侧显示，富裕空间在右侧
+		  end 所有子元素在盒子右侧显示，富裕空间在左侧
+		  center 所有子元素居中
+		  justify 富余空间在子元素之间平均分布
+
+	box-align 在垂直方向上对子元素的位置进行管理  设置给父元素
+		start 所有子元素在居顶
+		end 所有子元素在居底
+		center 所有子元素居中
+
+    resize 自由缩放
+        both 水平垂直都可以缩放
+        horizontal 只有水平方向可以缩放
+        vertical 只有垂直方向可以缩放
+        注意：一定要配合overflow:auto 一块使用,
+
+
+<hr class='dotted' />
+    <style type="text/css">
+        .box{
+            height:600px;border:2px solid red; display:-webkit-box; display:-moz-box; display:-o-box; -webkit-box-pack:end;-webkit-box-direction:reverse;-webkit-box-pack:justify;-webkit-box-align:center;
+        }
+        .div1{
+            height:80px;width:80px;background:blue;font:24px/100px "Microsoft Yahei"; text-align:center; color:#fff;margin:10px;
+        }
+        .div2{
+            width:200px;
+            height:155px;
+            background:url('../../img/200X155.jpg');
+            margin:10px;
+            -border:2px solid red;
+            -resize:both;
+            -overflow:auto;
+            -webkit-box-reflect: below 15px -webkit-linear-gradient(bottom, rgba(0,0,0,1),rgba(0,0,0,0));
+        }
+    </style>
+    <div class="box" style=''>
+        <div class="div1" style=''>1
+        </div>
+        <div class="div1" style=''>2
+        </div>
+        <div class="div1" style=''>3
+        </div>
+        <div class="div1" style=''>4
+        </div>
+        <div class="div2" style=''>
+
+        </div>
+    </div>
+<hr />
+CSS3盒模型阴影
+	box-shadow:inset x y blur spread color
+	inset：投影方式
+        inset：内投影
+        outset：外投影 默认(不能设置)
+	x、y：阴影偏移
+	blur：模糊半径（灰度）
+	spread：扩展阴影半径
+	先扩展原有形状，再开始画阴影
+	color
+	box-reflect 倒影
+		方向     above|below|left|right;
+		距离
+		渐变（可选）
+<hr class='dotted' />
+
+<hr />
+CSS3其他盒模型(怪异盒模型) IE7-不支持
+    box-sizing 盒模型解析模式
+        值:
+        content-box  标准盒模型(和css2一样的计算) 实际盒子大小 = border+padding+width/height
+        border-box 怪异盒模型 width/height与设置的值一样content减小,实际盒子大小 = width/height(border和padding会挤占width/height的空间,而不是扩张盒子的空间)
+
+        padding-box Firefox
+<hr class='dotted' />
+<style type="text/css">
+    .box2{
+        width:200px;
+        height:111px;
+        box-sizing:border-box;
+        border: 50px solid red; 
+    }
+    .div3{
+        width:200px;
+        height:80px;
+        border:10px solid blue;
+    }
+</style>
+<div class='box2'>
+    <div class="div3">
+    </div>
+</div>
+<hr />
+
+
+弹性布局（flexible box）模块（目前是w3c候选的推荐）旨在提供一个更加有效的方式来布置，对齐和分布在容器之间的各项内容，即使它们的大小是未知或者动态变化的。
+弹性布局的主要思想是让容器有能力来改变项目的宽度和高度，以填满可用空间（主要是为了容纳所有类型的显示设备和屏幕尺寸）的能力。
+最重要的是弹性盒子布局与方向无关，相对于常规的布局（块是垂直和内联水平为基础），很显然，这些工作以及网页设计缺乏灵活性，无法支持大型和复杂的应用程序（特别当它涉及到改变方向，缩放、拉伸和收缩等）。
+注意： Flexbox布局是最合适的一个应用程序的组件，以及小规模的布局，而网格布局是用于较大规模的布局。
+
+基础知识
+由于flexbox是一个整体模块，而不是单一的一个属性，它涉及到了很多东西，包括它的整个属性集。它们之中有一些是在父容器上设置，而有一些则是在子容器上设置。
+如果经常布局基于块和内嵌流方向，柔性布局基于“柔性流动方向”。请看看这个数字从规范，解释背后的柔性布局的主要思路。
+Flexbox-CSS3弹性盒模型flexbox完整版教程
+
+基本上，项目将制定了以下任一主轴（从 main-start 到 main-end）或十字轴（(从 cross-start 到 cross-end）。
+
+属性介绍
+
+display: flex | inline-flex; (适用于父类容器元素上)
+
+定义一个flex容器，内联或者根据指定的值，来作用于下面的子类容器。
+
+box：将对象作为弹性伸缩盒显示。（伸缩盒最老版本）（css3）
+inline-box：将对象作为内联块级弹性伸缩盒显示。（伸缩盒最老版本）（CSS3）
+flexbox：将对象作为弹性伸缩盒显示。（伸缩盒过渡版本）（CSS3）
+inline-flexbox：将对象作为内联块级弹性伸缩盒显示。（伸缩盒过渡版本）（CSS3）
+flex：将对象作为弹性伸缩盒显示。（伸缩盒最新版本）（CSS3）
+inline-flex：将对象作为内联块级弹性伸缩盒显示。（伸缩盒最新版本）（CSS3）
+
+请注意：
+
+1.css 列（CSS columns）在弹性盒子中不起作用
+
+2.float, clear and vertical-align 在flex项目中不起作用
+
+弹性容器属性
+ flex-direction属性决定显示的方向（即项目的排列方向）
+flex-wrap 属性定义，如果一行排不下，如何换行。
+flex-flow属性是flex-direction属性和flex-wrap属性的简写形式，默认值为row nowrap。
+justify-content属性定义了项目在水平方向的对齐方式。
+align-items属性定义项目在竖直方向上如何对齐。
+align-content属性定义了多行的对齐方式。如果项目只在一行，该属性不起作用。
+
+
+    flex-direction
+    语法
+        flex-direction：row | row-reverse | column | column-reverse
+    含义
+        设置主轴方向，确定弹性子元素排列方式
+     
+    row（默认值）    主轴为水平方向。排列顺序与页面的文档顺序相同。如果文档顺序是 ltr，则排列顺序是从左到右；如果文档顺序是 rtl，则排列顺序是从右到左。
+    row-reverse 主轴为水平方向。排列顺序与页面的文档顺序相反。
+    column  主轴为垂直方向。排列顺序为从上到下。
+    column-reverse  主轴为垂直方向。排列顺序为从下到上。
+
+    flex-wrap
+    语法
+    flex-wrap：nowrap | wrap | wrap-reverse
+    含义
+    设置弹性子元素超出弹性容器范围时是否换行
+    nowrap（默认值） 溢出时不换行
+    wrap 溢出时自动换行
+    wrap-reverse 溢出时自动换行，翻转排列。
+
+    flex-flow
+    语法
+    flex-flow：[ flex-direction ] || [ flex-wrap ]
+    含义
+    复合属性(flex-direction和flex-wrap)，设置弹性子元素排列方式 默认值为row nowrap
+
+    justify-content
+    语法
+    justify-content：flex-start | flex-end | center | space-between | space-around
+    含义
+    设置弹性子元素主轴上的对齐方式 (水平方向)
+    flex-start（默认值） 主轴开始对齐，主轴为横轴，ltr环境下，左对齐
+    flex-end 主轴结束对齐，主轴为横轴，ltr环境下，右对齐
+    center 居中对齐
+    space-between 第一个、最后一个对齐弹性容器的边缘，其余均匀分布。
+    space-around 全部均匀分布
+
+    align-items
+    语法
+    align-items：flex-start | flex-end | center | baseline | stretch
+    含义
+    设置弹性子元素侧轴上的对齐方式(垂直方向)
+    flex-start 侧轴开始对齐，主轴为横轴，顶对齐
+    flex-end 侧轴结束对齐
+    center 居中对齐
+    baseline 基线对齐 ( 第一行文字的底端基线对齐。)
+    stretch（默认值） 从侧轴开始到侧轴结束铺满整个侧轴(如果项目未设置高度或设为auto，将占满整个容器的高度。)
+
+    align-content
+    语法
+    align-content：flex-start | flex-end | center | space-between | space-around | stretch
+    含义
+    (align-items的多行版本)
+    侧轴有空白且有多行时，设置弹性子元素侧轴上的对齐方式
+    属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。
+    flex-start 主轴开始对齐，主轴为横轴，ltr环境下，左对齐
+    flex-end 主轴结束对齐，主轴为横轴，ltr环境下，右对齐
+    center 居中对齐
+    space-between 第一个、最后一个对齐弹性容器的边缘，其余均匀分布。
+    space-around 全部均匀分布
+    stretch（默认值） 各行伸展以占用剩余空间。如果剩余空间是负数，该值等效于flex-start
+
+弹性子元素属性
+order 属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。可为负值
+flex-grow 属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。
+flex-shrink 属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。
+flex-basis 属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
+flex 属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。
+align-self 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
+
+
+
+    order
+    语法
+    order： 0;
+    含义
+    设置弹性子元素的顺序，数值小的排在前面，可以为负值。
+
+    flex-grow
+    语法
+    flex-grow：0;
+    含义
+    设置弹性子元素的扩展比率，不允许为负值，默认值为0
+    根据弹性盒子元素所设置的扩展因子作为比率来分配剩余空间
+
+    flex-shrink
+    语法
+    flex-shrink：
+    含义
+    设置弹性子元素的收缩比率，不允许为负值，默认值为1
+    根据弹性盒子元素所设置的扩展因子作为比率来收缩空间
+
+    flex-basis
+    语法
+    flex-basis： | | auto
+    含义
+    设置弹性子元素的伸缩基准值，不允许为负值。
+    默认值为auto，无特定宽度(高度)。
+    可以设为跟width或height属性一样的值（比如300px），则项目将占据固定空间。若设置了此值，则项目的宽度无效，将显示为flex-basis的值
+
+
+    flex
+    语法
+    flex：none | [ flex-grow ] || [ flex-shrink ] || [ flex-basis ]
+    含义
+    复合属性，设置弹性子元素的如何分配空间。该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。
+
+    align-self
+    语法
+    align-self：auto | flex-start | flex-end | center | baseline | stretch
+    含义
+    设置弹性子元素的在侧轴上的对齐方式，与align-item的相同。
+    设置某个弹性子元素的独立对齐方式。
+    该属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
+
+多列布局(并不是flex的布局系统)
+多列属性(设置给父元素,需私有前缀)
+<!-- 温馨提示 webkit moz ms o  自适应 智能又不智能 
+1.多栏布局是为了 弥补float position 的缺点而来的
+2.把元素 内容 分成多栏 （ 报纸）
+3  栏  宽度  column  column-width 宽度
+  ==270 平分  4 份   间隙去 根据内容划分为的多少栏 每一栏为270 多的宽度放在栏与栏之间 
+			100%     30%  5% 30%  5% 30%  
+  ====
+3  多少栏  column  column-count  3数字 如果只有他 栏宽为内容宽度
+===100%     33%  0.5% 33%   0.5% 33%  
+ 栏目宽度约多少栏放在一起的时候， 如果你的内容宽度只有栏目宽度的30% 两个内容放一起 显示一栏
+ 一栏能放下两个内容
+ 3 栏目之间的间隙问题  column  column-gap 间隙
+ 为了页面的魅力程-> 宽度必须和 多少栏 对应
+ 只接受对于自己有利的数据  合适重要
+ 4 间隔线 column column-rule 间隙线 
+-->
+
+    column-width
+    语法
+    column-width： | auto
+    含义
+    设置列的最小宽度 最小
+    auto（默认值） 根据column-count自定分配宽度
+    用长度值来定义列宽。不允许负值
+
+    column-count
+    语法
+    column-count： | 含义
+    设置列的最大个数 最大
+    auto（默认值） 根据column-width自定分配宽度
+    用整数值来定义列数。不允许负值
+
+    columns
+    语法
+    columns：[ column-width ] || [ column-count ]
+    复合属性，设置列的宽度和个数
+
+    column-gap
+    语法
+    column-gap： | normal
+    设置列与列之间的最小间隙 最小
+        normal（默认值） 与font-size大小相同。
+        假设该对象的font-size为16px，则normal值为16px，类推。
+        length 用长度值来定义列与列之间的间隙。
+        不允许负值
+
+    column-rule
+    语法
+    column-rule：[ column-rule-width ] || [ column-rule-style ] || [ column-rule-color ]
+    设置列与列之间的边框, 类border。
+
+    [ column-rule-width ] 设置列与列之间的边框厚度
+    [ column-rule-style ] 设置列与列之间的边框样式
+    column-rule-color 设置列与列之间的边框颜色
+
+    column-fill
+    语法
+    column-fill：auto | balance
+    设置所有列的高度是否统一,目前不支持
+    auto（默认值） 列高度自适应内容
+    balance 所有列的高度以其中最高的一列统一
+
+    column-span
+    语法
+    column-span：none | all
+    对象元素是否横跨所有列
+
+    none（默认值） 不跨列
+    all 横跨所有列
+</body>
+</html>

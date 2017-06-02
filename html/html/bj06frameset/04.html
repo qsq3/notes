@@ -1,0 +1,161 @@
+<!--声明文档类型 html5-->
+<!doctype html>
+<!--最外层结构,声明语言为中文-->
+<html lang="zh-cn">
+	<!--头部------------------------------------------------------------------------------------------------------------->
+	<head>
+		<!--编码方式,gbk,gb2312中文编码,UTF-8国际编码,注意html文档本身也有编码,需更改为一致-->
+		<meta charset="UTF-8"/>
+		<!--头部三要素------------------------------------------>
+		<!--网页标题-->
+		<title>潭州html+css第4节</title>
+		<!--网页关键字-->
+		<meta name="keywords" content=""/>
+		<!--网页描述,80个字以内-->
+		<meta name="discription" content=""/>
+
+		<!--作者------------------------------------------------>
+		<meta name="author" content="空山"/>
+		<!--编辑工具-->
+		<meta name="generator" content="Editplus"/>
+		<style type="text/css">
+			body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, textarea, p {
+				margin: 0px;
+				padding: 0px;
+				font-size: 13px;
+			}
+			ul{
+				list-style:none;
+			}
+			img,a{
+				border:none;
+				text-decoration:none;
+			}
+			#header{
+				margin:50px auto;
+				width:1000px;
+				height:600px;
+				border: 2px solid red;
+				text-indent:2em;
+			}
+			#nav{
+				margin:0 auto;
+				width:1000px;
+				height:100px;
+				border: 2px dashed #CCC;
+				text-indent:2em;
+			}
+			#main{
+				margin:10px auto;
+				width:1000px;
+				height:600px;
+				border: 5px double rgb(255,140,0);
+				text-indent:2em;
+			}
+			#footer{
+				margin:10px auto;
+				width:1000px;
+				height:300px;
+				border: 2px inset rgba(145,14,238,0.2);
+				text-indent:2em;
+			}	
+		</style>
+	
+		
+	</head>
+	<!--身体标签---------------------------------------------------------------------------------------->
+	<body>
+		<div id="header">
+			<p>span 标签被用来组合文档中的行内元素,以便通过样式来格式化<span style="color:red;font-size:20px;">他们</span>。</p>
+			<p>font 标签规定文本的<font size="5" face="arial" color="red">字体、字体尺寸、字体颜色</font>已被淘汰</p>
+			<p><b>标签</b>和<strong>标签</strong>:文本为粗体格式,</p>
+			<p><i>标签</i>和<em>标签</em>:文本为斜体格式,i标签还用在iconfont矢量图标</p>
+			<p> strong 标签和 em 标签一样，用于强调文本，但它强调的程度更强一些,
+			影响搜索引擎权重,但不要超过六个。最好使用在句子中,防止搜索引擎反seo;
+			影响权重的还有h1,h2,h3,
+			<strong style="font-weight: normal">去掉粗体</strong>
+			<em style="font-style: normal">去掉斜体</em> </p>
+			
+			超链接：a 标签可以从通过点击从一个页面跳到另一个页面
+			语法：<a href=“url”>文字显示</a>锚标记：相当于书签，当使用锚标记时，我们可以创建直接跳至该命名锚的链接
+			语法：<a name=“自定义名字">锚（显示在页面上的文本）</a>
+			创建使用该锚的链接：
+			<a href=“#自定义的锚名字”>显示内容</a>
+			a标签： 链接/下载/锚点
+				target 链接打开方式 
+				blank  新窗口
+				self     当前窗口
+			<base target="_blank"/> 定义页面链接默认打开方式
+
+			伪类：
+			伪类用于向被选中元素添加特殊的效果。
+			（元素在特定情况下才具备的）
+					link            未访问（默认）
+					hover         鼠标悬停（鼠标划过）
+					active         链接激活（鼠标按下）
+					visited        访问过后（点击过后）
+			A四个伪类的顺序：
+				link    visited    hover  active
+				（love hate 记忆方法！）
+
+			a伪类的应用：
+			a、四个伪类全用(搜索引擎、新闻门户、小说网站)
+			b、一般网站只用（ a{ }   a:hover{ }  ）
+			IE6不支持a以外其它任何标签的伪类；
+			
+			<img src="图片地址" alt="图片名" title="图片标题"/> 
+
+			 图片（单标签）alt属性 是图片名字，是给百度搜索引擎抓取使用；
+
+			<img src="" align="位置" />
+
+			align属性--设置图片与后面文字的位置关系，
+
+			值--top、bottom、middle、absmiddle、left、right
+
+			pre标签：
+
+			<pre>常用来表示计算机源代码，被包围在 pre 元素中的文本通常会保留空格和换行符
+
+			可以导致段落断开，块标签绝不能包含在 </pre> 
+
+			滚动标签(marquee标签)
+			1.滚动方向direction（包括4个值：up、 down、 left和 right）
+			2.滚动方式behavior（scroll:循环滚动，默认效果； slide:只滚动一次就停止； alternate:来回交替进行滚动）
+			3.滚动速度scrollamount（滚动速度是设置每次滚动时移动的长度，以像素为单位）
+			4.滚动延迟scrolldelay（设置滚动的时间间隔，单位是毫秒）
+			5.滚动循环loop（默认值是-1，滚动会不断的循环下去）
+			6.滚动范围width、height
+			7.滚动背景颜色bgcolor
+
+			文本输入标签（textarea）文本域，定义多行的文本输入控件。
+			iframe 标签：
+
+			创建包含另外一个文档的内联框架（即行内框架）
+
+			首页尽量不要超过125kb
+			
+
+			height:指块本身的高度
+			line-height:指块内的行内元素的高度
+			
+			所以,text-align:center 水平居中 line-height垂直居中,都是针对行内元素().
+			块级元素需要用margin:0 auto来水平居中,
+			块级元素的绝对居中可用定位:
+			父元素用relative进行相对定位
+			position:absolute;
+			left:0;top:0;bottom:0;right:0;
+			margin:0 auto;
+			
+			
+			
+
+			<div id="nav">
+			</div>
+		</div>
+		<div id="main">
+		</div>
+		<div id="footer">
+		<div>
+	</body>
+</html>

@@ -1,0 +1,143 @@
+@import "base/min";
+#minePage {
+    .header {
+        width: 100%;
+        height: 2.32rem;
+        box-sizing: border-box;
+        background: #ffd01b;
+        box-shadow: 0px 0.03rem 0.2rem #333;
+        border-bottom-left-radius: 0.15rem;
+        border-bottom-right-radius: 0.15rem;
+        margin-bottom: 0.12rem;
+        overflow: hidden;
+        // display: flex;
+        a {
+            display: block;
+        }
+        .vip {
+            margin-left: 0.2rem;
+            margin-top: 0.56rem;
+            margin-right: 0.3rem;
+            position: relative;
+            float: left;
+            .avatar {
+                display: block;
+                width: 0.69rem;
+                height: 0.69rem;
+                border-radius: 50%;
+            }
+            .level {
+                display: block;
+                width: 0.69rem;
+                height: 0.2rem;
+                position: absolute;
+                top: 0.6rem;
+            }
+            .nickname {
+                display: block;
+                margin-top: 0.3rem;
+            }
+        }
+        .qrcode {
+            margin-right: 0.18rem;
+            float: right;
+            .tip {
+                width: 100%;
+                text-align: center;
+                font-size: 0.11rem;
+                margin-top: 0.09rem;
+            }
+            .qrcodeImg {
+                height: 1.68rem;
+                width: 1.68rem;
+                margin: 0.09rem 0 0.11rem 0;
+            }
+            .account {
+                font-size: 0.12rem;
+                margin-bottom: 0.12rem;
+            }
+        }
+    }
+    .orderContainer {
+        background: #fff;
+        width: 100%;
+        height: 0.84rem;
+        box-sizing: border-box;
+        padding-left: 0.12rem;
+        margin-bottom: 0.08rem;
+        .orders {
+            font-size: 0.14rem;
+            color: #666;
+            height: 0.33rem;
+            line-height: 0.33rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            img {
+                height: 0.16rem;
+                margin: auto 0;
+            }
+        }
+        .payStatus {
+            height: 0.51rem;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            line-height: 0.51rem;
+            a {
+                color: #000;
+                font-size: 0.18rem
+            }
+            .unpay::before {
+                content: "";
+                display: inline-block;
+                width: 0.08rem;
+                height: 0.08rem;
+                border-radius: 50%;
+                background: #f44735;
+                margin-right: 0.08rem;
+            }
+        }
+    }
+    .userDetail {
+        background: #fff;
+        padding-left: 0.12rem;
+        .item {
+            a {
+                width: 100%;
+                height: 0.52rem;
+                display: flex;
+                justify-content: space-between;
+                box-sizing: border-box;
+                line-height: 0.52rem;
+                .item-left {
+                    font-size: 0.15rem;
+                    color: #666;
+                    img {
+                        width: 0.28rem;
+                        height: 0.28rem;
+                        display: inline-block;
+                        margin-right: 0.08rem;
+                    }
+                }
+                .item-right {
+                    img {
+                        height: 0.16rem;
+                        margin: auto 0;
+                    }
+                    .first {
+                        color: #f44732;
+                        font-size: 0.17rem;
+                    }
+                    .sec {
+                        color: #333;
+                        font-size: 0.13rem;
+                    }
+                }
+            }
+        }
+        .item:first-child {
+            border-bottom: 1px solid #eee;
+        }
+    }
+}

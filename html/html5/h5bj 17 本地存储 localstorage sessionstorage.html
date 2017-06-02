@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>17. 本地存储 localstorage sessionstorage</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 禁止系统自动添加效果，直接显示设计原图;-->
+    <link rel="apple-touch-icon-precomposed" href="">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="" />
+    <link rel="shortcut icon" href="">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.4.css" />
+    <script type="text/javascript" src="js/baseUtil.js"></script>
+    <style type="text/css">
+      pre{
+        white-space : pre-wrap;
+      }
+      *{
+				margin:0px;
+				padding:0px;
+			}
+			#box{
+				width:500px;
+				height:500px;
+				border:2px solid red;
+			}
+    </style>
+</head>
+<body class="container">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="row">
+
+      <div class="col-sm-6">
+        <pre>
+Storage
+
+  sessionStorage
+  session临时回话，从页面打开到页面关闭的时间段
+  窗口的临时存储，页面关闭，本地存储消失
+
+  localStorage
+  永久存储（可以手动删除数据）
+
+  Storage的特点
+  存储量限制 ( 5M )
+  客户端完成，不会请求服务器处理
+  sessionStorage数据是不共享、 localStorage共享
+
+Storage API
+
+  setItem():
+  设置数据，(key,value)类型，类型都是字符串
+  可以用获取属性的形式操作
+  getItem():
+  获取数据，通过key来获取到相应的value
+  removeItem():
+  删除数据，通过key来删除相应的value
+  clear():
+  删除全部存储的值
+
+  存储事件:
+  当数据有修改或删除的情况下，就会触发storage事件
+  在对数据进行改变的窗口对象上是不会触发的
+  Key : 修改或删除的key值，如果调用clear(),key为null
+  newValue  :  新设置的值，如果调用removeStorage(),key为null
+  oldValue :  调用改变前的value值
+  storageArea : 当前的storage对象
+  url :  触发该脚本变化的文档的url
+  注：session同窗口才可以,例子：iframe操作
+
+        </pre>
+      </div>
+      <!-- col-md-6 S-->
+      <div class="col-sm-6">
+          <h3>同步购物车</h3>
+      		<input type="checkbox" value="糖糖">糖糖</br>
+          <input type="checkbox" value="胡汉三">胡汉三</br>
+          <input type="checkbox" value="小老鼠">小老鼠</br>
+          <input type="checkbox" value="越尘">越尘</br>
+      </div>
+      <!-- col-md-6 E-->
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    
+  </div>
+  <script type="text/javascript">
+    ;(function(){
+      var oInput = document.getElementsByTagName("input");
+      for (var i = 0;i<oInput.length ;i++ )
+      {
+        oInput[i].onclick = function(){
+          if (this.checked)
+          {
+            window.localStorage.setItem("check",this.value);
+          }else{
+            window.localStorage.setItem("oncheck",this.value);
+          }
+        }
+      }
+      window.addEventListener("storage",function(ev){
+        if (ev.key == "check")
+        {
+          for (var i=0;i<oInput.length ;i++)
+          {
+            if (ev.newValue == oInput[i].value)
+            {
+              oInput[i].checked = true;
+            }
+          }
+        }else if(ev.key == "oncheck"){
+          if (ev.newValue == oInput[i].value)
+            {
+              oInput[i].checked = false;
+            }
+        }
+      });
+    })()
+  </script>
+</div>
+
+</body>
+</html>

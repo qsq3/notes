@@ -1,0 +1,1519 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv='Content-Type' content='text/html' charset="UTF-8">
+		<title>空山简易JQ</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<style type='text/css'>
+			div {
+				width:100px;
+				height:100px;
+				background:yellow;
+				float:left;
+				border:5px solid red;
+			}
+			.div{
+				width:500px;
+				height:300px;
+				float:left;
+				background:#fff;
+			}
+			p{
+				width:50px;
+				height:20px;
+				background:blue;
+
+			}
+			input{
+				margin:100px 10px;
+				float:left;
+			}
+			.box-3{
+				display:none;
+			}
+			.box-5{
+				background:blue;
+				opacity:0.9;
+			}
+		</style>
+		<script type='text/javascript' src='js/jquery-1.12.3.min.js'></script>
+		<script type="text/javascript">
+			"use strict";
+			~function(){
+				//接口函数K,
+				function K(para){
+                    switch (getType(para))
+                    {
+                    case 'function':
+                        window.onload = para;
+                        break;
+                    case 'string':
+                    case 'object':
+                        return new Kongshan(para);
+                    }
+				};
+				window.K=K;
+				//构造函数
+				function Kongshan(para){
+					this.length = this.init(para);					
+				};
+                
+                //局部通用函数 :
+                //去多余空格
+                function trim (para) {
+                    return para.replace(/\s+/g,' ').replace(/(^\s+)|(\s+$)/g,'');
+                };
+
+                //数组化arguments
+                function argsArr(args){
+                    return Array.prototype.slice.call(args)
+                };
+
+                //冒泡去重
+                function  dedup(arr){
+                    var len = arr.length;
+                    if (!len || ((typeof arr).toLowerCase() != "object")){ 
+                        throw new TypeError();
+                    };
+                    len--;
+                    for(var i = 0; i< len ; i++){
+                        for(var j = len ; j>i ; j--){
+                            if (arr[j] === arr[i])
+                            {
+                                Array.prototype.splice.call(arr,j,1);
+                                len--;
+                            }
+                        }
+                    }
+                    return arr;
+                }
+
+                //获取type
+                function getType(para) {
+                    return (typeof para).toLowerCase();
+                };
+
+                //获取符合classname的dom节点数组,返回数组类型:
+                function getClass(cName ,node){ 
+                    var arr =[] , l;
+                    node = node || document;
+                    if(node.getElementsByClassName){
+                        node  = node.getElementsByClassName(cName);
+                        l = node.length;
+                        for (var i=0; i < l; i++){
+                            arr[i] = node[i];
+                        }
+                    }else{
+                        var reg = new RegExp('(^|\\s)'+cName+'(\\s|$)');
+                        node  = node.getElementsByTagName("*");
+                        l = node.length;
+                        for (var i=0; i < l; i++){
+                            if(reg.test(node[i].className)){	
+                                arr.push(node[i]);
+                            };
+                        };
+                    };
+                    return arr; 
+                };
+                //写入样式
+                //document.all被IE10-支持,但是IE10本身又不支持滤镜,而支持opacity;
+                //IE8-中(-[1,])为:NaN,其他浏览器为 -1;
+                function setStyle( node , attr ,val ){
+                    if ( attr === 'opacity'){
+                        setOpacity(node,val);
+                    }else{
+                        node.style[attr] = val;
+                    };
+                    function setOpacity(node,val){
+                        (-[1,]) ? ( node.style.opacity = val ) : (node.style.filter = 'alpha(opacity=' + val*100 + ')');
+                    };
+                };
+                
+                //读取样式
+                function getStyle( node , attr ){
+                    if (attr === 'opacity'){
+                        return getOpacity(node);
+                    }else{
+                        return node.currentStyle ? node.currentStyle[attr] : getComputedStyle(node)[attr] ;
+                    };
+                    function getOpacity( node ){
+                        var val = parseFloat(node.currentStyle ? node.currentStyle.opacity : getComputedStyle(node).opacity) ;
+                        if (isNaN(val)) {
+                            var reg = /opacity=(\d+)/;
+                            val = node.currentStyle.filter.match(reg);
+                            val = val ? (parseInt(val[1]))/100 : 1;
+                        }
+                        return val;
+                    };
+                };
+
+				//原型方法:
+				Kongshan.prototype = {
+					//修正constructor指向;
+					constructor : Kongshan,
+					//获取对象;
+					init : function(sel){
+						var type = getType(sel);
+                        switch(type){
+                            case 'object': 
+                                if ( (sel == window) || sel.nodeType) //nodeName
+                                //单个对象没length,widow有length但是为0,但是length可被赋值不严谨;
+                                {  
+                                    
+                                    this[0] = sel;
+                                    return 1;
+                                }else if( !isNaN(sel.length) ){ 
+                                    for (var i =0;i<sel.length ; i++)
+                                    {
+                                        this[i] = sel[i];
+                                    }
+                                    return sel.length;
+                                };
+                                break;
+                            case 'string':
+                                var sArr,pArr;
+                                pArr = [document];
+                                sel = trim(sel);					
+                                sArr = sel.split(' ');
+
+                            /*	//查找子对象 : 迭代方式
+                                while( sel = sArr.shift())
+                                {	
+                                    var cArr =[];
+                                    for (var i=0;i<pArr.length ; i++ )
+                                    {
+                                        cArr=cArr.concat( getElements(sel,pArr[i]));
+                                    }	
+                                    pArr = cArr;
+                                };
+                                for (var i = 0; i<pArr.length ;i++ )
+                                {
+                                    this[i] =pArr[i];
+                                }
+                                return pArr.length;
+
+                            */	//查找子对象 : 递归方式
+                                sel = sArr.shift();
+                                pArr = search(sel , pArr);
+                                for (var i = 0; i<pArr.length ;i++ )
+                                {
+                                    this[i] =pArr[i];
+                                }
+                                return pArr.length;
+                                break;
+                        };
+						//严格模式只允许在全局作用域或函数作用域的顶层声明函数。也就是说,不允许在非函数的代码块内声明函数 , 如:判断语句和循环语句。
+						function search (sel , pArr){
+							var cArr = [];
+							for (var i=0;i<pArr.length ;i++ )
+							{
+								cArr=cArr.concat(getElements(sel,pArr[i]));
+							}
+							return (sel=sArr.shift())?search(sel,cArr) : cArr;
+						};
+
+						//获取指定选择器的对象,并返回所组成的数组
+						function getElements (sel ,parent)
+						{		
+							parent = parent || document;
+							var arr = [],temp;
+							if (/^\#\w/.test(sel))
+							{
+                                var obj = document.getElementById(sel.replace(/\#/,'')); 
+                                temp = obj;
+                                //document === document.getElementsByTagName('html')[0].parentNode;
+                                //document.documentElement === document.getElementsByTagName('html')[0],相应的,
+                                //document.body === document.getElementsByTagName('body')[0];
+                                //所以树形结构是这样 window -> document -> html(document.documentElement) -> body (document.body)
+                                while(temp !== document){
+                                    if (!temp){
+                                        break;
+                                    }else if (temp.parentNode === parent) {
+                                        arr.push(obj);
+                                        break;
+                                    }else{
+                                        temp = temp.parentNode;
+                                    }
+                                }
+							}else if(/^\w/.test(sel)){
+                                temp = parent.getElementsByTagName(sel);
+                                for (var i=0;i<temp.length ;i++ )//统一成数组类型
+                                {
+                                    arr[i] = temp[i];
+                                };
+							}else if(/^\.\w/.test(sel)){
+								var cName = sel.replace(/^\./,'');
+								arr = getClass(cName , parent);
+							};
+							return arr;
+						};
+					},
+					//遍历方法each
+					each : function(fn){
+						for (var i=0;i<this.length ;i++ )
+						{
+							fn.call(this[i],i);
+						};
+						return this;
+					},
+					/*筛选*/
+					//get() 同 [],返回指定序列号的JS对象;
+					get : function(num){
+						if (!isNaN(num))
+						{	
+							return this[num];
+						};
+					},
+					//eq() 返回指定序列号的JQ对象
+					eq : function(num){
+						if (!isNaN(num))
+						{
+							return new Kongshan(this[num]);
+						}
+					},
+					//is() 检查当前对象是否有特定选择器,返回一个boolean值
+					is : function(sel){
+						var f =false;
+						this.each(function(){
+							for (var i=0; i< K(sel).length ; i++)
+							{
+								if ( this === K(sel)[i] )
+								{
+									f = true;
+									break;
+								}
+							}
+						});
+						return f;
+					},
+					//hasClass() 检查当前对象是否有特定className, 返回一个boolean值,等同 is( '.' + cName);
+					hasClass : function(sel){
+						return this.is('.'+sel);
+					},
+					//first() 返回当前元素集合的第一个元素对象;
+					first : function(){
+						return this.eq(0);
+					},
+					//last() 返回当前元素集合的最后一个元素对象;
+					last : function(){
+						return this.eq(this.length - 1);
+					},
+					//filter() 返回符合 特定选择器 的 元素对象;
+					filter : function(sel){
+						var arr= [];
+						this.each(function(){
+							for (var i=0; i< K(sel).length ; i++)
+							{
+								if ( this === K(sel)[i] )
+								{
+									arr.push(this);
+									break;
+								}
+							}
+						});
+						return new Kongshan(arr);
+					},
+					//not()    返回不符合 特定选择器 的元素对象;
+					not : function(sel){
+						var arr= [];
+						this.each(function(){
+							for (var i=0; i< K(sel).length ; i++)
+							{
+								if ( this === K(sel)[i])
+								{
+									return;
+								};
+							};
+							arr.push(this);
+						});
+						return new Kongshan(arr);
+					},
+					//has() 检索其后代元素是否含有 特定选择器, 返回符合的 *当前元素* 的集合;
+					has : function(sel){
+						var arr = [];
+						
+					
+					},
+					//childern() 匹配元素的 所有子级(不是所有后代),可传入 特定选择器 进行筛选;
+					children : function(sel){
+						var arr = [];
+						this.each(function(){
+							for (var i=0; i< this.childNodes.length ;i++ )
+							{
+								if (this.childNodes[i].nodeType === 1)
+								{
+									var f = true;
+									for (var j=0; j<arr.length ; j++ )
+									{
+										if (this.childNodes[i] == arr[j])
+										{
+											f = false;
+										}
+									};
+									f && arr.push(this.childNodes[i]);
+								};
+							};
+						});
+						var kArr = new Kongshan(arr);
+						if (sel)
+						{
+							return kArr.filter(sel);
+						}
+						return kArr;
+					},
+					//find()  返回 所有后代元素 用特定选择器 筛选后的 元素的集合;
+					find : function(sel){
+						var arr= [];
+						var This = this;
+						while (This.children()[0])
+						{
+							This = This.children();
+							for (var i=0; i< This.length ; i++)
+							{
+								var f = true;
+								for (var j=0; j<arr.length ; j++ )
+								{
+									if (This[i] == arr[j])
+									{
+										f = false;
+									}
+								};
+								f && arr.push(This[i]);
+							};
+						};
+						var kArr = new Kongshan(arr);
+						if (sel)
+						{
+							return kArr.filter(sel);
+						}
+						return kArr;
+					
+					},
+					//parent()  (每个)匹配元素的 唯一父级,可传入 特定选择器 进行筛选;
+					parent : function(sel){
+						var arr = [];
+						this.each(function(){
+							for (var i=0; i< arr.length ;i++ )
+							{
+								if (arr[i] == this.parentNode)
+								{
+									return;
+								}	
+							}
+							arr.push(this.parentNode);
+						});
+						var kArr = new Kongshan(arr);
+						if (sel)
+						{
+							return kArr.filter(sel);
+						}
+						return kArr;
+					},
+					//siblings() 匹配元素的 所有同级;
+					siblings : function(sel){
+						var arr = [];
+						var This = this;
+						this.each(function(){
+							var _ThisA = K(this).parent().children();
+							for (var i =0; i< _ThisA.length ; i++ )
+							{
+								var f = true;
+								if ( _ThisA[i] == this)
+								{
+									continue;
+								};
+								for (var j=0; j<arr.length ; j++ )
+								{
+									if (_ThisA[i] == arr[j])
+									{
+										f = false;
+									}
+								};
+								f && arr.push(_ThisA[i]);
+							};
+						});
+						var kArr = new Kongshan(arr);
+						if (sel)
+						{
+							return kArr.filter(sel);
+						}
+						return kArr;
+					},
+					//next()	匹配元素的 后面一个同级;
+					/* next 伪兼容, nextElementSibling只识别元素节点, 在IE8-下nextSibling依然会识别非空格的文本节点,
+						this.each(function(){
+							var o = getNext(this);
+							o && arr.push(o);
+						});
+						function getNext(obj){
+							if (obj.nextElementSibling !== undefined)
+							{
+								return obj.nextElementSibling;
+							}else{
+								return obj.nextSibling;
+							};
+						};
+						*/
+						/* prev
+						this.each(function(){
+							var o = getPrev(this);
+							o && arr.push(o);
+						});
+						function getPrev(obj){
+							if (obj.previousElementSibling !== undefined)
+							{
+								return obj.previousElementSibling;
+							}else{
+								return obj.previousSibling;
+							};
+						};
+						*/
+					next : function(sel){
+						var arr = [];
+						var This = this;
+						this.each(function(){
+							var _ThisA = K(this).parent().children();
+							for (var i =0; i< _ThisA.length ; i++ )
+							{
+								if ( _ThisA[i] == this)
+								{
+									var k = i+1;
+									if (k < _ThisA.length )
+									{
+										var f = true;
+										for (var j=0; j<arr.length ; j++ )
+										{
+											if (_ThisA[k] == arr[j])
+											{
+												f = false;
+											}
+										};
+										f && arr.push(_ThisA[k]);
+									}
+								};
+							};
+						});
+						var kArr = new Kongshan(arr);
+						if (sel)
+						{
+							return kArr.filter(sel);
+						}
+						return kArr;
+					},
+					//nextAll() 匹配元素的 后面所有同级;
+					nextAll : function(sel){
+						var arr = [];
+						var This = this;
+						this.each(function(){
+							var _ThisA = K(this).parent().children();
+							for (var i =0; i< _ThisA.length ; i++ )
+							{
+								if ( _ThisA[i] == this)
+								{
+									var k = i+1;
+									while (k < _ThisA.length)
+									{
+										var f = true;
+										for (var j=0; j<arr.length ; j++ )
+										{
+											if (_ThisA[k] == arr[j])
+											{
+												f = false;
+											}
+										};
+										f && arr.push(_ThisA[k]);
+										k++;
+									};
+								};
+							};
+						});
+						var kArr = new Kongshan(arr);
+						if (sel)
+						{
+							return kArr.filter(sel);
+						}
+						return kArr;
+					},
+					//prev()	匹配元素的 前面一个同级;
+					prev : function(sel){
+						var arr = [];
+						var This = this;
+						this.each(function(){
+							var _ThisA = K(this).parent().children();
+							for (var i =0; i< _ThisA.length ; i++ )
+							{
+								if ( _ThisA[i] == this)
+								{
+									var k = i-1;
+									if (k >= 0)
+									{
+										var f = true;
+										for (var j=0; j<arr.length ; j++ )
+										{
+											if (_ThisA[k] == arr[j])
+											{
+												f = false;
+											}
+										};
+										f && arr.push(_ThisA[k]);
+									};
+								};
+							};
+						});
+						var kArr = new Kongshan(arr);
+						if (sel)
+						{
+							return kArr.filter(sel);
+						}
+						return kArr;
+					},
+					//prevAll() 匹配元素的 前面所有同级;
+					prevAll : function(sel){
+						var arr = [];
+						var This = this;
+						this.each(function(){
+							var _ThisA = K(this).parent().children();
+							for (var i =0; i< _ThisA.length ; i++ )
+							{
+								if ( _ThisA[i] == this)
+								{
+									var k = i-1;
+									while (k >= 0)
+									{
+										var f = true;
+										for (var j=0; j<arr.length ; j++ )
+										{
+											if (_ThisA[k] == arr[j])
+											{
+												f = false;
+											}
+										};
+										f && arr.push(_ThisA[k]);
+										k--;
+									};
+								};
+							};
+						});
+						var kArr = new Kongshan(arr);
+						if (sel)
+						{
+							return kArr.filter(sel);
+						}
+						return kArr;
+					},
+					/*序列号相关*/
+					//size 返回序列号长度
+					size : function(){
+						return this.length;
+					},
+					//index 返回序列号;
+					index : function(sel){
+						var t = getType(sel);
+						var This = this[0];
+						var arr;
+						if(t == 'undefined' ){
+							arr = this[0].parentNode.children;  //不填,找的是在其父元素所有子元素中的序号
+							for( var i = 0;i<arr.length; i++){
+								if (arr[i] == this[0])
+								{
+									return i;
+								}
+							};
+						}else if (t == 'string')
+						{
+							arr = document.getElementsByTagName(sel); //填tagname,找的是整个文档中所有该标签元素的集合中的序号;
+							for( var i = 0;i<arr.length; i++){
+								if (arr[i] == this[0])
+								{	
+									return i;
+								}
+							};
+						};
+					},
+					//操作样式方法css
+					css : function(){
+						var arg = arguments;
+						var type = getType(arg[0]);
+						if (arg.length == 2){
+							this.each(function(){
+								setStyle(this, arg[0], arg[1]);
+							});
+						}else if (type === 'object'){
+							for (var key in arg[0] ){
+								this.each(function(){
+									setStyle(this , key, arg[0][key] )
+								});
+							};
+						}else if(type === 'string'){
+							return getStyle(this[0],arg[0]);
+						};
+						return this;
+						
+						
+					},
+					//获取第一个节点对象到文档的top left;
+					offset : function(){
+						var obj = {top:0,left:0};
+						var DOMObj = this[0];
+						for (  ; DOMObj != document.body ;)
+						{	
+							obj.top += DOMObj.offsetTop;
+							obj.left += DOMObj.offsetLeft;
+							DOMObj = DOMObj.offsetParent;
+							
+						};
+						return obj;	
+					},
+					//获取第一个节点对象到定位父级的top left;
+					position : function(){
+						var obj = {
+							top : this[0].offsetTop,
+							left : this[0].offsetLeft};
+						var DOMObj = this[0];
+						return obj;	
+					},
+					//滚动条位置 top
+					scrollTop : function( topValue ){
+						if (topValue)
+						{	
+							this.each(function(){
+								if ( this == document)
+								{
+									document.documentElement.scrollTop = topValue;
+									document.body.scrollTop = topValue;
+								}else{
+									this.scrollTop = topValue;
+								};
+							});
+							return this;
+
+						}else {
+							if ( this[0] == document)
+							{
+								return document.documentElement.scrollTop || document.body.scrollTop;
+							}else{
+								return this[0].scrollTop;
+							};
+						};
+						
+					},
+					//滚动条位置 left
+					scrollLeft : function( leftValue ){
+						if (leftValue)
+						{
+							this.each(function(){
+								if ( this == document)
+								{
+									document.documentElement.scrollLeft = leftValue;
+									document.body.scrollLeft = leftValue;
+								}else{
+									this.scrollLeft = leftValue;
+								};
+							});
+							return this;
+
+						}else {
+							if ( this[0] == document)
+							{
+								return document.documentElement.scrollLeft || document.body.scrollLeft;
+							}else{
+								return this[0].scrollLeft;
+							};
+						};
+						
+					},
+					//样式的宽高
+					width : function(){
+						if (arguments.length == 1)
+						{
+							this.css('width',parseInt(arguments[0])+'px');
+							return this;
+						}
+						return parseInt(this.css('width'));
+					},
+					height : function(){
+						if (arguments.length == 1)
+						{
+							this.css('height',parseInt(arguments[0])+'px');
+							return this;
+						}
+						return parseInt(this.css('height'));
+					},
+
+					//html方法; 分辨字符串的两种办法
+					html : function(hml){
+						if (hml != undefined )
+						{   
+							this.each(function(){
+								
+								this.innerHTML = hml; //IE6-8不支持列表表单元素的赋值, 9不支持table赋值
+							});
+							return this;
+						}else{
+							return this[0].innerHTML;
+						}
+					},
+					//text方法;typeof 返回undefined的为string类型
+					text : function(txt){
+						var t = getType(txt); 						
+						if (t == 'string')
+						{
+							this.each(function(){
+								this.innerText = txt;
+							});
+							return this;
+						}else if (t == 'undefined')
+						{
+                            var str = '';
+                            this.each(function(){
+                                str += this.innerText;
+                            })
+							return str;
+						}
+					},
+					//Class方法;
+					addClass : function(cName){
+						if (getType(cName) == 'string')
+						{	
+							cName = trim(cName).split(' ');
+							var l = cName.length;
+							for (var i=0;i<l ;i++ )
+							{	
+								var reg = new RegExp('(^|\\s)'+cName[i]+'(\\s|$)');
+								this.each(function(){
+									if(!reg.test(this.className)) {
+										this.className += (' '+cName[i])
+									};
+								});
+							}
+						}
+						return this;
+					},	
+					removeClass : function(cName){
+						var This = this;
+						if (getType(cName) == 'string')
+						{	
+							cName = trim(cName).split(' ');
+							var l = cName.length;
+							for (var i=0;i<l ;i++ )
+							{	
+								var reg = new RegExp('(^|\\s)'+cName[i]+'(\\s|$)');
+								this.each(function(){
+									if(reg.test(this.className)) {
+										this.className = trim(this.className.replace(cName[i],''));
+									};
+								});
+							};
+						}
+						return this;
+					},
+					toggleClass :function(cName){
+						var This = this;
+						if (getType(cName) == 'string')
+						{	
+							cName = trim(cName).split(' ');
+							var l = cName.length;
+							for (var i = 0 ; i < l ; i++ )
+							{	
+								var reg = new RegExp('(^|\\s)'+cName[i]+'(^|\\s)');
+								this.each(function(){
+									if(reg.test(this.className)) {
+										
+										this.className = trim(this.className.replace(cName[i],''));
+									}else{
+										this.className += (' '+cName[i]);
+									};
+								});
+							};
+						}
+						return this;
+					},
+					attr : function(){
+						var arg = [];
+						for (var i=0 ; i<arguments.length ; i++ ){
+							arg[i] = arguments[i];
+						};
+						var argtype = getType(arg[0]);
+                        if (arg[0] == 'class')
+                        {
+                            arg[0] == 'className';
+                        }
+						if (arg.length == 2)
+						{
+							this.each(function(){
+								this.setAttribute(arg[0],arg[1]);
+							})
+							return this;
+						}else if ( argtype == 'string')
+						{
+							return this[0].getAttribute(arg[0]);
+						}else if ( argtype == 'object'){
+							this.each(function(){
+								for (var key in arg[0] )
+								{	
+									this.setAttribute(key,arg[0][key]);
+								}
+							})
+							return this;
+						};
+					},
+					removeAttr : function(attr){
+						if ( getType(attr)== 'string');
+						{
+							this.each(function(){
+								this.removeAttribute(attr);
+							});
+						}
+						return this;
+					},
+                    prop : function(){
+						var arg = Array.prototype.slice.call(arguments);
+						var argtype = getType(arg[0]);
+						if (arg.length == 2)
+						{
+							this.each(function(){
+								this[arg[0]]=arg[1];
+							})
+							return this;
+						}else if ( argtype == 'string')
+						{
+							return this[0].arg[0];
+						}else if ( argtype == 'object'){
+							this.each(function(){
+								for (var key in arg[0] )
+								{	
+									this[key] = arg[0][key];
+								}
+							})
+							return this;
+						};
+					},
+                    removePorp : function(attr){
+						if ( getType(attr)== 'string');
+						{
+							this.each(function(){
+								delete this[attr];
+							});
+						}
+						return this;
+					},
+					val : function(arg){
+						if (arg != undefined)
+						{
+							this.each(function(){
+								this.value = arg;
+							})
+							return this;
+						}else{
+							return this[0].value;
+						}
+					},
+					//val() 对应合法的value属性,常用于form表单,prop对应合法的默认属性,比如checked,并且不会改变对应标签行间内属性的值;
+
+					/*注,jQ在此处做了兼容: 
+					test : <input type='checkbox' id="div1" checked ='checked' abc = '1'/>
+					
+					var result = $('input').attr('checked',false).attr('abc' , '0');
+					//页面结果: 不选 
+					//dom结果: <input type="checkbox" id="div1" abc="0"> //attr会写入行内 false会直接删除行内标签的合法属性;
+					alert(result.attr('checked')) // undefined; //删除掉后值为undefined;
+					alert(result.attr('abc')) // 0;  //对于非法属性,attr可以在行间写入;
+					alert(result.prop('checked')) // false; //即使删除掉,prop依然能读取具有布尔值的合法属性;
+					alert(result.prop('abc')) // undefined; //无法读取attr赋值的非法属性;
+					
+					var result = $('input').prop('checked',false).prop('abc' , '0');
+					//页面结果: 不选 
+					//dom结果: <input type="checkbox" id="div1" checked="checked" abc="1"> //prop 写入基于js层面,写入的属性并不写在行内,也可以理解为prop操作的是jq对象,而不是dom对象;
+					alert(result.attr('checked')) // checked; // attr此时依然读取的是行间合法属性
+					alert(result.attr('abc')) // 1; //  attr此时依然读取的是行间自定义属性
+					alert(result.prop('checked')) // false; //prop读取的是正确的布尔值;
+					alert(result.prop('abc')) // 0; //prop读取的自定义属性是prop所赋值;
+
+					//attr和obj.getAttribute('属性')的方式类似; 而prop() 和 obj.属性 的方式类似,对于表单某些元素读取的值为布尔值类型;
+					//重要:不兼容 : prop 在高版本浏览器中读取默认行间内自定义属性的值为undefined;而低版本IE浏览器中会读取其值;
+					
+					*/
+
+					//效果
+					animate : function(){
+						//获取参数及设置默认值
+						var Tween = {
+							//t=已运行的时间(现在时间-初始时间),
+							//b=初始坐标值,
+							//c=移动总距离(结束坐标-初始坐标),
+							//d=运行总时间;
+							linear: function (t, b, c, d){  //匀速 
+								return c*t/d + b;
+							},
+							easeIn: function(t, b, c, d){  //加速曲线
+								return c*(t/=d)*t + b;
+							},
+							easeOut: function(t, b, c, d){  //减速曲线
+								return -c *(t/=d)*(t-2) + b;
+							},
+							easeBoth: function(t, b, c, d){  //加速减速曲线
+								if ((t/=d/2) < 1) {
+									return c/2*t*t + b;
+								}
+								return -c/2 * ((--t)*(t-2) - 1) + b;
+							},
+							easeInStrong: function(t, b, c, d){  //加加速曲线
+								return c*(t/=d)*t*t*t + b;
+							},
+							easeOutStrong: function(t, b, c, d){  //减减速曲线
+								return -c * ((t=t/d-1)*t*t*t - 1) + b;
+							},
+							easeBothStrong: function(t, b, c, d){  //加加速减减速曲线
+								if ((t/=d/2) < 1) {
+									return c/2*t*t*t*t + b;
+								}
+								return -c/2 * ((t-=2)*t*t*t - 2) + b;
+							},
+							elasticIn: function(t, b, c, d, a, p){  //正弦衰减曲线（弹动渐入）
+								if (t === 0) { 
+									return b; 
+								}
+								if ( (t /= d) == 1 ) {
+									return b+c; 
+								}
+								if (!p) {
+									p=d*0.3; 
+								}
+								if (!a || a < Math.abs(c)) {
+									a = c; 
+									var s = p/4;
+								} else {
+									var s = p/(2*Math.PI) * Math.asin (c/a);
+								}
+								return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+							},
+							elasticOut: function(t, b, c, d, a, p){    //正弦增强曲线（弹动渐出）
+								if (t === 0) {
+									return b;
+								}
+								if ( (t /= d) == 1 ) {
+									return b+c;
+								}
+								if (!p) {
+									p=d*0.3;
+								}
+								if (!a || a < Math.abs(c)) {
+									a = c;
+									var s = p / 4;
+								} else {
+									var s = p/(2*Math.PI) * Math.asin (c/a);
+								}
+								return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+							},    
+							elasticBoth: function(t, b, c, d, a, p){
+								if (t === 0) {
+									return b;
+								}
+								if ( (t /= d/2) == 2 ) {
+									return b+c;
+								}
+								if (!p) {
+									p = d*(0.3*1.5);
+								}
+								if ( !a || a < Math.abs(c) ) {
+									a = c; 
+									var s = p/4;
+								}
+								else {
+									var s = p/(2*Math.PI) * Math.asin (c/a);
+								}
+								if (t < 1) {
+									return - 0.5*(a*Math.pow(2,10*(t-=1)) * 
+											Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+								}
+								return a*Math.pow(2,-10*(t-=1)) * 
+										Math.sin( (t*d-s)*(2*Math.PI)/p )*0.5 + c + b;
+							},
+							backIn: function(t, b, c, d, s){     //回退加速（回退渐入）
+								if (typeof s == 'undefined') {
+								   s = 1.70158;
+								}
+								return c*(t/=d)*t*((s+1)*t - s) + b;
+							},
+							backOut: function(t, b, c, d, s){
+								if (typeof s == 'undefined') {
+									s = 3.70158;  //回缩的距离
+								}
+								return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+							}, 
+							backBoth: function(t, b, c, d, s){
+								if (typeof s == 'undefined') {
+									s = 1.70158; 
+								}
+								if ((t /= d/2 ) < 1) {
+									return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
+								}
+								return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+							},
+							bounceIn: function(t, b, c, d){    //弹球减振（弹球渐出）
+								return c - Tween['bounceOut'](d-t, 0, c, d) + b;
+							},       
+							bounceOut: function(t, b, c, d){
+								if ((t/=d) < (1/2.75)) {
+									return c*(7.5625*t*t) + b;
+								} else if (t < (2/2.75)) {
+									return c*(7.5625*(t-=(1.5/2.75))*t + 0.75) + b;
+								} else if (t < (2.5/2.75)) {
+									return c*(7.5625*(t-=(2.25/2.75))*t + 0.9375) + b;
+								}
+								return c*(7.5625*(t-=(2.625/2.75))*t + 0.984375) + b;
+							},      
+							bounceBoth: function(t, b, c, d){
+								if (t < d/2) {
+									return Tween['bounceIn'](t*2, 0, c, d) * 0.5 + b;
+								}
+								return Tween['bounceOut'](t*2-d, 0, c, d) * 0.5 + c*0.5 + b;
+							}
+						};
+						var arg = arguments;
+						var argL = arguments.length;
+						var json = arg[0];
+						var time , easing , callback;
+						for (var i = 1 ; i<argL ;i++ )
+						{
+							var type = getType(arg[i]);
+							switch( type ){
+								case 'number' : 
+									time = arg[i];
+									break;
+								case 'string' : 
+									switch(arg[i]){
+										case 'fast' :
+											time = 200;
+											break;
+										case 'normal' :
+											time = 500;
+											break;
+										case 'slow' :
+											time = 1000;
+											break;
+										default:
+											easing =arg[i];
+									};
+									break;
+								case 'function' : 
+									callback = arg[i];
+									break;
+							}
+						};
+						time = time || 500;
+						easing = easing || 'linear';
+						callback = callback || function(){};
+						//
+						this.each(function(){
+							var _This = K(this);
+							var attrS={},attrL={},attrN={};
+							var timeS = new Date();
+							for (var key in json)
+							{
+								attrS[key] = parseFloat(_This.css(key));
+								attrL[key] = parseFloat(json[key]);
+								if (key == 'opacity'){
+									attrS[key] = _This.css('opacity');
+								};
+							};
+							
+							var timer = setInterval(function(){
+								var t = new Date() -timeS;
+								(t>=time) && (t=time);
+								for (var key in json )
+								{
+									attrN[key] = Tween[easing](t,attrS[key],(attrL[key]-attrS[key]),time);
+									if (/px/.test(json[key]) || key === 'width' || key === 'height' || key === 'top' || key === 'left' || key === 'right' || key === 'bottom' )
+									{
+										attrN[key] += 'px';
+									}
+								};
+								_This.css(attrN);
+								if (t >= time)
+								{
+									clearInterval(timer);
+									callback && callback.call(_This[0]);
+								}
+							},13);	
+						});
+						return this;
+					},
+					show : function(){
+						var arg = [];
+						for (var i=0 ; i<arguments.length ; i++ ){
+							arg[i] = arguments[i];
+						};
+						this.each(function(){
+							var _This = K(this);
+							if (_This.css('display') == 'none')
+							{	
+								//显示类方法的预先css处理
+								//显示类需保存初始值,作为效果的结束值;
+								var cssStart = {
+									'opacity' : _This.css('opacity'),
+									'width' : _This.css('width'),
+									'height' : _This.css('height')
+								};
+								//显示类需改变初始值
+								_This.css({
+									'opacity' : 0,
+									'width' : 0,
+									'height' : 0,
+									'display' : 'block'
+								});
+								arg.unshift(cssStart);
+								_This.animate.apply(_This,arg);
+								//结束
+							}
+						})
+						return this;
+					},
+					hide : function(){
+						var arg = [];
+						for (var i=0 ; i<arguments.length ; i++ ){
+							arg[i] = arguments[i];
+						};
+						this.each(function(){
+							var _This = K(this);
+							if (_This.css('display') != 'none')
+							{	
+								//隐藏类方法的回调复原css处理
+								var callback , callbackB;
+								//隐藏类需保存初始值,并作为回调函数恢复值;
+								var cssStart = {
+									'opacity' : _This.css('opacity'),
+									'width' : _This.css('width'),
+									'height' : _This.css('height'),
+									'display' : 'none'
+								};
+								//隐藏类的效果结束值;
+								var cssLast = {
+									'opacity' : 0,
+									'width' : 0,
+									'height' : 0
+								};
+								var type = getType(arg[arg.length-1]);
+								if (type === 'function')
+								{
+									callback = arg.pop();
+								}
+								callbackB = function(){
+									_This.css(cssStart);
+									callback && callback.call(this);
+								};
+								arg.unshift(cssLast);
+								arg.push(callbackB);
+								_This.animate.apply(_This,arg);
+								//结束
+							}
+						
+						})
+						return this;
+					},
+					toggle : function(){
+						var arg = arguments;
+						//切换类方法:
+						this.each(function(){
+							var _This = K(this);
+							if (_This.css('display') == 'none')
+							{
+								_This.show.apply(_This,arg);
+								
+							}else{
+								_This.hide.apply(_This,arg);
+							};
+						});
+						return this;
+					},
+					//淡入淡出
+					//fadeTo 变换到某个透明度;
+					fadeTo :function(){
+						var arg = [];
+						for (var i=0 ; i<arguments.length ; i++ ){
+							arg[i] = arguments[i];
+						};
+						var opacityEnd = arg.shift();
+						arg.unshift({'opacity' : opacityEnd });
+						this.each(function(){
+							var _This = K(this);
+							if (_This.css('display') != 'none')
+							{
+								_This.animate.apply( _This , arg);	
+							}
+						});	
+					},
+					fadeIn : function(){ //淡入效果,缓慢显示
+						var arg = [];
+						for (var i=0 ; i<arguments.length ; i++ ){
+							arg[i] = arguments[i];
+						};
+						this.each(function(){
+							var _This = K(this);
+							if ( _This.css('display') == 'none')
+							{
+								arg.unshift(_This.css('opacity'));
+								_This.css({
+									'opacity' : 0,
+									'display' : 'block'
+								});
+								_This.fadeTo.apply( _This , arg);
+							}
+						
+						})
+						return this;
+					},
+					fadeOut : function(){ //淡出效果,缓慢消失
+						var arg = [];
+						for (var i=0 ; i<arguments.length ; i++ ){
+							arg[i] = arguments[i];
+						};
+						this.each(function(){
+							var _This = K(this);
+							if ( _This.css('display') != 'none')
+							{	
+								var callback , callbackB;
+								var cssStart = {
+									'opacity' : _This.css('opacity'),
+									display : 'none'
+								}
+								var type = getType(arg[arg.length-1]);
+								if (type === 'function'){
+									callback = arg.pop();
+								}
+								callbackB = function(){
+									_This.css(cssStart);
+									callback && callback.call(this);
+								};
+								arg.unshift(0);
+								arg.push(callbackB);
+								_This.fadeTo.apply( _This , arg);
+							}
+						
+						});
+						return this;
+					},
+					//fadeToggle 切换淡入淡出
+					fadeToggle : function(){
+						var arg = arguments;
+						this.each(function(){
+							var _This = K(this);
+							if (_This.css('display') == 'none')
+							{
+								_This.fadeIn.apply( _This , arg);
+								
+							}else{
+								_This.fadeOut.apply( _This , arg);
+							};
+						});
+						return this;
+					},
+					//slideDown 下拉
+					slideDown : function(){
+						var arg = [];
+						for (var i=0 ; i<arguments.length ; i++ ){
+							arg[i] = arguments[i];
+						};
+						this.each(function(){
+							var _This = K(this);
+							if (_This.css('display') === 'none')
+							{
+								var heightStart = _This.css('height');
+								_This.css({
+									'display' : 'block' ,
+									'height' : 0
+								});
+								arg.unshift({'height':heightStart});
+								_This.animate.apply(_This , arg);
+							}
+							
+						});
+						
+					},
+					//slideUp
+					slideUp : function(){
+						var arg = [];
+						for (var i=0 ; i<arguments.length ; i++ ){
+							arg[i] = arguments[i];
+						};
+						this.each(function(){
+							var _This = K(this);
+							if (_This.css('display') != 'none')
+							{
+								var callback , callbackB;
+								var heightStart = _This.css('height');
+								var cssStart = {
+									'display' : 'none' ,
+									'height' : heightStart
+								};
+								var type = getType(arg[arg.length-1]);
+								if (type === 'function'){
+									callback = arg.pop();
+								}
+								callbackB = function(){
+									_This.css(cssStart);
+									callback && callback.call(this);
+								};
+								arg.unshift({'height':0});
+								arg.push(callbackB);
+								_This.animate.apply( _This , arg);
+							}
+							
+						});
+						
+					},
+					//slideToggle
+					slideToggle : function(){
+						var arg = arguments;
+						this.each(function(){
+							var _This = K(this);
+							if (_This.css('display') == 'none')
+							{
+								_This.slideDown.apply( _This , arg);
+							}else{
+								_This.slideUp.apply( _This , arg);
+							};
+						});
+					},
+					//stop() 中止并清除当前动画队列中正在运行的动画(即第一个), 
+					//stop(true) 中止并清空当前动画队列中的所有动画,常用于平滑效果;
+					//stop(true,true) 瞬间完成正在运行动画(即第一个)的最终css样式,并清空当前动画队列中的所有动画.
+
+					//事件函数: JQ中可以为同一元素多次调用事件函数，从而绑定多个事件处理函数。触发时按绑定的先后顺序依次执行绑定的事件处理函数。事件函数默认支持冒泡/捕获.事件函数内this指向DOM对象,$(this)才是JQ对象,同理还有each方法;:
+					//自 jQuery 版本 1.7 起，on() 方法是 bind()、live() 和 delegate() 方法的新的替代品。
+					//使用 on() 方法添加的事件处理程序适用于当前及未来的元素（比如由脚本创建的新元素）。
+					//提示：如需移除事件处理程序，请使用 off() 方法。
+					//提示：如需添加只运行一次的事件然后移除，请使用 one() 方法。
+					on : function(){
+						var arg = arguments;
+						if (arg.length == 1)
+						{
+							this.each(function(){
+								for (var key in arg[0] )
+								{	
+									addEvent(this,key,arg[0][key]);
+								}
+								
+							})
+						}else if (arg.length == 2)
+						{
+							this.each(function(){
+								addEvent(this,arg[0],arg[1]);
+							});
+						};
+						
+						function addEvent(obj,eName,eFn){
+							
+							obj.addEventListener ?  obj.addEventListener(eName,eFn,false) : obj.attachEvent('on'+eName,function(){eFn.call(obj)});
+						};
+						return this;
+					},
+					off : function(){
+						var arg = arguments;
+						if (arg.length === 1)
+						{
+							this.each(function(){
+								for (var key in arg[0] )
+								{
+									removeEvent(this,key,arg[0][key]);
+								}
+							});
+						}else if(arg.length ===2){
+							this.each(function(){
+								removeEvent(this,arg[0],arg[1]);
+							});
+						};
+						function removeEvent(obj,eName,eFn){
+							obj.removeEventListener ?  obj.removeEventListener( eName,eFn,false) : obj.detachEvent('on' + eName , eFn);
+						};
+					},
+					click : function(fn){
+						this.on('click',fn);
+						return this;
+					},
+					dblclick : function(fn){
+						this.on('dblclick',fn);
+						return this;
+					},
+					mouseover : function(fn){
+						this.on('mouseover',fn);
+						return this;
+					},
+					mouseout : function(fn){
+						this.on('mouseout',fn);
+						return this;
+					},
+					mouseenter : function(fn){
+						this.on('mouseenter',fn);
+						return this;
+					},
+					mouseleave : function(fn){
+						this.on('mouseleave',fn);
+						return this;
+					},
+					hover : function(){ //和mouseenter,mouseleave类似,不会在子元素间移动时触发,
+						var arg = arguments;
+						this.on('mouseenter',arg[0]);
+						(arg.length == 2) && (this.on('mouseleave',arg[1]));
+						return this;
+					}
+					//extend 扩展 : 
+					//1: $.fn.extend( { a: function(){} } )  
+					//扩展JQ的原型方法; 等同$.prototype.a = function(){};使用方法: $对象.a();
+					
+					//2: $.extend ( { b : function(){}} ); 
+					//扩展JQ的静态方法;使用方法: $.b();
+				};
+				
+			}();
+		</script>
+
+		<script type="text/javascript">
+			
+			K(function(){
+				
+				//K('div  .box-4 ').css({height:'200px',background:'red',border : '1px solid white',width:'200px'}).toggleClass(' box1 box2 box3').attr({'value':'xx',x:'YY'}).removeAttr('x').val('aaaaaa').css('background','orange').each(function(){K(this).html(this.id)}).dblclick(function(){K(this).text(this.className)} );
+				
+				
+				K('#in2').click(function(){
+					K(document).scrollTop(50);
+					K('.box').each(function(){K(this).html(this.id)}).css('background' , 'green').toggle('slow','bounceIn');
+					K('p').slideToggle(3000);
+					
+					K('.box-4').next().fadeToggle(3000,function(){K(this).html(this.className)});
+
+				});
+
+				
+			});
+		
+		</script>
+	</head>
+	<body>
+	
+	<div id='div' class = 'div'>
+		<p>
+		</p>
+		<div>
+		</div>
+		<div class='box box2' id='box2'>
+			<p></p>
+		</div>
+		<div  class='box box-3 ' id='box3'>
+			<p></p>
+		</div>
+		<div  class='box box-4 ' id='box4'>
+				<p class='p' id='p4'></p>
+		</div>111
+		<div  class='box-5 ' id='box5'>
+			box-5
+		</div>
+	</div>
+	<form class='div'>
+		<input type='text' class='box22' value='' id='in1' />
+		<input type='button' class='box22' value='按钮' id='in2' />
+	</form>
+	
+	</body>
+</html>

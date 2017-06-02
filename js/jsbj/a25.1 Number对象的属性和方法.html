@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript">
+	
+			Number 对象
+Number 对象是原始数值的包装对象。
+创建 Number 对象的语法：
+var myNum=new Number(value);
+var myNum=Number(value);
+参数
+参数 value 是要创建的 Number 对象的数值，或是要转换成数字的值。
+返回值
+当 Number() 和运算符 new 一起作为构造函数使用时，它返回一个新创建的 Number 对象。如果不用 new 运算符，把 Number() 作为一个函数来调用，它将把自己的参数转换成一个原始的数值，并且返回这个值（如果转换失败，则返回 NaN）。
+Number 对象属性
+属性	描述
+constructor	返回对创建此对象的 Number 函数的引用。
+MAX_VALUE	可表示的最大的数。
+MIN_VALUE	可表示的最小的数。
+NaN	非数字值。
+NEGATIVE_INFINITY	负无穷大，溢出时返回该值。
+POSITIVE_INFINITY	正无穷大，溢出时返回该值。
+prototype	使您有能力向对象添加属性和方法。
+Number 对象方法
+方法	描述
+toString	把数字转换为字符串，使用指定的基数。
+toLocaleString	把数字转换为字符串，使用本地数字格式顺序。
+toFixed	把数字转换为字符串，结果的小数点后有指定位数的数字。
+toExponential	把对象的值转换为指数计数法。
+toPrecision	把数字格式化为指定的长度。
+valueOf	返回一个 Number 对象的基本数字值。
+Number 对象描述
+在 JavaScript 中，数字是一种基本的数据类型。JavaScript 还支持 Number 对象，该对象是原始数值的包装对象。在必要时，JavaScript 会自动地在原始数据和对象之间转换。在 JavaScript 1.1 中，可以用构造函数 Number() 明确地创建一个 Number 对象，尽管这样做并没有什么必要。
+构造函数 Number() 可以不与运算符 new 一起使用，而直接作为转化函数来使用。以这种方式调用 Number() 时，它会把自己的参数转化成一个数字，然后返回转换后的原始数值（或 NaN）。
+构造函数通常还用作 5 个有用的数字常量的占位符，这 5 个有用的数字常量分别是可表示的最大数、可表示的最小数、正无穷大、负无穷大和特殊的 NaN 值。 注意，这些值是构造函数 Number() 自身的属性，而不是单独的某个 Number 对象的属性。
+比如这样使用属性 MAX_VALUE 是正确的：
+var big = Number.MAX_VALUE
+但是这样是错误的：
+var n= new Number(2);
+var big = n.MAX_VALUE
+作为比较，我们看一下 toString() 和 Number 对象的其他方法，它们是每个 Number 对象的方法，而不是 Number() 构造函数的方法。前面提到过，在必要时，JavaScript 会自动地把原始数值转化成 Number 对象，调用 Number 方法的既可以是 Number 对象，也可以是原始数字值。
+var n = 123;
+var binary_value = n.toString(2);
+
+
+			Infinity -Infinity 正无穷,负无穷均为true; Infinity == Infinity(即使运算前明显不等,结果是Infinity就会相等);
+			关于NaN ,即使运算前结果相等, 运算比较结果也会不等;\
+			由此可见,所有number类型都是赋值类型;
+
+
+			var t1=Number("12a3123");
+			document.write(t1); //NaN
+			document.write("<br />");
+			var t2=t1;
+			document.write(t2 == t1);//false
+
+			JS 中将 number 转换为 string 我们比较熟悉，直接用toString() 的方法就可以了；那么将 string 转换成为 number 都有些什么方法呢？如下便简单的列举了一些，以便记录，说不定什么时候就用到了~~另外toString(16)可转换为16进制;
+			注意:
+			alert(Number("010a")) //NaN
+			alert(parseInt(".10a")) //NaN
+			alert(parseFloat("0.10a"")) // 0.1
+			我们可以使用parseInt ，或者unary plus 或者parseFloat with floor 或者Math.round这些方式，请看如下具体的代码：
+
+			1)：parseInt /Number/ParseFloat;
+
+					var x = parseInt("10");  // 10
+			 但是这种只带一个参数的方式会存在诟病。比如我们想将字符串 "010" 转化为数字 10，直接用这个方法将会返回8/;. 
+					var x = Number(010)  //8 ,注意是number类型
+					var x = parseInt(010); // 8
+					var x = ParseFloat(010); // 8
+					var x = parseInt(".10") //NaN
+
+			 因此这里提供另外一个方法，带有两个参数：第一个是目标转换字符串，第二个用来指定将字符串转化为几进制的数字，并且radix的范围是(2~36) 
+
+			parseInt(string, radix)
+		 例如：
+
+				var x = parseInt("1000", 10);  // 1000
+		 
+
+		2)：unary plus (一元操作符"+")，这种方式非常的巧妙,即隐式转换;
+
+				var x = +"1000"; // 1000
+
+			   var x = +"1000.12"; // 1000.12
+		 
+
+		3)：parseFloat 方法可以将对应的字符串转化为浮点类型的数字
+
+				var x = parseFloat("1000.01aaa") // 1000.01
+		 
+
+		4)：Math.floor 的方式可以对字符和数字进行向下取整
+
+				var x = Math.floor("1000.01"); // 1000
+
+			   var x = Math.floor(1000.01); // 1000
+
+			   var x = Math.floor(1000.91); // 1000
+		 
+
+		5)：Math.round 的方式可以对字符和数字进行四舍五入取整
+
+			var x = Math.round("1000"); //1000 equivalent to round("1000",0)
+
+			var x = Math.round("1000.56"); // 1001
+
+			var x = Math.round("1000.23"); // 1000
+		}
+
+
+		数值可作为对象被调用,但要注意第一个.号会被解析为浮点符号,因此需要以下写法:
+			122..toString(); // 第二个点号可以正常解析
+			122 .toString(); // 注意点号前面的空格
+			(122).toString(); // 2先被计算
+			122["toString"](16);//换成中括号格式;
+		function vartype () {
+			
+			
+				
+				/*显式类型转换*/
+				//转换数字类型,整数类型,浮点型;见a27;
+				var str="123.45.6"
+				//alert("原来的数字是" + str +"\n" + Number(str)+"\n" + parseInt(str)+"\n"+parseFloat(str));
+				/*
+				@ 空字符串 和 空数组 和 null 进行Number()转换的时候返回0；
+				/*parseInt强制取整,从第一位找起,第一位是数字类型才行,后面不符合的直接砍掉
+
+				强制类型转换：
+				Boolean(value)，Number(value)，String(value)。
+				a=undefined;
+				alert(Number(a)+" : "+Boolean(a)+" : "+String(a));
+
+				/*隐式类型转换*/
+				/*隐式类型转换
+				+ 将数字转换成字符串
+				- * / % ++ --将字符串转换成数字
+				==; ===; !; !=; >; <; <=; >=; 转换成布尔值
+
+					var a = 10;
+					var b = a + 'px'; //  '10px'
+					alert( typeof b );
+					//var c = a + ''; //加号隐式转换为字符串,原理:先把双方转换为字符串再进行连接;
+					var a = 20;
+					var b = '15px'
+					var c = b - a; //减号隐式转换为number,原理:先把双方转换为数字串再进行运算,乘*,除/,模%,++,--同样也是;
+					alert( c );
+					var b = 5 % 2;
+					var c = parseInt( 5 / 2 );
+					var a = '2';
+					a ++;
+					alert( typeof a )
+
+				==; ===; !; !=; >; <; <=; >=; 转换成布尔值
+				> <  // '10' > 2 true  '10' > '2' false 
+				两个字符串比较对应位置的ASCII编码,从首字母开始;
+
+					// '' 0 null undefined NaN false   =====>  false
+						
+					var a = 5;
+					var b = '10';
+					var c = a < b;
+					alert( c );
+					var a = '50';
+					var b = '6';
+					var c = a > b;
+					alert( c )
+					var a = NaN;
+					var b = !a;
+					
+					if ( b )
+					{
+						alert( 'a为假' );
+					}else
+					{
+						alert( 'a为真' );
+					}
+					
+					b?alert('a为假'):alert('a为真');
+					
+					//条件?真code:假code;
+					
+					//isNaN( )
+					//讨厌数字 Number()
+			
+					var a = '200px' - 4;
+					var b = isNaN( {} );
+					alert( NaN == NaN );
+					alert(a);
+					alert(b);
+
+					//算术运算符 + — * / %
+					var aaa = 123;
+					var bbb = 2;
+					ccc = aaa/bbb;
+					aaa += 1;//aaa = aaa + 1;
+					aaa += 10 * 3-3;//aaa= aaa + (10 * 3-3);
+					//自增自减运算符
+					var ddd = 100;
+					ddd++;//先用再加
+					++ddd;//先加再用
+					var eee = 100;
+					alert(eee++);//先用再加,100
+					alert(eee);//101
+					alert(++eee);//102
+					alert(eee);//102
+					alert(eee--);//102
+					alert(eee);//101
+					alert(--eee);//100
+					alert(eee);//100
+					//此外,还有 *= /= -= %=
+			}
+			
+			
+			
+			/*Javascript有三种基本数据类型：字符串、数字和布尔值。
+			它们都有相应的建构函数，可以生成字符串对象、数字对象和布尔值对象。
+			与基本数据类型对应的对象类型，作用很小，造成的混淆却很大。  
+			
+				new Boolean(false);   
+				new Number(1234);   
+				new String("Hello World");     
+				alert( typeof 1234); // number    
+				alert( typeof new Number(1234)); // object
+				*/
+				
+				
+			
+		</script>
+	</head>
+	<body>
+		<h1>Javascript变量的类型</h1>
+		<input type="button" id="" value="test" onclick="test2();" />
+
+		<input type="button" id="" value="testtype" onclick="testtype();" />
+		
+		<input type="button" id="" value="vartype" onclick="vartype();" />
+	</body>
+</html>

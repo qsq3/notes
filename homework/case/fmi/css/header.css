@@ -1,0 +1,110 @@
+@charset "UTF-8";
+/**
+ * 
+ * @authors Your Name (iqianduan@126.com)
+ * @date    2016-05-13 20:36:49
+ * @version $Id$
+ */
+
+
+/*header*/
+.header{
+    height:40px;
+    width:100%;
+    background: #333;
+    
+}
+.header .main{
+    position:relative;
+    z-index: 50;
+}
+.header .h_left , .header .h_right{
+    height:40px;
+}
+.header a , .header i {
+    color:#aaa;
+    margin-right: 6px;
+    line-height: 40px;
+}
+.header i {
+    color:#555;
+}
+.header a:hover{
+    color:#fff;
+}
+.h_r_left{
+    margin-right: 16px;
+}
+.header .h_r_cart{
+    width:120px;
+    height:40px;
+    background:#424242;
+    display: inline-block;
+    color:#999;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+.header .h_r_cart i{
+    color:#999;
+    font-size:20px;
+    vertical-align: bottom;
+    font-weight:bolder;
+    margin-right: 3px;
+
+}
+.header .h_r_cart.hover{
+    background:#fff;
+    color:#f60;
+}
+.header .h_r_cart.hover i{
+    color:#f60;
+}
+.header .h_r_cart .cart_menu {
+    position: absolute;
+    z-index: -1;
+    width:318px;
+    height:90px;
+    padding-top:10px;
+    background:#fff;
+    color:#000;
+    top:40px;
+    right:0;
+    line-height: 80px;
+    border:1px solid #ccc;
+    box-shadow: 0 0 6px -2px #000;
+    display:none;
+}
+.header .cart_menu .c_n_a{
+    height:80px;
+    padding:6px 40px 0;
+    line-height: 30px;
+    display:none;
+}
+.header .cart_menu .c_n_a .num, .header .cart_menu .c_n_a .price{
+    color:#f60;
+    vertical-align: 0;
+}
+.header .cart_menu .c_n_b{
+    float:left;
+    text-align: left;
+}
+.header .cart_menu .c_n_a a.btn{
+    display:block;
+    width:72px;
+    height:26px;
+    line-height: 26px;
+    border:1px solid #f60;
+    color:#f60;
+    margin-top:20px;
+    float:right;
+    -webkit-transition: all .25s;
+       -moz-transition: all .25s;
+        -ms-transition: all .25s;
+         -o-transition: all .25s;
+            transition: all .25s;
+}
+.header .cart_menu .c_n_a a.btn:hover{
+    background:#f60;
+    color:#fff;
+}

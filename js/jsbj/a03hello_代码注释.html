@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript">
+		'use strict' //strict模式,有未定义的变量会报错;
+		typeof 返回的是一个字符串,注意!'undefined'
+			//声明变量
+			var str = "hello world";
+			//函数注释 /**加回车
+			/**
+			 * 
+			 * @param {String} aaa
+			 * @param {Number} bbb
+			 */
+			 alert(str);//函数内部改变的全局变量的值可作用于函数外部;前提是要改变过
+			function sayHello(aaa,bbb) {
+				str = "sss";
+				alert("hello"+str);
+			};
+			//调用函数
+			
+			sayHello("123","456");
+			alert(str);
+			console.log("aaa123");//控制台输出信息
+			/*window.onload = function(){
+			document.write("111111 \
+			1111111111")};
+			//多行注释
+			
+			 * 
+			 */
+			//函数注释
+			/**
+			 * 
+			 */
+			//输出文字的三种方法
+//			alert()
+//			console.log()
+//			document.write() 慎用,文档加载完成后调用(比如用window.onload,或者按钮触发),会覆盖掉之前所有内容;
+			function testOpen  () {
+			//bom还是没有统一规则
+			//window.open(URL,窗口名称(不能中文),窗口风格,replace:Boolean);宽高最小为100,resizable是否可改变窗口大小,toolbar是否显示工具栏,location地址栏,menubar菜单栏,status状态栏,
+			window.open("a37-38 BOM之提示框,打开关闭页面,子页面调用父页面.html","子页面a37","height=100,width=600,top=0,left=100,resizable=no,toolbar=no,menubar=no,scrollbars=no,location=no,status=no");
+				}
+			
+			
+		</script>
+		<style type="text/css"> 
+			#menu{
+				width:400px;
+				height:400px;
+				background:#CCC;
+				margin: 30px auto;
+			}
+
+			/*给父li设置宽度,
+				否则li默认独占一行,导致onmouseout效果出错,具体原因不明,也可能与定位有关
+			*/
+			#menu>li{
+				position:relative;
+				 width:180px; 
+			}
+			#menu>li>a{
+				display:block;
+				width:180px;
+				height:36px;
+				line-height:36px;
+				text-align:center;
+				border:2px solid white;
+				color:white;
+			}
+
+			#menu>li>ul>li>a{
+				display:block;
+				width:180px;
+				height:36px;
+				line-height:36px;
+				text-align:center;
+				border:2px solid black;
+				color:black;
+				background:white;
+			}
+			#rjlist,#sjlist{
+				display:none;
+				position:absolute;
+				top:0px;left:180px;
+			}
+
+		
+		
+		</style>
+
+		<script type="text/javascript">
+			window.onload = function(){
+				var orjli = document.getElementById("rjli");
+				var orjlist = document.getElementById("rjlist");
+				var osjli = document.getElementById("sjli");
+				var osjlist = document.getElementById("sjlist");
+				orjli.onmouseover = function(){
+					orjlist.style.display = "block";
+				}
+				orjli.onmouseout = function(){
+					orjlist.style.display = "none";
+				
+				}
+				osjli.onmouseover = function(){
+					osjlist.style.display = "block";
+				}
+				osjli.onmouseout = function(){
+					osjlist.style.display = "none";
+					
+					
+				}
+		
+			}
+		
+		</script>
+		
+	</head>
+	<!--身体标签----------------------------------------------------------------------------->
+	<body>
+	
+		<h1>欢迎JavaScript</h1>
+		<input type="button" id="" value="测试事件驱动" onclick="sayHello(); " />
+		<input type="button" name="" id="" value="打开子页面" onclick="testOpen();"/>
+		<pre>
+			JS代码从上到下解释执行 
+			一个简单的JS过程
+元素①，当 点击它/ 移上去/… 的时候②，做出一些反应/执行一条命令③
+
+：JS如何获取元素
+	JS里面获取元素的方法有很多，我们先了解一种最简单常见的获取ID：
+	document.getElementById('  ');   //注意大小写
+：JS的事件
+	通过 鼠标、键盘、页面变化 等都会产生事件，
+	比如：onclick  ondblclick  onmouseover  onmousedown  onmouseup
+		   onkeypress  onkeydown  onkeyup   onresize  onload ……
+：函数--（反应/命令）
+function 名字(){  }; // 比如：function aaa(){ };
+函数是不会主动执行的，执行函数的方法有很多种…
+直接调用 aaa();
+事件调用 元素.事件 = aaa;
+定义变量 var btn = document.getElementById('btn');
+
+window.onload = function(){}整个页面加载完成,包括图片,链接
+$(function(){})=$(document).ready(function(){})页面的结构加载完成,即文档节点出来就执行
+
+script标签放置的位置
+window.onload的使用
+
+ JS对HTML元素属性的操作
+读、写过程
+注意事项：	
+1. 驼峰命名
+2. class不能直接写，className
+3. 操作的样式较多，一般用className代替
+4. 相对路径地址、颜色值不能用来判断
+5. input的type可以改变但是不兼容IE6 7 8
+元素的浮动属性是不兼容IE6 7 8 （ie：styleFloat  非ie:cssFloat）
+采用其他的方式规避这些不兼容的效果。
+- 元素属性[]的用法
+		</pre> 
+	<h2>11231231232222222</h2>
+		<ul id=menu>
+				<li id="rjli">
+					<a href="" id="" >软件培训</a>
+					<ul id="rjlist" style="">
+						<li><a href="#" id="">java</a></li>
+						<li><a href="#" id="">web前端</a></li>
+						<li><a href="#" id="">安卓</a></li>
+						<li><a href="#" id="">PHP</a></li>
+						<li><a href="#" id="">C++</a></li>
+					</ul>
+				</li>
+
+				<li id="sjli">
+					<a href="#" id="">视觉设计</a>
+					<ul id="sjlist">
+						<li><a href="#" id="">平面设计</a></li>
+						<li><a href="#" id="">网页设计</a></li>
+						<li><a href="#" id="">插画设计</a></li>
+						<li><a href="#" id="">电商设计</a></li>
+						<li><a href="#" id="">UI设计</a></li>
+						
+					</ul>
+				</li>
+				<li><a href="#" id="">营销培训</a></li>
+				<li><a href="#" id="">工业设计</a></li>
+				<li><a href="#" id="">游戏动漫</a></li>
+			</ul>
+
+
+	</body>
+
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>a27面向对象编程和变量三种状态.html</title>
+		<!--关于对象的定义是:无序属性的集合,可以包含基本值,对象,函数,是类的具体实现;
+				类的定义是:相似对象中的共同特征,同一类对象的一个抽象;
+			面向对象的三大特征:封装,继承,多态.
+		聚合:现有对象合并成一个新对象的过程;
+		Object 是js所有对象的继承对象:
+			返回构造函数的构造属性;
+			返回对象描述字符串的toString()方法;
+			返回对象单值描述信息的value()方法;
+
+
+		
+编程:
+	流程式;
+	面向对象;new Array();new Image();window;document;
+	对象:属性和方法;
+面向对象编程OOP特点:
+	所有的事情围绕对象展开;
+	封装:只能通过对象来执行方法;(可以用来封装:eg把某个功能和某个对象挂钩)
+	继承和多态:对象可以在原来的基础上进行扩展;
+	实例对象.__proto__ === 其构造函数.prototype
+	注意 IE6789没有__proto__属性,IE9中可以使用Object.getPrototypeOf(ES5)获取对象的内部原型
+		
+【私有变量】 在对象内部使用'var'关键字来声明，而且它只能被私有函数和特权方法访问。 
+【私有方法】 在对象的构造函数里声明（或者是通过var functionName=function(){...}来定义），
+它能被特权方法调用（包括对象的构造方法）和私有方法调用,私有函数只能访问私有的方法和属性。
+
+【特权/实例方法】在构造函数内部通过this.methodName=function(){...}来声明而且可能被对象外部的代码调用。
+它可以使用：this.特权函数() 方式来调用特权函数，使用 ：私有函数()方式来调用私有函数。
+【特权/实例属性】在构造函数内部通过this.variableName来定义而且在对象外部是可以读写的。不能被私有函数所调用。 
+
+【公共/原型方法】 通过ClassName.prototype.methodName=function(){...}来定义可以从对象外部来调用属性的方法。 
+【公共/原型属性】 通过ClassName.prototype.propertyName=someValue 来定义。 
+
+【静态属性】 通过ClassName.propertyName=someValue 来定义。
+【静态方法】 通过ClassName.funName=function(){...} 来定义。
+
+如果要直接访问私有字段，应该使用特权方法，也就是 在构造函数内部 this定义的方法。相反，如果不需要直接访问私有字段，应该使用prototype定义的方法，而且应该定义在构造函数外部。
+-->
+
+	<script type="text/javascript">
+		/*
+			function testObject(){
+				//如何创建一个Object对象
+				var o = new Object();
+				//可以动态改变代码结构;
+				//赋予属性;
+				o.uname = "zhangsan";
+				//删除属性;
+				delete o.uname;
+				//undefined只声明但是并未赋值;
+				alert(o.uname);
+			};
+			
+				//私有变量和函数,只有类内部能使用
+			function TestPrivate(){
+				
+				var uname="zhangsan";
+				var run = function(){
+					alert("gogogo...");		
+				};
+				alert(uname);//私有变量,只有类内部能使用
+				run();//私有函数,只有类内部能使用
+			};
+			
+			
+			//静态变量和函数,只有该类能使用
+			function TestStatic(){};
+			TestStatic.classname="class3";
+			TestStatic.run = function(){
+				alert("gogogo...");
+			};
+			alert(TestStatic.classname);
+			
+			TestStatic.run();
+			//可以
+			var t1=new TestStatic();
+			alert(t1.classname);//不行,
+			
+			//实例变量和函数,只有该类的对象能使用;
+			//实例函数又叫特权方法,可以访问构造函数的内部变量(私有和静态);
+			function TestImpl(){
+				var name = "xiaohong";		//私有属性
+				TestImpl.name = "lingling"; //静态属性
+				this.name ="huahua"         //实例属性
+				this.zhiye="xuesheng";		//实例属性
+
+				this.run = function(){		//实例函数,又叫特权方法
+					alert(name);   //可以
+					alert(TestImpl.name);   //可以
+					
+				};
+			};
+			var t1=new TestImpl();
+			alert(t1.name);  //可以,实例对象直接访问实例变量;
+			t1.run(); //可以,实例对象通过实例方法访问私有变量和静态变量;
+			
+			alert(TestImpl.zhiye);//不行,不能通过静态语法访问实例属性;
+
+			/*-------------------------------------------------------------*/
+				/** * 工厂方式
+				 * @param {Object} String
+				 * @param {Object} Number*/
+				 
+/*				function factoryMode(name,age){
+					//创建一个Object对象(原料)
+					var obj = new Object();
+					//设置对象的属性和方法;(加工)
+					obj.name = name;
+					obj.age = age;
+					obj.learn = function(){
+						alert(this.name+this.age+"好好学习,天天向上");
+						
+					}
+					//出厂;
+					return obj;
+				};
+				//工厂方式 ,解决了实例化对象大量重复的问题,但是无法搞清楚他们到底是哪个对象的实例
+				var student1 = factoryMode("张小红","18");
+				var student2 = factoryMode("玲玲","20");
+				alert(student1.name+"--"+student2.age);
+				student2.learn();
+				
+/*---------------------------------------------------------------------*/
+			
+			
+				/** * 构造函数方式,推荐  第一个字母大写
+				 * @param {Object} name
+				 * @param {Object} age
+				
+				new方法:声明一个对象
+					把构造函数内的this指向new Object();
+					在构造函数内通过"this.属性名/函数名=属性值/函数值";的方式来设置对象的属性和方法;
+					默认返回对象;
+					省去了工厂模式的创建对象和返回对象的步骤,this指向新的对象;
+					
+					var Person = function(name) {
+						this.name = name;
+					}
+					var p = new Person();
+					new操作符的操作是
+					var p = {};
+					p.__proto__ = Person.prototype;
+					Person.call(p);
+					var p={}; 也就是说，初始化一个对象p。
+					p.__proto__ = Person.prototype;Person.call(p);
+					也就是说构造p，也可以称之为初始化p。
+					构造函数.prototype ==对象.__proto__ ;
+					可以把这两个属性理解为指向其原型对象的指针
+
+*/				 
+				function Student(name,age){
+					//实例变量
+					this.name=name;
+					this.age=age;
+					this.learn=function(){
+						alert(this.name+this.age+"书山有路勤为径");
+					};
+					
+				};
+				//构造函数方式,推荐,函数首字母大写以区分普通函数,解决了重复实例和对象识别问题;
+				var student1 = new Student("小红",19);
+				var student2 = new Student("小黄",18);
+				alert(student1.name +"--"+student2.age);
+				alert(student1.learn == student2.learn);//false,因为是不同对象中构造的方法,内存地址不同; 共用的方法推荐原型方式,节省内存;
+				student2.learn();
+
+/*---------------------------------------------------------------*/
+
+				/**原型方式 
+					知识点:原型链
+					构造函数.prototype ==对象.__proto__ ;
+					可以把这两个属性理解为指向其原型对象的指针;
+
+				function Teacher(){};
+					Teacher.prototype.uname="zhangsan";
+					Teacher.prototype.age = 28;
+					Teacher.prototype.fav=["足球","篮球","乒乓球"];
+					Teacher.prototype.teach = function(){
+						alert("诲人不倦");
+				};
+				//原型方式,
+				var t1 =new Teacher();
+				var t2 =new Teacher();
+				//修改t1,看t2会不会被修改,对一个变量赋值时,不会改变原型;
+				//t1.uname = t1.uname.toUpperCase();
+				t1.uname=t1.uname.replace("a","TTT");
+				alert(t1.uname +"--"+ t2.uname);
+				t1.fav.push("羽毛球");
+				alert(t1.fav+"--"+t2.fav);
+				//t1.teach();*/
+/*---------------------------------------------------------------------*/
+
+				 /*** 混合方式:构造函数+原型;推荐
+				 * @param {Object} name
+				 * @param {Object} age
+				 * @param {Object} gender
+				
+				function Person(name,age,gender){
+					this.name = name;
+					this.age = age;
+					//注意,实例成员比原型成员具有更高的优先级, 参考作用域链和原型链;
+					this.gender = gender;
+					this.speak	 = function(){        
+						alert(this.name +" - "+ this.age +" - "+ this.gender +"实例方法")
+					};
+				}
+				Person.prototype.name = "wangwu"; 
+				Person.prototype.speak	 = function(){
+					alert(this.name +" - "+ this.age +" - "+ this.gender +"原型方法");
+				};				
+				//混合方式:构造函数+原型;推荐
+				var p1 =new Person("zhangsan",19,"male");
+				var p2 =new Person("lisi",29,"male");
+				 p1.speak();
+				 p2.speak(); 
+/*---------------------------------------------------------------------*/
+			
+				
+				/**动态原型方式
+				 * @param {Object} name
+				 
+				function Dog(name){
+					this.name = name;
+				};
+				//设置原型的时候需要做判定,防止重复;
+				if(typeof Dog._run == "undefined"){
+					//设置原型
+					Dog.prototype.run = function(){
+						alert(this.name+"带铃铛跑得欢");
+					};
+					//设置判定,别人就不能再设置;
+					Dog._run = true;
+				};
+				//动态原型方式
+					var d1 = new Dog("旺财");
+					d1.run();
+			
+				};*/
+		</script>
+	</head>
+	<body>
+		<input type="button" value="测试Object对象" onclick="TestObject();"/>
+		
+		<input type="button" value="测试Private" onclick="TestPrivate();"/>
+		
+		<input type="button" value="测试Static" onclick="TestStatic.run();"/>
+		
+		<input type="button" value="测试实例" onclick="t1.run();"/>
+
+		<input type="button" value="测试" onclick="testCreate()"/>
+	</body>
+</html>

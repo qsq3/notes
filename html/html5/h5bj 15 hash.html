@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>15. hash</title>
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.4.css" />
+    <script type="text/javascript" src="js/baseUtil.js"></script>
+    <style type="text/css">
+      pre{
+        white-space : pre-wrap;
+      }
+      #nav{
+				width:600px;
+				margin:100px auto;
+			}
+			#nav li{
+				list-style:none;
+				width:100px;
+				height:50px;
+				border:1px solid blue;
+				float:left;
+				line-height:50px;
+				text-align:center;
+			}
+			.curr{
+				background:red;
+			}
+    </style>
+</head>
+<body class="container">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="row">
+
+      <div class="col-sm-6">
+        <pre>
+
+    取值与赋值: window.location.hash;
+    事件监听  :  window.onhashchange = function(){}
+
+        </pre>
+      </div>
+      <!-- col-md-6 S-->
+      <div class="col-sm-6">
+        <div id="nav">
+          <ul>
+            <li data-num="0" class="curr">首页</li>
+            <li data-num="1">日志</li>
+            <li data-num="2">相册</li>
+            <li data-num="3">说说</li>
+            <li data-num="4">留言板</li>
+          </ul>
+        </div>
+
+      </div>
+      <!-- col-md-6 E-->
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    
+  </div>
+  <script type="text/javascript">
+    ;(function(){
+      var oLi = document.querySelectorAll("li");
+      for (var i=0;i<oLi.length ;i++ )
+      {
+        oLi[i].index = i;
+        oLi[i].onclick = function(){
+          for (var i=0;i<oLi.length ;i++  )
+          {
+            oLi[i].classList.remove("curr");
+          }
+          this.classList.add("curr");
+          window.location.hash = this.dataset.num;
+        }
+        window.onhashchange = function(){
+          var n = window.location.hash.substring(1);
+          //console.log(n);
+          for (var i=0;i<oLi.length ;i++  )
+          {
+            oLi[i].classList.remove("curr");
+          }
+          oLi[n].classList.add("curr");
+        }
+      }
+
+    })()
+  </script>
+</div>
+
+
+
+</body>
+</html>

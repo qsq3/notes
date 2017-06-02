@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<style type="text/css">
+			p{
+				width:800px;
+				line-height:15px;
+				height:15px;
+				margin:0;
+				text-align:center;
+			}
+		</style>
+		<title></title>
+		</head>
+	<body>
+
+		<script type="text/javascript">
+		
+		/*
+		var msg = "今天天气不错";
+		
+		for (i=1; i<=10; i++) {
+				if( i == 3){continue;};//continue跳过本单次循环后面的步骤,进行下一步循环;
+				if( i == 7){break;};//break直接结束整个循环;
+		alert(msg + i);
+			}
+		//类似while,(重要)但是for括号里面两个;号不能省略;
+		var j = 1;
+		for (; j<=10; ) {
+				if( j == 3){continue;};//continue跳过本单次循环后面的步骤,进行下一步循环;
+				if( j == 7){break;};//break直接结束整个循环;
+		console.log(msg + j);
+		j++
+			}
+		
+		//声明一个好友列表
+		var fs = ["章子怡","王思聪","刘德华","成龙"];	
+		//遍历容器；
+		for (var temp in fs){
+			alert(fs[temp] + "消息");
+		}
+
+		/**
+		//声明一个变量
+		var age = 68;
+		//缴纳养老保险
+		while (age<65){
+			alert("缴纳养老保险:" + age);
+			//保证age的增长
+			age++
+		}
+		//特殊的do while,至少执行一次
+		do{
+			alert("缴纳养老保险do while:" + age);
+			age ++;
+			
+		}
+		while (age < 65)
+			
+			
+		 for (var i = 0; i<=5;i++) {
+		 	if (i==2){
+		 		continue;//跳出本次循环
+		 	}
+		 	else if (i==4) {
+		 		break;//结束整个循环;
+		 		
+		 	}
+		 	alert(i);
+		 	
+		 }
+
+		 //九九乘法表
+		 for (var i=1;i<=9;i++) {
+				for (var j=1; j<=i;j++) {
+					document.write("<span style='display:inline-block; height:20px; width:66px;border:1px solid black;text-indent:8px;line-height:20px;margin:0 10px 10px 0;'>"+j+"x"+i+"="+i*j+"</span>");
+				}
+				
+				document.write("<br/>");
+			}
+
+			var i=1;
+			while(i<=9){
+				var j=1;
+				while(j<=i){
+					document.write(j+"*"+i+"="+i*j+"\t")
+					j++;
+				}
+				i++;
+				document.write("<br/>"); // 换行符\n不好使,
+			}
+			//输出文字的三种方法
+//			alert()
+//			console.log()
+//			document.write()
+
+				//for循环是load以后就立刻运行了,声明了其内部的监听事件;
+				//getElmentById是静态的,其指向的对象其实是其地址,获取的对象不会随后续的事件(如更改Id名称)而更改;
+				//oindex所调用的getElementsByTagName函数是动态的,执行的时候才会调用,此时for循环的i已经是5了,所以必须提前赋值存起来对应下标;
+				//见练习作业jslx02
+		/*	window.onload = function(){
+
+				var oDiv = document.getElementById("div");
+				var oUl = document.getElementById("ul");
+				var oLi = document.getElementsByTagName("li");
+				alert(oLi);
+				alert(oDiv);
+				
+				var newLi = document.createElement("li");
+				var textnode=document.createTextNode("我是li木头人");
+				newLi.appendChild(textnode);
+				oUl.insertBefore(newLi,oUl.childNodes[0]);
+				oLi[1].innerHTML= "<div id='div'>我是DIV</div>";
+				alert("oLi"+":"+oLi+"--"+oLi.length);
+				alert("oDiv"+":"+oDiv+"--");
+
+				
+		
+		}*/
+		var row = 3 //parseInt(prompt('请输入上半部行数'));
+		var n=1;
+		for (var i = 0; i <= row && i>=0 ; i+=n )
+		{
+			if ( i == row)
+			{
+				n=-1;
+			}
+			for (var j=0; j< i ; j++ )
+			{
+				if (j == 0){
+					document.write('<p>* &nbsp;');	
+				}else if (j == i-1){
+					document.write('* &nbsp;</p>');	
+				}else{
+					document.write('* &nbsp;');
+				}
+				
+			}
+		};
+
+		n=1;
+		for (var i = 0; i <= row && i>=0 ; i+=n )
+		{
+			if ( i == 0)
+			{
+				document.write('<hr />')
+			}
+			if ( i == row)
+			{
+				n=-1;
+			}
+			for (var j=0; j< i ; j++ )
+			{
+				if (j == 0){
+					document.write('<p>* &nbsp;');	
+				}else if (j == i-1){
+					document.write('* &nbsp;</p>');	
+				}else{
+					document.write('&nbsp;&nbsp;');
+				}
+				
+			}
+		}
+
+		var rowS, rowA, n=1;
+		for (var i = 0 ; i <= row && i>=0 ; i+=n )
+		{
+			if ( i == 0)
+			{
+				document.write('<hr />');
+				continue;
+			}
+			if ( i == row)
+			{
+				n=-n;
+			}
+			rowS = row -i;
+			rowA = row + i -1;
+			for (var j=1; j<= rowA ; j++ )
+			{
+				if (j<= rowS)
+				{
+					document.write('&nbsp; ');
+				}else{
+					document.write('*&nbsp;');
+				}
+				
+			}
+			document.write('<br />');
+		}
+		
+		n=1;
+		for (var i = 0 ; i <= row && i>=0 ; i+=n )
+		{
+			if ( i == 0)
+			{
+				document.write('<hr />');
+				continue;
+			}
+			if ( i == row)
+			{
+				n=-n;
+			}
+			rowS = row -i+1;
+			rowA = row + i -1;
+			for (var j=1; j<= rowA ; j++ )
+			{
+				if (j != rowS && j< rowA )
+				{
+					document.write('&nbsp; ');
+				}else{
+					document.write('*&nbsp;');
+				}
+				
+			}
+			document.write('<br />');
+		}
+
+
+        //递归实现
+        function linxin( n ,row){
+            row = row || 0;
+            if(row< n){
+               var text = '';
+               for(var i=0; i<= n + row ;i++){
+                    if ((i==( n + row)) || (i == (n-row)))
+                    {
+                        text += '*';
+                    } else {
+                        text +=' ';
+                    } 
+               }
+                row ++;
+                console.log(text);
+                linxin(n,row);
+                if(row < n){console.log(text)};
+           }else{
+               return;
+           }
+        }
+        linxin(6);
+		
+		
+		</script>
+	
+	</body>
+</html>

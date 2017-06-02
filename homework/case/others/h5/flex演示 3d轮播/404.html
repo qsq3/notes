@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>本宝宝不见了</title>
+  <style type="text/css">
+    *{ margin: 0; padding: 0; }
+    img{ display: inline-block; }
+    #box{ position: relative; width: 600px; height: 90px; margin: 100px auto; text-align: justify; }
+    #box h2{ position: absolute; top: 45px; left: 50%; margin-left: -162px; }
+    #box:after{ content: ""; display: inline-block; width: 100%; }
+    h2{ position: absolute;  }
+  </style>
+</head>
+<body>
+  <div id="box">
+    <img src="img/no.gif" />
+    <img src="img/no.gif" />
+    <h2>我下次在交吧<img src="img/4042.jpg" />3秒后带你回家</h2>
+  </div>
+  <script type="text/javascript">
+    var oTime = document.getElementsByTagName('h2')[0] , i = 3;
+    var timer = setInterval(function(){
+      i--;
+      if( i == 0 ){
+        clearInterval( timer );
+        window.close();
+      }
+      oTime.innerHTML = '我下次在交吧<img src="img/4042.jpg" />' + i + '秒后带你回家';
+    },1000);
+  </script>
+</body>
+</html>

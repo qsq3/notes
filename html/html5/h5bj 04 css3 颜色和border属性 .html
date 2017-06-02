@@ -1,0 +1,135 @@
+<!doctype html><!--声明当前文档为html文档-->
+<html lang="en"><!--语言为英语-->
+<head><!--头部-->
+	<meta charset="UTF-8"><!--字符编码：utf-8国际编码  gb2312中文编码-->
+	<meta name="Keywords" content="关键词">
+	<meta name="Description" content="描述">
+	<title>Document</title>
+	<style>/*css样式表的衣柜*/
+	#div{
+		width:200px;height:200px;
+		background:red;
+	}
+
+	</style>
+</head>
+<body><!--身体-->
+	<div id="div"></div>
+	<button id="btn">点击改变颜色</button>
+	<script>
+		var div = document.getElementById("div");
+		var btn = document.getElementById("btn");
+		//第一种  rgba随机颜色
+		function getRandomColor (){
+			var r = Math.floor(Math.random()*255);
+			var g = Math.floor(Math.random()*255);
+			var b = Math.floor(Math.random()*255);
+			var a = Math.random();
+			div.style.background = "rgba("+r+","+g+","+b+","+a+")";
+		};
+		
+		//第二种 十六进制
+		function getRandomColor(){
+			var colors = [0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f"];
+			//colors[15] = f 
+			var color = '';
+			for (var i=0;i<6 ;i++ ){
+				var n = Math.floor(Math.random()*16);
+				color += "" + colors[n];
+				if (i==5){
+					return "#"+color;
+				}
+			}
+		};
+
+		//第三种 十六进制和十进制转换
+		function getRandomColor(){
+			var color = Math.ceil(Math.random()*16777215).toString(16);
+			while (color.length<6){
+				color = "0" + color;
+			}
+			return "#"+color;
+		};
+
+		function getRandomColor(){
+			return "#"+(function(color){
+				return new Array(7-color.length).join("0")+color
+			})((Math.random()*0x1000000 << 0).toString(16))
+		};
+
+		function getRandomColor(){
+			return "#"+(function(color){
+				return new Array(7-color.length).join("0")+color
+			})((~~(Math.random()*(1<<24))).toString(16))
+		};
+        
+        //chorm 调试API高亮的边框
+        [].forEach.call($$("*"),function(a){
+
+          a.style.outline="1px solid #"+(~~(Math.random()*(1<<24))).toString(16)
+
+        })
+
+		CSS3新增颜色属性
+
+		色值: transparent 透明,IE8支持
+
+		opacity:元素透明度,IE8部分支持,用filter:alpha(opacity = )兼容,
+			低版本火狐需私有前缀-moz-opacity
+
+		RGBA:略,IE8-不支持
+		HSL色轮;渐变相关,IE8-不支持;
+		HSLA模式: (兼容性和rgba一样,IE8-不支持)
+			H : Hue(色调);0(或360):红色,120:绿色,240:蓝色;取值范围0-360;
+			S : Saturation(饱和度);取值范围:0.0%-100.0% ;
+			L : Lightness(亮度)(可以控制黑白色);取值范围:0.0%-100.0% ;
+			A : alpha 透明度;取值范围:0-1 ;
+		例: 
+		.box{background-color:hsla(0,100%,50%,1);}
+
+		新增边框属性
+		border-image:使用图片来填充边框
+			border-image-source: url(图片路径);none:没有图片;
+			border-image-slice: 27 27 27 27 fill; (可复合写法)
+				图片边框切割方式(向内偏移),按上右下左的顺序切4刀,分为9块,分配到盒子对应的角和边,
+					1、slice不允许设置负值，设置负值和设置大于盒子的高度或者宽度都被100%，（楼下有demo↓）
+					2、slice切过的区域有可能会重叠，如果右切和左切的值之和≥盒子的宽度，那么顶部区域(5号)和底部区域（7号）为空白（楼下有demo↓），反之亦然。
+; 。	
+			border-image-width: 27px; 图片的宽度(此宽度不计算在盒子模型的边框上,谷歌会自动加3px的边框宽度);
+			border-image-outset: 边框图像区域超出边框的量。	;
+			border-image-repeat: 图像边框是否应平铺(repeat)、平铺铺满(动态调整图片大小)(round)或拉伸(默认)(stretch)或平铺间距(动态调整图片间距,兼容性不好)(space);
+		复合写法顺序:	
+		border-image: source slice / width / outset repeat;
+		//复合属性中border-image-width虽然可不写,但是表现效果是必须的(除非有border-width支持),单位可设置,不加单位则是以border-width为基准的百分比.
+		例子:
+		div{ 
+			border:27px solid #000; 
+			border-image:url("images/border.png") 27 27 27 27 fill/ 27px 27px 27px 27px / 27px 27px 27px 27px round;
+		}
+		常用:
+		div{
+			border:27px solid #000;
+			border-image:url("images/border.png") 27 / 27px / 0 round;
+		}
+
+		三角箭头{
+			width:1px;height:1px;
+			border:10px solid transparent;
+			border-bottom-color:red;
+		}
+
+		border-radius:圆角
+		border-radius：八个值
+		border-radius：50% 八个值都为50% 
+		border-radius：50% 40% 左上角和右下角为50%  右上角和左下角40%(对角线原则)	
+		border-radius：50% 40% 30% 左上角50% 右上角和左下角40% 右下角30%	
+		border-radius：50% 40% 30% 10% 左上角50%  右上角40%  右下角30% 左下角40%
+		border-radius:50% 40% 30%/50% 40% 30%  X/Y 一个值为0的情况下,另一个对应值也失效
+		
+        火狐私有的边框多颜色:
+        border:3px solid red;
+        -moz-border-left-colors : blue yellow red ;
+		
+	</script>
+</body>
+</html>

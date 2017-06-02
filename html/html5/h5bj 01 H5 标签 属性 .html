@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>标题</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 禁止系统自动添加效果，直接显示设计原图;-->
+    <link rel="apple-touch-icon-precomposed" href="">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="" />
+    <link rel="shortcut icon" href="">
+    
+</head>
+<body>
+新增单位:
+px：绝对单位，页面按精确像素展示
+
+em：相对单位，基准点为父节点字体的大小，如果自身定义了font-size按自身来计算（浏览器默认字体是16px），整个页面内1em不是一个固定的值。
+
+rem：相对单位，可理解为”root em”, 相对根节点html的字体大小来计算，CSS3新加属性，chrome/firefox/IE9+支持。
+
+(另外需注意chrome强制最小字体为12号，即使设置成 10px 最终都会显示成 12px，当把html的font-size设置成10px,子节点rem的计算还是以12px为基准，所以网上很多文章提到的将html的font-size设为10方便计算不是那么可取)。
+
+rem在移动端应用可参考淘宝的页面http://m.taobao.com (html的font-size通过动态计算获取)
+
+页面基准320px(20px),html font-size值的计算：
+
+[javascript] view plain copy
+var ele=document.getElementsByTagName("html")[0],  
+     size=document.body.clientWidth/320*20;  
+ele.style.fontSize=size+"px"  
+注：需设置meta缩放比1:1
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+
+vw：viewpoint width，视窗宽度，1vw等于视窗宽度的1%。
+vh：viewpoint height，视窗高度，1vh等于视窗高度的1%。
+vmin：vw和vh中较小的那个。
+vmax：vw和vh中较大的那个。
+vw, vh, vmin, vmax：IE9+局部支持，chrome/firefox/safari/opera支持，iOS safari 8+支持，Android browser4.4+支持，chrome for android39支持
+
+
+其它的单位还有：
+%:百分比
+in:寸
+cm:厘米
+mm:毫米
+pt:point，大约1/72寸
+pc:pica，大约6pt，1/6寸
+
+
+ex：取当前作用效果的字体的x的高度，在无法确定x高度的情况下以0.5em计算(IE11及以下均不支持，firefox/chrome/safari/opera/ios safari/android browser4.4+等均需属性加么有前缀)
+ch:以节点所使用字体中的“0”字符为基准，找不到时为0.5em(ie10+,chrome31+,safair7.1+,opera26+,ios safari 7.1+,android browser4.4+支持)
+
+新增全局属性:
+contentEditable 该标签可编辑
+designMode  on  off(javascript)
+hidden
+spellcheck
+tabindex
+
+一.主体结构元素
+	结构性元素
+		section  标记定义一个区域 在WEB页面应用中，该元素也可以用于区域的章节表达
+		header   页面主体上的头部，必须注意与head 的区别
+		nav     专门用于菜单导航、链接导航的元素 嵌套比较松散
+		article  标记定义一篇文章 表示一篇文章的主体内容，一般为文字集中显示的区域
+		footer	  页面主体上的底部，
+
+		hgroup  标题组合 在最新的 HTML5.1 版中被废除了，
+		替代方式:
+		使用 header 标签包裹标题和描述
+		<header>
+			<h1 ><a name="toc-5"></a>潜行者m</h1>
+			<p>关注前端开发热爱简约设计。</p>
+		</header>
+
+	级块性元素
+		aside 表达注记、侧栏、摘要、插入的引用作为补充主体的内容
+		code  表示一段代码块
+		dialog  标记定义一个对话框(会话框)类似微信 用于表达人与人之间的对话，该元素还包括dt、dd组合元素 dt表示说话者，dd表示内容
+
+		在HTML5中 所有其他结构元素和级块元素都可以看成特殊的section元素,section相当于div但是他强调的是逻辑结构关系,另外，在HTML5中，div元素变成了一种容器，当使用CSS样式的时候，可以对这个容器进行一个总体的CSS样式的套用
+
+		article元素比section元素更强调独立性。即section元素强调分段或分块，而article强调独立性。具体来说，如果一块内容相对来说比较独立的、完整的时候，应该使用article元素，但是如果你想将一块内容分成几段的时候，应该使用section元素。
+
+		可以将所有页面的从属部分，譬如导航条、菜单、版权说明等包含一个统一的页面中，以便统一使用CSS样式来进行装饰。最后，关于section元素的使用禁忌总结如下：
+		1.不要将section元素用作设置样式的页面容器，那是div元素的工作。
+		2.如果article元素、aside元素或nav元素更符合使用条件，不要使用section元素。
+		3.不要为没有标题的内容区块使用section元素。			
+
+二.非主体结构元素/行内语义性元素:
+
+	WEB运用标签/交互性元素:
+	progress	进度条 max min step
+	<progress max='100' value='0'></progress>
+
+	meter 特定范围内的数值, 状态标签，温度等
+	//模拟温度计:
+	value<min 少出部分不显示,value>max :多出部分不显示;
+	value<low:红色,low<=value<high:黄色,high<=value:绿色,;optimum 适合值 绿色;
+	<meter min='10' low='32' high='40' max='100' value='30' optimum='37'></meter>
+
+	time	时间值
+
+	details 下拉列表 ;用来表示一段具体的内容，会有一定的内容和数据的关联，通过一些方法才可以显示
+	<details open>//open默认显示
+		<summary>标题</summary>
+		<p>详情简介部分</p>
+	</details>
+
+	dialog  标记定义一个对话框,不兼容;
+	<dialog>
+		<dt>甲:</dt>
+		<dd>'你好'</dd>
+		<dt>乙:</dt>
+		<dd>'好呀'</dd>
+
+	</dialog>
+
+	datagrid 	用来控制客户端数据与显示，可以动态及时更新哦！ 
+
+	menu 重新定义用户界面的右键菜单，配合commond或者menuitem使用
+		主要用于交互菜单（他是一个曾经废弃现在又重新启用的元素(谷歌不支持,火狐支持)
+	例:
+	<span contextmenu='con'>右键试试</span>
+	<menu type='context' style="" id='con' >
+		<menuitem style="" icon='img/tz.ico' label='右键菜单' onclick='alert(this.label)'></menuitem>
+	</menu>
+
+	ruby注释标签 标记定义 注释或音标,rt中内容默认显示文字上方并缩小,
+	rt 标记定义对ruby的注释内容文本
+	rp 支持ruby标签的浏览器不会显示rp包含的内容;用于不支持Ruby的浏览器显示,
+	例:
+	<ruby>我是汉字,需要显示拼音,
+		<rt>
+			<rp>(</rp>
+			wo shi han zi de pin yin
+			<rp>)</rp>
+		</rt>
+	</ruby>
+	
+	command 		处理命令按钮
+
+多媒体标签
+	video 页面中插入视频内容
+		video 元素允许多个 source 元素。source 元素可以链接不同的视频文件。浏览器将使用第一个可识别的格式：
+	audio 页面中插入音频内容
+	source 可定义多个媒体资源
+	embed 标签定义嵌入的内容，比如插件。
+	figure  标记定义一组媒体内容以及它们的标题	多个元素进行组合并展示的元素
+		figcaption 标签定义 figure 元素的标题。figure子元素，对figure进行解释说明
+
+绘图标签
+		  <canvas> 绘制图片
+		  <<svg></svg>> 矢量图
+	
+
+其他标签
+	<keygen> 标记定义表单里公钥
+	<mark> 标记定义有标记的文本,高亮标签 (默认为黄色背景)
+	<output> 标记定义一些输出类型,计算表单结果配合oninput事件
+	<time> 标记定义一个日期/时间 
+
+	重新定义的元素
+	dd:可以同details与figure一同使用，定义包含文本，dialog也可用
+	dt:可以同details与figure一同使用，汇总细节，dialog也可用
+	hr:表示主题结束，而不是水平线，虽然显示相同
+	menu:重新定义用户界面的菜单，配合commond或者menuitem使用
+	small:表示小字体，例如打印注释或者法律条款
+	strong:表示重要性而不是强调符号
+	
+	废除的标签:
+	纯表现
+	basefont，big，center，font, s，strike，tt，u；
+	会产生负面影响
+	frame，frameset，noframes；
+	产生混淆
+	acronym ，applet，isindex，dir。

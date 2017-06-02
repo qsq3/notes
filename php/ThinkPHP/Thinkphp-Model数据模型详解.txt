@@ -1,0 +1,146 @@
+Lnmpa，PHP，Mysql，分布式集群，分布式监控，大数据，高可用架构，前端相关等。
+欢迎各位加入“PHP学习交流群”：本群不定时发布实践案例和教程，以开源为荣。
+群号：17367285
+
+new Model()
+
+实现流程
+一、执行流程简单讲述：
+	1.class Model->
+		初始化方法 __construct()
+		$this->db = 接收Mysql对象;
+		
+		被Model类导入
+		2.class Db->
+			方法 getInstance()
+			return Mysql对象;
+			
+			被Db类导入
+			3.class Mysql extends Driver->
+				初始化方法 __construct()
+				设置数据库连接参数
+			
+
+二、详细流程：
+1.第一步 Model 初始化 时 ，使用$this->_db[$linkNum] 接收 DB 数据库操作类的实例化对象（使用$linkNum 为 索引 对不同数据库操作 ）
+ThinkPHP\Library\Think\Model.class.php
+class Model {
+	__construct()
+	{
+	
+		...
+		
+		$this->db(0,empty($this->connection)?$connection:$this->connection,true);
+		
+	}
+
+	db($linkNum='',$config='',$force=false) {
+	
+		...
+		
+		$this->_db[$linkNum]            =    Db::getInstance($config); ** 重点
+		
+		...
+		
+		// 切换数据库连接
+        $this->db   =    $this->_db[$linkNum]; ** 重点
+        $this->_after_db();
+        // 字段检测
+        if(!empty($this->name) && $this->autoCheckFields)    $this->_checkTableInfo();
+        return $this;
+	}
+}
+
+
+2.第二步 DB类 getInstance方法使用 单例模式 使 数据库连接 重复使用。减少不必要的消耗。（使用MD5 数据库配置 为 实例的hash，避免相同库的实例）
+ThinkPHP\Library\Think\Db.class.php
+class DB{
+	static getInstance($config=array()) {
+	
+		...
+		
+		$class  =   $options['lite']?  'Think\Db\Lite' :   'Think\\Db\\Driver\\'.ucwords($options['type']); * 找到当前配置数据库命名空间
+		
+		...
+		
+		self::$instance[$md5]   =   new $class($options); * 实例化数据库连接对象（例如 mysql驱动，即进行mysql数据连接）
+		
+		...
+		
+		return self::$instance; ** 重点：把mysql驱动类实例对象 Return 回到 Model 基类中。并用 $this->db 进行操作 Mysql驱动类中方法
+		
+	}
+}
+
+
+3.第三步 使用Mysql数据库驱动
+ThinkPHP\Library\Think\Db\Driver\Mysql.class.php 继承 （ ThinkPHP\Library\Think\Db\Driver.class.php ）
+
+	3.1 Mysql 驱动类 继承 抽象类 Driver 驱动类
+	class Mysql extends Driver{
+
+		...
+		
+	}
+
+	3.2 使用父类 Driver 初始化方法导入 数据库配置参数
+	abstract class Driver {
+	
+		...
+		
+		public function __construct($config=''){
+			if(!empty($config)) {
+				$this->config   =   array_merge($this->config,$config);
+				if(is_array($this->config['params'])){
+					$this->options  =   $this->config['params'] + $this->options;
+				}
+			}
+		}
+		
+		...
+		
+	}
+
+4. 第四步 执行SQL语句。在此时才真正的进行了数据库连接操作和SQL的执行。以上 1 - 3 步，只是进行实例化类对象和参数配置，并未进行对数据库的连接操作。
+
+	4.1 执行 select() 语句
+	$mod = new Model();
+	$mod->select()/add()/save() 等数据库操作时，主要使用：以上《2.第二步》DB 类回调的 Driver驱动类实例化对象中的 query方法 和 execute 方法
+	
+	public function select($options=array()) {
+	
+		...
+		
+		$result   = $this->query($sql,!empty($options['fetch_sql']) ? true : false); *? 在selct() 操作中使用了 query() 作为执行Sql方法。为什么呢？
+		
+		...
+		
+	}
+	
+	public function query($str,$fetchSql=false) {
+	
+        $this->initConnect(false); * 我们可以看到在执行时才进行了 数据库连接的操作
+        
+		...
+		
+		return $this->getResult();  *? 原因是 getResult 方法是专门为select 查询得到返回数据集而做的方法。所以使用query 进行插入，修改，删除等操作后 会导致报错。
+		return $result;
+	}
+	
+	public function execute($str,$fetchSql=false) {
+	
+        $this->initConnect(false);
+        
+		...
+	
+	}
+	
+	protected function initConnect($master=true) {
+        if(!empty($this->config['deploy']))
+            // 采用分布式数据库
+            $this->_linkID = $this->multiConnect($master);
+        else
+            // 默认单数据库
+            if ( !$this->_linkID ) $this->_linkID = $this->connect();
+    }
+	

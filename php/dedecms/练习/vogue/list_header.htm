@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<!--声明当前页面的编码集GBK,gb2312(中文编码)，UTF-8(国际编码)-->
+		<meta charset="UTF-8">
+		
+		<!--声明当前页面三要素-->
+		<meta name="Keywords" content="关键字,关键字">
+		<meta name="Description" content="描述">
+		<title>魔鬼训练班</title>
+		
+		<!--css样式 层叠样式表 化妆品 衣服-->
+		<link rel="icon" href="{dede:global.cfg_templets_skin/}/images/logo.png" />
+		<link rel="stylesheet" href="{dede:global.cfg_templets_skin/}/css/reset.css" />
+		<link rel="stylesheet" href="{dede:global.cfg_templets_skin/}/css/public.css" />
+		<link rel="stylesheet" href="{dede:global.cfg_templets_skin/}/css/article-list.css" />
+		<script type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/jquery-1.11.3.js"></script>
+		<!-- <script type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/index.js"></script> -->
+		<script type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/public.js"></script>
+	</head>
+	<body>
+		<!--header-Start-头部开始-->
+		<div style="display:none"><video id="Music"></video></div>
+		<base />
+		<div class="header">
+			<div class="siteNav-wrapper">
+				<div class="siteNav">
+					<a class="siteNav-icon icon-weibo" href="#"></a>
+					<div class="siteNav-icon icon-weixin">
+						<img src="images/zhuimeng.png" width="125" height="125" alt="" />
+					</div>
+					
+					<a class="siteNav-group" href="#">VOGUE移动</a>
+					<a class="siteNav-group" href="#">钛金卡</a>
+					<a class="siteNav-group fontColor" href="#">订阅</a>
+					<a class="siteNav-group fontColor" href="#"><span class="italic">Suzy Menkes</span>专栏</a>
+
+					<!--header-search Strat-头部搜索开始-->
+					<div class="head-search clearfix">
+						<form action="" method="get" id="">
+							<input type="text" />
+							<input class="search-submit" type="submit" value=""/>
+						</form>
+					</div>
+					<!--header-search End-头部搜索结束-->
+					
+					<!--header-Login Start-->
+					<div class="header-login-box">
+						<a class="login user-action" href="javascript:;">登录</a>
+						<a class="register user-action" href="">注册</a>
+					</div>
+					<!--header-Login End-->
+				</div>
+			</div>
+
+			<!--newNav-Start-->
+			<div  class="nav-wrapper">
+				<div class="nav clearfix">
+					<ul class="clearfix">
+						<li><a href="{dede:global.cfg_basehost/}{dede:global.cfg_cmspath/}" >首页</a></li>
+						<li><a href="" >潮流</a><span ></span></li>
+						<li><a href="" >时装</a><span ></span></li>
+						<li><a href="" >秀场</a><span ></span></li>
+						<li><a href="" >鞋包</a><span ></span></li>
+						<li><a href="" >美容</a><span ></span></li>
+						<li><a href="" >珠宝腕表</a><span ></span></li>
+						<li><a href="" >人物</a><span ></span></li>
+						<li><a href="" >生活</a><span ></span></li>
+					</ul>
+					
+					<div class="nav-part2">
+						<a class="last font-discovery" href="">发现</a>
+					</div>
+
+					<div class="nav-part2">
+						<a href="">杂志</a>
+						<a class="last" href="">VOGUE TV</a>
+					</div>
+					
+					<div class="nav-part3">
+						<a href="">论坛</a>
+						<a href="">博客</a>
+						<a href="">活动</a>
+						<a href="">品牌</a>
+					</div>
+					
+					<!--sideNav-Start-->
+					<div class="subnav">
+						<div class="sub-item sub-item1">
+						<div class="item-head"></div>
+						
+						<div class="item-body">
+							<div class="list">
+								<a href="" >风格示范</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >衣Q进阶</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >时尚街拍</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >发现社区</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >星秀场</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >时尚圈</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >时装专栏</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >时装大片</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >品牌新闻</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >精彩专题</a>
+								<span>&gt;</span>
+							</div> 
+						</div>
+
+						<div class="item-bottom"></div>
+					</div>
+
+					<div class="sub-item sub-item2">
+						<div class="item-head"></div>
+
+						<div class="item-body">
+							<div class="list">
+								<a href="" >秀场直击</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >趋势报告</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >秀场花絮</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >超模档案</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >设计师聚焦</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >Suzy Menkes 专栏</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >风格创造</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >V观时装</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >时装周报道</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >精彩专题</a>
+								<span>&gt;</span>
+							</div> 
+						</div>
+
+						<div class="item-bottom"></div>
+					</div>
+
+					<div class="sub-item sub-item3">
+						<div class="item-head"></div>
+						
+						<div class="item-body">
+							<div class="list">
+								<a href="" >2016春夏时装周</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >2015秋冬时装秀</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >巴黎时装发布</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >米兰时装发布</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >伦敦时装发布</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >纽约时装发布</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >婚纱秀场</a>
+								<span>&gt;</span>
+							</div>
+						</div>
+						
+						<div class="item-bottom"></div>
+					</div>
+
+					<div class="sub-item sub-item4">
+						<div class="item-head"></div>
+						
+						<div class="item-body">
+							<div class="list">
+								<a href="" >鞋包新宠</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >缪斯示范</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >点睛配</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >经典工艺</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >精彩专题</a>
+								<span>&gt;</span>
+							</div>
+						</div>
+
+						<div class="item-bottom"></div>
+					</div>
+
+					<div class="sub-item sub-item5">
+					
+						<div class="item-head"></div>
+						
+						<div class="item-body">
+							<div class="list">
+								<a href="" >护肤&美体</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >彩妆</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >瘦身</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >美发&香氛</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >最热新品</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >奢华评测</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >美人经</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >精彩专题</a>
+								<span>&gt;</span>
+							</div> 
+						</div>
+
+						<div class="item-bottom"></div>
+					</div>
+
+					<div class="sub-item sub-item6">
+						<div class="item-head"></div>
+						<div class="item-body">
+							<div class="list">
+								<a href="" >欲望珠宝</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >摩登腕表</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >新奇玩法</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >珍品盛视</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >行家视角</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >特色工艺</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >名人秀</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >行业动态</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >精彩专题</a>
+								<span>&gt;</span>
+							</div> 
+						</div>
+					
+						<div class="item-bottom"></div>
+					</div>
+
+					<div class="sub-item sub-item7">
+						<div class="item-head"></div>
+							
+						<div class="item-body">
+							<div class="list">
+								<a href="" >星话题</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >本周最佳着装</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >明星街拍</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >我们爱电影</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >派对盛事</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >观影专栏</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >圈内名流</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >VOGUE对话</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >精彩专题</a>
+								<span>&gt;</span>
+							</div> 
+						</div>
+					
+						<div class="item-bottom"></div>
+					</div>
+					
+					<div class="sub-item sub-item8">
+						<div class="item-head"></div>
+						
+						<div class="item-body">
+							<div class="list">
+								<a href="" >旅行</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >家居</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >美食</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >职场</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >CNI主题餐厅</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >文化艺术</a>
+								<span>&gt;</span>
+							</div>
+							<div class="list">
+								<a href="" >精彩专题</a>
+								<span>&gt;</span>
+							</div>
+						</div>
+
+						<div class="item-bottom"></div>
+					</div>
+
+					</div>
+					<!--sideNav-End-->
+				</div>
+			</div>
+			<!--newNav-End-->
+		</div>
+		<!--header-End-头部结束-->
+
+
+
+		<!-- 【楼梯式导航】 开始-->
+		<div id="StairNav">
+			
+			<!-- 【楼梯式导航】开始
+			<div class="SideNav">
+				<ul>
+					<li class="list"><span class="icon"></span><h3>潮流服饰</h3></li>
+					<li></li>
+					<li class="list"><span class="icon"></span><h3>发现社区</h3></li>
+					<li></li>
+					<li class="list"><span class="icon"></span><h3>时装行业</h3></li>
+					<li></li>
+					<li class="list"><span class="icon"></span><h3>秀场</h3></li>
+					<li></li>
+					<li class="list"><span class="icon"></span><h3>精彩专题</h3></li>
+					<li></li>
+					<li class="list"><span class="icon"></span><h3>美容保养</h3></li>
+					<li></li>
+					<li class="list"><span class="icon"></span><h3>名流派对</h3></li>
+					<li></li>
+					<li class="list"><span class="icon"></span><h3>珠宝腕表</h3></li>
+					<li></li>
+					<li class="list"><span class="icon"></span><h3>V趣味</h3></li>
+					<li></li>
+					<li class="list"><span class="icon"></span><h3>Vogue&nbsp;TV</h3></li>
+					<li></li>
+					<li class="list"><span class="icon"></span><h3>图库</h3></li>
+				</ul>
+			</div>
+			【楼梯式导航】结束 -->
+			
+			<!-- 【楼梯式菜单】 开始-->
+			<div class="StairMenu"></div>
+			<!-- 【楼梯式菜单】 结束-->
+
+			<!-- 【楼梯式订阅】 开始-->
+			<div class="Subscribe">
+				<a href="" class="Subscribe-expand">订阅杂志</a>
+			</div>
+			<!-- 【楼梯式订阅】 开始-->
+			
+			<!-- 【楼梯式微信】 开始-->
+			<div class="Weixin">
+				<div class="Weixin-expand">
+					<img src="images/zhuimeng.png" width="118" height="118" alt="">
+					<span>关注官方微信</span>
+				</div>
+			</div>
+			<!-- 【楼梯式微信】 开始-->
+
+			<!-- 【楼梯式返回顶部】 开始-->
+			<div class="to-top"></div>
+			<!-- 【楼梯式返回顶部】 开始-->
+
+		</div>
+		<!-- 【楼梯式导航】 结束-->

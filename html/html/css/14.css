@@ -1,0 +1,53 @@
+			#div1{
+				width: 200px;
+				height: 500px;
+				color: red;
+				/*background-color: #5BC0DE;
+				background-image: url(../img/html5.jpg);
+				background-repeat: no-repeat;
+				/*background-size:100% 100%;*
+
+				/*随页面滚动固定显示	初始值:scroll
+				background-attachment: fixed;
+				/*z-index:-1; z-index属性设置元素的堆叠顺序。拥有更高堆叠顺序的元素总是会处于堆叠顺序较低的元素的前面。*/
+
+				/*关键字left,right,center,top,bottom,或者px,百分比,
+				background-position: center center;*/
+						
+				/*精简写法
+				background: 颜色值  图片地址 是否平铺 水平偏移 垂直偏移*/
+				background: #5BC0DE url(../img/html5.jpg) no-repeat center bottom ;
+				
+				
+				/*3.边框,宽度 实线solid或虚线dashed 颜色, border-left,right,top,bottom;				
+				border-left:10px solid #CCC; */
+				
+				border: 5px dashed #ccc;
+				border-bottom: none;
+				
+				/*后代元素长度大于祖辈元素的处理方案
+				 *overflow 可能的值:
+				 * visible默认:内容不会被修剪,会出现在元素框外面
+				 * hidden:超出范围的内容会被隐藏
+				 * scroll:超出范围的内容会被修剪,但浏览器会显示滚动条以便观看其余内容
+				 * auto:如果内容超出范围,则浏览器会显示滚动条以便观看其余内容
+				 * inherit:从父元素继承overflow的属性值
+				 * */
+				overflow: auto;				
+			
+			}
+			
+			#div1 p{
+
+				background-color: #008000;
+				width: 300px;
+				height: 44px;
+				overflow: inherit;
+				
+			}
+			
+			
+			
+			#div2{
+				width: 50%;	
+			}

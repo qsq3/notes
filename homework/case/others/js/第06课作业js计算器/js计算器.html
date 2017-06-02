@@ -1,0 +1,186 @@
+<!--声明文档类型 html5-->
+<!doctype html>
+<!--最外层结构,声明语言为中文-->
+<html lang="zh-CN">
+	<!--头部------------------------------------------------------------------------------------------>
+	<head>
+		<!--编码方式,gbk,gb2312中文编码,UTF-8国际编码,注意html文档本身也有编码,需更改为一致-->
+		<meta charset="UTF-8"/>
+		<!--头部三要素------------------------------------------>
+		<!--网页标题-->
+		<title>JS练习02 计算器</title>
+		<!--网页关键字-->
+		<meta name="keywords" content=""/>
+		<!--网页描述,80个字以内-->
+		<meta name="discription" content=""/>
+
+		<!--作者------------------------------------------------>
+		<meta name="author" content="空山"/>
+		<!--编辑工具-->
+		<meta name="generator" content="Editplus"/>
+		<!--link链接标签-引入页头标题logo-->
+		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+		<style type="text/css">
+			#box {
+				text-align:center;
+				width:500px;
+				margin: 50px auto;
+				box-shadow: 0 0 15px #000;
+			}
+			#box input{
+				text-align:center;
+				width:80px;
+				height:40px;
+				margin:20px;
+				font:bold 20px/40px "Microsoft Yahei";
+			}
+
+			#box .equal{
+				width:41%;
+			}
+			#box #result{
+				width:89%;
+
+			}
+			#box #n0{
+				width:41%
+			}
+		</style>
+		<script type="text/javascript">
+			var num1 ,num2,q = 0,sign;
+			function clicknum(n){
+				var obox = document.getElementById("box");
+				var oresult = document.getElementById("result");
+				var onum = document.getElementsByClassName("num");
+				var nv = (n.value == "=")? "":n.value;
+				function res0(sign0){
+					switch(sign0){
+						case "+":sign =1;break;
+						case "-":sign =2;break;
+						case "x":sign =3;break;
+						case "÷":sign =4;break;
+						case "%":sign =5;break;
+						default:break;
+					}
+				};
+				if (n.className == "num"){
+					if(q == 0){
+						if(num1 == undefined ){
+							num1 = oresult.value = nv;
+						}else{	
+							num1 = oresult.value = num1 + nv;	
+						};
+					}else if(q == 3){
+						num1 = oresult.value = nv;
+						q =0;
+					}else{
+						q = 2;
+						if(num2 == undefined ){
+							num2 = nv;
+							oresult.value = oresult.value +" "+ nv;
+						}else{		
+							num2 = num2 + nv;	
+							oresult.value = oresult.value + nv;
+						};
+					}
+				}else if (n.className == "ope"){
+					if(q < 2 || q ==3){
+						oresult.value = num1 +" "+ nv;	
+						res0(nv);
+						q = 1;
+					}else if(q == 2){
+						switch(sign){
+							case 1:
+								num1 = Number(num1) + Number(num2);
+								oresult.value =num1 +" "+ nv;
+								break;
+							case 2:
+								num1 = Number(num1) - Number(num2);
+								oresult.value =num1 +" "+ nv;
+								break;
+							case 3:
+								num1 = Number(num1) * Number(num2);
+								oresult.value =num1 +" "+ nv;
+								break;
+							case 4:
+								num1 = Number(num1) / Number(num2);
+								oresult.value =num1 +" "+ nv;
+								break;
+							case 5:
+								num1 = Number(num1) % Number(num2);
+								oresult.value =num1 +" "+ nv;
+								break;
+							default:
+								break;
+						}
+						res0(nv);
+						num2 = undefined;
+						q = 1;	
+					}
+				}else if (n.className == "reset"){
+					obox.reset();
+					q=0;
+					num1 = num2 = sign = undefined;
+				}else if (n.className == "equal"){
+					if(q == 2){
+						switch(sign){
+							case 1:
+								num1 = Number(num1) + Number(num2);
+								oresult.value =num1;
+								break;
+							case 2:
+								num1 = Number(num1) - Number(num2);
+								oresult.value =num1;
+								break;
+							case 3:
+								num1 = Number(num1) * Number(num2);
+								oresult.value =num1;
+								break;
+							case 4:
+								num1 = Number(num1) / Number(num2);
+								oresult.value =num1;
+								break;
+							case 5:
+								num1 = Number(num1) % Number(num2);
+								oresult.value =num1 +" "+ nv;
+								break;
+							default:
+								break;
+						}
+						res0(nv);
+						num2 = undefined;
+						q = 3;
+					}
+				}
+
+
+			};
+		</script>
+		
+		
+	</head>
+	<!--身体标签----------------------------------------------------------------------------->
+	<body>
+		<form id="box">
+			<input type="text" class="" id="result" value="0"/>
+			<input type="button" class="num" value="1" onclick="clicknum(this);"/>
+			<input type="button" class="num" value="2" onclick="clicknum(this);"/>
+			<input type="button" class="num" value="3" onclick="clicknum(this);"/>
+			<input type="button" class="ope" id="plus" value="+" onclick="clicknum(this);"/>
+			<input type="button" class="num" value="4" onclick="clicknum(this);"/>
+			<input type="button" class="num" value="5" onclick="clicknum(this);"/>
+			<input type="button" class="num" value="6" onclick="clicknum(this);"/>
+			<input type="button" class="ope" value="-" onclick="clicknum(this);"/>
+			<input type="button" class="num" value="7" onclick="clicknum(this);"/>
+			<input type="button" class="num" value="8" onclick="clicknum(this);"/>
+			<input type="button" class="num" value="9" onclick="clicknum(this);"/>
+			<input type="button" class="ope" value="x" onclick="clicknum(this);"/>
+			<input type="button" class="num" id="n0" value="0" onclick="clicknum(this);"/>
+			<input type="button" class="num" value="." onclick="clicknum(this);"/> 
+			<input type="button" class="ope" value="÷" onclick="clicknum(this);"/>
+			<input type="button" class="equal" value="=" onclick="clicknum(this);"/>
+			<input type="reset" class="reset" value="c" onclick="clicknum(this);"/>
+			<input type="button" class="ope" value="%" onclick="clicknum(this);"/>
+		</form>
+	</body>
+</html>

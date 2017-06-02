@@ -1,0 +1,286 @@
+
+<!--声明文档类型 html5-->
+<!doctype html>
+<!--最外层结构,声明语言为中文-->
+<html lang="zh-CN">
+	<!--头部------------------------------------------------------------------------------------------>
+	<head>
+		<!--编码方式,gbk,gb2312中文编码,UTF-8国际编码,注意html文档本身也有编码,需更改为一致-->
+		<meta charset="UTF-8"/>
+		<!--头部三要素------------------------------------------>
+		<!--网页标题-->
+		<title></title>
+		<!--网页关键字-->
+		<meta name="keywords" content=""/>
+		<!--网页描述,80个字以内-->
+		<meta name="discription" content=""/>
+
+		<!--作者------------------------------------------------>
+		<meta name="author" content="空山"/>
+		<!--编辑工具-->
+		<meta name="generator" content="Editplus"/>
+		<!--link链接标签-引入页头标题logo-->
+		<link rel="short icon" href="http://res.tanzhouedu.com/tp/static/images/global/tz.ico"/>
+		
+		
+	</head>
+	<!--身体标签----------------------------------------------------------------------------->
+	<body>
+		<script type="text/javascript">
+			
+			//作用域  域：范围 
+
+			/*
+			JS代码执行顺序:  预解析((定义) var ->函数声明) ->再运行( 赋值和运算 );
+				1：定义
+					var   // 声明变量而不赋值，也就是undefined
+					function // 注意,是先 var 再 函数声明; 
+				2：执行  //包含赋值;
+			相同的变量名 : 赋值会覆盖函数声明.函数声明会覆盖var;
+            尽管 JavaScript 支持一对花括号创建的代码段，但是并不支持块级作用域； 而仅仅支持 函数作用域。
+
+
+
+ 执行环境及作用域
+
+执行环境(execution context) 是javascript最为重要的一个概念。执行环境定义了变量或函数有权访问的其他数据，决定了它们各自的行为。每个执行环境都有一个与之关联的变量对象(variable object)。
+
+全局执行环境处在最外围，在Web浏览器中我们认为是window对象，因此所有全局变量和函数都是作为window对象的属性和方法创建的。当某个执行环境中所有代码执行完毕后，该环境被销毁，保存在其中的所有变量或函数定义也随之销毁。
+
+每个函数都有自己的执行环境。当执行流进入一个函数时，函数的环境就会被推入到一个环境栈中。而在函数执行后，栈将其环境弹出，把控制权返回给之前的执行环境。
+
+当代码在一个环境中执行时，会创建变量对象的一个作用域链(scope chain)。作用域链的用途是保证对执行环境有权访问的变量和函数的有序访问。作用域链的前端始终是当前执行代码所在环境的变量对象，如果这个环境是函数，那么将其活动对象(activation object) 作为变量对象。这个活动对象即是arguments对象。作用域链的下一个变量对象则是下一个包含环境，这样一直延续到全局执行环境，那么全局执行环境的变量对象始终是最后一个对象。
+var color = "blue";
+function changeColor() {
+    var anotherColor = "red";
+    function swapColors() {
+         var tempColor = anotherColor;
+         anotherColor = color;
+         color = tempColor;
+         //这里可以访问color、anotherColor和tempColor
+    } 
+    //这里可以访问color和anotherColor，但不能访问tempColor
+    swapColors();  
+}
+//这里只能访问color
+changeColor();
+复制代码
+以上涉及到3个执行环境：全局环境、changeColor()和swapColors()局部环境。
+
+全局环境中有一个全局变量color和一个函数changeColor()。changeColor()局部环境中有一个名为antherColor变量和一个名为swapColors()函数。但是它们可以访问全局环境中的变量color。swapColors()中有一个变量tempColor，该变量只能在这个环境中访问到。无论全局环境和changeColor()都无权访问tempColor。在swapColors()内部则可以访问其他两个环境中的所有变量，因为那两个环境是它的父执行环境。
+
+4. 内存问题　　
+
+javascript具有自动垃圾收集机制。常用的垃圾收集方式是标记清除(mark-and-sweep)，就是当变量进入环境时，就将这个变量标记为“进入环境”。而当变量离开环境时，则将其标记为“离开环境”。垃圾收集器在运行时会找到那些被加上标记的变量并把它们视为准备删除的变量。最后，垃圾收集器完成内存清除工作，销毁那些带标记的值并回收它们所占用的内存空间。
+
+另一种垃圾收集算法是“引用计数”，这种算法思想是跟踪记录所有值被引用的次数。javascript引擎目前都不再使用这种算法。
+
+
+
+js的变量作用域是函数级的，在js里没有类似c语言的块级作用域。
+js编程环境的顶级作用域是window对象下的范围，称为全局作用域，全局作用域中的变量称为全局变量。
+js函数内的变量无法在函数外面访问，在函数内却可以访问函数外的变量，函数内的变量称为局部变量。
+js函数可以嵌套，多个函数的层层嵌套构成了多个作用域的层层嵌套，这称为js的作用域链。
+js作用域链的变量访问规则是：如果当前作用域内存在要访问的变量，则使用当前作用域的变量，否则到上一层作用域内寻找，直到全局作用域，如果找不到，则该变量为未声明。
+注意，变量的声明在代码解析期完成，如果当前作用域的变量的声明和赋值语句写在变量访问语句后面，js函数会认为当前作用域已经存在要访问的变量不再向上级作用域查找，但是，由于变量的赋值发生的代码运行期，访问的到变量将是undefined.
+注意区分调用函数的对象、函数声明时的语法环境、函数调用语句的语法环境这几个概念
+1、调用函数的对象(或者说函数的调用方式)决定了函数运行时函数体内的this指针指向谁
+2、函数声明时的语法环境决定了函数运行时的访问权限
+3、函数调用语句的语法环境决定了函数是否真的能够被调用及何时被调用(只有函数在某个语法环境是可见的，这个函数才能被调用)
+函数在运行时，产生一个 arguments 对象可以访问传入函数内的参数,arguments 有一个属性可以指向函数自身：arguments.callee.
+函数运行时，函数的 caller 属性可以指向本函数调用语句所在函数，比如，a函数在b函数体内被调用，则当a函数运行时，a.caller就指向了b函数，如果a 函数在全局环境中被调用则 a.caller=null
+arguments 和a.caller 的值与函数的每一次调用直接关联，他们都是在函数运行时产生的，只能在函数体内访问。
+IE8及IE8以下浏览器中，a 函数的内的 arguments.caller( IE9之后这个属性被移除) 指向 a.caller 执行时的 arguments （arguments.caller.callee === a.caller），
+
+七、字符串实时解析中的函数调用：eval()、new Function()、setTimeout()、setInterval()
+eval() 与 window.eval()
+复制代码 代码如下:
+
+function a(){
+    console.log('out of b');
+}
+function b(){
+    function a(){ console.log("in b"); }
+    var f = function(){ a(); };
+    eval('a()'); // in b
+    window.eval('a()'); //out of b ,ie 6\7\8 in b, ie 9 out of b
+    (new Function('a();'))(); //out of b
+    setTimeout('a()',1000);   // out of b 
+    setTimeout(f,2000);// in b
+}
+b(); 
+
+			*/
+			var nAdd, a=1;
+		  　function f1(){ 
+				var b=1;
+		　　　　nAdd=function(){a++;b++ }
+		　　　　f2 = function (){
+					a++;
+					b++;
+					console.log(a+"\t"+b);
+		　　　　}
+		　　　　return f2;
+		　　}
+			var result=f1(); // 运行了f1,新开作用域, 同时把result指向他的返回值f2;由于闭包内部函数f2被外部变量result引用,内存空间无法释放;
+			//此题的关键是 函数每次运行都会重新定义及赋值其子成员, 即改变nAdd的作用对象;与其说是作用域问题,不如说是闭包及内存释放问题;
+		　　nAdd();  //此时f1作用域内的子成员:a =3,b=3 , 
+			f2();  //:a =4,b=4 
+			result(); //a =5,b=5 
+			console.log(result === f2); //true
+			f1();   //运行函数,新开作用域;子成员虽然文本没变化,可引用地址已经完全不同;
+			f2();  //a =5,b=2  ,f1在前面运行的时候赋值,把f2的引用指向新的作用域了;
+			result(); //a =6,b=5  , result仍然指向原来的作用域; 局部变量b一直能被全局变量result调用,因此变量b所占用临时内存空间不会被释放;
+			console.log(result === f2); //false
+
+			//作用域的范围(或者说作用域链),在其定义的时候就确定了;
+			/*
+			var a ;
+			function fn(){
+				alert(a);
+			};
+			function fb( a ){
+				a =3;
+				alert(a);  // 3
+				return fn();
+			};
+			fb();          //undefined,作用域,在其定义的时候就确定了;*/
+			
+function a (){
+	var d = {d : 1};
+	return d;
+}
+var b = a(); 
+var c = a();
+alert(c==b)//false, 
+//由此看来,不仅仅是函数闭包,凡是引用类型的局部变量能被全局调用到的话,都会造成内存溢出
+
+在 call 和 apply 调用中，如果传入标量数据(true/false ，string，number)，函数运行时将把他们传入的基本数据包装成对象，然后把this指向包装后的对象,试试下面的代码。 
+    function a(){
+    alert(typeof this);
+     alert(this.constructor);
+     alert(this);
+    }
+    a.call(false);
+    a.call(100);
+    a.call('hello');
+
+甚至可以用这个特点来传参数，但是不建议这种用法：
+function a(){  alert(1+this); } //对象在运算中自动进行类型转换
+a.call(100); //101
+
+//利用闭包保存变量
+var oDiv = document.getElementsByTagName("div");
+for (var i=0; i< oDiv.length ; i++ )
+{	
+    (function(a){
+        oDiv[a].onclick = function(){ //只要局部函数在全局留下句柄,可能被调用,就会产生闭包;
+            this.innerHTML = a ;
+        }
+    })(i);
+}
+    //函数名传参:
+function fn (x){ alert(x)};
+
+obj.onclick = 'fn(x)';
+也可以:
+obj.onclick = function(x){fn(x)};
+
+		</script>
+　在JavaScript中，函数也是对象，实际上，JavaScript里一切都是对象。函数对象和其它对象一样，拥有可以通过代码访问的属性和一系列仅供JavaScript引擎访问的内部属性。其中一个内部属性是[[Scope]]，由ECMA-262标准第三版定义，该内部属性包含了函数被创建的作用域中对象的集合，这个集合被称为函数的作用域链，它决定了哪些数据能被函数访问。
+
+　　当一个函数创建后，它的作用域链会被创建此函数的作用域中可访问的数据对象填充。例如定义下面这样一个函数：
+
+function add(num1,num2) {
+    var sum = num1 + num2;
+    return sum;
+}
+　　在函数add创建时，它的作用域链中会填入一个全局对象，该全局对象包含了所有全局变量，如下图所示（注意：图片只例举了全部变量中的一部分）：
+
+
+JavaScript作用域链
+
+
+　　函数add的作用域将会在执行时用到。例如执行如下代码：
+
+1
+var total = add(5,10);
+　　执行此函数时会创建一个称为“运行期上下文(execution context)”的内部对象，运行期上下文定义了函数执行时的环境。每个运行期上下文都有自己的作用域链，用于标识符解析，当运行期上下文被创建时，而它的作用域链初始化为当前运行函数的[[Scope]]所包含的对象。
+
+　　这些值按照它们出现在函数中的顺序被复制到运行期上下文的作用域链中。它们共同组成了一个新的对象，叫“活动对象(activation object)”，该对象包含了函数的所有局部变量、命名参数、参数集合以及this，然后此对象会被推入作用域链的前端，当运行期上下文被销毁，活动对象也随之销毁。新的作用域链如下图所示：
+
+
+JavaScript作用域链
+
+
+　　在函数执行过程中，没遇到一个变量，都会经历一次标识符解析过程以决定从哪里获取和存储数据。该过程从作用域链头部，也就是从活动对象开始搜索，查找同名的标识符，如果找到了就使用这个标识符对应的变量，如果没找到继续搜索作用域链中的下一个对象，如果搜索完所有对象都未找到，则认为该标识符未定义。函数执行过程中，每个标识符都要经历这样的搜索过程。
+
+作用域链和代码优化
+
+　　从作用域链的结构可以看出，在运行期上下文的作用域链中，标识符所在的位置越深，读写速度就会越慢。如上图所示，因为全局变量总是存在于运行期上下文作用域链的最末端，因此在标识符解析的时候，查找全局变量是最慢的。所以，在编写代码的时候应尽量少使用全局变量，尽可能使用局部变量。一个好的经验法则是：如果一个跨作用域的对象被引用了一次以上，则先把它存储到局部变量里再使用。例如下面的代码：
+
+
+function changeColor(){
+    document.getElementById("btnChange").onclick=function(){
+        document.getElementById("targetCanvas").style.backgroundColor="red";
+    };
+}
+　　这个函数引用了两次全局变量document，查找该变量必须遍历整个作用域链，直到最后在全局对象中才能找到。这段代码可以重写如下：
+
+
+function changeColor(){
+    var doc=document;
+    doc.getElementById("btnChange").onclick=function(){
+        doc.getElementById("targetCanvas").style.backgroundColor="red";
+    };
+}
+　　这段代码比较简单，重写后不会显示出巨大的性能提升，但是如果程序中有大量的全局变量被从反复访问，那么重写后的代码性能会有显著改善。
+
+改变作用域链
+
+　　函数每次执行时对应的运行期上下文都是独一无二的，所以多次调用同一个函数就会导致创建多个运行期上下文，当函数执行完毕，执行上下文会被销毁。每一个运行期上下文都和一个作用域链关联。一般情况下，在运行期上下文运行的过程中，其作用域链只会被 with 语句和 catch 语句影响(严格模式下还有eval)。
+
+　　with语句是对象的快捷应用方式，用来避免书写重复代码。例如：
+
+function initUI(){
+    with(document){
+        var bd=body,
+            links=getElementsByTagName("a"),
+            i=0,
+            len=links.length;
+        while(i < len){
+            update(links[i++]);
+        }
+        getElementById("btnInit").onclick=function(){
+            doSomething();
+        };
+    }
+}
+　　这里使用width语句来避免多次书写document，看上去更高效，实际上产生了性能问题。
+
+　　当代码运行到with语句时，运行期上下文的作用域链临时被改变了。一个新的可变对象被创建，它包含了参数指定的对象的所有属性。这个对象将被推入作用域链的头部，这意味着函数的所有局部变量现在处于第二个作用域链对象中，因此访问代价更高了。如下图所示：
+
+
+JavaScript作用域链
+
+
+　　因此在程序中应避免使用with语句，在这个例子中，只要简单的把document存储在一个局部变量中就可以提升性能。
+
+　　另外一个会改变作用域链的是try-catch语句中的catch语句。当try代码块中发生错误时，执行过程会跳转到catch语句，然后把异常对象推入一个可变对象并置于作用域的头部。在catch代码块内部，函数的所有局部变量将会被放在第二个作用域链对象中。示例代码：
+
+try{
+    doSomething();
+}catch(ex){
+    alert(ex.message); //作用域链在此处改变
+}
+　　请注意，一旦catch语句执行完毕，作用域链机会返回到之前的状态。try-catch语句在代码调试和异常处理中非常有用，因此不建议完全避免。你可以通过优化代码来减少catch语句对性能的影响。一个很好的模式是将错误委托给一个函数处理，例如：
+
+
+try{
+    doSomething();
+}catch(ex){
+    handleError(ex); //委托给处理器方法
+}
+　　优化后的代码，handleError方法是catch子句中唯一执行的代码。该函数接收异常对象作为参数，这样你可以更加灵活和统一的处理错误。由于只执行一条语句，且没有局部变量的访问，作用域链的临时改变就不会影响代码性能了。
+	</body>
+</html>

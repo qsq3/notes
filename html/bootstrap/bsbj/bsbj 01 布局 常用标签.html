@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+		<!--响应式头文件 先引用jq,再引用bootstrap.js-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			*{
+				margin: 0;padding: 0;
+			}
+			
+.row,div[class*='col-md-8'] ,div[class*='col-md-4'] {
+				border: 1px solid red;
+			}
+			li{
+				list-style: none;
+			}
+			.workMenu .row{
+				border: 1px solid #000;
+				height:50px;
+			}
+		</style>
+	</head>
+	<body>
+		<!--col-xs-3 col-sm-3 col-md-3 col-lg-3-->
+		<!-- container-fluid:无边距 ; container:有边距-->
+		<div class="container-fluid">
+            <div class='row'>
+                <div class="page-header"> 文字: 类:</div>        
+                    text-*  <br />
+                <div class="page-header"> 文字: 标签 :</div>          
+                    <small>small 副标题</small>  <br />
+                    <em>em 斜体</em>    <br />
+                    <strong>strong 粗体,强调</strong> <br />
+                    <blockquote class='pull-right'> blockquote 引用 </blockquote>   <br />
+                    <code>code标注代码,内部文字红色,并且有红灰色背景</code>
+                    <pre> pre 标注代码, 灰色风格</pre>
+
+                        同样可以使用 google-code-prettify 进行代码高亮
+                        1.引入 jQuery 文件和 prettify.js 文件
+                        <script src="http://apps.bdimg.com/libs/prettify/r298/prettify.min.js" type="text/javascript"></script>
+                        2.调用 prettify.js 实现代码高亮
+                        在 body 标签上添加调用方法，如下：
+
+                        <bodyonload="prettyPrint()">
+                        </body>
+                        将你需要高亮显示的代码片断放在 pre 标记里，如下：
+
+                        <pre class="prettyprint">
+                            @*你的代码片断*@
+                        </pre>
+
+                    <style type="text/css">
+                    blockquote {
+                        background:#f9f9f9;
+                        border-left:10px solid #ccc;
+                        margin:1.5em 10px;
+                        padding:.5em 10px;
+                        quotes:"\201C""\201D""\2018""\2019";
+                        }
+                        blockquote::before {
+                        color:#ccc;
+                        content:open-quote;
+                        font-size:4em;
+                        line-height:.1em;
+                        margin-right:.25em;
+                        vertical-align:-.4em;
+                        }
+                        blockquote p {
+                        display:inline;
+                        }
+                    </style>
+            </div>
+
+            <div class="page-header "> 布局: 类:</div>        
+                   
+                     container-fluid:无边距 ; container:有边距 <br />
+                    row col-xs-3 col-sm-3 col-md-3 col-lg-3 <br />
+		             pull-left  左浮动,右浮动同理 <br />
+                    col-md-push-2  position: left,第2格;<br />
+                    col-md-pull-3 position: right,第3格;<br />
+            <hr />
+            
+            <div class="page-header "> 列表ul ol dl: 类:</div>        
+                   
+                     list-unstyled: 去除默认样式 ;  <br />
+                        horizontal系列是调整元素的 内部子元素 的对齐样式的,例如 <br />
+                     form-horizontal是调整内部水平样式的class 为control-label提供样式<br />
+                     dl-horizontal 调整dl内部元素对齐<br />
+            <hr />
+
+			<div class="row">
+				<div class="col-md-1 text-center col-md-push-3">
+                    
+                111
+                </div>
+				<div class="col-md-4 text-left">
+					问候语
+				</div>
+			</div>
+			<div class="row">
+				<div class="workMenu col-md-3 text-center">
+					<ul>
+						<li class="row">功能1</li>
+						<li class="row">功能2</li>
+						<li class="row">功能3</li>
+						<li class="row">功能4</li>
+						<li class="row">功能5</li>
+					</ul>
+				</div>
+				<div class="col-md-9 text-left">
+					<div class="row" style="border: 1px solid red;height:50px">
+						<div>导航区</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6" style="border: 1px solid red;height:200px">
+							左边功能内容区
+						</div>
+						<div class="col-md-6" style="border: 1px solid red;height:200px">
+							右边功能内容区
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

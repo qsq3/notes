@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>空山</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		
+	</head>
+	<body onload="alert('页面加载完成')">
+		<h1>JS的事件机制</h1>
+		<hr />
+
+		
+		<h3>页面的事件</h3>
+
+		<h3>表单的事件</h3>
+		<input value="focus" onfocus="alert('获取到焦点');"/>
+		<input value="blur" onblur="alert('丢失了焦点');"/>
+		<input value="onchange" onchange="alert('我被改变了');"/>
+		<select name="address" onchange="alert('城市改变了');">
+			<option value="1">北京</option>
+			<option value="2">上海</option>
+			<option value="3">广州</option>
+		</select>
+
+自适应屏幕的方法
+【lv5】上海 红霞 2016/6/15 22:41:12
+$(document).ready(function(){
+  $(window).bind('resize load', function(){
+    $("body").css("zoom", $(window).width() / 640);
+    $("body").css("display" , "block");
+ }); 
+});
+
+documentElement 和 body 相关说明：
+
+
+
+body是DOM对象里的body子节点，即 <body> 标签；
+
+documentElement 是整个节点树的根节点root，即<html> 标签；
+
+
+
+DOM把层次中的每一个对象都称之为节点，就是一个层次结构，你可以理解为一个树形结构，就像我们的目录一样，一个根目录，根目录下有子目录，子目录下还有子目录。
+
+以HTML超文本标记语言为例：整个文档的一个根就是,在DOM中可以使用document.documentElement来访问它，它就是整个节点树的根节点。而body是子节点，要访问到body标签，在脚本中应该写：document.body。
+
+
+	  <script type="text/javascript">
+		    
+			var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+			//var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0; //读取兼容写法;
+			
+			//scrollTop兼容
+			document.body.scrollTop = 500;  //只适用于chrome
+			document.documentElement.scrollTop = 500;    //其他, 赋值的兼容
+			//主要是这个scrollTop属性的不兼容,谷歌和火狐的document.body获得的都是body对象;documentElement获得的是HTML对象;
+
+			window.onscroll = function(){};  //滚动条事件
+			window.onresize = function(){};  //改变窗口大小;
+			
+			1、console.log 用于输出普通信息
+			2、console.info 用于输出提示性信息
+			3、console.error用于输出错误信息
+			4、console.warn用于输出警示信息
+			当需要统计一段代码的执行时间时，可以使用 console.time 方法与 console.timeEnd 
+			console.time();标记开始时间
+			console.timeEnd();标记结束时间，并将经过的毫秒数在控制台中输出。
+			这两个方法均使用一个参数及同一个值，参数值可以为任何【字符串】;
+			console.dir(console);
+	
+			
+			
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>操作DOM节点的属性</title>
+    <script type="text/javascript">
+
+     JS对HTML元素属性的操作
+    读、写过程
+    注意事项：	
+    1. 驼峰命名
+    2. class不能直接写，className
+    3. 操作的样式较多，一般用className代替
+    4. 相对路径地址、颜色值不能用来判断
+    5. input的type可以改变但是不兼容IE6 7 8
+    元素的浮动属性是不兼容IE6 7 8 （ie：styleFloat  非ie:cssFloat）
+    采用其他的方式规避这些不兼容的效果。
+    6. H5的 classList 属性
+    7. H5的 data属性
+
+<div id="box" data-xuanwu="玄武" data-xuanwu-name="玄武老师" class="div1 div2"></div>
+		var oDiv = document.querySelector("#box");
+		//console.log(oDiv.classList.value);
+		//console.log(oDiv.classList.length);
+		//oDiv.classList.add("div4","div5");
+		//oDiv.classList.remove("div2","div3");
+		//oDiv.classList.toggle("div4");
+		//oDiv.classList.toggle("div2");
+		console.log(oDiv.classList.contains("div4"));
+
+		console.log(oDiv.dataset.xuanwu);
+		console.log(oDiv.dataset.xuanwuName);
+
+
+        /*操作属性*/
+
+        function testAttr(){
+				
+            var uname = document.getElementById("uname");
+            //操作属性,第一种,对象.属性,不支持HTML自定义属性,只支持JS添加的自定义属性,设置获取的是JS内的属性值,合法属性JS内没有再从HTML内获取;
+            //第二种,支持自定义属性;但拿到自定义属性的值是标签内默认值,不会受第一种方式所赋值的改变,除非用set改变; 设置获取的是HTML内的属性值;
+
+            //自定义属性测试
+            uname.abc="123";//第一种,不支持HTML自定义属性,只支持JS添加的自定义属性
+            uname.setAttribute("abc","666");//第二种,和第一种不共通数据;
+            delete uname.abc;//第一种移除;返回值undefined
+            uname.removeAttribute("abc"); //第二种移除,set方法和HTML内自定义的属性,但不会影响第一种所添加的属性,返回值null;
+            console.log("abc"+" | "+ uname.abc+" | "+uname.getAttribute("abc"));
+
+            //合法属性测试
+            uname.value="123";//第一种 ,在本身不赋值的情况下可读取第二种所赋值;
+            uname.setAttribute("value","666");//第二种,只读取本身和HTML中的值;		
+            delete uname.value;//第一种移除,无法移除合法属性;也可移除任何对象中的自定义属性;
+            uname.removeAttribute("value"); //移除第二种set方法和HTML内中的值;
+            console.log("value"+" | "+ uname.value +" | "+uname.getAttribute("value"));
+        }
+
+        //获取的路径,颜色及复合属性不能拿来做判断, 获取的路径,颜色只能赋值;因为不同浏览器其默认颜色格式不同,路径为绝对路径,有全角符号和中文时会被url编码;
+        
+        /*操作样式
+        var oStyle = document.getElementByTagName("style")[0];
+        oStyle.innerHTML = "" //直接获取style节点,修改,不推荐;
+        oh1.style.cssText=""; //可清0;/*不推荐,+=不清空之前
+        oh1.className=""; //className方式, +=不清空之前,可清0,无法清非className添加的样式;
+        oh1.style.fontSize = "40px"; //.单个修改样式属性方法,常用,只能读取行内样式,所以一般用来写;
+
+        float的不兼容
+        oh1.style.styleFloat = "right";//IE678
+        oh1.style.cssFloat = "right";*///非IE
+        
+     
+        function showBorder(){
+            var gfs = document.getElementById("gfs");
+            //直接操作类
+            gfs.className = "ps"; //替换类名
+            //直接操作css
+            gfs.style.width ="120px";
+            //驼峰写法
+            gfs.style.backgroundColor = "pink";
+            //改变文本,
+             //innerHTML 设置或获取位于对象起始和结束标签内的HTML元素(不仅仅是文本)
+             //除了innerHTML,其他都是IE独有,有兼容问题;
+             //outerHTML 设置或获取对象及其内容的HTML元素(不仅仅是文本),包括其本身的标签;
+             //innerText 设置或获取位于对象起始和结束标签内的文本 ,写入时同样会覆盖掉子标签;
+             //outerText 设置(包括标签)或获取(不包括标签)对象的文本,写入时会覆盖其本身的标签;
+             //innerText不兼容FF 兼容写法element.innerText||element.textContent
+             
+            gfs.innerHTML="<h1>名花有主<h1>";
+            alert(gfs.outerHTML);
+            
+        };
+
+innerHTML & outerHTML：获取/设置的内容是包含标签的
+两者已经被HTML5纳入规范。
+innerText & outerText：获取/设置的内容是文本内容
+
+innerHTML在获取的时候：
+IE和Opera会将获取到的标签全部转换为大写形式。而苹果、谷歌、火狐会将内容按照原来的格式返回HTML，包括空格和缩进。（这也就意味着返回后的不同内容的DOM树结构截然不同）
+
+outerHTML：新建的DOM子树会替代掉“调用元素”
+IE4+、Safari4+、Chrome、Opera8+支持，FF7-不支持
+
+脚本限制：
+使用innerHTML插入<script>的时候，不会执行相应代码，但是在IE8以及之前版本浏览器中，能够执行，但需要满足一些执行条件： 
+
+1、必须指定defer属性；
+2、必须位于有作用域的元素之后（如一个div、一个文本节点等）
+使用innerHTML插入<style>的时候，正常浏览器能够执行样式，但是IE8以及之前浏览器中，不能够执行，因为IE8认为<style>是没有作用域的元素。
+如下元素不支持innerHTML：<col><colgroup><frameset><head><html><style><table><tbody><thead><tfoot><tr>
+在IE8以及之前的浏览器中，<title>也不支持innerHTML
+
+
+innerText：IE4+、Safari3+、Chrome、Opera8+支持；FF不支持，但是有textContent属性（DOM Level3规定的属性，支持程度：IE9+、Safari3+、Chrome、Opera10+）
+outerText：获取和innerHTML无区别，但是设置有区别（不只替换调用元素的子节点，还会替换整个元素）
+支持程度：IE4+、Safari3+、Chrome、Opera8+
+        
+兼容firefox
+
+if(typeof(HTMLElement)!="undefined" && !window.opera) 
+{ 
+HTMLElement.prototype.__defineGetter__("outerHTML",function() 
+{ 
+    var a=this.attributes, str="<"+this.tagName, i=0;for(;i<a.length;i++) 
+    if(a[i].specified) 
+        str+=" "+a[i].name+'="'+a[i].value+'"'; 
+    if(!this.canHaveChildren) 
+        return str+" />"; 
+    return str+">"+this.innerHTML+"</"+this.tagName+">"; 
+}); 
+HTMLElement.prototype.__defineSetter__("outerHTML",function(s) 
+{ 
+    var r = this.ownerDocument.createRange(); 
+    r.setStartBefore(this); 
+    var df = r.createContextualFragment(s); 
+    this.parentNode.replaceChild(df, this); 
+    return s; 
+}); 
+HTMLElement.prototype.__defineGetter__("canHaveChildren",function() 
+{ 
+    return !/^(area|base|basefont|col|frame|hr|img|br|input|isindex|link|meta|param)$/.test(this.tagName.toLowerCase()); 
+}); 
+} 
+
+        
+        function createChild(){
+            //获取父节点
+            var me = document.getElementById("gfs");
+            
+            //创建子节点
+            var child = document.createElement("input");
+            var t= document.createTextNode("CLICK ME");
+            me.appendChild(child); //插到后面;
+            child.type = "button";
+            child.id = "son";
+            child.value = "子节点" + Math.random();
+            child.onclick = function(){
+                //Node 表示节点。节点可以是元素节点、属性节点、文本节点。
+                //Element表示元素。元素可包含属性、其他元素或文本。
+                //Element继承了Node类，也就是说Element是Node多种类型中的一种，
+                //即当NodeType为1时Node即为ElementNode，
+                //另外Element扩展了Node，Element拥有id、class、children等属性。
+                
+                //删除子节点 ,这里Node和Element都可以
+                child.parentNode.removeChild(child);
+                //拷贝节点 cloneNode( deep ) ;克隆所有后代请把 deep 参数设置 true，否则默认是 false。
+                var node=document.getElementById("myList2").lastChild.cloneNode(true);
+                document.getElementById("myList1").appendChild(node);
+            };
+            //js中没有prepend,替代方法insertbefore第一个子元素, 然后插入到这个元素前
+            //添加子节点
+
+            
+        };
+        //replaceChild是系统方法,不能作为自定义函数名
+        function replaceChild1(){
+            //获取父节点
+            var me =document.getElementById("gfs");
+            //获取被替换的节点
+            var old = document.getElementById("son")
+            //创建新节点
+            var child = document.createElement("input");
+            child.type = "button";
+            child.value = "子节点" + Math.random();
+            //替换节点
+            me.replaceChild(child,old);
+        };
+        //插入子节点例子:
+        function insertBe (){
+            var oDiv = document.getElementById("div");
+            var oUl = document.getElementById("ul");
+            var oLi = document.getElementsByTagName("li");	
+            var newLi = document.createElement("li");
+            var textnode=document.createTextNode("我是li木头人");
+            newLi.appendChild(textnode);
+            oUl.insertBefore(newLi,oUl.children[0]);
+            oLi[0].innerHTML= "<div id='div'>我是DIV</div>";
+            console.log("oLi"+":"+oLi+"--"+ typeof oLi +" "+oLi.length+"\n"+"oDiv"+":"+oDiv+ typeof oDiv +oDiv.length);
+
+
+
+<input type="button" id="test" name="nn" value="EFG">   
+<div id = "t">bbb</div>   
+<div name="parent_test">   
+<div id = "t1"><span>aaa</span><span>bbb</span><span>ccc</span></div>   
+</div>   
+<div id = "fuzhi"><span>AAA</span><span>BBB</span><span>CCC</span></div><div id = "m"></div>   
+
+
+// 1:元素节点(对于元素节点，nodeName保存的始终是元素的标签名，而nodeValue的值始终是null)   
+var element_node=document.getElementById('test');   
+//alert(element_node.nodeType); // 1   
+//alert(element_node.nodeName); // input   
+//alert(element_node.nodeValue); // null   
+// 2:属性节点   
+var attr_node=document.getElementById('test').getAttributeNode('name');   
+alert(attr_node.nodeType); // 2   
+alert(attr_node.nodeName); // name 属性名   
+alert(attr_node.nodeValue); // nn 属性值   
+// 3:文本节点   
+var all=document.getElementById('t').firstChild;   
+//alert(all.nodeType); // 3   
+//alert(all.nodeName); // #text   
+//alert(all.nodeValue); // bbb 文本内容   
+var tt1=document.getElementById('t1');   
+//alert(tt1.firstChild.innerHTML); // aaa   
+//alert(tt1.lastChild.innerHTML); // ccc   
+var tt2=tt1.childNodes[1].innerHTML;   
+//alert(tt2);// bbb   
+var tt3=tt1.parentNode.getAttribute('name');   
+//alert(tt3); // parent_test   
+var tt4=tt1.childNodes[1];   
+//alert(tt4.nextSibling.innerHTML); // ccc   
+//alert(tt4.previousSibling.innerHTML); //aaa   
+// node方法的详细介绍   
+var tt5=document.getElementById('test');   
+var tt6=document.getElementById('t')   
+// hasChildNodes()方法：判定一个节点是否有子节点，有返回true，没有返回false   
+//alert(tt5.hasChildNodes()); // false   
+//alert(tt6.hasChildNodes()); // true   
+//removeChild()方法：去除一个节点   
+var first_node=document.getElementById('t1').firstChild;   
+//document.getElementById('t1').removeChild(first_node); // 删除第一个节点 aaa   
+// appendChild()方法：添加一个节点 如果文档树中已经存在该节点，则将它删除，然后在新位置插入。   
+var first_node=document.getElementById('t1').firstChild;   
+//document.getElementById('t1').appendChild(first_node); // aaa变成了最后一个节点   
+// replaceChild()方法：从文档树中删除（并返回）指定的子节点，用另一个节点来替换它   
+//insertBefore()方法：在指定节点的前面插入一个节点，如果已经存在，则删除原来的，然后在新位置插入。   
+var newd=document.createElement("span");   
+newd.innerHTML="eee";   
+//document.getElementById('t1').appendChild(newd); // 加载一个子节点   
+var oldd=document.getElementById('t1').lastChild;   
+//document.getElementById('t1').replaceChild(newd,oldd); // 替换最后一个子节点   
+//document.getElementById('t1').insertBefore(newd,oldd); // 在指定位置前面插入一个节点 aaabbbeeeccc   
+// cloneNode()方法：复制一个节点，该方法有一个参数，true表示同时复制所有的子节点，false表示近复制当前节点。   
+var what=document.getElementById('fuzhi').cloneNode(true).innerHTML;   
+document.getElementById('m').innerHTML=what;   			
+        
+        
+        }*/
+    
+</script>
+    
+    <style type="text/css">
+			
+    .ps {
+            border:15px double gold;
+        }
+		
+    </style>
+    
+</head>
+<body>
+    <h1>操作DOM节点的属性</h1>
+    <input type="button" id="" value="操作属性" onclick="testAttr();"/>
+
+    <input type="text" id="uname" value="zhangsan" abc="yuanshiabc"/>
+    <!-- <pre>
+        如果是节点原有属性,使用对象.属性的方法;
+        如果是新增属性,就使用get,set方法
+    </pre>
+    <hr />
+    <div id="gfs" onmouseover="showBorder()" onmouseout="hideBorder()" style="width:300px;height:200px;background:brown;">
+        <h3 id="gfsText">div1div1div1div1</h3>
+        <div id="div">
+            <ul id="ul">
+                <li>lili</li>
+                <li></li>
+                <li></li>
+            
+            </ul>
+        </div>
+    </div>
+    
+    <hr />
+    <input type="button" name="" id="" value="创建子节点" onclick="createChild()"/>
+    
+    <input type="button" name="" id="" value="替换子节点" onclick="replaceChild1()"/>
+    <input type="button" name="" id="" value="插入子节点" onclick="insertBe()"/> -->
+
+
+</body>
+</html>

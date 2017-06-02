@@ -1,0 +1,105 @@
+<!--声明文档类型 html5-->
+<!doctype html>
+<!--最外层结构,声明语言为中文-->
+<html lang="zh-cn">
+	<!--头部------------------------------------------------------------------------------------------------------------->
+	<head>
+		<!--编码方式,gbk,gb2312中文编码,UTF-8国际编码,注意html文档本身也有编码,需更改为一致-->
+		<meta charset="UTF-8"/>
+		<!--头部三要素------------------------------------------>
+		<!--网页标题-->
+		<title>潭州html+css第4节</title>
+		<!--网页关键字-->
+		<meta name="keywords" content=""/>
+		<!--网页描述,80个字以内-->
+		<meta name="discription" content=""/>
+
+		<!--作者------------------------------------------------>
+		<meta name="author" content="空山"/>
+		<!--编辑工具-->
+		<meta name="generator" content="Editplus"/>
+		<style type="text/css">
+			body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, textarea, p {
+				margin: 0px;
+				padding: 0px;
+				font-size: 16px;
+			}
+			ul{
+				list-style:none;
+			}
+			img,a{
+				border:none;
+				text-decoration:none;
+			}
+			.box{
+				position:relative;
+				margin:50px auto;
+				width:990px;
+				height:600px;
+				border: 2px solid red;
+				text-indent:2em;
+				overflow : hidden;
+				background: #aaa;
+				
+			}
+			.wrap_a{
+				width:100%;
+				height:100%;
+				background: #f60;
+			}
+			.wrap_b{
+				width:100%;
+				height:100%;
+				background: #ccc;
+				position:relative;
+				overflow:visible;
+			}
+			.wrap_c{
+
+				width:150%;
+				height:100%;
+				background: #0f6;
+				position:absolute;
+				top:20px;
+				left: -25%;
+			}
+			.wrap_d{
+
+				width:100%;
+				height:400px;
+				background: #0f6;
+				overflow:hidden;
+			}
+			.con{
+				margin-top: 100px;
+				width:600px;
+				height:200px;
+				background: #60f url('img/mm10.jpg');
+				color: #fff;
+			}
+			.con a{
+
+				color:white;
+			}	
+		
+		</style>
+	
+		
+	</head>
+	<!--身体标签---------------------------------------------------------------------------------------->
+	<body>
+		<div class='box'>
+			淘宝强制全屏思路:
+			先要外面套一个990px的
+			在里面套一个990px 给一个定位 让left：auto top:auto;
+			然后再包一个1920px的给定位 left给-465px；
+			再包一个ul给1920不给定位。。。然后超出隐藏
+			然而正常模式下无效
+			
+		</div>
+			
+			
+
+
+	</body>
+</html>

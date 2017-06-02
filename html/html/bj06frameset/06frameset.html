@@ -1,0 +1,46 @@
+<!--声明文档类型 html5-->
+<!doctype html>
+<!--最外层结构,声明语言为中文-->
+<html lang="zh-CN">
+	<!--头部------------------------------------------------------------------------------------------>
+	<head>
+		<!--编码方式,gbk,gb2312中文编码,UTF-8国际编码,注意html文档本身也有编码,需更改为一致-->
+		<meta charset="UTF-8"/>
+		<!--头部三要素------------------------------------------>
+		<!--网页标题-->
+		<title>06frameset头部</title>
+		<!--网页关键字-->
+		<meta name="keywords" content=""/>
+		<!--网页描述,80个字以内-->
+		<meta name="discription" content=""/>
+
+		<!--作者------------------------------------------------>
+		<meta name="author" content="空山"/>
+		<!--编辑工具-->
+		<meta name="generator" content="Editplus"/>
+		<!--link链接标签-引入页头标题logo-->
+		<link rel="short icon" href="http://res.tanzhouedu.com/tp/static/images/global/tz.ico"/>
+		
+		
+	</head>
+	<!--frameset外框标签,放在head后body前,cols列宽,rows行高,noresize边框不可拖动
+		框架内,子元素的宽高可视情况不设来继承父元素宽高,尤其是高度,方便扩展
+		frameborder="0" 后面可以设置0,1,显示边框
+		路径后跟#号可以指定跳转到锚位置
+		把所有frame页面的body背景设置为同一个图片,可以使用整体背景图片;
+		-->
+	<frameset cols="180px,*" frameborder="1">
+		<frame src="06framesetMenu.html" name="menu" noresize/>
+		<frameset rows="70px,*,50px"> 
+			<frame src="06framesetHeader.html" name="header" noresize/>
+			<frame src="04.html" name="main" noresize/>
+			<frame src="06framesetFooter.html" name="footer" noresize/>
+			<noframes>
+				<body>
+					
+					浏览器不支持frameset时所显示的内容
+				</body>
+			</noframes>
+		</frameset>
+	</frameset>
+</html>

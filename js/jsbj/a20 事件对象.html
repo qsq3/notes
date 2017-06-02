@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> </title>
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    
+</head>
+<body>
+    事件
+事件的概念
+如何给节点添加和移除事件(了解各自优缺点，建议使用推荐的方式来添加和移除事件)
+直接在HTML元素上添加、移除事件
+利用Javascript给节点添加、移除事件（了解不同浏览器的差异： Chrome， Firefox， IE（IE9之前和IE9之后不同））
+attachEvent和addEventListener（推荐）
+detachEvent和removeEventListener（推荐）
+通过修改节点事件属性：htmlElement.onclick = function(){};
+基本事件及处理函数中接受的参数：事件对象（Event）：
+基本事件
+鼠标事件：onmousedown, onmouseup, onclick, ondblclick, onmousemove, onmouseover, onmouseout
+键盘事件：onkeydown, onkeypress, onkeyup
+焦点事件：onfocus, onblur
+其他事件：onload, onchange
+Event对象的属性和方法
+target
+clientX, clientY, screenX, screenY
+altKey, shiftKey
+button
+keyCode(for IE), which(for Chrome, Firefox)
+preventDefault(): 通知浏览器不要执行与事件关联的默认动作
+stopPropagation(): 不再派发事件。
+
+
+事件的类型：
+    根据触发事件的事物和事件发生的对象,可将浏览器中发生的事件分成几个类型。DOM标准定义了以下几组事件：
+    
+    鼠标事件：用户使用鼠标操作时触发；
+    键盘事件：用户敲击键盘、输入时触发；
+    HTML事件：窗口发生变动或者发生特定的客户端-服务端交互时触发；
+    突变事件：底层的DOM结构发生改变时触发。
+    
+1、鼠标事件
+    click——用户点击鼠标左键时发生(如果右键也按下则不会发生)。如果焦点在按钮上、敲回车也会触发该事件。
+    dblclick——用户双击鼠标左键时发生(如果右键也按下则不会发生)。
+    mousedown——用户点击任意一个鼠标按钮时发生。
+    mouseout——鼠标指针在某个元素上、且用户正要将其移出元素的边界时发生。
+    mouseover——鼠标移出某个元素、到另一个元素上时发生。
+    mouseup——用户松开任意一个按钮时发生。
+    mousemove——鼠标在某个元素上时持续发生。
+    
+[html] view plain copy
+<html>  
+  <head>  
+    <title>事件类型</title>  
+    <script type="text/javascript">  
+        function testEvent(oEvent){  
+            var oText = document.getElementById("textId");   
+            oText.value += "\n"+oEvent.type;  
+        }  
+    </script>  
+  </head>  
+  <body>  
+    <div style="width: 100px; height: 100px; background-color: red;"  
+    onclick="testEvent(event);" ondblclick="testEvent(event);" onmouseover="testEvent(event);"    
+    onmousedown="testEvent(event);" onmousemove="testEvent(event);"  
+    onmouseout="testEvent(event);" onmouseup="testEvent(event);" >  
+    </div>    
+    <br/>  
+    <textarea id="textId"  rows="30" cols="100"></textarea>  
+    <br/>  
+  </body>  
+</html>  
+
+    使用mouseover和mouseout事件是改变页面上某个东西的外观的一个和流行的方法、例如下面的img、这是个非常简单的技巧、但经常用到：
+    <img src="image1.gif" onmouseover = "this.src='image2.gif'" onmouseout="this.src='image1.gif'"></img>
+    
+1.1事件的属性
+每个鼠标事件都会给以下event对象的属性填入值：
+坐标属性(例如clientX和clientY等)；
+type属性(事件的类型)；
+target(DOM)或srcElement(IE)属性；
+button属性(只在mousedown、mouseover、mouseout 、mousemove和mouseup事件中)。
+[html] view plain copy
+<html>  
+  <head>  
+    <title>事件类型</title>  
+    <script type="text/javascript">  
+        function testEvent(oEvent){  
+            var oText = document.getElementById("textId");   
+            oText.value += "\n"+oEvent.type;  
+                        oText.value += "\n at("+oEvent.clientX+","+oEvent.clientY+") 客户端浏览器坐标 ";  
+            oText.value += "\n at("+oEvent.screenX+","+oEvent.screenY+") 屏幕坐标 ";  
+            oText.value += "\n button down is "+oEvent.button;  
+            var keys = [];  
+            if(oEvent.shiftKey){  
+                keys.push("Shift");  
+            }  
+            if(oEvent.ctrlKey){  
+                keys.push("Ctrl");  
+            }  
+            if(oEvent.altKey){  
+                keys.push("Alt");  
+            }  
+            oText.value += "\n keys down are " +keys;  
+        }  
+    </script>  
+  </head>  
+  <body>  
+    <div style="width: 100px; height: 100px; background-color: red;"  
+    onclick="testEvent(event);" ondblclick="testEvent(event);" onmouseover="testEvent(event);"    
+    onmousedown="testEvent(event);" onmousemove="testEvent(event);"  
+    onmouseout="testEvent(event);" onmouseup="testEvent(event);" >  
+    </div>    
+    <br/>  
+    <textarea id="textId"  rows="30" cols="100"></textarea>  
+    <br/>  
+  </body>  
+</html>  
+
+这些属性都给出刚刚发生的鼠标事件的一些信息。
+1.2顺序
+    click事件触发前、会先发生mousedown事件、然后发生mouseup事件。类似的、要触发dblclick事件、在同一个目标上要按顺序发生以下事件：
+    mousedown;
+    mouseup;
+    click;
+    mousedown;
+    mouseup;
+    click;
+    dblclick;
+    移动鼠标从一个对象进入另一个对象时、先发生的事件是mouseout(发生在鼠标移出的那个对象)。接着、在这两个对象上都触发mousemove事件。最后、在鼠标进入的那个对象上触发mouseover事件。
+    
+
+    
+2键盘事件
+    键盘事件→用户对键盘的动作引发。有以下键盘事件：
+    keydown——用户在键盘上按下某按键时发生。一直按着某按键、它则会不断触发(Opera浏览器除外)。
+    keypress——用户按下一个按键、并产生一个字符时发生(也就是不管类似Shift、Alt、Ctrl之类的键)。一直按下按键时、它会持续发生。
+    keyup——用户释放按着的按键时发生。
+[html] view plain copy
+<html>  
+  <head>  
+    <title>事件类型</title>  
+    <script type="text/javascript">  
+        function testEventText(oEvent){  
+                var oText = document.getElementById("textId");   
+                oText.value += "\n"+oEvent.type;  
+        }  
+          
+    </script>  
+  </head>  
+  <body>        
+    <textarea id="textId"  rows="30" cols="100"></textarea>  
+    <br/>  
+    
+    <textarea id="textKeyId" onkeydown="testEventText(event);"   
+        onkeypress="testEventText(event);" onkeyup="testEventText(event);"  
+          rows="30" cols="100"></textarea>  
+    <br/>  
+  </body>  
+</html>  
+ 尽管素有的元素都支持键盘事件但在文本框中输入文字时、可最容易看见这些事件。
+    
+2.1事件的属性
+    keyCode属性；
+    charCode属性(仅DOM)；
+    target(DOM)或者srcElement(IE)属性；
+    shitKey、ctrlKey、altKey和metaKey(DOM)属性；
+   注意按下Shift、Ctrl、Alt或者Meta键时、除设置对应的属性为True外、还都会引发keydown事件。测试：
+[html] view plain copy
+<html>  
+  <head>  
+    <title>事件类型</title>  
+    <script type="text/javascript">  
+        function testEventText(oEvent){  
+                var oText = document.getElementById("textId");   
+                oText.value += "\n"+oEvent.type;  
+                oText.value += "\n keyCode is " + oEvent.keyCode;  
+                oText.value += "\n charCode is " + oEvent.charCode;  
+                var keys = [];  
+                if(oEvent.shiftKey){  
+                    keys.push("Shift");  
+                }  
+                if(oEvent.ctrlKey){  
+                    keys.push("Ctrl");  
+                }  
+                if(oEvent.altKey){  
+                    keys.push("Alt");  
+                }  
+                oText.value += "\n keys down are " +keys;  
+        }  
+          
+    </script>  
+  </head>  
+  <body>        
+    <textarea id="textId"  rows="30" cols="100"></textarea>  
+    <br/>  
+    
+    <textarea id="textKeyId" onkeydown="testEventText(event);"   
+        onkeypress="testEventText(event);" onkeyup="testEventText(event);"  
+          rows="30" cols="100"></textarea>  
+    <br/>  
+  </body>  
+</html>  
+ 
+
+2.2顺序
+    用户按一次某字符键时、会按以下顺序发生事件：
+    (1)keydown;
+    (1)keypress;
+    (2)keyup.
+    如果用户按一次某非字符键(例如Ctrl)、会按以下顺序发生事件：
+    (1)keydown;
+    (2)keyup.
+
+    如果用户按下一个字符键且不放、keydown和keypress事件将逐个持续(keydown先触发)触发、直到松开按键；如果用户按下非字符按键且不放、将只有keydown事件持续触发。
+    
+    
+    
+3、HTML事件
+load事件——页面完全载入后、在window对象上触发；所有的框架都载入后、在框架集上触发；<img/>完全载入后、在其上触发；或者对于<object/>元素、当其完全载入后在其上触发。
+unload事件——页面完全卸载后、在window对象上触发；所有的框架都卸载后、在框架集上触发；<img/>完全卸载后、在其上触发；或者对于<object/>元素、当其完全卸载、在其上触发。
+abor事件——用户停止下载过程时、如果<object/>对象还未完全载入、就在其上触发。
+error事件——javaScript脚本出错时、在window对象上触发；某个<img/>的指定图像无法载入时、在其上触发；或<object/>元素无法载入时触发；或者框架集中的一个或多个框架无法载入时触发。
+select事件——用户选择了文本框中的一个或多个字符时触发(<input/>或者<textarea/>)。
+change事件——文本框(<input/>或者<textarea/>)失去焦点时并且在它获取焦点后内容发生过改变时触发；某个<select/>元素的值发生改变时触发。
+submit事件——点击提交按钮(<input type="submit" />)时、在<form/>上触发。
+reset事件——点击重置按钮(<input type="reset" />)时、在<form/>上触发。
+resize事件——窗口或者框架的大小发生改变时触发。
+scroll事件——用户在任何带滚动条的元素上卷动它时触发。<body/>元素包含载入页面的滚动条。
+focus事件——任何元素或者窗口本身获取焦点时(用户点击它、Tab键切换到它或者任何其他与它交互的手段)触发。
+blur事件——任何元素或者窗口本身失去焦点时触发。
+HTML事件下篇详细在写......
+</body>
+</html>

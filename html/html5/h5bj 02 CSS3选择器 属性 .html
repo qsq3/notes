@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+ </head>
+ <body>
+	复习css 选择器
+	p + p 相邻兄弟标签选择器
+	p ~ p 后续兄弟标签选择器(所有后续同级P标签)
+	伪元素选择器：
+	::first-line 匹配文本块的首行
+	::first-letter 选择文本块的首字母 (要求块元素)
+	::before,::after在元素内容前面、后面添加内容(相当于行内元素)
+	案例：css计数器
+	div{
+		margin:50px;
+		counter-reset:count1 1 count2;/*设置计数器的名称(自定义名字)*/
+		/*count1这个名称的初始值是1，count2初始值为默认值0 */
+	}
+	p{
+		width:200px;height:50px;border:2px solid red;
+		/*counter-reset:count2;*/
+	}
+	p:before{
+		content:counter(count1) "." counter(count2);/*调用计数器*/
+		counter-increment:count1 0 count2 1;/*让计数器的数值自加1 */
+		/*count1 0 count1这个计数器的增值为0，count2 1 count2这个计数器的增值为1*/
+	}
+	count1 , count2 为可自定义的计数器ID;
+
+	伪类选择器：
+
+	CSS3结构选择器
+	:nth-child 选择指定索引处的子元素
+	:nth-child(n) 父元素下的第n个子元素
+	:nth-child(odd)奇数子元素(同nth-child(2n-1))
+	:nth-child(even)偶数子元素(同nth-child(2n))
+	:nth-child(an+b)公式
+	:nth-last-child(n) 倒数第n个子元素
+	:nth-of-type(n) 父元素下的第n个指定类型的子元素
+	:nth-last-of-type 父元素下的倒数第n个指定类型的子元素
+	:first-child 选择父元素下的第一个子元素
+	:last-child 选择父元素下的最后一个子元素
+	:only-child 选择父元素下唯一的子元素
+	:only-of-type选择父元素下指定类型的唯一子元素
+	:root 选择文档的根目录，返回html
+
+	CSS3属性选择器
+	E[attr] 属性名，不确定具体属性值
+	E[attr="value"] 指定属性名，并指定其对应属性值
+	E[attr ~="value"] 指定属性名，其具有多个属性值空格隔开，并包含value值
+	E[attr ^= "value"] 指定属性名，属性值以value开头
+	E[attr $="value"] 指定属性名，属性值以value结束
+	E[attr *="value"] 指定了属性名，属性值中包含了value
+	E[attr |= "value"] 指定属性名，属性值以value-开头 
+
+	UI伪类选择器：
+	:enabled 选择启用状态元素
+	:disabled 选择禁用状态元素
+	:checked 选择被选中的input元素（单选按钮或复选框）
+	:default 选择默认元素
+	:valid、invalid 根据输入验证选择有效或无效的input元素(配合标签内的repuired属性)
+	:repuired、optional 根据是否允许:required属性选择input元素(配合标签内的repuired属性)
+	:in-range、out-of-range 选择指定范围之内或者之外受限的元素(配合标签内的min,max属性)
+	
+
+	动态伪类选择器：
+	 :link 选择链接元素
+	 :visited 选择用户以访问的元素
+	 :hover 鼠标悬停其上的元素
+	 :ative 鼠标点击时触发的事件
+	 :focus 当前获取焦点的元素
+
+	 其他伪类选择器：
+	 :not(选择器) 对括号内选择器的选择取反
+	 :lang(目标语言) 基于lang全局属性的元素
+	 :target url片段标识符指向的元素
+	 :empty选择内容为空的元素
+	 :selection 鼠标光标选择元素内容
+
+     注意 a button label这类带事件响应机制的标签不能互相嵌套,嵌套的父元素会失去响应效果;
+ </body>
+</html>

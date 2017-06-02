@@ -1,0 +1,225 @@
+body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, textarea, p{
+	margin: 0;
+	padding: 0;
+	border: none;
+	font-size:13px;
+}
+ul{
+	list-style: none;
+}
+img,a{
+	border: none;
+	text-decoration: none;
+}
+a{
+	text-decoration: none;
+	color: blue;
+	text-align: center;}
+
+#header{
+	width:100%;
+	height: 452px;
+	background: url(../img/21/top_bg.jpg) repeat-x;
+}
+#main{background: url(../img/21/main_top_bg.jpg) repeat-x;
+	}
+#main1{
+	background: url(../img/21/main1_bottom_bg.jpg) center bottom repeat-x;
+}
+#bottom{ height: 100px;
+	background: url(../img/21/footer_bg.jpg) repeat-x;
+}
+.auto{ width: 980px;margin: 0 auto;}
+
+#top{height: 75px;padding: 25px 0 0 55px;}
+#top .logo{width: 291px;float: left;}
+#logotxt{font-size:14px; color: #CCCCCC; float:right;}
+#top .search{width:280px; height: 50px;float: right;margin: 13px 32px 0px 0px;
+}
+#top .search .text{width: 180px;height: 15px;background: #161B1F;color: white;border: 1px solid #0B0E10;padding: 5px;
+}
+#top .search .submit{width: 80px;height: 28px;
+					cursor:pointer; /*鼠标移上去变手形*/
+}
+
+#nav{height: 50px;}
+#nav ul li{
+	float: left;
+}
+
+#nav ul li a{ 
+	display: block;
+    height: 27px;
+    line-height: 27px;
+    width: 103px;
+    color: black;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-right: 10px;
+    text-align: center;
+    }
+#nav ul li a:hover{    
+    background: url(../img/21/hover.png);
+    color: white;
+}
+
+#runplay{height: 300px; }
+#runplay .rpleft{ 
+	width: 300px;
+	float: left;
+	margin: 50px 0 0 40px;
+	display:inline;	
+	/*解决IE6双倍边距,但是会把块变为内联元素,备注inline-block不行。 
+	 * 3、说明：这是因为块级对象默认的display属性值是block，当设置了浮动的同时，还设置了
+	 * 它的外边距就会出现这种情况。
+	 * 也许你会问：“为什么第二个对象和第一个对象之间就不存在双倍边距的BUG”？
+	 * 因为浮动都有其相对应的对象，只有相对于其父对象的浮动对象才会出现这样的问题。
+	 * 第一个对象是相对父对象的，而第二个对象是相对第一个对象的，所以第二个对象在设置后不会出现问题。
+	 * 另外在一些特殊布局中，可能需要组合使用display:block;和display:inline;
+	 * 才能达到预期效果。当然最坏的情况下，我们就可以使用
+		"margin:10px 0 0 10px;*margin:10px 0 0 10px;_margin:10px 0 0 5px"，
+		这种“标准属性;*IE7识别属性;_IE6识别属性”HACK方式解决。 
+		4、总结：这个现象仅当块级对象设置了浮动属性后才会出现，内联对象（行级对象）不会出现此问题。
+		并且只有设置左边距和右边距的值才会出问题，上下边距不会出现问题。*/
+}
+#runplay .rpright{
+	width: 300px;
+	display: inline;		
+	float:left;	
+	margin: 50px 0 0 100px;
+	color: white;
+	}
+#runplay .rpright dl dt h3{
+	font-size: 24px;
+	font-weight: bold;
+	color: white;
+	margin-bottom: 24px;
+	}
+#runplay .rpright dl dd{
+	font-size: 16px;
+	color: white;
+	}	
+	
+#runplay .rpright dl dd a {
+	display: block;
+	width: 103px;
+	height: 27px;
+	font-size: 16px;
+	text-align: center;
+	line-height: 27px;
+	color: white;
+	background: url(../img/21/default.png);
+	font-weight: bold;
+	margin-top: 20px;	
+}
+#runplay .rpright dl dd a:hover{
+	background: url(../img/21/hover.png);
+}
+
+#wrap{
+	height: 960px;
+}
+
+/*主体左侧*/
+#mlf{
+	width:660px;
+	float:left;
+}
+
+.m_txt1{
+	margin: 23px 40px;
+}
+
+.m_txt2{
+		font-size: 24px;
+		font-weight: bold;
+}
+
+#ml_pic ul li{
+	float: left;
+    width: 270px;
+    height: 170px;
+    background: #F1F2EA;
+    border: 1px solid #D5D7CA;
+    margin: 25px 0px 25px 40px;
+}
+
+/*#ml_pic ul li a{
+	display:block;
+	width: 270px;
+    height: 170px;
+	background: url(../img/21/image_04.jpg) no-repeat;
+
+}*/
+
+#ml_pic ul li p {
+    font-size: 16px;
+    color: black;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+#ml_pic a#more{
+	width: 103px;
+	height: 27px;
+	display: block;
+	font-size:18px;
+	color:white;
+	font-weight: bold;
+	float: left;
+	margin:0 0 0 40px;
+	background: url(../img/21/default.png);
+	text-align: center;
+	line-height:27px;
+}
+#ml_pic a#more:hover{
+	background: url(../img/21/hover.png);
+}
+
+#mrt{
+	float: left;
+	width: 260px;
+	margin: 24px 0 0 60px;
+}
+#mrt #mrt_top1{
+	font-size: 24px;
+	margin-bottom: 20px;
+}
+#mrt dl dt{
+	margin-top: 10px ;
+}
+#mrt dl dd{
+	padding-bottom: 30px ;
+	border-bottom: 1px dashed #BBBBBB;
+}
+#mrt ul li{
+	height: 64px;
+	margin: 10px 0;
+	background: url(../img/21/twitter.png) no-repeat center right;
+}
+
+#mrt ul li p{
+	font-size: 34px;
+	padding: 5px 0;
+	}
+#mrt ul li span{
+	font-size: 20px;
+	padding: 5px;
+}
+
+#bottom #bottom1{
+	width: 300px;
+	color: white;
+	margin: 0px auto;
+	padding: 15px 0 0 100px ;
+	}
+
+#bottom2 a{
+		color: white;
+	font-size: 14px;
+}
+
+#bottom3 a{
+	color: white;
+	font-size: 14px;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <style>
+    	*{padding: 0;margin: 0;}
+    	div{margin: 100px 0 0 400px;}
+		/*我用了 '>' 选择器哦！！！虽然只有一个*/
+    	div>a{padding: 5px 12px;background: #66B3FF;text-align: center;border-radius:20px;
+    	font-size:30px;color: #fff;display: inline-block;text-decoration: none;position: relative;}
+    </style>
+</head>
+<body>
+	<div>
+		<a id='btn' href="javascript:void(0)">Click Me</a>		
+	</div>
+</body>
+<script src="js/jquery-1.11.3.min.js"></script>
+<script>
+	$(function(){
+		$('#btn').click(function(e){
+			var now = 0;
+			if( new Date() - now > 1500 ){
+				now = new Date();
+				e = e || event ;
+				var x = e.clientX;
+				var y = e.clientY;
+				for( var i = 0 ; i < 30 ; i++){
+					var html = "<span class='new' style='transition:1s;border-radius:20px;position:absolute;display:inline-block;background:#8080C0;width:20px;height:20px;'></span>";
+					$('#btn').append(html);
+				}
+				
+				//生成在鼠标位置
+				$('.new').each(function(){
+					$(this).css({
+						'left' : x-400,
+						'top' : y-100
+					});
+				});
+				
+				$('.new').each(function(i){
+					$('.new').eq(i).animate({
+						'left' : (300-(Math.random()*600))+'px' ,
+						'top' : (300-(Math.random()*600))+'px',
+						'opacity' : 0
+					},50);
+				});
+				
+				//清理
+				setTimeout(function(){
+					$('.new').remove();
+				},700);
+			}
+		});
+	})
+</script>
+
+</html>

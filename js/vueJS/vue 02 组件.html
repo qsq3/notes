@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>vue 02 组件</title>
+  <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css" />
+  <script type="text/javascript" src="js/vue.2.1.3.js"></script>
+  <style type="text/css">
+    .success{
+      color: green;
+    }
+    textarea{
+      min-width:  80%;
+    }
+  </style>
+</head>
+<body class="container">
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      
+    </ul>
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      组件<code>Component</code>
+    </div>
+  </div>
+  <div class="panel-body" id="app0">
+    <ul>
+      <li>
+        <header>使用组件</header>
+        <ol>
+          <li>
+            <my-component1 parent-prop="父组件数据,注意HTML不区分大小写,JS中使用驼峰写法的属性这里用 - 隔开, 但是如果使用字符串模版，可以不用在意这些限制。"></my-component1>
+          </li>
+          <li>
+            <my-component2></my-component2>
+          </li>
+          <li>
+            DOM 模版解析 <code>ul ， ol， table ， select</code>限制了能被包裹的元素;
+            变通的方案是使用特殊的 <code>is</code> 属性
+            <table>
+              <tr is="my-component1" :parent-prop="myComponent1Msg"></tr>
+            </table>
+            注意,这些限制将不适用：
+            <ul>
+              <li>&lt;script type="text/x-template"></li>
+              <li>JavaScript内联模版字符串</li>
+              <li>.vue 组件</li>
+            </ul>
+            因此，有必要的话可使用字符串模版
+          </li>
+          <li>
+            <header><code>data</code> 必须是函数</header>
+          </li>
+          <li>
+            在 Vue.js 中，父子组件的关系可以总结为 props down, events up 。父组件通过 props 向下传递数据给子组件，子组件通过 events 给父组件发送消息。
+          </li>
+        </ol>
+      </li>
+      <li>
+        <header>Props</header>
+        <ol>
+          <li>
+            <code>prop</code>是父组件用来传递数据的一个自定义属性。子组件需要显式地用 props 选项 声明 “prop”<br>
+          </li>
+          <li>字面量语法 prop vs 动态语法 :prop </li>
+          <li>prop 是单向绑定的：当父组件的属性变化时，将传导给子组件，但是不会反过来。</li>
+          <li>注意在 JavaScript 中对象和数组是引用类型，指向同一个内存空间，如果 prop 是一个对象或数组，在子组件内部改变它会影响父组件的状态。</li>
+          <li>子组件可以用 this.$parent 访问它的父组件。根实例的后代可以用 this.$root访问它。父组件有一个数组 this.$children，包含它所有的子元素。</li>
+          <li>
+            <header>Prop 验证</header>
+            <div>vuejs2.0中，任何试图在组件内修改通过props传入的父组件数据都被认为是anti-pattern的，报以下错误
+              <pre>
+                Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders
+              </pre>
+            </div>
+            <my-component4 :prop-c="myComponent1Msg" v-on:changemsg="changemsg"><my-component4/>
+          </li>
+        </ol>
+      </li>
+    </ul>
+  </div>
+  <script type="text/javascript">
+    var data = { counter: 0 };
+
+    //注册全局组件
+    Vue.component('my-component1', {
+      template: '<button v-on:click="counter += 1">注册全局组件 {{ counter }} {{ parentProp }}</button>',
+
+      //声明 props
+      props : ['parentProp'],
+
+      //声明 data
+      data: function () {
+        return data;
+        //return  {counter : 0}
+      }
+    });
+
+    //验证
+    Vue.component('my-component4', {
+      template: '<div>\
+                  <input type="text"\
+                    :value="propC" \
+                    @input="updatemsg($event.target.value)" /> \
+                  <p>{{propC}}</p>\
+                </div>',
+      methods: {
+        updatemsg : function(value){
+          this.$emit('changemsg',value);
+        },
+      },
+      props: 
+      {
+        // 基础类型检测 （`null` 意思是任何类型都可以）
+        propA: Number,
+        // 多种类型
+        propB: [String, Number],
+        // 必传且是字符串
+        propC: {
+          type: String,
+          required: true
+        },
+        // 数字，有默认值
+        propD: {
+          type: Number,
+          default: 100
+        },
+        // 数组／对象的默认值应当由一个工厂函数返回
+        propE: {
+          type: Object,
+          default: function () {
+            return { message: 'hello' }
+          }
+        },
+        // 自定义验证函数
+        propF: {
+          validator: function (value) {
+            return value > 10
+          }
+        }
+      }
+    })
+
+    var app0 = new Vue({
+      el : '#app0',
+
+      data: {
+        myComponent1Msg : "这是父组件数据,使用v-bind动态绑定"
+      },
+
+      methods : {
+        changemsg : function(value){
+          console.log("changemsg");
+          this.myComponent1Msg = value;
+        }
+      },
+      //注册局部组件
+      components: {
+        // <my-component> 将只在父模板可用
+        'my-component2': {
+          template: '<button v-on:click="counter += 1">注册局部组件 {{ counter }}</button>',
+          data: function () {
+            //return data;
+            return  {counter : 0}
+          }
+        },
+
+      }
+    })
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      自定义事件
+    </div>
+  </div>
+  <div class="panel-body">
+    Vue实例的事件系统独立于DOM事件系统，做法有不同：
+    <pre>
+      使用 <code>v-on</code> 绑定自定义事件
+      使用 <code>$on(eventName)</code> 监听事件
+      使用 <code>$emit(eventName)</code> 在这个组件上面触发事件；
+      使用 <code>$dispatch()</code> 派发事件，事件沿着父链冒泡；已被弃用
+      使用 <code>$broadcast()</code> 广播事件，从父亲向下到所有后代；已被弃用
+      Vue的事件系统分离自浏览器的EventTarget API。尽管它们的运行类似，但是$on 和 $emit 不是addEventListener 和 dispatchEvent 的别名。
+      父组件可以在使用子组件的地方直接用 v-on 来监听子组件触发的事件。
+    </pre>
+    <ul>
+      <li>
+        <div id="counter-event-example">
+          <p>{{ total }}</p>
+          <button-counter v-on:increment="incrementTotal"></button-counter>
+          <button-counter v-on:increment="incrementTotal"></button-counter>
+        </div>
+        <script type="text/javascript">
+          Vue.component('button-counter', {
+            template: '<button v-on:click="increment">{{ counter }}</button>',
+            data: function () {
+              return {
+                counter: 0
+              }
+            },
+            methods: {
+              increment: function () {
+                this.counter += 1
+                //同时触发组件的increment事件
+                this.$emit('increment')
+              }
+            },
+          })
+
+          new Vue({
+            el: '#counter-event-example',
+            data: {
+              total: 0
+            },
+            methods: {
+              incrementTotal: function () {
+                this.total += 1
+              }
+            }
+          })
+        </script>
+      </li>
+      <li>监听原生事件,可以使用 <code>.native</code> 修饰 v-on</li>
+      <li>
+        <code>v-model</code>的数据双向绑定, 仅仅是一个语法糖： &lt;input v-bind:value="something" v-on:input="something = $event.target.value">
+      </li>
+      <li>
+        <div id="app1">
+          <currency-input v-model="price"></currency-input>
+        </div>
+        
+        <script type="text/javascript">
+          Vue.component('currency-input', {
+            template: '\
+              <span>\
+                $\
+                <input\
+                  ref="input"\
+                  v-bind:value="value"\
+                  v-on:input="updateValue($event.target.value)"\
+                >\
+              </span>\
+            ',
+            props: ['value'],
+            methods: {
+              // Instead of updating the value directly, this
+              // method is used to format and place constraints
+              // on the input's value
+              updateValue: function (value) {
+                var formattedValue = value
+                  // Remove whitespace on either side
+                  .trim()
+
+                  // Shorten to 2 decimal places
+                  .slice(0, value.indexOf('.') + 3);
+                  //.slice(0, value.indexOf('.') == -1 ? value.length : value.indexOf('.') + 3)
+
+                // If the value was not already normalized,
+                // manually override it to conform
+                if (formattedValue !== value) {
+                  this.$refs.input.value = formattedValue;
+                }
+                // Emit the number value through the input event
+                this.$emit('input', Number(formattedValue))
+              }
+            }
+          });
+          new Vue({
+            el: '#app1',
+            data: {
+              price : 0.00
+            }
+          })
+        </script>
+      </li>
+      <li>
+		<pre>
+			//使用一个空的 全局 Vue 实例作为中央事件总线 来进行非父子组件通信
+			var bus = new Vue()
+
+			// 在组件 A 创建的钩子中监听事件
+			bus.$on('id-selected', function (id) {
+			  // ...
+			})
+
+			// 在组件 B 中触发事件
+			bus.$emit('id-selected', 1)
+
+			
+		</pre>
+	  </li>
+    </ul>
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      slot分发内容, 可复用组件
+    </div>
+  </div>
+  <div class="panel-body" id="app2">
+    <my-component
+      :foo="baz"
+      :bar="qux"
+      @event-a="doThis"
+      @event-b="doThat"
+    >
+      <div>main-text 父组件中不具名slot的内容会自动分发到子组件的不具名slot标签中</div>
+      <img slot="icon" style="width: 30px" src="http://cn.vuejs.org/images/logo.png">
+      <p slot="footer-text" @click="doThat">footer-text! 父组件中可以为slot属性的节点监听事件</p>
+    </my-component>
+
+  </div>
+  <script type="text/javascript">
+    Vue.component('my-component', {
+      //模板
+      template: '\
+                <div>\
+                  <h5 @click="doSubThis">这是子组件的标题</h5>\
+                  <header>\
+                    <slot name="icon" >这里插入父组件的指定具名icon分发内容, </slot>\
+                  </header>\
+                  <main>\
+                    <slot>\
+                      如果没有分发内容则显示我。(不具名)\
+                    </slot>\
+                    <p v-for="(value, index) in bar" \
+                      :key="index" \
+                      :value = "value" \
+                      @click="showProp" \
+                      :ref="value+index"\
+                    >\
+                     当 ref 和 v-for 一起使用时， ref 是一个数组或对象，包含相应的子组件。 value: {{ value }} index : {{ index }}\
+                    </p>\
+                  </main>\
+                  <footer>\
+                    <slot name="footer-text">这里插入父组件的指定具名main-text分发内容,模板文件的slot标签不可绑定其他属性和事件</slot>\
+                  </footer>\
+                </div>\
+                ',
+      //引入父级数据
+      props : ["foo","bar"],
+
+      //子组件内部data
+      data : function () {
+          return {
+            counter: 0
+          }
+      },
+
+      //方法
+      methods : {
+        doSubThis : function () {
+          console.log (this.foo);
+        },
+        showProp : function(event){
+          console.log(this.$refs);
+          console.log(event.target.innerText);
+        }
+      }
+    });
+
+    var app2 = new Vue({
+      el : "#app2",
+      data : {
+        baz : "参数一",
+        qux : ["para2","para3"],
+      },
+      methods : {
+        doThis : function(){
+          console.log(this.baz);
+        },
+        doThat : function(){
+          console.log(this.qux);
+        }
+      }
+    });
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      动态组件 使用 <code>:is</code> 动态加载组件
+    </div>
+  </div>
+  <div class="panel-body" id="active-component">
+    <div><button @click="toggle">切换组件</button></div>
+    <component v-bind:is="currentView">
+      <!-- 组件在 vm.currentview 变化时改变！ -->
+    </component>
+  </div>
+  <script type="text/javascript">
+    var vm = new Vue({
+      el: '#active-component',
+      data: {
+        currentView: 'home'
+      },
+      components: {
+        home: {
+          template: '<div>组件一</div>'
+        },
+        posts: {
+          template: '<div>组件二</div>'
+        },
+        archive: {
+          template: '<div>组件三</div>'
+        }
+      },
+      methods : {
+        toggle : function(){
+          this.currentView = 'posts';
+        }
+      }
+    })
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      递归调用<code>name</code>
+    </div>
+  </div>
+  <div class="panel-body" id="app3">
+    <ul>
+      <my-component v-for='list in data' :model="list">
+      </my-component>
+    </ul>
+  </div>
+  <script type="text/javascript">
+      var data = [
+                  {
+                    "id": "1",
+                    "data": {
+                        "menuName": "项目管理",
+                        "menuCode": "",
+                    },
+                    "childTreeNode": [
+                      {
+                        "data": {
+                            "menuName": "项目",
+                            "menuCode": "BusProject",
+                        },
+                        "childTreeNode": [
+                          {
+                            "data": {
+                                "menuName": "子项目",
+                                "menuCode": "BusProject",
+                            }
+                          }
+                        ]
+                      }, 
+                      {
+                        "data": {
+                            "menuName": "我的任务",
+                            "menuCode": "BusProject",
+                        },
+                        "childTreeNode": []
+                      }, 
+                      {
+                        "data": {
+                            "menuName": "人员周报",
+                            "menuCode": "BusProject",
+                        },
+                        "childTreeNode": []
+                      }
+                    ]
+                  }, 
+                  {
+                      "id": "2",
+                      "data": {
+                          "menuName": "数据统计",
+                          "menuCode": "BusClock",
+                      },
+                      "childTreeNode": [
+                        {
+                          "data": {
+                              "menuName": "子项目",
+                              "menuCode": "BusProject",
+                          }
+                        }
+                      ]
+                  }, 
+                  {
+                      "id": "3",
+                      "data": {
+                          "menuName": "人事管理",
+                          "menuCode": "",
+                      },
+                      "childTreeNode": []
+                  }
+                ];
+      Vue.component('my-component', {
+          name: 'items',
+          props: ['model'],
+          //components: {},
+          template: '<li>\
+                        <div @click="toggle">\
+                            <i v-if="isFolder" class="fa" :class="[open?\'fa-folder-open\':\'fa-folder\']"></i>\
+                            <!--isFolder判断是否存在子级改变图标-->\
+                            <i v-if="!isFolder" class="fa fa-file-text"></i> {{model.data.menuName}}\
+                        </div>\
+                        <ul v-show="open" v-if="isFolder">\
+                            <items v-for="list in model.childTreeNode" :model="list"></items>\
+                        </ul>\
+                    </li>',
+          data: function() {
+              return {
+                  open: false,
+                  isFolder: true
+              }
+          },
+          computed: {
+              isFolder: function() {
+                  return this.model.childTreeNode && this.model.childTreeNode.length
+              }
+          },
+          methods: {
+              toggle: function() {
+                  if(this.isFolder) {
+                      this.open = !this.open
+                  }
+              },
+          }
+      })
+
+      var app3 = new Vue({
+        el : "#app3",
+        data : { data : data}
+      })
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      杂项
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li>内联模版 <code>inline-template</code></li>
+      <li>X-Templates 在 JavaScript 标签里使用 <code>text/x-template</code>,并且指定一个id</li>
+      <li>使用 <code>v-once</code> 的低级静态组件,将渲染结果缓存</li>
+      <li>在 .vue 文件中使用 template 标签指定 外链模板</li>
+    </ul>
+  </div>
+  <script type="text/javascript">
+  </script>
+</div>
+</body>
+</html>

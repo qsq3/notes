@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>vue 01</title>
+  <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" />
+  <script type="text/javascript" src="js/vue.2.1.3.js"></script>
+  <style type="text/css">
+    .success{
+      color: green;
+    }
+    textarea{
+      min-width:  80%;
+    }
+  </style>
+</head>
+<body class="container">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <code></code>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div id="watch-example">
+        <p>
+          Ask a yes/no question:
+          <input v-model="question">
+        </p>
+        <p>{{ answer }}</p>
+      </div>
+    </div>
+    <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+    <script>
+    var watchExampleVM = new Vue({
+      el: '#watch-example',
+      data: {
+        question: '',
+        answer: 'I cannot give you an answer until you ask a question!'
+      },
+      watch: {
+        // 如果 question 发生改变，这个函数就会运行
+        question: function (newQuestion) {
+          this.answer = 'Waiting for you to stop typing...'
+          this.getAnswer()
+        }
+      },
+      methods: {
+        // _.debounce 是一个通过 lodash 限制操作频率的函数。
+        // 在这个例子中，我们希望限制访问yesno.wtf/api的频率
+        // ajax请求直到用户输入完毕才会发出
+        // 学习更多关于 _.debounce function (and its cousin
+        // _.throttle), 参考: https://lodash.com/docs#debounce
+        getAnswer: _.debounce(
+          function () {
+            var vm = this
+            if (this.question.indexOf('?') === -1) {
+              vm.answer = 'Questions usually contain a question mark. ;-)'
+              return
+            }
+            vm.answer = 'Thinking...'
+            axios.get('https://yesno.wtf/api')
+              .then(function (response) {
+                vm.answer = _.capitalize(response.data.answer)
+              })
+              .catch(function (error) {
+                vm.answer = 'Error! Could not reach the API. ' + error
+              })
+          },
+          // 这是我们为用户停止输入等待的毫秒数
+          500
+        )
+      }
+    })
+    </script>
+  </div>
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        Vue2.x的变化
+      </div>
+    </div>
+    <div class="panel-body">
+      <textarea readonly scroll="no" style="width: 100%;overflow:hidden;word-break:break-all;height:expression((this.scrollHeight>150)?'150px':(this.scrollHeight+5)+'px');" rows="26" onfocus="this.style.height=this.scrollHeight+'px';">
+        在绑定原生HTML时，弃用了原来的<span>{{{message}}}</span>，只保留了<span v-html="message"></span>的写法。
+        在标签里的属性中，弃用了<span id="{{message}}"></span>的写法,只保留了<span v-bind:id="message"></span>
+        一次性差值弃用了 {{* message}}的写法, 采用  v-once 的写法;
+        filters只能在{{message|filter}}里使用，弃用了在指令里使用过滤器的用法，要实现相同的效果，需要在计算属性上实现。
+        对于原生事件要加修饰符native <button @click.native="handleClick">点击触发 handleClick</button>
+        生命周期里删除了beforeCompile,compiled,ready,新增了beforeMount,mounted,beforUpdate,updated。
+        for循环里，取消了原有的$index，<div v-for="(item,index) in dataArr">需要改为ES6语法形式自己获取
+        el属性绑定的元素，限制为一个普通元素，不能再绑定在body、html等元素上。
+        另一个特别喜欢的改变是，在自定义组件上绑定class后，对应的类名会传递到组件根元素上，如果存在同名的，则不会覆盖。这对设置组件样式非常有好处。
+        v-for 里的track-by被替换成了key,
+        <div v-for="item in items" :key="item.id"> <!-- content --> </div>
+        v-model增加了.trim,.number等后缀修饰符<input v-model.trim="msg">
+        Custom events can also be used to create custom inputs that work with v-model. Remember:
+        <input v-model="something">
+        is just syntactic sugar for:
+        <input v-bind:value="something" v-on:input="something = $event.target.value">
+        原来的<div transition="enter"></div>改为了标签用法<transition name="enter" mode="out-in"><div></div></transition>,并且可以选择过渡时的动画模式。
+        同时过渡多个元素时，使用transition-group标签
+        <transition-group name="slide-fade" tag="div" appear> <div v-for="n in 5" key="n" >transitiongroup</div> </transition-group>，appear是标识在初始化的时候执行。
+        另外，
+        Unlike <transition>, it renders an actual element: a <span> by default. You can change the element that’s rendered with the tag attribute.
+        Elements inside are always required to have a unique key attribute
+        增加了directives属性自定义指令，也可以定义全局的指令：
+        // Register a global custom directive called v-focus Vue.directive('focus', { // When the bound element is inserted into the DOM... inserted: function (el) { // Focus the element el.focus() } })
+       </textarea>
+    </div>
+    <script type="text/javascript">
+
+    </script>
+  </div>
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        模板 组件 <code>template Vue.extend Vue.component </code> 
+      </div>
+    </div>
+    <div class="panel-body">
+      <div id="app2">
+        <app-nav></app-nav>
+        <app-view>
+        </app-view>
+        <app-footer v-for="item in items" v-bind:con="item"></app-footer>
+      </div>
+    </div>
+    <script type="text/javascript">
+      //定义 用 Vue.extend创造一个组件构造器
+      var appNav = Vue.extend({
+        template: '<div>appNav</div>'
+      });
+      //组件可以嵌套, 但是需要原生html元素包裹
+      var appView = Vue.extend({
+        template: '<div>--<br clear="both"><app-sidebar></app-sidebar><app-content></app-content><br clear="both">--</div>'
+      });
+      var appSidebar = Vue.extend({
+        template: '<div style="float:left; color: red">appSidebar</div>'
+      });
+      var appContent = Vue.extend({
+        template: '<div  style="float:left; color: blue">appContent</div>'
+      });
+      var appFooter = {
+        props: ['con'],
+        template: '<div style="color: orange">{{con.text}}</div>'
+      };
+
+      //注册
+      Vue.component('app-nav',appNav);
+      Vue.component('app-view',appView);
+      Vue.component('app-sidebar',appSidebar);
+      Vue.component('app-content',appContent);
+      Vue.component('app-footer',appFooter);
+
+      //创建根实例
+      new Vue({
+        el : '#app2',
+        data: {
+          items: [
+            { text: 'Vegetables' },
+            { text: 'Cheese' },
+            { text: 'Whatever else humans are supposed to eat' }
+          ]
+        }
+      });
+    </script>
+  </div>
+
+  <div class="panel panel-primary" >
+    <div class="panel-heading">
+      <div class="panel-title">
+        实例
+      </div>
+    </div>
+    <div class="panel-body" id="app3">
+      <ul>
+        <li>构造器 <code> new Vue({})</code> </li>
+        <li>扩展 Vue 构造器，从而用预定义选项创建可复用的组件构造器
+          <p>var MyComponent = Vue.extend({/* 扩展选项*/  })</p>
+          <p>/*所有的 `MyComponent` 实例都将以预定义的扩展选项被创建*/</p>
+          <p>var myComponentInstance = new MyComponent()</p>
+        </li>
+        <li>属性与方法; 生命周期</li>
+        <li id="app3_b" >
+          <ol>
+          <li><button @click="changeMount">挂载元素, 因为配置中已有挂载DOM元素, 所以无效;</button></li>
+          <li><button @click="destroyApp"> 销毁实例</button></li>
+          <li>
+            监测数据变动$watch :<input type="text" v-model="a" @input="" /><label>{{a}}</label>
+          </li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+    <script type="text/javascript">
+      var data3 = {a : 1};
+      var app3 = new Vue({
+        el: "#app3",
+        data : data3,
+        methods : {
+          changeMount : function(){
+            this.$mount("#app3_b");
+            console.log(app3.$el ===document.getElementById('app3'));
+          },
+          destroyApp : function(){
+            this.$destroy();
+          }
+        },
+        //创建实例前回调
+        beforeCreate : function(){
+          //this指向vue实例 app3;
+          console.log("数据尚未初始化 ; this.a = " + this.a);
+          console.log("--- beforeCreate end ---");
+        },
+
+        //创建实例后回调
+        created : function(){
+          console.log("数据已初始化,但DOM元素尚未绑定; this.a = " + this.a + " ;this.$el: " + this.$el);
+          console.log("--- created end ---");
+        },
+
+        //
+        beforeMount : function(){
+          console.log("初始化中的DOM元素已绑定,但追加DOM元素尚未绑定; this.$el: " + this.$el);
+          console.log("此时我们尝试改变绑定元素:  ");
+          //this.$mount("#app3_b"); 会陷入死循环
+          console.log("--- beforeMount end ---");
+        },
+
+        //
+        mounted : function(){
+          console.log("DOM元素已绑定 ; this.$el: " + this.$el);
+          console.log("--- mounted end ---");
+        },
+
+        //
+        beforUpdate : function(){
+          console.log("当数据改变时, 上传之前 ; this.a: " + this.a);
+          console.log("--- beforUpdate end ---");
+        },
+//
+        updated : function(){
+          console.log("当数据改变时, 上传之后 ; this.a: " + this.a);
+          console.log("--- updated end ---");
+        },
+
+        beforeDestroy: function(){
+          console.log("--- beforeDestroy end ---");
+        },
+
+        destroyed: function(){
+          console.log("--- destroyed end ---");
+        },
+      });
+
+      //$watch是一个实例方法
+      app3.$watch("a" , function(newVal, oldVal){
+        //回调函数将在vm.a改变后调用;
+        console.log("$watch响应: newVal: "+newVal+" ;oldVal: "+oldVal);
+        console.log("this.a = " + this.a);
+        console.log("--- $watch end ---")
+      });
+    </script>
+  </div>
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        模板语法 - 插值 <code>{ { } }</code> 
+      </div>
+    </div>
+    <div class="panel-body" id="app4">
+      <ul>
+        <li>
+          <ol>
+            <li>input绑定数据  v-model;注意此处的值为变量或表达式 : <input v-bind:disabled="d"  v-model="msg" type="text"></input></li>
+            <li>文本绑定 mustache: 双大括号 &#123; &#123;&#125;&#125; 或 v-text=: <span>{{msg}}</span> <span v-text="msg"></span></li>
+            <li>仅绑定一次 <code> v-once </code>: <b v-once>{{msg}}</b> </li>
+            <li># 纯-HTML : 注意不能使用 v-html 来复合局部模板: <div v-html="rawHTML"></div></li>
+            <li>
+              属性: 绑定属性的指令 v-bind ; v-bind:prop="data" 可简写为 :prop="data";注意指令属性的值预期是单一 JavaScript 表达式 :
+              <div :class='red' :title='msg'>{{msg + "raw"}}</div>
+              这对布尔值的属性也有效 —— 如果条件被求值为 false 的话该属性会被移除 <br/>
+              <b>(这个有点错误, 对于disable属性 , 直接输入0的话会默认为true,也就是说, 不会进行隐式转换, 只有值为false时才会为false)：</b>
+              <div><button @click="changeDisable"> 点击改变输入框状态</button></div>
+            </li>
+            <li>
+              JavaScript 表达式支持
+              <div>
+                <div>{{msg + 1 }}</div>
+                <div>{{msg ? 'YES' : 'NO' }}</div>
+                <div>{{msg.split('').reverse().join('') }}</div>
+                <div v-bind:class="'text-' + 'danger'">{{msg}}</div>
+                不支持: var a = 1 这是语句，不是表达式 ; if (ok) { return message } 流控制也不会生效，请使用三元表达式
+                模板表达式都被放在沙盒中，只能访问全局变量的一个白名单，如 Math 和 Date 。你不应该在模板表达式中试图访问用户定义的全局变量。
+              </div>
+            </li>
+            <li>
+              自定义过滤器 { { message | filter}} <br />
+               { { message | filterA | filterB }} <br />
+              { { message | filterA('arg1', arg2) }}字符串 'arg1' 将传给过滤器作为第二个参数， arg2表达式的值将被求值然后传给过滤器作为第三个参数。<br />
+              <div>demo:  {{msg | capitalize("header", msg)}}</div>
+              <b>Vue 2.x 中，过滤器只能在 mustache 绑定中使用。为了在指令绑定中实现同样的行为，应该使用计算属性。</b>
+            </li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+    <script type="text/javascript">
+      var app4 = new Vue({
+        el : "#app4",
+        data : {
+          seen : 0,
+          msg : "initText",
+          red : "text-danger",
+          rawHTML : "<i>"+this+"msg{{msg + raw}}</i>",//这里的this是 window
+          d : false,
+        },
+        methods : {
+          changeDisable : function(){
+            console.log(this.d);
+            this.d = !this.d;
+            console.log(this.d);
+          },
+          toggleMessage : function(){
+              this.seen = !this.seen;
+          },
+        },
+        //过滤器
+        filters :{
+          //过滤器函数总接受表达式的值作为第一个参数。
+          capitalize : function(value,begin,end){
+            if(!value) return '';
+            value = value.toString();
+            return begin+ "-" + value.charAt(0).toUpperCase() +value.slice(1) + "-" + end.split('').reverse().join('');
+          }
+        }
+      });
+    </script>
+  </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        模板语法 - 指令 <code> v-*</code> 
+      </div>
+    </div>
+    <div class="panel-body" id="app5">
+      <ul >
+        <li>参数
+          <ol>
+            <li>指令（Directives）是带有 v- 前缀的特殊属性。指令属性的值预期是单一 JavaScript 表达式（除了 v-for，之后再讨论）。指令的职责就是当其表达式的值改变时相应地将某些行为应用到 DOM 上。</li>
+            <li> 条件判断:v-if=""; <br/>
+              事件绑定: v-on:evt="callback" ,可简写为: @evt="callback"  <br/>
+              <button @click="toggleMessage">点击切换</button><span v-if="seen"> {{url}}</span>
+            </li>
+            <li>指令的参数: v-bind:prop="data" 可简写为 :prop="data";
+              <a v-bind:href="url" :target="'_blank'">跳转百度</a>
+            </li>
+          </ol>
+        </li>
+        <li>修饰符 <code>.</code>
+          <ol>
+            <li>修饰符（Modifiers）是以半角句号 . 指明的特殊后缀，用于指出一个指定应该以特殊方式绑定。例如，.prevent 修饰符告诉 v-on 指令对于触发的事件调用 event.preventDefault() ;在 Vue 2.0 中，为自定义组件绑定原生事件必须使用 .native 修饰符： <br />
+              &lt;form v-on:submit.prevent="onSubmit"></form>
+          </ol>
+        </li>
+      </ul>
+    </div>
+    <script type="text/javascript">
+      var app5 = new Vue({
+        el : "#app5",
+        data : {
+          seen : 0,
+          url : "http://www.baidu.com",
+        },
+        methods : {
+          toggleMessage : function(){
+              this.seen = !this.seen;
+          }
+        }
+      });
+    </script>
+  </div>
+
+   <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        计算属性  <code>computed</code> 
+      </div>
+    </div>
+    <div class="panel-body" id="app6">
+      <ul>
+        <li>
+          <p><input v-model="message" type="text"></input></p>
+          <p>Original message: "{{ message }}"</p>
+          <p>Computed reversed message: "{{ reversedMessage }}"</p>
+        </li>
+        <li>#计算缓存-vs-Methods</li>
+        <li>
+          <p>Computed reversed message storge: "{{ reversedMessage2() }}"</p>
+        </li>
+        <li>计算属性 vs Watched Property</li>
+        <li>计算属性 可以设置 setter</li>
+        <div>
+          姓: <input v-model="firstName" type="text"></input> <br/>
+          名: <input v-model="lastName" type="text"></input> <br/>
+          <div>姓名 : <input v-model="fullName" type="text"></input> {{ fullName }}</div>
+        </div>
+        <li> <a target="_blank" href="http://cn.vuejs.org/v2/guide/computed.html#观察-Watchers">观察 Watchers </a>  </li>
+      </ul>
+    </div>
+    <script type="text/javascript">
+      var vm = new Vue({
+        el: '#app6',
+        data: {
+          message: 'Hello',
+          firstName: 'Foo',
+          lastName: 'Bar',
+          fullName: 'Foo Bar'
+        },
+        //计算属性,有缓存,响应式依赖
+        computed: {
+          // 默认 getter
+          reversedMessage: function () {
+            return this.message.split('').reverse().join('')
+          },
+          /* 默认 getter
+          fullName : function(){
+            return this.firstName + " " + this.lastName;
+          }
+          */
+          fullName : {
+            get : function () {
+              return this.firstName + " " + this.lastName;
+            },
+            set : function (newVal) {
+              //第一个参数默认
+              var arr = newVal.trim().split(' ');
+              this.firstName = arr[0];
+              this.lastName = arr[arr.length-1];
+            }
+          }
+
+        },
+
+        //通过方法执行计算,无缓存, 同名方法会被computed覆盖,由此判断其执行在computed前
+        methods: {
+          reversedMessage2: function () {
+            return this.message.split('').reverse().join('')
+          }
+        },
+
+        /* 通过watch执行 */
+        /*
+        watch: {
+          firstName: function (val) {
+            this.fullName = val + ' ' + this.lastName
+          },
+          lastName: function (val) {
+            this.fullName = this.firstName + ' ' + val
+          }
+        }
+        */
+
+      })
+    </script>
+  </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        Class 与 Style 绑定 
+        <small>在 v-bind 用于 class 和 style 时， Vue.js 专门增强了它。表达式的结果类型除了字符串之外，还可以是对象或数组。</small>
+      </div>
+    </div>
+    <div class="panel-body" id="app7">
+      <ul>
+        <li>绑定HTMLClass <code> v-bind:class</code> 
+          <ol>
+            <li>对象语法 
+              <div class="static"
+                   :class="{success: isActive, 'text-warning': hasError }">
+                传入对象动态切换 
+              </div>
+              <div class="static"
+                   :class="classObj">
+                直接绑定对象
+              </div>
+              <div class="static"
+                   :class="classObj2">
+                绑定返回对象的计算属性
+              </div>
+            </li>
+            <li>数组语法
+              <div class="static"
+                   :class="[activeClass, errorClass]">
+                通过数组传入复数属性 
+              </div>
+              <div v-bind:class="[isActive ? activeClass : '', errorClass]">数组中也可使用三元表达式</div>
+              <div v-bind:class="[{ success: isActive }, errorClass]">数组中嵌套对象</div>
+            </li>
+            <li>组件相关
+              在组件模板中仍然能使用上述表达式
+            </li>
+          </ol>
+        </li>
+        <li>绑定内联样式 <code>v-bind:style</code> 
+          <ol>
+            <li>
+              <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">内联样式对象语法1</div>
+              <div v-bind:style="styleObject">内联样式对象语法2</div>
+              <div v-bind:style="[styleObject, style2]">内联样式数组语法1</div>
+              <div>? vue会自动添加css3前缀,但是审查元素并没有添加,是会根据浏览器选择性添加么?</div>
+            </li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+    <script type="text/javascript">
+      var app7 = new Vue({
+        el : "#app7",
+        data : {
+
+          //传入对象动态切换
+          isActive : true,
+          hasError : false,
+
+          //直接绑定对象. 同上面一样效果
+          classObj : {
+            success: false,
+            'text-warning': true
+          },
+
+          //用于数组语法
+          activeClass : "text-success",
+          errorClass : "bg-danger",
+
+          //内联样式对象
+          activeColor : 'green',
+          fontSize : 16,
+
+          styleObject: {
+            color: 'red',
+            fontSize: '16px'
+          },
+
+          //内联样式数组
+          style2 : {
+            "font-style": "italic" ,
+            transform : "scale(1.1)"
+          }
+        },
+
+        //绑定返回对象的计算属性
+        computed : {
+          classObj2 : function(){
+            return {
+              success : this.isActive && !this.hasError,
+              "text-warning" : this.hasError && this.hasError.type === 'fatal'
+            }
+          }
+        }
+
+      })
+    </script>
+  </div>
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        条件渲染<code>v-if</code> 支持 <code>template</code> 标签
+      </div>
+    </div>
+    <div class="panel-body" id="app8">
+      <div>
+        <input type="text" v-model="ok" />
+        <button @click="toggleSwitch">点击切换</button>
+      </div>
+      <ul>
+        <li>
+          <div v-if="ok">v-if=true</div>
+          <template v-else>
+            <div>v-else</div>
+            <div>使用 <code>template</code>元素包装</div>
+          </template>
+        </li>
+        <li> <code>v-else</code> 指令可以给 <code>v-if</code> 或 <code>v-show</code> 添加一个 “else” 块：</li>
+        <li><code> v-show</code> 是简单的切换元素的 CSS 属性 display, <b>注意 v-show 并不支持 template </b>
+            <div v-show="ok"> v-show</div>
+        </li>
+      </ul>
+    </div>
+    <script type="text/javascript">
+      new Vue({
+        el : '#app8',
+        data : {
+          ok : 0
+        },
+        methods : {
+          toggleSwitch : function(){
+            this.ok = !this.ok;
+          }
+        },
+      })
+    </script>
+  </div>
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        列表渲染<code>v-for</code>  
+      </div>
+    </div>
+    <div class="panel-body" id="app9">
+      <div>
+        <pre>
+          v-for 块中拥有对父作用域属性的完全访问权限。<br />
+          整数循环: n in 10 ; <br />
+          数组循环: (value, index) in arr ; <br />
+          对象循环: (value, key, index) in obj ; <br />
+          支持 <code>template</code> 标签 <br />
+        </pre>
+      </div>
+      <ul>
+        <li> 
+          <input type="text" v-model="message1" v-on:keyup.enter="addMessage" placeholer="添加行数" />
+          <label>{{message1}}</label>
+          <input type="button" value="删除末行" v-on:click="removeMessage"/>
+        </li>
+        <li> 
+          <ul>
+            <template v-for="(value, index) in message2">
+              <li>
+                {{value.text}}
+                <button  v-on:click="removeMessage(index)">X</button>
+              </li>
+            </template >
+          </ul>
+        </li>
+        <li>组件 和 v-for
+          <div>
+            因为组件有自己独立的作用域 <br>
+            为了传递迭代数据到组件里，我们要用 v-bind: prop = "value"; <br>
+            在组件模板内部声明 props: ["prop"] ,并使用 { {prop}}来调用;
+            <ul>
+              <li
+                is="myComponent"
+                v-for="(value, index) in message2"
+                v-bind:title="value.text"
+                :key = "index"
+                v-on:remove="message2.splice(index, 1)"
+              ></li>
+             </ul>
+          </div>
+        </li>
+        <li>
+          <code>key</code> 取代 track-by="$index"  ; 不能使用在template标签上;
+        </li>
+        <li>数组更新检测
+          <pre>
+            变异方法 push() pop() shift() unshift() splice() sort() reverse() 会改变原数组, 引起视图更改;
+            重塑数组 filter(), concat(), slice()  这些不会改变原始数组，但总是返回一个新数组。
+
+            由于 JavaScript 的限制， Vue 不能检测以下变动的数组：
+              1.直接设置一个项的索引时，例如： vm.items[indexOfItem] = newValue; 
+                触发状态更新应使用 Vue.set(example1.items, indexOfItem, newValue) 或  example1.items.splice(indexOfItem, 1, newValue)
+
+              2.修改数组的长度时，例如： vm.items.length = newLength
+                触发状态更新应使用: example1.items.splice(newLength)
+          </pre>
+          <button @click="addMessage"> 变异方法 push</button>
+          <button @click="filterMessage"> 重塑数组 filter</button>
+          <button @click="vueSetMessage"> 只更改某个索引的值 Vue.set</button>
+          <button @click="spliceMessage"> 只更改某个索引的值或长度 Array.prototype.splice</button>
+        </li>
+        <li>过滤或排序,并且不改变原始数据
+          <ul>
+            <li>通过计算属性
+              <div v-for="item in reversedMessageA">
+                {{item.text}}
+              </div >
+            </li>
+            <li>通过方法
+              <div v-for="item in reversedMessageB(message2)">
+                {{item}}
+              </div >
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <script type="text/javascript">
+      Vue.component('myComponent', {
+        template: '\
+          <li>\
+            {{ title }}\
+            <button v-on:click="$emit(\'remove\')">X</button>\
+          </li>\
+        ',
+        props: ['title']
+      })
+        var app9 = new Vue({
+          el : "#app9",
+          data : {
+
+            message1 : ' 时间是: ' + new Date().getHours() + "点",
+            // app1.message3.push({ text: 'New item' })
+            message2: [
+              {'text': 'text1'},
+              {'text': 'text2'},
+              {'text': '在遍历对象时，是按 Object.keys() 的结果遍历，但是不能保证它的结果在不同的 JavaScript 引擎下是一致的。'},
+            ],
+            numbers: [ 1, 2, 3, 4, 5 ]
+          },
+          methods : {
+            addMessage : function(){
+              var text = this.message1.trim();
+              if(text){
+                this.message2.push({text : text});
+              }
+            },
+            removeMessage : function(index){
+              if(!isNaN(index)){
+                this.message2.splice(index,1);
+              }else{
+                this.message2.pop();
+              }
+            },
+            filterMessage : function(){
+              this.message2 = this.message2.filter(function (item){
+                return item.text.match(/text\d/);
+              });
+            },
+            vueSetMessage : function () {
+              Vue.set(this.message2, 0, {text: this.message1.trim()});
+            },
+            spliceMessage : function () {
+              Array.prototype.splice.call(this.message2, 1,1, {text: this.message1.trim()});
+              this.message2.splice(2);
+            },
+
+            //通过方法,并且不改变原始数据
+            reversedMessageB : function (arr) {
+              //深拷贝
+              var arr2 = JSON.parse(JSON.stringify(arr))
+              return arr2.reverse();
+            },
+
+            even: function (numbers) {
+              return numbers.filter(function (number) {
+                return number % 2 === 0
+              })
+            }
+
+          },
+
+          //通过计算属性,并且不改变原始数据
+          computed : {
+            reversedMessageA: function () {
+              //深拷贝
+              var arr2 = JSON.parse(JSON.stringify(this.message2))
+              return arr2.reverse();
+            }
+          }
+        });
+    </script>
+  </div>
+  
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        事件处理器
+      </div>
+    </div>
+    <div class="panel-body" id="app10">
+      <ul>
+        <p>增加了 {{ counter }} 次。</p>
+        <li>监听事件 <code>v-on</code>
+          <div>
+            <button v-on:click="counter += 1">绑定表达式</button>
+          </div>
+        </li>
+        <li>方法事件处理器 <code>methods</code>
+          <div>
+            <button v-on:click="counterAdd1">绑定方法</button>
+          </div>
+        </li>
+        <li>内联处理器方法
+          <div>
+            <button v-on:click="show(counter, $event)">内联JavaScript语句, 可通过特殊变量<code>$event</code>引入原生event</button>
+          </div>
+        </li>
+        <li>事件修饰符 <code>.stop  .prevent  .capture  .self</code>
+          <div>
+            <a v-on:click.stop="doThis">阻止单击事件冒泡</a>
+            <form v-on:submit.prevent="onSubmit">提交事件不再重载页面</form>
+            <a v-on:click.stop.prevent="doThat">修饰符可以串联</a>
+            <form v-on:submit.prevent>只有修饰符</form>
+            <div v-on:click.capture="doThis">添加事件侦听器时使用事件捕获模式</div>
+            <div v-on:click.self="doThat">只当事件在该元素本身（而不是子元素）触发时触发回调</div>
+          </div>
+        </li>
+        <li>按键修饰符<code>v-on:keyup.13</code> <br>
+          全部的按键别名：<code>enter  tab  delete(捕获 “删除” 和 “退格” 键)  esc  space  up  down  left right</code>
+          可以通过全局 config.keyCodes 对象自定义按键修饰符别名：   Vue.config.keyCodes.f1 = 112  // 可以使用 v-on:keyup.f1
+        </li>
+      </ul>
+    </div>
+    <script type="text/javascript">
+    var app10 = new Vue({
+      el : "#app10",
+      data : {
+        counter : 1,
+      },
+      methods : {
+        counterAdd1 : function () {
+          this.counter++;
+        },
+        show : function (counter,event) {
+          if(event){
+            event.preventDefault();
+            //event.stopPropagation()
+            console.log(event);
+          }
+          alert(counter);
+        }
+      }
+    })
+    </script>
+  </div>
+  
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        表单控件绑定
+      </div>
+    </div>
+    <div class="panel-body" id="app11" >
+      <div><code>v-model</code> 本质上不过是语法糖，它负责监听用户的输入事件以更新数据，并特别处理一些极端的例子; 它并不关心表单控件初始化所生成的值。因为它会选择 Vue 实例数据来作为具体的值。</div>
+      <ul>
+        <li>{{text}}</li>
+        <li>
+          <label>输入框: </label>
+          <input type="text" v-model="text">
+        </li>
+        <li>
+          <label>文本域: </label>
+          <textarea v-model='text' placeholder="在文本区域插值 <code> <textarea> { {text} }</textarea>  </code>并不会生效，应用 v-model 来代替"></textarea>
+        </li>
+        <li>
+          <label>复选框: </label>
+          <ol>
+            <li>
+              <label>单个: </label> 
+              <input type="checkbox" id="checkbox" v-model="checked"> <label for="checkbox">{{ checked }}</label>
+            </li>
+            <li>
+              <label>多个: </label>
+              <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+              <label for="jack">Jack</label>
+              <input type="checkbox" id="john" value="John" v-model="checkedNames">
+              <label for="john">John</label>
+              <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+              <label for="mike">Mike</label>
+              <br>
+              <span>Checked names: {{ checkedNames }}</span>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <label>单选按钮: </label><br>
+          <input type="radio" id="one" value="One" v-model="picked">
+          <label for="one">One</label>
+          <br>
+          <input type="radio" id="two" value="Two" v-model="picked">
+          <label for="two">Two</label>
+          <br>
+          <span>Picked: {{ picked }}</span>
+        </li>
+        <li>
+          <label>选择列表: </label>
+          <ol>
+            <li>
+              <label>单选</label>
+              <select v-model="selected">
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+              </select>
+              <span>Selected: {{ selected }}</span>
+            </li>
+            <li>
+              <label>多选</label>
+              <select v-model="selectedArr" multiple>
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+              </select>
+              <span>Selected: {{ selectedArr }}</span>
+            </li>
+            <li>
+              <label>动态渲染 <code>v-for</code></label>
+              <select v-model="selected">
+                <option v-for="option in options" v-bind:value="option.value">
+                  {{option.text}}
+                </option>
+              </select>
+              <span>Selected: {{ selected }}</span>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <label>绑定value :</label>  使用<code>v-bind</code>绑定动态属性
+          <ol>
+            <li>
+              <label>复选框: {{checked}}</label>
+              <input
+                type="checkbox"
+                v-model="checked"
+                v-bind:true-value="options[0].text"
+                v-bind:false-value="options[1].text"
+              >
+            </li>
+            <li>
+              <label>单选按钮: </label>
+              <input type="radio" v-model="picked" v-bind:value="options[0].text">
+              <input type="radio" v-model="picked" v-bind:value="options[1].text">
+              <span>Picked: {{ picked }}</span>
+            </li>
+            <li>
+              <label>选择列表设置: </label>
+              <select v-model="selectedObj">
+                  <!-- 内联对象字面量 -->
+                <option v-bind:value="{ number: 123 }">123</option>
+              </select>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <label>v-model修饰符: </label>
+          <ul>
+            <li><code>.lazy</code>从keyup同步变为change同步： 
+              <input v-model.lazy="text" placeholder="回车更改值"> 
+              <span>{{text}}</span>
+            </li>
+            <li>
+              <code>.number</code>自动转换为数字, （如果原值的转换结果为 NaN 则返回原值）
+              <input v-model.number="text" type="number">
+              <span>{{text}}</span>
+            </li>
+            <li>
+              <code>.trim</code>过滤首尾空格
+              <input v-model.trim="text" type="text">
+              <span>{{text}}</span>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <script type="text/javascript">
+      var app11 = new Vue({
+        el: "#app11",
+        data: {
+          text : "",
+          checked : false,
+          checkedNames : [],
+          picked: '',
+          selected: 'A',
+          selectedArr: ['A'],
+          selectedObj: {},
+          options: [
+            { text: 'One', value: 'A' },
+            { text: 'Two', value: 'B' },
+            { text: 'Three', value: 'C' }
+          ]
+        },
+      })
+    </script>
+  </div>
+
+</body>
+</html>

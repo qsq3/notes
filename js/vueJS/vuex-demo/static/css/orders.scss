@@ -1,0 +1,101 @@
+#orderPage {
+    width: 100%;
+    height: 100%;
+    color: #666;
+    #tabs {
+        width: 100%;
+        height: 0.44rem;
+        padding-left: 0.32rem;
+        padding-right: 0.32rem;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        line-height: 0.44rem;
+        text-align: center;
+        background: #fff;
+        margin-bottom: 0.05rem;
+        li {
+            width: 33.3%;
+            color: #666;
+        }
+        .tab_active {
+            color: #ffae00;
+        }
+    }
+    #tab_con {
+        background: #fff;
+        div {
+            display: none;
+            div {
+                display: block;
+            }
+            .orders {
+                .orderItem {
+                    width: 100%;
+                    background: #fff;
+                    padding-left: 0.12rem;
+                    padding-right: 0.12rem;
+                    box-sizing: border-box;
+                    .orderNum {
+                        color: #999;
+                        font-size: 0.11rem;
+                        height: 0.32rem;
+                        line-height: 0.32rem;
+                        box-sizing: border-box;
+                        border-bottom: 1px solid #999;
+                        .num {
+                            color: #666;
+                        }
+                    }
+                    .orderDetail {
+                        height: 0.9rem;
+                        box-sizing: border-box;
+                        padding: 0.1rem 0 0.1rem 0;
+                        border-bottom: 1px solid #999;
+                        display: block;
+                        img {
+                            height: 0.7rem;
+                            margin-right: 0.12rem;
+                        }
+                    }
+                    .orderStatus {
+                        height: 0.44rem;
+                        color: #666;
+                        line-height: 0.44rem;
+                        section {
+                            display: inline-block;
+                        }
+                        .unPay {
+                            font-size: 0.15rem;
+                            .money {
+                                color: #f44732;
+                            }
+                        }
+                        .total {
+                            .mount {
+                                color: #ffae00;
+                                font-size: 0.12rem;
+                            }
+                        }
+                        .goPay {
+                            height: 0.28rem;
+                            width: 0.72rem;
+                            border: 2px solid #f44732;
+                            border-radius: 6px;
+                            text-align: center;
+                            line-height: 0.28rem;
+                            float: right;
+                            margin-top: 0.06rem;
+                        }
+                        .success {
+                            border: 0
+                        }
+                    }
+                }
+            }
+        }
+        .tab_con_active {
+            display: block;
+        }
+    }
+}

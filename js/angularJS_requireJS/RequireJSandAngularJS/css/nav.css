@@ -1,0 +1,16 @@
+li{
+    list-style: none;
+}
+body{background: #ccc;}
+nav{
+    width: 500px;
+    height: auto;
+    border: 1px solid red;
+}
+nav ul{
+    height: auto;
+}
+nav ul li{
+    height: 30px;
+    float: left;
+}

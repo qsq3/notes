@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>自定义拼图 by 空山</title>
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="空山"/>
+    <meta name="Description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <style type="text/css">
+        body,div,p,h1,h2,h3,h4,h5,h6,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,table,th,td {
+            margin: 0;
+            padding: 0;
+        }
+        img{
+            border:0;
+        }
+        ol, ul ,li{list-style: none;} 
+        a{text-decoration: none;}
+        a,input{
+            border:0 none;
+            outline:0 none;
+            vertical-align: middle;
+        }
+        body{
+            background-color: #fff;
+        }
+        .wrap{
+            position: relative;
+            width: 1200px;
+            height:600px;
+            border-radius: 10px;
+            background-color: rgba(100,100,200,0.3);
+            margin: 50px auto;
+        }
+        .form{
+            position: absolute;
+            top:20px;
+            left:20px;  
+            width:202px;
+            height:52px;
+            border-radius: 5px;
+            background-color: #fff;
+            padding:5px;
+        }
+        .formwrap{
+            border:1px solid #ddd;
+            height:52px;
+        }
+        .input_file_bg{
+            display: inline-block;
+            width:50px;
+            height:50px;
+            border-right:1px solid #ddd;
+            background:url("img/btnbg.jpg") center no-repeat;
+            overflow: hidden;
+            vertical-align: middle;
+        }
+        .input_file{
+            margin-left:-9999px;
+        }
+        .input_text{
+            width:120px;
+            height:50px;
+            padding: 0 10px;
+            line-height: 50px;
+            vertical-align: middle;
+        }
+        .view{
+            position: absolute;
+            top:0;
+            left:50%;
+            margin-left:-300px;
+            width:600px;
+            height:600px;
+            background-color:#fff;
+            background-color: rgba(255,255,255,0.3);
+            background-size: contain;
+
+        }
+        .dropArea{
+            position: absolute;
+            top: 100px;
+            left: 20px;
+            min-height:150px;
+            width:210px;
+            border: 1px solid #fff;
+            border-radius: 5%;
+            text-align: center;
+            vertical-align: center;
+            font-size: 20px;
+            background: rgba(100,100,200,0.4);
+
+        }
+        .dropArea span{
+            position:absolute;
+            top:50%;
+            left:50%;
+            color: #fff;
+            transform: translate(-50%,-50%);
+            white-space:nowrap;
+        }
+        .dropArea img{
+            width:100%;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function(){
+            var box = document.getElementById('wrap');
+            var view = getClass('view',box)[0]; 
+            var fileName = getClass('input_text',box)[0];
+            var dropArea = getClass("dropArea")[0];
+            var span = dropArea.getElementsByTagName("span")[0];
+            var size = {};
+                size.x = 4;
+                size.y = 4; 
+                size.xw = view.clientWidth/size.x;
+                size.yh = view.clientHeight/size.y;
+            var noControl = true ;
+            loadImg(box);
+            dropImg(dropArea);
+            var img = new Image();
+            img.src = 'img/01.jpg';
+            createPuzzle(img);
+
+            function dropImg(dropArea){
+                document.ondrop = function(){
+                    ev.preventDefault();
+                }
+                dropArea.ondragenter = function(){//进入目标元素触发
+                    span.style.display = "inline-block";
+                }
+                dropArea.ondragover = function(ev){//在目标元素上连续触发
+                    ev = ev||window.event;
+                    ev.preventDefault();//阻止默认事件
+                    span.style.display = "none";
+                }
+                dropArea.ondragleave = function(){//离开目标元素
+                    span.style.display = "inline-block";
+                }
+                dropArea.ondrop = function(ev){//在目标元素上面释放鼠标触发
+                    ev = ev||window.event;
+                    ev.preventDefault();//阻止默认事件
+                    fileName.value = '';
+                    span.style.display = "none";
+                    for (var i = 0; i < ev.dataTransfer.files.length; i++)
+                    {
+                        var file = ev.dataTransfer.files[i];
+                        if (file.type.indexOf("image")!=-1)
+                        {
+                            var reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            fileName.value += ' ' + file.name;
+                            reader.onload = function(){
+                                var img = dropArea.getElementsByTagName("img")[0] || new Image();
+                                img.src = this.result; //获取到的data对象,数据量较大,比较卡
+                                dropArea.appendChild(img);
+                                createPuzzle(img);  
+                            };
+                        }else{
+                            alert("请上传图片！");
+                            return;
+                        }
+                    }
+                }
+            }
+            function loadImg(box){
+                box = box || document;
+                var fileBg = getClass('input_file_bg',box)[0];
+                var fileObj = getClass('input_file',box)[0];
+                fileBg.onclick = function(){
+                    fileObj.click();
+                };
+                fileObj.onchange = readFile;
+                function readFile(){
+                    if(!/\.jpg|\.gif|\.png|\.bmp/i.test(this.value)){ 
+                        alert('请上传图片');
+                        return;
+                    }
+                    fileName.value = '';
+                    if (fileObj.files && fileObj.files[0]) {
+                        //W3C标准
+                        for (var i = 0; i < fileObj.files.length; i++) { 
+                            var file = fileObj.files[i];
+                            if (/image\/\w+/.test(file.type)){
+                                fileName.value += ' ' + file.name;
+                                var img = dropArea.getElementsByTagName("img")[0] || new Image();
+                                img.src = getURL(file); //获取blob对象的数据
+                                createPuzzle(img);
+                                dropArea.appendChild(img); 
+                                span.style.display = "none";
+                                
+                            }else{ 
+                                alert('请上传图片');
+                                return;
+                            }
+                        };
+                    }else {//IE8-
+                        fileObj.select();
+                        fileObj.blur();
+                        fileName.value = this.value;
+                        var img = new Image(); 
+                        img.src = document.selection.createRange().text;
+                        document.selection.empty();
+                        createPuzzle(img);
+                    };
+                    
+                };
+
+            };
+            
+            function createPuzzle(img){
+                var imgArr = [];
+                noControl = true;
+                view.innerHTML = '';
+                if(-[1,]) {
+                    img.onload = createView;
+                }else {
+                    view.style.width = img.width;
+                    view.style.height = img.height;
+                    size.xw = view.clientWidth/size.x;
+                    size.yh = view.clientHeight/size.y;
+                    createView();
+                };
+                function createView(){
+                    var s = size.x * size.y;
+                    for (var i = 0; i < s; i++) {
+                        var x = i%size.x;
+                        var y = parseInt(i/size.y);
+                        var dice = document.createElement('div');
+                        dice.style.cssText = 'position:absolute;z-index:1;overflow:hidden;background-repeat:no-repeat';
+                        dice.style.width = size.xw + 'px';
+                        dice.style.height = size.yh + 'px';
+                        dice.style.backgroundImage = "url('"+img.src+"')";
+                        dice.style.backgroundPosition = -x*size.xw+'px '+(-y*size.yh + 'px');
+                        dice.style.backgroundSize = size.x+'00% '+size.y+'00%';
+                        dice.style.left = x*size.xw + 'px';
+                        dice.style.top = y*size.yh + 'px';
+                        dice.t = y*size.yh;
+                        dice.l = x*size.xw;
+                        dice.ta = dice.t;
+                        dice.la = dice.l;
+                        imgArr.push(dice);
+                        view.appendChild(dice);
+                    };
+                    createMask(imgArr);
+                };
+            };
+            function createMask (imgArr) { 
+                var maskBox = document.createElement('div');
+                maskBox.style.cssText = 'position:absolute;z-index:99;overflow:hidden;width:100%;height:100%;top:0;left:0';
+                view.appendChild(maskBox);
+                var maskBg = document.createElement('div');
+                maskBg.style.cssText = 'position:absolute;z-index:99;overflow:hidden;width:100%;height:100%;top:0;left:0;background:#333;opacity:0.2;filter:alpha(opacity=20)';
+                maskBox.appendChild(maskBg);
+                var maskBtn = document.createElement('div');
+                maskBtn.style.cssText = 'position:absolute;z-index:99;overflow:hidden;width:133px;height:133px;top:50%;left:50%;margin:-66px 0 0 -66px;background: url("img/play.png") 0 0 no-repeat';
+                maskBox.appendChild(maskBtn);
+                maskBtn.onmouseenter = function(){
+                    this.style.backgroundPosition = '-133px 0';
+                }
+                maskBtn.onmouseleave = function(){
+                    this.style.backgroundPosition = '0 0';
+                }
+                maskBtn.onclick = function(){
+                    maskBox.parentNode.removeChild(maskBox);
+                    shuffle(imgArr);
+                };
+            };
+            function shuffle (imgArr,callback){
+                var i = 0
+                setTimeout(function(){ 
+                    i++;
+                    shuffleSort(imgArr);
+                    if (i >= 3) {
+                        callback && callback();
+                        return;
+                    };
+                    setTimeout(arguments.callee, 500); 
+                }, 100); 
+            }
+            function shuffleSort (imgArr){
+                noControl = true;
+                for (var i = 0 ;i< imgArr.length;i++){
+                    var ca = Math.random() - 0.6;
+                    if (ca>0) {
+                        var temp = {};
+                        temp.t = imgArr[i].t;
+                        temp.l = imgArr[i].l;
+                        var j = i;
+                        while ( j> 0 && ca>0) {
+                            imgArr[j].t = imgArr[j-1].t ;
+                            imgArr[j].l = imgArr[j-1].l ;
+                            j--;
+                            ca = Math.random() - 0.6;
+                        };
+                        imgArr[j].t = temp.t;
+                        imgArr[j].l = temp.l;
+                    };
+                };
+                for(var i = 0; i < imgArr.length; i++){
+                    moveAnime(imgArr[i]);
+                };
+                noControl = false;
+                puzzleDrag(view,imgArr);
+                
+            };
+            function puzzleDrag(view,imgArr){
+                for (var i = 0; i < imgArr.length; i++) {
+                    imgArr[i].onmousedown = drag;
+                    function drag (e){
+                        if (noControl) {return false;}
+                        e = e || window.event;
+                        var dragged = this;
+                        this.style.zIndex = 2;
+                        this.style.cursor = 'move';
+                        var posStart = getMousePos(e);
+                        var leftStart = this.offsetLeft;
+                        var topStart = this.offsetTop;
+                        document.onmousemove = function(e){
+                            if (noControl) {return false;}
+                            e = e || window.event;
+                            var posB = getMousePos(e);
+                            var x = leftStart + posB.x - posStart.x ;
+                            var y = topStart + posB.y - posStart.y ;
+                            x = Math.max(0,x);
+                            x = Math.min(view.clientWidth,x);
+                            y = Math.max(0,y);
+                            y = Math.min(view.clientHeight,y);
+                            dragged.style.left = x + 'px';
+                            dragged.style.top = y + 'px';
+                            var n = checkSpace(dragged,imgArr);
+                            for (var i = 0; i < imgArr.length; i++) {
+                                setOpacity(imgArr[i],1);
+                                setOpacity(imgArr[n],0.6);
+                            };
+                        };
+                        document.onmouseup = function(e){
+                            if (noControl) {return false;}
+                            e = e || window.event;
+                            document.onmousemove = null;
+                            var n = checkSpace(dragged,imgArr);
+                            setOpacity(imgArr[n],1);
+                            exchange(dragged, imgArr[n],imgArr); 
+                        };
+                    }
+                };
+            };
+            function exchange(dragged,dice,imgArr){ 
+                var t = dragged.t;
+                var l = dragged.l;
+                dragged.t = dice.t;
+                dragged.l = dice.l;
+                dragged.style.top = dragged.t + 'px';
+                dragged.style.left = dragged.l + 'px';
+                dragged.style.zIndex = 1;
+                dragged.style.cursor = 'default';
+                dice.t = t;
+                dice.l = l;
+                moveAnime(dice,function(){
+                    puzzleClear(imgArr);
+                });
+            }
+            function moveAnime(dice,callback){
+                dice.style.zIndex = 2;
+                noControl = true;
+                var time = 200;
+                var startTop = dice.offsetTop;
+                var startLeft = dice.offsetLeft;
+                var startTime = new Date();
+                var animeTimer = setInterval(function(){
+                    var p = (new Date() - startTime)/time;
+                    (p >= 1) && (p = 1);
+                    dice.style.top = startTop + (dice.t-startTop)*p + 'px';
+                    dice.style.left = startLeft + (dice.l-startLeft)*p + 'px';
+                    if (p >= 1) {
+                        noControl = false;
+                        dice.style.zIndex = 1;
+                        clearInterval(animeTimer);
+                        callback && callback.call(this);
+                    };
+                }, 12)
+            }
+            function checkSpace (dragged,imgArr){
+                var distance = {};
+                for (var i = 0; i < imgArr.length; i++) {
+                    var n = getDistance(dragged , imgArr[i]);
+                    if ( isNaN(distance.val) || distance.val > n ){
+                        distance.val = n;
+                        distance.i = i;
+                    };
+                };
+                return distance.i ;
+                function getDistance (dragged, dice){
+                    return (Math.pow((dragged.offsetTop - dice.t),2) + Math.pow((dragged.offsetLeft - dice.l),2));  
+                }
+            };
+            function checkOver(imgArr){
+                for (var i = 0; i < imgArr.length; i++) {
+                    if(imgArr[i].t != imgArr[i].ta || imgArr[i].l != imgArr[i].la ){
+                        return false;
+                    };
+                };
+                return true;
+            };
+            function puzzleClear(imgArr){
+                if (checkOver(imgArr)) {
+                    noControl = true;
+					alert('过关');
+                    shuffle(imgArr,function(){
+                        setTimeout(function(){
+                            createMask(imgArr);
+                        }, 500);
+                    });
+                    
+                };
+            }
+
+        };
+        
+        //通用函数
+        function getURL(file){            //获取blob对象;
+            if(window.URL){
+                return window.URL.createObjectURL(file); //mozilla
+            }else if(window.webkitURL){
+                return window.webkitURL.createObjectURL(file); //webkit
+            };
+        };
+        function getId(id){
+            return typeof id === 'string' ? document.getElementById(id) : id;
+        }
+        function getClass(cName ,node){ 
+            var arr =[]
+            node = node || document;
+            if(node.getElementsByClassName){
+                node = node.getElementsByClassName(cName);
+                for (var i=0;i<node.length ;i++ ){
+                    arr[i] = node[i];
+                }
+            }else{
+                node = node.getElementsByTagName("*");
+                var reg = new RegExp('(^|\\s)'+cName+'(\\s|$)')
+                for (var i=0;i<node.length;i++ ){
+                    if(reg.test(node[i].className)){   
+                        arr.push(node[i]);
+                    };
+                };
+            }
+            return arr; 
+        };
+        function getMousePos(e) { 
+            e = e || window.event; 
+            var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft; 
+            var scrollY = document.documentElement.scrollTop || document.body.scrollTop; 
+            var x = e.pageX || e.clientX + scrollX; 
+            var y = e.pageY || e.clientY + scrollY; 
+            return { 'x': x, 'y': y }; 
+        };
+        function setOpacity(node,val){
+            (-[1,]) ? ( node.style.opacity = val ) : (node.style.filter = 'alpha(opacity=' + val*100 + ')');
+        };
+
+    </script>
+</head>
+<body>
+    <div class='wrap' id='wrap'>
+        <form action="" class='form'>
+            <div class='formwrap'>
+                <a href="javascript:;" class='input_file_bg'>
+                    <input type="file" class='input_file' value='' accept="image/*">
+                </a>
+                <input type="text" class='input_text' readonly='readonly' name="" value="请上传图片">
+            </div>
+        </form>
+        <div class="view"> </div>
+        <div class="dropArea"><span>也可拖入图片</span></div>
+    </div>
+</body>
+</html>

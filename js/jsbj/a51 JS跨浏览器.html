@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+  <script type="text/javascript"> 
+		//判断IE8-,它利用了IE与标准浏览器在处理数组的toString方法的差异做成的。对于标准游览器，如果数组里面最后一个字符为逗号，JS引擎会自动剔除它。
+		var ie = !-[1,]; 
+		alert(ie); 
+
+		if(-[1,]){ 
+			alert("这不是IE8-"); 
+		}else{ 
+			alert("这是IE8-"); 
+		} 
+	</script> 
+ </head>
+ <body>
+  最近在做项目的升级工作，主要是跨浏览器这块，遇到了一些问题并且做了总结，贴出来与大家分享一下，如果你也遇到类似的问题，希望对你有一定的帮助。闲话少叙，进入正题，按照我总结的顺序来吧。
+
+1、获取浏览器的版本，这个是很重要的，在做这个工作之初我就写好了，因为过程中总有无法兼容的情况，就必须进行浏览器判断：
+
+我封装了一下，并且经过了测试【我这里不考虑IE的兼容模式】，喜欢的朋友可以直接拿走。
+
+[javascript] view plain copy 在CODE上查看代码片派生到我的代码片
+<span style="font-size:18px;">var BrowserType =  
+{  
+    IE7: "MSIE 7.0",  
+    IE8: "MSIE 8.0",  
+    IE9: "MSIE 9.0",  
+    IE10: "MSIE 10.0",  
+    Chrome: "Chrome",  
+    Firefox: "Firefox",  
+    Safari: "Safari"  
+};  
+  
+/// <summary>  
+/// Get Browser version  
+/// </summary>  
+function getBrowserVersion()  
+{  
+    if (navigator.userAgent.indexOf("MSIE 7.0") > 0)  
+    {  
+        return BrowserType.IE7;  
+    }  
+    if (navigator.userAgent.indexOf("MSIE 8.0") > 0)  
+    {  
+        return BrowserType.IE8;  
+    }  
+    if (navigator.userAgent.indexOf("MSIE 9.0") > 0)  
+    {  
+        return BrowserType.IE9;  
+    }  
+    if (navigator.userAgent.indexOf("MSIE 10.0") > 0)  
+    {  
+        return BrowserType.IE10;  
+    }  
+    if (navigator.userAgent.indexOf("Firefox") > 0)  
+    {  
+        return BrowserType.Firefox;  
+    }  
+    if (navigator.userAgent.indexOf("Chrome") > 0)  
+    {  
+        return BrowserType.Chrome;  
+    }  
+    if (navigator.userAgent.indexOf("Safari") > 0)  
+    {  
+        return BrowserType.Safari;  
+    }  
+}</span>  
+2、关于IFrame的问题，这个在跨浏览器的时候你一定会碰到，这个我也封装了两个function，分享一下:
+
+[javascript] view plain copy 在CODE上查看代码片派生到我的代码片
+<span style="font-size:18px;">/// <summary>  
+/// Get iFrame DOM Function [IE、Firefox]  
+/// </summary>  
+function getIFrameDOM(id)  
+{  
+    var iframeObj = null;  
+    if (document.getElementById(id) != null)  
+    {  
+        iframeObj = document.getElementById(id).contentDocument || document.frames[id];  
+    }  
+    return iframeObj  
+}  
+  
+/// <summary>  
+/// Get iFrame Window Function [IE、Firefox]  
+/// </summary>  
+function getIFrameWindow(id)  
+{  
+    var iframeWindow = null;  
+    if (document.getElementById(id) != null)  
+    {  
+        iframeWindow = document.getElementById(id).contentWindow || document.frames[id].window;  
+    }  
+    return iframeWindow;  
+}  
+</span>  
+
+真正用的多是第二个方法，取iFrame的window，然后调用window下的方法。
+
+3、关于IFrame加载完成的事件判断--之前用的是IE的onreadystatechange
+
+[javascript] view plain copy 在CODE上查看代码片派生到我的代码片
+<span style="font-size:18px;">if (getBrowserVersion() == BrowserType.IE8 || getBrowserVersion() == BrowserType.IE7)  
+        {  
+            $('#framePrintMap')[0].onreadystatechange = function ()  
+            {  
+                if (this.readyState == 'loaded' || this.readyState == 'complete')  
+                {  
+                    var json = jQuery.parseJSON($('#hidDatas').val());  
+                    var options = jQuery.parseJSON($('#hidOptions').val());  
+                    getIFrameWindow('framePrintMap').initPrintMap(json, options);  
+                }  
+            }  
+        }  
+        else  
+        {  
+            $('#framePrintMap')[0].onload = function ()  
+            {  
+                if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')  
+                {  
+                    var json = jQuery.parseJSON($('#hidDatas').val());  
+                    var options = jQuery.parseJSON($('#hidOptions').val());  
+                    getIFrameWindow('framePrintMap').initPrintMap(json, options);  
+                }  
+            }  
+        }  
+        $('#framePrintMap').attr('src', 'ThematicPrintMap.aspx');</span>  
+我详细说下，如果是IE7和IE8，可以用onload事件，但是它没有readyState对象，未加载完成直接调用iFrame里面的方法，报错了；IE9的话这两个分支都可以了，onreadystatechange是只有IE才支持，Safari/Chrome/Safari就只能走onload的分支了，那为什么还加个!readyState？是因为在Firefox里面没有readyState对象，所以只能这样判断。
+
+4、关于Table自动拉伸在跨浏览器的区别：请参见我的另一篇文章Table自动拉伸在Chrome与IE中的区别
+
+5、关于各个浏览器对小数的处理：请参见我的另一篇文章各浏览器对小数处理取整情况的对比
+
+6、关于捕获鼠标位置在个浏览器中的差别：请参见我的另一篇文章JavaScript中鼠标event的位置在各浏览器中的异同
+
+7、Chrome/Safari关于position:absolute的处理与其他浏览器有些不同：IE和Firefox会在父元素的内部，而Chrome/Safari会跑出父元素。
+
+8、IE7与其他浏览器的text-align：center处理不一样：IE7：内部的文本与div都居中，其他浏览器：只是文本居中，div不居中：将td中的内容包在div内部可以解决，td内的div的css为text-align:left，div的css为text-align：center，内部的文本就可以居中了。另一个显示year的title的div也是同样设置就可以了。
+
+9、关于IE7的IE=EmulateIE7与IE=7及真正IE7的区别；请参考“浏览器模式”和“文档模式”之间的区别
+
+10、Chrome/Safari下点击submit提交数据到后台：如果数据量超过512k时会自动截断，把input的type改成hidden就可以了。
+
+11、父容器设置overflow:auto;子元素设置属性position:relative;在ie7中该子元素不随滚动条滚动：给设置了overflow:auto属性的容器也加上position:relative就可以了。
+
+12、Safari下时间Date.Parse时间不准确的问题：【有时候准确，有时候不准确，测试发现到了2034年之后就不准确了】，这个问题真是浏览器内核没有做好，没办法，要兼容它还得想办法：
+
+先将日期转化成自己定制的标准格式：
+
+[html] view plain copy 在CODE上查看代码片派生到我的代码片
+<span style="font-size:18px;">Date.prototype.format = function (format)  
+{  
+    var o =  
+    {  
+        "M+": this.getMonth() + 1, // month     
+        "d+": this.getDate(), // day     
+        "h+": this.getHours(), // hour     
+        "m+": this.getMinutes(), // minute     
+        "s+": this.getSeconds(), // second     
+        "q+": Math.floor((this.getMonth() + 3) / 3), // quarter     
+        "S": this.getMilliseconds() // millisecond     
+    }  
+  
+    if (/(y+)/.test(format))  
+    {  
+        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));  
+    }  
+  
+    for (var k in o)  
+    {  
+        if (new RegExp("(" + k + ")").test(format))  
+        {  
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));  
+        }  
+    }  
+    return format;  
+}</span>  
+然后解析这个格式的时间就可以了，
+
+[javascript] view plain copy 在CODE上查看代码片派生到我的代码片
+<span style="font-size:18px;">/// <summary>  
+    /// Time format:2011-10-01 00:00:00 *[SQL:120] || 2011/10/01[SQL:111]  
+    /// </summary>  
+    this.dateFromString = function (str)  
+    {  
+        var arr = str.split(/[^0-9]/);  
+        var curTime = null;  
+        if (arr.length == 3)  
+        {  
+            curTime = new Date(arr[0], arr[1] - 1, arr[2]);  
+        }  
+        else if (arr.length >= 6)  
+        {  
+            curTime = new Date(arr[0], arr[1] - 1, arr[2], arr[3], arr[4], arr[5]);  
+        }  
+        return curTime;  
+    }</span>  
+这个一般用在将时间绑定到某个元素的扩展属性上，然后用的时候进行解析，div.data('time')。
+
+13、Firefox下不支持嵌套function。
+ </body>
+</html>

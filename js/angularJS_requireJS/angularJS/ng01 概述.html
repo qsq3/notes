@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN" ng-app="myModule">
+<head>
+    <meta charset="utf-8">
+    <title>ng01 概述</title>
+
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" />
+    <base target="_blank"></base>
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js" type="text/javascript"></script> 
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular-animate.min.js"></script>
+     <!-- <script type="text/javascript"  src="../lib/angularjs/angular.min.js"></script> -->
+     <!-- 
+        注意 ::
+        因为AngularJS 1.3版本之后 不再允许一个全局的function作为controller了
+        正确方法应该是使用angular.module
+    -->
+</head>
+<body class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                
+            </div>
+        </div>
+        <div class="panel-body">
+            
+        </div>
+        <script type="text/javascript">
+            //var myModule = angular.module("myModule" , []);
+            
+        </script>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                angular特性
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>MVC</li>
+                <li>模块化: ng-app , angular.module</li>
+                <li>指令系统 directive</li>
+                <li>双向数据绑定 ng-model, ng-bind, 双花括号{{}}</li>
+                <li>Service 路由ngRoute , 依赖注入</li>
+                <li>Provider</li>
+                <li>表单处理</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <a href="" class="panel-title">Controller</a>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>不要复用控制器,一个控制器一般只负责一小块视图</li>
+                <li>不要用Controller操作dom,这是指令 directive 的职责</li>
+                <li>不要在Controller里做数据格式化, ng有很好的表单控件</li>
+                <li>不要在Controller里做数据过滤操作, ng有$filter服务</li>
+                <li>一般来说, Controller是不会相互调用, 控制器之间的交互会通过$rootScope或数据模型上的事件进行</li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                作用域对象 $scope
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>$scope 是一个 POJO (Plain Old Javascript Object)</li>
+                <li>$scope 提供了一些工具方法: $watch(), $apply() 等</li>
+                <li>$scope 是表达式的执行环境 </li>
+                <li>$scope 是树形结构,与dom标签平行 </li>
+                <li>和原型链类似,子$scope会继承父$scope的属性和方法 </li>
+                <li>每个angular应用只有一个根$scope对象($rootScope), 一般位于ng-app上</li>
+                <li>$scope 可以传播事件,类似dom事件, 可以向上或向下</li>
+                <li>$scope是ng中 MVC 和 双向数据绑定 的基础</li>
+                <li>可以用angular.element($0).scope()进行调试</li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <a class="panel-title" href="http://www.runoob.com/angularjs/angularjs-reference.html"> 
+                关于angular的指令
+            </a>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>ng-app : 初始化一个 AngularJS 应用程序 ,可以指定自定义app模块, 不指定则为默认, 一个单页面只能加载一个 ng-app </li>
+                <li>ng-model 指令把元素值（比如输入域的值）绑定到对应的数据模型。</li>
+                <li>ng-bind : 把对应的数据模型绑定到HTML元素内,一般用于首页,需要加载ng时使用</li>
+                <li>双花括号: {{}} : 把对应的数据模型绑定到花括号,一般用于内页</li>
+                <li>ng-init 指令初始化应用程序数据</li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Demo: ng-model绑定数据模型, 指令系统 directive 操作标签模板
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul>
+            <li>使用ng-model把html的元素值绑定到数据模型中 : <input ng-model="bindtest.text"></input></li>
+            <li>使用双花括号{{}}绑定数据模型到html中: <span>{{bindtest.text}}</span> </li>
+            <li>使用ng-bind指令绑定数据模型到html元素中: <span ng-bind="bindtest.text"></span> </li>
+            <li>使用directive指令自定义html标签模板: <egtag></egtag> </li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            var myModule = angular.module("myModule" , []);
+            myModule.directive('egtag', function () {
+                    return {
+                        restrict : 'E'
+                        ,template : '<i>这是测试 指令系统directive(自定义标签模板) + 数据模型ng-model(双向数据绑定)的内容: {{bindtest.text}} </i>'
+                        ,replace : true
+                    }
+                }
+            );
+        </script>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Demo: 作用域对象1 $scope $rootScope
+            </div>
+        </div>
+        <div class="panel-body">
+            <div ng-controller="greetCtrl">
+                hello {{name}} !
+            </div>
+            <div ng-controller="listCtrl">
+                <ol>
+                    <li ng-repeat="name in names">
+                        {{name}} from {{rootName}}
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <script type="text/javascript">
+            //注意 : AngularJS 1.3版本之后 不再允许一个全局的function作为controller了 正确方法应该是使用angular.module
+            /*
+            function greetCtrl ($scope, $rootScope){
+                $scope.name = "world";
+                $rootScope.rootName = 'Angular';
+            }
+            function listCtrl($scope) {
+                $scope.names = ['zhangsan','lisi','wangwu'];
+            }*/
+
+            //var myModule = angular.module("myModule" , []);
+            myModule.controller('greetCtrl',['$scope','$rootScope',function($scope,$rootScope) {
+                $scope.name = "world";
+                $rootScope.rootName = 'Angular';
+            }])
+            myModule.controller('listCtrl',['$scope',function($scope) {
+                $scope.names = ['zhangsan','lisi','wangwu'];
+            }])
+
+        </script>
+    </div>
+    
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Demo: 作用域对象2 $scope的事件层级
+            </div>
+        </div>
+        <div class="panel-body">
+            <div ng-controller="eventCtrl">
+                <label>root Scope</label> <tt>myEvent</tt> count: {{count}}
+                <ul>
+                    <li ng-repeat="i in [1,2]" ng-controller='eventCtrl'>
+                        <button ng-click="$emit('myEvent')">
+                            $emit('myEvent') 向上传递
+                        </button>
+                        <button ng-click="$broadcast('myEvent')">
+                            $broadcast('myEvent') 向下传递
+                        </button>
+                        <br>
+                        <label>middle Scope</label> <tt>myEvent</tt> count: {{count}}
+                        <ul>
+                            <li ng-repeat="j in [1,2,3]" ng-controller='eventCtrl'>
+                                <label>leaf Scope</label> <tt>myEvent</tt> count: {{count}}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <script type="text/javascript">
+            //var myModule = angular.module("myModule" , []);
+            myModule.controller('eventCtrl',['$scope',function($scope) {
+                $scope.count = 0;
+                $scope.$on('myEvent',function () {
+                    $scope.count++;
+                })
+            }])
+        </script>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Demo : ng-show ng-hide
+            </div>
+        </div>
+        <div class="panel-body">
+            <div ng-controller="ngShowCtrl">
+                <button class="btn btn-primary" ng-click="toggleMenu()">切换按钮</button>
+                <ul ng-show='menuState.show'>
+                    <li ng-click='stun()'>Stun</li>
+                    <li ng-click='disintegrate()'>disintegrate</li>
+                    <li ng-click='erase()'>erase</li>
+                </ul>
+            </div>
+        </div>
+        <script type="text/javascript">
+            //var myModule = angular.module("myModule" , []);
+            myModule.controller('ngShowCtrl',['$scope',function($scope){
+                $scope.menuState = {show:false};
+                $scope.toggleMenu = function (){
+                    $scope.menuState.show = !$scope.menuState.show
+                }
+
+            }]);
+        </script>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Demo: 表单, 操作class, ng-class
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="form-horizontal" role="form" ng-controller="userInfoCtrl">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                邮箱:
+                            </label>
+                            <div class="col-md-10">
+                                <input type="email" class="form-control" placeholder="推荐使用163邮箱" ng-model="userInfo.email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                密码:
+                            </label>
+                            <div class="col-md-10">
+                                <input type="password" class="form-control" placeholder="只能是数字,字母,下划线" ng-model="userInfo.password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10 col-md-offset-2">
+                                <div class="checkbox pull-left">
+                                    <label>
+                                        <input type="checkbox" ng-model='userInfo.remember'/>记住密码 
+                                    </label>
+                                </div>
+                                <div class="checkbox pull-right">
+                                    <label>
+                                        <input type="checkbox" ng-model='userInfo.autoLogin'/>自动登录
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10 col-md-offset-2">
+                                <button class="btn btn-default" ng-click="getFormData()">获取表单的值</button>
+                                <button class="btn btn-default" ng-click="setFormData()">设置表单的值</button>
+                                <button class="btn btn-{{myClass}}" ng-click="setFormClass()">自定义控制样式</button>
+                                <button class="btn" ng-class="{true:'btn-warning', false:'btn-danger'}[isWarning]" ng-bind="btnText"></button>
+                                <button class="btn" ng-class='{"btn-warning": isWarning, "btn-danger": isDanger}' ng-click="setNgClass()">ng-class控制样式 : {{btnText}}</button>
+                                <!--<span class="glyphicon glyphicon-search"></span> 跨域引用百度的bootstrap字体会出现同源错误-->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        ;!function(){
+            //var  myModule = angular.module("myModule",[]);
+            myModule.controller('userInfoCtrl',['$scope', function ($scope) {
+
+                //设置默认值
+                $scope.userInfo = {
+                    email : '112093112@qq.com',
+                    password : '123456',
+                    remember : true,
+                    autoLogin : true
+                };
+
+                //获取表单的值
+                $scope.getFormData = function(){
+                    console.log(this.userInfo)
+                };
+
+                //设置表单的值
+                $scope.setFormData = function(){
+                    $scope.userInfo = {
+                        email : 'ssmat@qq.com',
+                        password : '1234566666666',
+                        remember : false,
+                        autoLogin : false
+                    };
+                };
+
+                //自定义控制样式
+                $scope.myClass = "default";
+                $scope.setFormClass = function(){
+                    this.myClass = (this.myClass == "success" ? "default" : "success");
+                };
+
+                //ng-class控制样式
+                $scope.isWarning = true;
+                $scope.btnText = "warning"
+                $scope.isDanger = false;
+                $scope.setNgClass = function(){
+                    if(this.isWarning){
+                        this.isWarning = false;
+                        this.btnText = "Danger";
+                    }else{
+                        this.isWarning = true;
+                        this.btnText = "Warning";
+                    }
+                    this.isDanger = !this.isWarning;
+                }
+            }])
+        }();
+    </script>
+
+</body>
+</html>

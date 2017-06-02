@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" > 
+		<title></title>
+		<link rel="stylesheet" href="css/main.css" />
+		<style>
+			*{margin: 0px;padding: 0px;}
+			body{background: #684da3;}
+			.box{width: 800px;margin: 50px auto 100px;text-align: center;}
+			span{display: inline-block;width: 150px;height: 150px;font-size: 140px;line-height: 150px;position:relative;}
+			.below{margin-left: 40px;color: #fff;transform-style: preserve-3d;perspective: 500px;}
+			.active{  text-shadow: -1px 0 1px #684da3, 1px 0 1px rgba(0,0,0,0.8); position: absolute;top: 0;left: 6px;color: #684da3;transform-origin: left;transform:rotateY(-40deg);transition: all 1s; }			
+			.shadow{position: absolute;top: 13px;left: 4px;-webkit-transform: scale(1.1) skew(0deg, 15deg);color: rgba(0,0,0,0.2);transition: all 1s;}
+			.below:hover .active{transform:rotateY(0deg);left: 0;top: 0;}
+			.below:hover .shadow{-webkit-transform: scale(1) skew(0deg, 0deg);top: 5px;}
+			.navwrap{width: 800px;padding: 8px;border: 1px solid peru;margin-bottom:20px ;}
+			ul{height: 29px;overflow: hidden;}
+			li{padding: 5px 15px;color: #fff;background:orchid;text-shadow: 1px 1px 0 #222,2px 2px 0 #ccc;}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<span class="below">
+				<span class="shadow">白</span>
+				白
+				<span class="active">白</span>
+			</span>
+			<span class="below">
+				<span class="shadow">虎</span>
+				虎
+				<span class="active">虎</span>
+			</span>
+			<span class="below">
+				<span class="shadow">联</span>
+				联
+				<span class="active">联</span>
+			</span>
+			<span class="below">
+				<span class="shadow">盟</span>
+				盟
+				<span class="active">盟</span>
+			</span>
+		</div>
+		<div class="navwrap mar_auto">
+			<ul class="justify f16">
+				<li>陌神</li>
+				<li>黑神</li>
+				<li>元神</li>
+				<li>雨神</li>
+				<li>越神</li>
+				<li>糖神</li>
+				<li>猫神</li>
+			</ul>	
+		</div>
+		<div class="font-center seach">
+			<input class="ipt mr_r_15" type="text" placeholder="请输入内容" />
+			<a href="javascript:void(0);" class="btn">提交</a>
+		</div>
+	</body>
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/layer/layer.js"></script>
+	<script>
+		$(function(){
+			$('.btn').click(function(){
+				var $con = $('input').val();
+				if( $con ){
+					var html = "<li>"+$con+"</li>&nbsp";
+					$('ul').append( html );
+					$('input').val('');
+				}else{
+				 	layer.tips('请输入内容',$('input'),{
+				 		tips: [4, '#743a3a']
+				 	});
+				}
+			});
+		})
+	</script>
+</html>

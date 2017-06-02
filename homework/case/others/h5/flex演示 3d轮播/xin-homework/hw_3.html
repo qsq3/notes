@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <style>
+    	*{padding: 0;margin: 0;}
+    	.box{width: 600px;height: 400px;margin: 100px auto;position: relative;}
+    	.box>img{position: absolute;top: 0;left: 0;transition:all 0.8s;transform: scale(0.8);}
+    	label{width: 100px;height: 80px;display: inline-block;position: absolute;top: 0;left: 0;z-index: 2;}
+    	img{width: 100%;height: 100%;}
+    	input{display: none;}
+    	.box input~img{opacity: 0;}
+    	.box label{border: 5px solid #fff;position:relative;z-index: 3;float: left;cursor: pointer;margin: 300px 44px 0 44px;opacity: 0.6;transition:all 0.8s;}
+        .box input:checked + label + img{opacity: 1;transform: scale(1.2);}
+        label:hover{margin-top: 280px;opacity: 1;}
+    </style>
+</head>
+
+<body>
+	<div class="box">
+		<!--第一张图-->
+		<input type="radio"name='pic' id="btn1" checked/>
+		<label for="btn1">
+			<img src="img/fj_1.jpg" />
+		</label>
+		<img src="img/fj_1.jpg" />
+		<!--第二张图-->
+		<input type="radio" name='pic' id="btn2" />
+		<label for="btn2">
+			<img src="img/fj_2.jpg" />
+		</label>
+		<img src="img/fj_2.jpg" />
+		<!--第三张图-->
+		<input type="radio" name='pic' id="btn3" />
+		<label for="btn3">
+			<img src="img/fj_3.jpg" />
+		</label>
+		<img src="img/fj_3.jpg" />
+	</div>
+</body>
+<script src="js/jquery-1.11.3.min.js"></script>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>22. Ajax2.0跨域, 进度</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 禁止系统自动添加效果，直接显示设计原图;-->
+    <link rel="apple-touch-icon-precomposed" href="">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="" />
+    <link rel="shortcut icon" href="">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.4.css" />
+    <script type="text/javascript" src="js/baseUtil.js"></script>
+    <style type="text/css">
+      pre{
+        white-space : pre-wrap;
+      }
+    </style>
+</head>
+<body class="container">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      阮一峰:<br/>
+      <a href="http://www.ruanyifeng.com/blog/2012/08/file_upload.html" target="_blank">XMLHttpRequest Level 2 使用指南</a><br/>
+      <a href="http://www.ruanyifeng.com/blog/2012/08/file_upload.html" target="_blank">文件上传的渐进式增强</a>
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="row">
+    
+      <div class="col-sm-6">
+
+        <pre>
+  XMLHttpRequest 2.0 新增功能
+      跨域请求：修改服务端头信息 header("Access-Control-Allow-Origin:*")
+      IE兼容(高版本)：XDomaiRequest 
+      
+  进度事件：
+      upload.onprogress(event)  上传进度(实现文件上传进度条)
+        event.total  发送文件的总量
+        event.loaded 已发送的量
+      FormData  构建提交二进制数据
+
+  与progress事件相关的，还有其他五个事件，可以分别指定回调函数：
+  　　* load事件：传输成功完成。
+  　　* abort事件：传输被用户取消。
+  　　* error事件：传输中出现错误。
+  　　* loadstart事件：传输开始。
+  　　* loadEnd事件：传输结束，但是不知道成功还是失败
+        </pre>
+
+      </div>
+
+      <div class="col-sm-6">
+        <div>
+          <div>
+            <input type="file" id="file" multiple >
+            <button id="btn">点击上传/下载</button>
+            <div class="progress clearfix" id="progress">
+              <div class="progress-bar" id="progressbar" style="width:0%;transition: none"></div>
+            </div>
+          </div>
+          <script>
+          btn.addEventListener('click',function(){
+            var files = document.getElementById("file").files;
+            var formData = new FormData();
+            //formData.append('file',files[0])
+            for (var i = 0; i < files.length;i++) {
+        　　　　formData.append('files[]', files[i]);
+        　　}
+
+            var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new XDomaiRequest();
+            xhr.timeout = 10000; //设置超时
+            xhr.ontimeout = function(event){
+        　　　　alert('请求超时！');
+        　　}
+
+            xhr.open('get', './img/demo.mp4',true); 
+            xhr.onprogress = updateProgress;  //下载进度监听事件,只支持get方法, 会将浏览器卡顿, 调试栏卡死
+            xhr.upload.onprogress = updateProgress; //上传进度监听事件,只支持POST方法
+
+            // 定义上传完成后的回调函数
+            xhr.onload = function () {
+              if (xhr.status === 200) {
+                console.log(xhr.responseText);
+              } else {
+                console.log('出错了');
+              }
+            };
+
+            xhr.send(formData);
+
+            function updateProgress(event) {
+              if (event.lengthComputable) {
+              console.log(event.target);
+                var percentComplete = (event.loaded / event.total * 100 ).toFixed(2) +"%";
+                progressbar.innerText = percentComplete;
+                progressbar.style.width = percentComplete;
+              }
+            }
+          })
+          </script>
+        </div>
+        
+      </div>
+      <!-- col-md-6 E-->
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    
+  </div>
+  <script type="text/javascript">
+    ;(function(){
+      
+
+    })()
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="row">
+
+      <div class="col-sm-6">
+        <pre>
+
+        </pre>
+      </div>
+
+      <div class="col-sm-6">
+        <div>
+         
+        </div>
+           
+      </div>
+      <!-- col-md-6 E-->
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    
+  </div>
+  <script type="text/javascript">
+    ;(function(){
+      
+
+    })()
+  </script>
+</div>
+
+
+</body>
+</html>

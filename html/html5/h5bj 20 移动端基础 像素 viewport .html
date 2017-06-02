@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>20. 移动端基础</title>
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+    
+    <style type="text/css">
+
+        /** 清除内外边距 **/
+        body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+        dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+        pre, /* text formatting elements 文本格式元素 */
+        form, fieldset, legend, button, input, textarea, /* form elements 表单元素 */
+        th, td /* table elements 表格元素 */ {
+          margin: 0;
+          padding: 0;
+        }
+
+        /** 重置列表元素 **/
+        ul, ol { list-style: none; }
+
+        /** 重置文本格式元素 **/
+        a { text-decoration: none; }
+        
+    </style>
+</head>
+<body>
+一.移动端像素知识
+
+移动端font-size为40px等于PC上12px同等物理大小,不规范;
+
+我们一般会碰到的度量单位主要有：dpi、ppi、dp、sp、px、pt、in（英寸） dpr。
+
+逻辑单位:
+px：pixel，像素，电子屏幕上组成一幅图画或照片的最基本单元 ,浏览器使用的逻辑像素单位;
+
+物理像素单位;
+    pt: point，点，印刷行业常用单位，等于1/72英寸;iOS的尺寸单位;
+    dp: dip，Density-independent pixel,  安卓长度单位，1dp表示在屏幕像素点密度为160ppi时1px长度,sp*ppi/160 = px
+    sp: scale-independent pixel，   安卓字体大小单位。
+公式一： 1pt= (DPI / 72) px
+公式四： 1dp=（屏幕ppi/ 160）px
+公式五：当文字尺寸是“正常”时1sp=1dp，而当文字尺寸是“大”或“超大”时，1sp>1dp。一般情况下可认为sp=dp
+
+
+密度单位:
+    ppi: pixel per inch，：密度单位 ,图像分辨率, 每英寸像素数，该值越高，则屏幕越细腻 ,屏幕上的设计DPI初始值72,此时 1px = 1pt，
+    dpi: dot per inch : 密度单位 ,打印分辨率,每英寸多少点，该值越高，则图片越细腻 ,印刷品设计DPI设成300.
+    dpr: devicePixelRatio 设备像素缩放比 
+公式一 : 1px = dpr * 1dp;
+公式二：dpi=ppi
+公式三：ppi = √（长度像素数² + 宽度像素数²） / 屏幕对角线英寸数;
+
+
+dpr 单位之间的换算关系随倍率变化：,ldpi 如今已绝迹，不用考虑
+1倍：1pt=1dp=1px（mdpi [320x480]（市场份额不足5%，新手机不会有这种倍率，屏幕通常都特别小）、iPhone 3gs）
+1.5倍：1pt=1dp=1.5px（hdpi [480x800、480x854、540x960]（早年的低端机，屏幕在3.5英寸档位；如今的低端机，屏幕在4.7-5.0英寸档位））
+2倍：1pt=1dp=2px（xhdpi [720x1280]（早年的中端机，屏幕在4.7-5.0英寸档位；如今的中低端机，屏幕在5.0-5.5英寸档位）、iPhone 4s/5/6）
+3倍：1pt=1dp=3px（xxhdpi [1080x1920]（早年的高端机，如今的中高端机，屏幕通常都在5.0英寸以上）、iPhone 6）
+4倍：1pt=1dp=4px（xxxhdpi [1440x2560]（极少数2K屏手机，比如Google Nexus 6））
+
+
+二.viewport ：
+
+viewport 分为2个方面来学习，更有助于理解它的原理：
+    visual viewport : 当前显示给用户内容的窗口，可以通过document.body.clientWidth读取。
+    layout viewport : 网页的所有内容，可以通过window.innerWidth读取, IOS默认layout viewport为980px;Android不固定.
+    
+语法介绍
+    <meta name="viewport" 
+
+        content=" 
+
+        height = [pixel_value | device-height] , //( 安卓系统不持具体数值 ios支持)
+        width = [pixel_value | device-width ] ,  //( 安卓系统不持具体数值 ios支持)
+
+        initial-scale = float_value , //页面初始缩放 (0.01–10)
+        minimum-scale = float_value , //最小缩放 (0.01–10)
+        maximum-scale = float_value , //最大缩放。(0.01–10)
+        //所有的缩放值都必须在0.01–10的范围之内。缩放比值就是 layout viewport/visual viewport;
+
+        user-scalable = [yes | no] ,  // 用户是否缩放。如果为no，那么minimum-scale和maximum-scale都将被忽略
+            
+        target-densitydpi = [dpi_value | device-dpi | high-dpi | medium-dpi | low-dpi] 
+        /* 值:
+            device-dpi –设备默认的像素密度, 不会发生默认缩放。 
+            high-dpi – 使用高像素密度 hdpi。 中等像素密度和低像素密度设备相应缩小。 
+            medium-dpi – (默认值) 使用中像素密度 mdpi。 高像素密度设备相应放大
+            low-dpi -使用低像素密度 low-dpi。中等像素密度和高像素密度设备相应放大。 
+            dpi_value – 自定义像素密度(70–400)。
+        */
+        " 
+    /> 
+实例:
+(设置屏幕宽度为设备宽度，禁止用户手动调整缩放)
+ <meta name="viewport" content="width=device-width,user-scalable=no" />
+
+(设置屏幕密度为高频，中频，低频自动缩放，禁止用户手动调整缩放)
+<meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+//玄武实例
+<meta name = "viewport" content = "width =320px/device-width( 安卓系统不持具体数值 ios支持),
+user-scalable=yes,initial-scale = 1.0,minimum-scale = 1.0,maximum-scale=1.0,
+	target-densitydpi = ">;
+                dpi_value (70-400//每英寸显示的像素点个数）
+			    device-dpi  设备默认的像素密度
+			    high-dpi    高像素密度
+			    medium-dpi  中等的像素密度
+			    low-dpi     低像素密度
+
+一个屏幕像素密度是由屏幕分辨率决定的，通常定义为每英寸点的数量（dpi）。Android支持三种屏幕像素密度：低像素密度，中像素密度，高像素密度。一个低像素密度的屏幕每英寸上的像素点更少，而一个高像素密度的屏幕每英寸上的像素点更多。Android Browser和WebView默认屏幕为中像素密度。
+为了防止Android Browser和WebView 根据不同屏幕的像素密度对你的页面进行缩放，可以将viewport的target-densitydpi 设置为 device-dpi。当你这么做了，页面将不会缩放。相反，页面会根据当前屏幕的像素密度进行展示。在这种情形下，你还需要将viewport的width定义为与设备的width匹配，这样你的页面就可以和屏幕相适应。
+
+移动端分辨率：240*320(一般不考虑)、320*480、480*800、640*960、480*854
+    1280*720、800*1280、1080*1920
+    重点考虑320-480 
+
+三 响应式布局
+响应式布局方法：
+    1、320px 宽度定死  然后做居中
+    2、通关media查询响应式布局，根据不同的分辨率设置不同的样式
+    3、通过自适应100%、box-flex、rem(相对于根目录的字体大小来设置)
+    4.缩放0.5,保持 1px = 1dp ,优点1px像素边框和高清图片都不需要特别处理;
+响应式布局细节:
+ 1. 百分比布局;
+ 2. 弹性图片;
+ 3. 重新布局,显示与隐藏;
+ 4. 为了适应手机屏幕 rem = screen.width/20; 一些固定元素可以不用rem改为 px;
+ 5 注意文本溢出,单行/多行
+
+四 细节处理
+1. 在移动端,为了避免图片变模糊,图片宽高应该用物理像素来渲染,width:(w_value/dpr)px; height:(h_value/dpr)px;
+2. 1像素边框 :scaleY(0.5)
+
+三.H5新增JS 
+
+1. data自定义数据
+    <div id="div" data-tanzhou="潭州教育"
+        data-tanzhou-web="潭州教育web前端"></div>
+            div.dataset.tanzhou;
+            div.dataset.tanzhouWeb;//驼峰;
+
+2. script 标签属性:
+    defer: 延迟加载,在文档加载完成,body.onload前触发,多个defer的触发顺序不确定,建议保持一个在文档结尾;
+    async: 异步加载，加载完就触发，有顺序问题
+
+3.classList (className列表, typeof 为 object);
+    语法 div.classList.xxx
+    length :  class的长度
+    add()  :  添加class方法
+    remove()  :  删除class方法 div.classList.remove("className1","className2");
+    toggle() :  切换class方法 
+
+4.json 新方法:
+    JSON.parse() : 把字符串转成json
+        字符串中的属性要严格的加上引号
+    JSON.stringify() : 把json转化成字符串
+        会自动的把双引号加上
+    用途:
+    1. ajax传输数据
+    2. 浅拷贝 jsonB = JSON.parse(JSON.stringify(jsonA));//只能拷贝私有属性,不能拷贝原型属性;
+    3. jQuery 中也有将字符串转为JSON格式的方法jQuery.parseJSON( json )，接受一个标准格式的 JSON 字符串，并返回解析后的 JavaScript （JSON）对象。
+
+    与eval的区别
+        eval()：对任何的字符串进行解析变成js
+        parse()：字符串中的属性要严格的加上引号
+    其他浏览器兼容
+    http://www.json.org/去下载json2.js
+
+    
+
+5.历史管理:
+    onhashchange  ：改变hash值来管理
+    history  ：
+    服务器下运行
+    pushState :  三个参数 ：数据  标题(都没实现)  地址(可选)
+    onpopstate事件 :  读取数据   event.state
+
+    实例:
+       //利用历史记录
+        btn.onclick = function(){
+            var sum1 = Math.random();
+            var sum2 = Math.random();
+            history.pushState(sum1, '', sum2);
+        }
+        window.onpopstate = function(ev){
+            div.innerHTML = ev.state;
+        };
+
+        //利用hash值
+        var json = {};
+        btn.onclick = function(){
+            var sum1 = Math.random();
+            var sum2 = Math.random();
+            //把值和索引存进json中,并把索引赋值给hash保存;
+            json[sum1] = sum2;
+            window.location.hash = sum1;
+            
+        }
+ 
+        window.onhashchange = function(ev){
+            //利用hash保存的键查找json中保存的值;
+            div1.innerHTML = json[window.location.hash.substring(1)];
+        }   
+
+
+
+    
+四.手机触屏事件.click 300ms延迟;
+    touchstart
+        当手指触摸到屏幕时触发
+    touchmove 
+        手指在屏幕上移动时触发
+    (Android bug- touchstart touchmove只触发一次,修复方式:
+        1. 在touchmove事件函数内 event.preventDefault(),但会导致页面不滚动)
+        2. 我们除了阻止touchstart的默认动作之外还要对内部的一些特殊元素做处理。让那些特殊的元素上的事件不冒泡出去，以防止默认动作被阻止。 
+        document.addEventListener("touchstart",function(e){
+          /^(?:INPUT|TEXTAREA|A)$/.test(e.target.tagName)||e.preventDefault();
+
+
+    touchend 
+        手指离开屏幕时触发
+
+    touchenter
+        当触点进入某个 element 时触发。
+    touchleave
+        当触点离开某个 element 时触发。
+
+    touchcancel
+        当触点由于某些原因被中断时触发。有几种可能的原因如下（具体的原因根据不同的设备和浏览器有所不同）：
+    由于某个事件取消了触摸：例如触摸过程被一个模态的弹出框打断。
+    触点离开了文档窗口，而进入了浏览器的界面元素、插件或者其他外部内容区域。
+    当用户产生的触点个数超过了设备支持的个数，从而导致 TouchList 中最早的 Touch 对象被取消。
+
+    touchEvent
+        touches 当前位于手机屏幕上的所有手指列表
+        targetTouches 位于当前的元素上的手指的一个列表
+        changedTouches 涉及当前事件的手指列表
+        clientX：触摸目标在视口中的x坐标。
+    　	clientY：触摸目标在视口中的y坐标。
+    　　	identifier：标识触摸的唯一ID。
+    　　	pageX：触摸目标在页面中的x坐标。
+    　　	pageY：触摸目标在页面中的y坐标。
+    　　	screenX：触摸目标在屏幕中的x坐标。
+    　　	screenY：触摸目标在屏幕中的y坐标。
+    　　	target：触目的DOM节点目标。
+
+    zepto框架 Tap穿透bug
+    1.蒙层使用缓动消失;
+    2.加入中间层;
+    3."上下"层都用tap;(某些input标签依然会触发click)
+    1、使用github上有一个叫做fastclick的库；
+    2 在touchstart时添加deltaX和deltaY的置0，代码如下：
+        .on('touchstart MSPointerDown pointerdown', function(e){
+            deltaX = deltaY = 0;
+        }
+    2、监听touchend事件，并在事件中使用preventDefault()阻止冒泡；
+    $(".js-egg-close").on("touchend", function(e){  //这里使用touchstart事件也是可以的，
+        e.preventDefault();
+         $('.sec_dlg_eggs').remove();
+         $(".eggs_bg").remove();
+    });
+    3、使用css3的pointer-events=true,pointer-events=none切换来实现；
+    4.延迟一定的时间来处理事件。本人测试是超过320毫秒就不会出现穿透，与jQuery的动画(fadeIn()，fadeOut())等配合，个人感觉良好;
+      $(id).fadeIn(300);
+    5.如果还不奏效，终极解决方案是用click提代tap;
+    设置点击事件为_tap
+    _tap = touchend in document ? "touchend":"click"
+    这样在执行的过程中就可以直接调用div.on(_tap, function(){}) 
+    
+    
+    弹性滚动: iScroll插件;
+    下拉加载;上拉刷新;
+
+
+    //兼容PC实例
+    ;(function(){
+
+    var isInit = false,
+        displayLoading = false,
+        isNeedLoading = false,
+        loading = null,
+        $document = $(document);
+
+    var listens = [];//laoded注册事件
+
+    var touchSettings = {
+        supressionThreshold: 10,//触发touchmove的敏感度
+        horizontalThreshold: 10,//swipe的触发水平方向move必须小于这个距离
+        verticalThreshold: 30//swipe的触发垂直方向move必须大于这个距离
+    };
+
+
+    var pageX = 0, pageY = 0, scrollTop = 0;//坐标
+    var _data;
+
+    // 检测滚动的默认DOM节点为body, 由于有些页面将列表容器设置为absolute定位, 因此提供changScrollDom来改变滚动检测的DOM
+    var scrollDom = document.body;
+
+
+    /**************  touch event  **************/
+
+    function getDuration(x, y) {
+        x = x || pageX;
+        y = y || pageY;
+        var horizontalAbs = Math.abs(x - pageX);
+        var verticalAbs = Math.abs(y - pageY);
+        return {
+            horizontal: horizontalAbs > 0 ? (x - pageX) / horizontalAbs : 0,
+            vertical: verticalAbs > 0 ? (y - pageY) / verticalAbs : 0
+        };
+    }
+
+    //即使android下scrollDom为document也不能获取到scrollTop
+    function getScrollTop(){
+        if($.os.ios){
+            return scrollDom.scrollTop;
+        }else{
+            return window.scrollY;
+        }
+    }
+
+    function touchStart(event) {
+        //Utils.traceLogAdd('touchstart');
+
+        scrollTop = getScrollTop();//初始scrollTo
+
+        if (!displayLoading) {
+            _data = +new Date();
+            //console.log('touchStart:', 0);
+            var _touch = event.touches[0];
+            if (_touch) {
+                pageX = _touch.pageX;
+                pageY = _touch.pageY;
+            }
+        }
+    }
+
+    function touchMove(event) {
+        //Utils.traceLogAdd('touchmove');
+        if (!displayLoading && !scrollTop && getScrollTop() <= 0) {
+            isNeedLoading = false;
+            var _length = event.touches.length;
+            if (_length === 1) {//一个手指
+                var _touch = event.touches[0];
+                if (Math.abs(_touch.pageY - _touch.pageY) > touchSettings.supressionThreshold) {
+                    e.preventDefault();
+                } else if (_touch.pageY > pageY + touchSettings.verticalThreshold - 5) {//垂直距离
+                    // 为了流畅的体验, 已经Android下很难触发下拉刷新, 这里减去10像素的高度, 后续可以通过优化调整
+                    var _duration = getDuration(_touch.pageX, _touch.pageY);
+                    if (_duration.vertical > 0) {
+                        //console.log(_duration.vertical + ',touchMove:', new Date() - _data);
+                        //向下滑动
+                        isNeedLoading = true;
+                        showLoading();
+                       
+                        //android 4.4（4.0）的bug，只触发touchmove一次，并且不触发touchend
+                        if($.os.android == 4.4){ // change by bizai 
+                            touchEnd();
+                        }
+                    }
+                }
+            }
+        }
+        //event.preventDefault();
+
+    }
+
+    function touchEnd(event) {
+        if (displayLoading && !scrollTop) {
+            var _this = this;
+            if (isNeedLoading) {
+                var returns = false;
+                listens.forEach(function (fun) {
+                    if (fun.call(_this, event)) {
+                        returns = true;
+                    }
+                    //监听回调事件,如果有一个函数返回true，则表示需要手动触发loading消失
+                });
+                if (!returns) {
+                    hideLoading();
+                }
+                isNeedLoading = false;
+            }
+        }
+    }
+
+
+    /**************  event manage  **************/
+
+    function addEvent() {
+        var dom = $.os.ios ? $(scrollDom) : $document;
+        dom.on('touchstart', touchStart);
+        dom.on('touchmove', touchMove);
+        dom.on('touchend', touchEnd);
+    }
+
+    function deleteEvent() {
+        var dom = $.os.ios ? $(scrollDom) : $document;
+        dom.off('touchstart', touchStart);
+        dom.off('touchmove', touchMove);
+        dom.off('touchend', touchEnd);
+    }
+
+
+    /**************  about loading ****************/
+    function initHtml() {
+        loading = $('<div class="refresh_loading"></div>');
+        $(document.body).append(loading);
+    }
+
+    function showLoading() {
+        if (displayLoading) {
+            return;
+        }
+        displayLoading = true;
+        loading && (loading.show());
+    }
+
+    function hideLoading() {
+        //if(!display) return;
+        displayLoading = false;
+        loading && (loading.hide());
+    }
+
+
+    /**************  start and desroy  ****************/
+    function init(opt) {
+        opt = opt || {};
+        if (!isInit) {
+            isInit = true;
+            if (opt.dom) {
+                scrollDom = $.os.ios ? opt.dom : document;
+            }
+            addEvent();
+        }
+        if (opt.reload) {
+            listens.push(opt.reload);//添加注册事件
+        }
+    }
+
+    function destroy() {
+        deleteEvent();
+        if (loading) {
+            loading.remove();
+            loading = null;
+        }
+        scrollTop = pageX = pageY = 0;//坐标
+        isNeedLoading = displayLoading = isInit = false;
+    }
+
+    return {
+        init: init,
+        destroy: destroy,
+        show: showLoading,
+        hide: hideLoading,
+        listen: function (opt) {
+            if (opt.del) {
+                //删除事件
+                return listens.splice(indexOf(opt.reload));//移除注册事件
+            } else {
+                return opt.reload && listens.push(opt.reload);//添加注册事件
+            }
+        },
+        pauseTouchMove: function() {
+            deleteEvent();
+        },
+        restoreTouchMove: function() {
+            deleteEvent();
+            addEvent();
+        }
+    };
+
+})();
+
+</body>
+</html>

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>11 SVG</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 禁止系统自动添加效果，直接显示设计原图;-->
+    <link rel="apple-touch-icon-precomposed" href="">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="" />
+    <link rel="shortcut icon" href="">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.4.css" />
+    <script type="text/javascript" src="js/baseUtil.js"></script>
+    <style type="text/css">
+      pre{
+        white-space : pre-wrap;
+      }
+    </style>
+</head>
+<body class="container">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+
+    <div class="panel-title">
+      SVG 基础
+    </div>
+  </div>
+  <div class="panel-body">
+    <pre>
+    什么是SVG？
+    SVG 指可伸缩矢量图形 (Scalable Vector Graphics)
+    SVG 用来定义用于网络的基于矢量的图形
+    SVG 使用 XML 格式定义图形
+    SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失
+    SVG 是万维网联盟的标准
+    SVG 与诸如 DOM 和 XSL 之类的 W3C 标准是一个整体。
+
+    默认宽高同样是300*150
+    参与定义 SVG 的组织有：太阳微系统、Adobe、苹果公司、IBM 以及柯达。
+    与其他图像格式相比，使用 SVG 的优势在于：
+        SVG 可被非常多的工具读取和修改（比如记事本）
+        SVG 与 JPEG 和 GIF 图像比起来，尺寸更小，且可压缩性更强。
+        SVG 是可伸缩的   SVG 图像可在任何的分辨率下被高质量地打印
+        SVG 可在图像质量不下降的情况下被放大
+        SVG 图像中的文本是可选的，同时也是可搜索的（很适合制作地图）
+        SVG 可以与 Java 技术一起运行   SVG 是开放的标准   SVG 文件是纯粹的 XML
+    SVG 的主要竞争者是 Flash。
+    与 Flash 相比，SVG 最大的优势是与其他标准（比如 XSL 和 DOM）相兼容。
+    而 Flash 则是未开源的私有技术
+
+    HTML5 Canvas 和可缩放的向量图形 (SVG) 是极为有效的创建交互式 Web 图形的工具。
+    可缩放矢量图形 (SVG) 是用于在 XML 中描述二维图形的一种语言，也是 W3C 推荐语言。SVG 允许使用三种类型的图形对象：矢量图形（例如由直线和曲线组成的路径）、图像和文本。可以将图形对象（包括文本）分组、样式化、转换和组合到以前呈现的对象中。SVG 功能集包括嵌套转换、剪切路径、alpha 蒙板和模板对象。
+
+    svg的引入方式
+      方式一：
+      <?xml version="1.1" encoding="utf-8"?>
+      <!DOCTYPE svg PUBLIC
+        "-//W3C//DTD SVG 1.1//EN"
+        "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"
+      >
+      <svg xmlns="http://www.w3.org/2000/svg"></svg>
+
+      方式二：
+      图片、背景、框架
+        embed 标签被所有主流的浏览器支持，并允许使用脚本。
+        <embed src="rect.svg" width="300" height="100" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/" />
+        object 标签是 HTML 4 的标准标签，被所有较新的浏览器支持。它的缺点是不允许使用脚本。
+        <object data="rect.svg" width="300" height="100" type="image/svg+xml" codebase="http://www.adobe.com/svg/viewer/install/" >ed</object>
+        iframe 标签可工作在大部分的浏览器中。
+        <iframe src="rect.svg" width="300" height="100"></iframe>
+
+      方式三:
+      html页面中添加svg
+
+    </pre>
+  </div>
+  <div class="panel-footer"></div>
+
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      SVG 标签
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <pre class="col-xs-6">
+circle:圆形
+  圆心坐标  cx,cy
+  半径  r
+  fill   stroke   stroke-width     stlye样式
+  fill = "none/transparent"  透明:空心圈
+ellipse:椭圆
+  cx属性定义的椭圆中心的x坐标
+  cy属性定义的椭圆中心的y坐标
+  rx属性定义的水平半径
+  ry属性定义的垂直半径
+rect : 矩形
+  width  height  宽高
+  坐标  x, y
+  圆角  rx,ry
+line :线条
+  x1,y1,x2,y2
+  stroke-opacity  透明  fill-opacity
+
+polyline:折线
+  points:点坐标（x1 y1 x2 y2...）或(x1,y1,x2,y2....)
+polygon:多边形
+  折线闭合  fill-rule:evenodd/nonzero;
+path: 路径
+  d属性
+    M(起始坐标),L(结束坐标),H(水平线),V(垂直线),A(圆弧),Z(闭合路劲)
+  C,S,Q,T 贝塞尔曲线
+  大写为绝对坐标(具体的坐标位置)
+  小写为相对坐标(相对起始坐标点的具体长度)
+A命令 圆弧
+  x半径 y半径 角度(x半径与svg画布x坐标轴顺时针方向旋转的夹角)  弧长(0 小弧 1大弧)  方向(0逆时针 1顺时针)
+  终点(x y)
+C命令：三次贝塞尔曲线
+  (x1,y1,x2,y2,x,y)    x1,y1 控制点一    x2,y2 控制点二    x,y 结束点
+S命令：平滑贝塞尔曲线(自动对称一个控制点)
+  (x2,y2,x,y)   x2,y2控制点    x,y结束点
+Q命令：二次贝塞尔曲线
+  (x1,y1,x,y)   x1,y1控制点  x,y结束点
+T命令：一次贝塞尔曲线
+  (x,y)结束点
+
+g标签:组合元素  设置元素公共属性
+  共用属性
+  transform = "translate(0,0)"
+
+text标签
+  x, y, text-anchor(对齐start end middle) font-size 
+
+image 标签
+  x, y, width  height 
+  xlink:href(图片地址)
+
+transform:rotate(angle x y)   (不要写在style里面)
+  angle  旋转角度
+  x,y旋转中心
+stroke:color
+stroke-width:尺寸
+stroke-linecap:butt/round/square
+stroke-dasharray:a,b/a,b,c,d...绘制虚线
+
+defs
+   元素用于预定义一个元素使其能够在SVG图像中重复使用。在<defs>元素中定义的图形不会直接显示在SVG图像上。要显示它们需要使用<use>元素来引入它们
+symbol
+   元素用于定义可重复使用的符号。嵌入在<symbol>元素中的图形是不会被直接显示的，除非你使用<use>元素来引用它。一个<symbol>元素可以有preserveAspectRatio和viewBox属性。
+
+SVG 滤镜
+  feBlend - 与图像相结合的滤镜
+  feColorMatrix - 用于彩色滤光片转换
+  feComponentTransfer
+  feComposite
+  feConvolveMatrix
+  feDiffuseLighting
+  feDisplacementMap
+  feFlood
+  feGaussianBlur
+  feImage
+  feMerge
+  feMorphology
+  feOffset - 过滤阴影
+  feSpecularLighting
+  feTile
+  feTurbulence
+  feDistantLight - 用于照明过滤
+  fePointLight - 用于照明过滤
+  feSpotLight - 用于照明过滤
+
+SVG 线性渐变
+  <linearGradient>元素用于定义线性渐变。
+  <linearGradient>标签必须嵌套在<defs>的内部。<defs>标签是definitions的缩写，它可对诸如渐变之类的特殊元素进行定义。
+  线性渐变可以定义为水平，垂直或角渐变：
+  当y1和y2相等，而x1和x2不同时，可创建水平渐变
+  当x1和x2相等，而y1和y2不同时，可创建垂直渐变
+  当x1和x2不同，且y1和y2不同时，可创建角形渐变
+
+SVG 径向渐变
+  <radialGradient>标签必须嵌套在<defs>的内部。<defs>标签是definitions的缩写，它可对诸如渐变之类的特殊元素进行定义。
+  <radialGradient>标签的 id 属性可为渐变定义一个唯一的名称
+  CX，CY和r属性定义的最外层圆和Fx和Fy定义的最内层圆
+  渐变颜色范围可以由两个或两个以上的颜色组成。每种颜色用一个<stop>标签指定。offset属性用来定义渐变色开始和结束
+
+viewBox=”x  y  width  height”   x坐标 y坐标  宽度 高度
+  preserveAspectRatio=”xMin Ymin none”
+    xMin  与svg画布左端对齐
+    xMax  与svg画布右端对齐
+    YMin   与svg画布上端对齐
+    YMax  与svg画布下端对齐
+    meet  保持横纵比例进行缩放
+    slice    保持纵横比同时比例小的方向放大填满viewport
+    none  扭曲纵横比以充分适应viewport
+
+svg 动画
+  set  不能连续的触发动画，只执行一次
+  animate  基础动画属性
+  animateColor  改变颜色，此元素已被废弃，可用animate替代
+  animateTransform  设置tansform属性的动画
+  animateMotion 可以让SVG各种图形沿着特定的path路径运动
+
+animate参数详解
+  1、  attributeName = <attributeName>要变化的元素属性名称
+    a、可以是元素直接暴露的属性，如 x , y
+    b、可以是CSS属性
+  2、  attributeType = “CSS | XML | auto”表明attributeName属性值的列表
+    x, y以及transform就属于XML, opacity就属于CSS,auto为默认值。此属性一般不需要设置，浏览器自己识别
+  3、  from, to, by, values
+    from 动画的起始值(若果与元素的默认值一样可省略此值)
+    to 动画的结束值
+    by 动画结束值(相对变化的值)
+    values用分号分隔的一个或多个值，可以看成是动画的多个关键值点。
+  4、begin  动画开始时间，可为具体的时间值，也可以是其他条件触发
+    offset-value | syncbase-value | event-value | repeat-value | accessKey-value | media-marker-value | wallclock-sync-value | "indefinite"
+  5、dur  动画过渡的时间 ，“具体时间”/indefinite(无限时间即无具体意义)
+  6、calcMode, keyTimes, keySplines
+    calcMode属性支持4个值：discrete | linear | paced | spline. 中文意思分别是：“离散”|“线性”|“踏步”|“样条”。
+    keyTimes 关键时间点，与上面values保持一致
+    keySplines表示的是与keyTimes相关联的一组贝塞尔控制点（默认0 0 1 1）。每个控制点使用4个浮点值表示：x1 y1 x2 y2. 只有模式是spline时候这个参数才有用，也是分号分隔，值范围0~1，总是比keyTimes少一个值。
+  7、repeatCount, repeatDur
+    repeatCount表示动画执行次数，可以是合法数值或者”indefinite“
+    repeatDur   定义重复动画的总时间。可以是普通时间值或者indefinite
+  8、fill
+    fill表示动画间隙的填充方式，freeze | remove(默认remove)
+    freeze元素保持动画结束之后的状态。
+  9、accumulate, additive
+    accumulate是累积的意思。支持参数有：none | sum. 默认值是none. 如果值是sum表示动画结束时候的位置作为下次动画的起始位置。
+    additive控制动画是否附加。支持参数有：replace | sum. 默认值是replace. 如果值是sum表示动画的基础知识会附加到其他低优先级的动画上，
+  10、 restart always | whenNotActive | never.
+    always  默认值 动画总是执行，比如点击一次执行一次
+    whenNotActive  动画正在进行时不能重新开始动画
+    never 动画执行一次
+  11、min, max  动画执行的最短、最长时间
+
+动画事件：
+   svg.pauseAnimations(); 暂停动画
+   svg.unpauseAnimations()开始动画
+
+      </pre>
+      <div class="col-xs-6">
+        <style type="text/css">
+          svg{border: 1px solid blue}
+          .grid{width:500px; height:500px; margin:20px 10px;position:relative;}
+          #grid01{position:relative;top:0px; left:0px;border:0 none;}
+          #grid01 line{stroke-width:4;/* 宽度*//*stroke:#36FF0E;/*颜色*/ transition:all 1.8s;}
+          #grid01 line.top{stroke:#ff66cc;}
+          #grid01 line.left{stroke:#ffff66;}
+          #grid01 line.bottom{stroke:#3333ff;}
+          #grid01 line.right{stroke:#fff333;}
+
+          /*  虚线中 线段 的长度 ,虚线中 线段间 的距离*/
+          #grid01:hover line.top,#grid01:hover line.bottom{stroke-dasharray:150 90;}
+          #grid01:hover line.left,#grid01:hover line.right{stroke-dasharray:230 170;}
+          #grid01:hover line.top{transform:translateX(-120px);/*css3改变位置xy*/}
+          #grid01:hover line.left{transform:translateY(200px);/*css3改变位置xy*/}
+          #grid01:hover line.bottom{transform:translateX(120px);/*css3改变位置xy*/}
+          #grid01:hover line.right{transform:translateY(-200px);/*css3改变位置xy*/}
+          #grid01:hover line{stroke-width:8;}
+
+        </style>
+        <div class="grid">
+            <svg  width="150" height="230" id="grid01">
+                <text
+                  x=75 y=40
+                  text-anchor="middle"
+                  font-size=28
+                  fill='none'
+                  stroke='red' stroke-width=1
+                >虚线段变换</text>
+
+                <text x=90 y=90 text-anchor="middle" font-size=14>图片标签</text>
+                <image
+                  x="60" y="100"
+                  width=50 height=50
+                  xlink:href="img/wall.png"
+                  style="cursor: pointer"
+                >
+                  图片标签
+                </image>
+                <line class="top" x1="0" y1="0" x2="450" y2="0"/>
+                <line class="left" x1="0" y1="230" x2="0" y2="-460"/>
+                <line class="bottom" x1="150" y1="230" x2="-300" y2="230"/>
+                <line class="right" x1="150" y1="0" x2="150" y2="690"/>
+
+                <!-- 属性值会被style中的覆盖 -->
+                <line
+                  x1="10" y1="10" x2="220" y2="10"
+                  stroke="red"
+                  stroke-width=10
+                  stroke-linecap='round'
+                  stroke-opacity="0.3"
+                  stroke-dasharray='20 5 10 5 15'
+                  transform="rotate(80 10 10)"
+                />
+
+
+            </svg>
+
+            <svg  width="300" height="230">
+              <text x=50 y=20 text-anchor="middle" font-size=14>折线</text>
+              <polyline
+                points="50 20,20 100,90 50, 10 50,80 100,50 20"
+                stroke="blue"
+                fill="none"
+              ></polyline >
+
+              <text  x=50 y=110 text-anchor="middle" font-size=14>多边形</text>
+              <polygon
+                points="50 120,20 200,90 150, 10 150,80 200"
+                stroke="#000" stroke-width=5
+                fill="red" fill-opacity="0.3"
+                fill-rule="evenodd"
+                >
+              </polygon>
+              
+              <text  x=190 y=70 text-anchor="middle" font-size=14>g组合标签, 把圆和椭圆组合起来</text>
+              <g stroke="blue"
+                transform="translate(50,0), rotate(20 10 10)"
+                style="cursor: pointer"
+              > <!-- 组合标签 -->
+                <!-- 空心 fill="none" 和transparent ,注意鼠标样式的区别 -->
+                <text  x=250 y=100 text-anchor="middle" font-size=14>椭圆</text>
+                <ellipse
+                  cx="150" cy="100" rx="150" ry="50"
+                  fill="none"
+                  stroke="#000" stroke-width=5>
+                </ellipse>
+
+                <text  x=150 y=100 text-anchor="middle" font-size=14>圆</text>
+                <circle
+                  cx="150" cy="100" r="50"
+                  fill="transparent"
+                  stroke="#000" stroke-width=5>
+                </circle>
+              </g>
+            </svg>
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              version="1.1"
+              width="100%" height="200"
+            >
+
+            <!-- path: 路径
+            d属性
+              M(起始坐标),L(结束坐标),H(水平线),V(垂直线),A(圆弧),Z(闭合路劲) C,S,Q,T 贝塞尔曲线
+              大写为绝对坐标(具体的坐标位置)
+              小写为相对坐标(相对起始坐标点的具体长度)
+
+            A命令 圆弧
+              x半径 y半径 角度(x半径与svg画布x坐标轴顺时针方向旋转的夹角)  弧长(0 小弧 1大弧)  方向(0逆时针 1顺时针)  终点(x y)
+            C命令：三次贝塞尔曲线
+              (x1,y1,x2,y2,x,y)    x1,y1 控制点一    x2,y2 控制点二    x,y 结束点
+            S命令：平滑贝塞尔曲线(自动对称一个控制点)
+              (x2,y2,x,y)   x2,y2控制点    x,y结束点
+            Q命令：二次贝塞尔曲线
+              (x1,y1,x,y)   x1,y1控制点  x,y结束点
+            T命令：一次贝塞尔曲线
+              (x,y)结束点
+            -->
+            <text  x=150 y=120 text-anchor="middle" font-size=14>path路径各种属性表现</text>
+            <path
+              d="
+                M 10 10, L 60 60, L 100 60 Z
+                M 110 10, L 160 60, H 200 V20
+                M 110 30, L 160 80, h 60 v-40
+                M 250 80, A 50 20 45 1 1 350 80
+                M 10 150,
+                C 50 100 80 200 100 150,
+                S 180 200 200 150,
+                Q 280 200 300 150,
+                T 400 150,
+                T 500 150
+                "
+              fill="none"
+              stroke="red" stroke-width="10"
+            >
+            </path>
+           </svg>
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              version="1.1"
+              width="100%" height="200"
+              viewBox="0,0,200,100"
+              preserveAspectRatio="xMinYMin meet"
+            >
+              <text  x=100 y=30 text-anchor="middle" font-size=14>defs转义标签, 配合viewBox </text>
+              <defs> <!-- 转义标签 -->
+                <g id="image1" stroke="blue"> <!-- 组合标签 -->
+                  <circle cx="50" cy="50" r="50" ></circle>
+                </g>
+              </defs>
+              <use xlink:href="#image1" x="50" y="50"/>
+              <use xlink:href="#image1" x="150" y="50" stroke="red" fill="none"/>
+           </svg>
+
+            同样配置, defs 和 symbol 在经过viewBox处理后表现不同
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              version="1.1"
+              width="100%" height="200"
+            >
+              <text  x=100 y=30 text-anchor="middle" font-size=14>symbol标签, 配合viewBox </text>
+              <symbol id="image2"
+                viewBox="0,0,200,100"
+                preserveAspectRatio="xMinYMin meet"
+              > <!-- 单元标签 -->
+                  <circle cx="50" cy="50" r="50" ></circle>
+              </symbol>
+              <use xlink:href="#image2" x="50" y="50"/>
+              <use xlink:href="#image2" x="150" y="50" stroke="red" fill="none"/>
+           </svg>
+
+          svg滤镜, 渐变
+          <svg
+              xmlns="http://www.w3.org/2000/svg"
+              version="1.1"
+              width="100%" height="200"
+            >
+              <defs>
+
+                <filter id="image3">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="15">
+                </filter>
+
+                <linearGradient id="image4" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+                </linearGradient>
+
+                <radialGradient id="image5" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                  <stop offset="0%" style="stop-color:rgb(255,255,255);
+                  stop-opacity:0" />
+                  <stop offset="100%" style="stop-color:rgb(0,0,255);stop-opacity:1" />
+                </radialGradient>
+              </defs>
+
+              <rect x="25" y="25"  width="90" height="90" stroke="green" stroke-width="20" fill="yellow" filter="url(#image3)" />
+
+              <ellipse cx="220" cy="70" rx="85" ry="55" fill="url(#image4)" />
+
+              <ellipse cx="400" cy="70" rx="85" ry="55" fill="url(#image5)" />
+           </svg>
+
+           svg动画
+           <svg
+             xmlns="http://www.w3.org/2000/svg"
+             version="1.1"
+             width="100%" height="200"
+             id="svg03"
+           >
+              <!-- set动画 只执行一次,无缓动和重复 -->
+              <text x=10 y="20" >
+                set动画
+                <set 
+                  id="set1"
+                  attributeName="y"
+                  begin="1s"
+                  to = '50'
+                />
+              </text>
+
+              <!-- animateTransform 设置tansform属性的动画 附加 -->
+              <text x=50 y="70" >
+                animateTransform
+                <animateTransform
+                  additive = "sum"
+                  accumulate = "sum"
+                  id="animateTransform1"
+                  attributeName="transform"
+                  type="rotate"
+                  from="1"
+                  to = '360 300 120'
+                  begin="0s"
+                  dur="2s"
+                  repeatCount="3"
+                />
+                <animateTransform 
+                  additive = "sum"
+                  accumulate = "sum"
+                  id="animateTransform2"
+                  attributeName="transform"
+                  type="scale"
+                  from="1"
+                  to = '1.2'
+                  begin="0s"
+                  dur="2s"
+                  repeatCount="3"
+                />
+              </text>
+    
+              <!-- animateMotion 可以让SVG各种图形沿着特定的path路径运动 -->
+              <text x=0 y="0" >
+                animateMotion
+                <animateMotion
+                  path="
+                  M10 150,
+                  C50 100 80 200 100 150,
+                  S180 200 200 150,
+                  Q280 200 300 150,
+                  T400 150,
+                  T500 150"
+                  begin="animateTransform1.end"
+                  dur="3s"
+                  rotate="auto"
+                  repeatCount="indefinite"
+                />
+              </text>
+
+              <path d="
+                M10 150,
+                C50 100 80 200 100 150,
+                S180 200 200 150,
+                Q280 200 300 150,
+                T400 150,
+                T500 150
+                "
+              fill="none"
+              stroke="red" stroke-width="3"
+              ></path>
+
+             <!-- animate  基础动画属性 -->
+            <text  x=80 y="20" font-size=20>
+              鼠标移上来
+              <animate
+                attributeName="x"
+                id="animate1"
+                begin='mouseover'
+                restart= "whenNotActive"
+                dur="2s"
+                values="200;300;250;400"
+                repeatCount="indefinite"
+              >
+              </animate>
+
+              <!--animate1 重复1次时触发-->
+              <animate
+                attributeName="y"
+                begin='animate1.repeat(1)'
+                dur="1s"
+                from="20"
+                to="50"
+                by="100"
+                fill="freeze"
+              >
+              </animate>
+
+              <!--火狐浏览器才能用键盘触发-->
+              <animate
+                attributeName="x"
+                begin='accessKey(a)'
+                dur="1s"
+                by="100"
+                fill="freeze"
+              >
+              </animate>
+
+            </text>
+            <text x=100 y="50" >
+              用JS触发动画,点击SVG,需要begin为indefinite
+              <animate
+                id="svg03_child1"
+                begin="indefinite"
+                attributeType ="auto"
+                attributeName="opacity"
+                dur="1s"
+                from= '1'
+                to = '0'
+                -fill="freeze"
+                restart= "never"
+                repeatCount="indefinite"
+              />
+              </animate>
+            </text>
+          </svg>
+          <script>
+              svg03.onclick= function(){
+                svg03_child1.beginElement();
+                (this.paused = !this.paused )? this.unpauseAnimations():this.pauseAnimations() ;
+                console.log(this.paused)
+              }
+           </script>
+
+           速度曲线
+           <svg
+             xmlns="http://www.w3.org/2000/svg"
+             version="1.1"
+             width="100%" height="200"
+           >  
+              <text x=10 y="20" >
+                discrete 离散
+                <animate
+                  begin="0s"
+                  attributeName="x"
+                  dur="3s"
+                  by="400"
+                  calcMode="discrete"
+                  repeatCount="indefinite"
+                  values="50;150;400"
+                />
+                </animate>
+              </text>
+              <text x=10 y="50" >
+                linear 线性
+                <animate
+                  begin="0s"
+                  attributeName="x"
+                  dur="3s"
+                  calcMode="linear" 
+                  repeatCount="indefinite"
+                  values="50;150;400" 
+                  keyTimes="0;0.5;1" 
+                />
+                </animate>
+              </text>
+              <text x=10 y="80" >
+                paced 踏步
+                <animate
+                  begin="0s"
+                  attributeName="x"
+                  dur="3s"
+                  calcMode="paced"
+                  repeatCount="indefinite"
+                  values="50;150;400" 
+                />
+                </animate>
+              </text>
+              <text x=10 y="110" >
+                spline 样条 , 需使用 keySplines
+                <animate
+                  begin="0s"
+                  attributeName="x"
+                  dur="3s"
+                  from=10
+                  to = 410
+                  calcMode="spline"
+                  repeatCount="indefinite"
+                  values="50;150;400" 
+                  keyTimes="0;0.5;1" 
+                  keySplines = ".5 0 .5 1;0 0 1 1" 
+                />
+                </animate>
+              </text>
+           </svg>
+           
+           圆环案例
+           <svg
+              xmlns="http://www.w3.org/2000/svg"
+              version="1.1"
+              width="100%" height="500"
+              id="demo01"
+            >
+              <!-- <path d="
+                M 200 50,
+                A 150 150 0 0 1 300 50,
+                L 280 100,
+                A 100 100 0 0 0 220 100,
+                Z
+                "
+              fill="red"
+              stroke="#00f" stroke-width="3"
+              >
+              </path> -->
+           </svg>
+           <script>
+            var svgXmlns = "http://www.w3.org/2000/svg";
+            /** 创建svg标签 **/
+            function createSvgTag(tagName, tagAttrs){
+              var oTag = document.createElementNS("http://www.w3.org/2000/svg", tagName);
+              for(var attrName in tagAttrs){
+                oTag.setAttribute(attrName, tagAttrs[attrName]);
+              };
+              return oTag;
+            };
+            function getRandomColor(){
+              return "#"+(function(color){
+                return new Array(7-color.length).join("0")+color
+              })((~~(Math.random()*(1<<24))).toString(16))
+            }
+            var defaultOptions = {
+              svg : demo01,
+              center : {x: 250, y: 250},
+              radius : {outer: 100, inner: 50},
+              //angleStart : 0,
+              angleTotal : 360,
+            };
+            var parts = [
+              {size:14, color:'red'},
+              {size:11, color: 'blue'},
+              {size:8, color: '#f60'},
+              {size:12, color: '#f06'},
+              {size:30, color: '#0f6'},
+              {size:25, color: '#06f'}
+            ];
+            function getPath(center ,angles, radius){
+              var m0={}, a1={}, l2={}, a3={};
+              m0.x = (center.x + radius.outer*Math.sin(angles.start/180*Math.PI));
+              m0.y = (center.y - radius.outer*Math.cos(angles.start/180*Math.PI));
+              a1.x = (center.x + radius.outer*Math.sin(angles.end/180*Math.PI));
+              a1.y = (center.y - radius.outer*Math.cos(angles.end/180*Math.PI));
+              l2.x = (center.x + radius.inner*Math.sin(angles.end/180*Math.PI));
+              l2.y = (center.y - radius.inner*Math.cos(angles.end/180*Math.PI));
+              a3.x = (center.x + radius.inner*Math.sin(angles.start/180*Math.PI));
+              a3.y = (center.y - radius.inner*Math.cos(angles.start/180*Math.PI));
+              return 'M '+m0.x+' '+m0.y+
+                      ' ,A ' + radius.outer+' '+ radius.outer + ' 0 0 1 '+a1.x+' '+a1.y+
+                      ' ,L ' + l2.x +' '+ l2.y+
+                      ' ,A ' + radius.inner+' '+ radius.inner + ' 0 0 0 '+a3.x+' '+a3.y
+            }
+
+            function extend(){
+              var args = [].slice.call(arguments);
+              var o = args.shift();
+              for(var i = 0; i< args.length; i++){
+                var obj = args[i]
+                if(obj && typeof obj ==="object"){
+                  for (var j in obj){
+                    if('undefined' !== typeof obj[j] && obj.hasOwnProperty(j)){
+                      o[j] = obj[j];
+                    }
+                  }
+                }
+              }
+              return o;
+            }
+
+            function drawRing(parts, options,p){
+              var angles = {};
+              var d, p = p || 1;
+              var options = extend(defaultOptions, options);
+              var total = options.angleTotal * p;
+              var oPath, oAnime, paths = [];
+              var start = options.angleStart || - total * parts[0].size/200;
+              angles.start = start;
+              for(var i = 0; i< parts.length; i++){
+                angles.end = angles.start + total * parts[i].size/100;
+                d = getPath(options.center, angles, options.radius);
+                oPath = createSvgTag('path', {
+                  d : d,
+                  fill : parts[i].color || getRandomColor()
+                });
+                paths.push(oPath);
+
+                //鼠标hover动画
+                oAnime = createSvgTag('animateTransform', {
+                  attributeName :"transform",
+                  type : "scale",
+                  from : "1",
+                  to :  '1.2',
+                  begin : "mouseover",
+                  restart :  "whenNotActive",
+                  dur : ".5s",
+                  fill : 'freeze'
+                });
+                oPath.appendChild(oAnime);
+
+                oAnime = createSvgTag('animateTransform', {
+                  attributeName :"transform",
+                  type : "scale",
+                  from : "1.2",
+                  to :  '1',
+                  begin : "mouseleave",
+                  restart :  "whenNotActive",
+                  dur : ".5s",
+                  fill : 'freeze'
+                });
+                oPath.appendChild(oAnime);
+                oAnime = createSvgTag('animate', {
+                  attributeName :"x",
+                  by :  '-150',
+                  begin : "mouseover",
+                  restart :  "whenNotActive",
+                  dur : ".5s",
+                  fill : 'freeze'
+                });
+                oPath.appendChild(oAnime);
+                oAnime = createSvgTag('animate', {
+                  additive : "sum",
+                  attributeName :"x",
+                  by : "-150",
+                  begin : "mouseover",
+                  restart :  "whenNotActive",
+                  dur : ".5s",
+                  fill : 'freeze'
+                });
+                oPath.appendChild(oAnime);
+                /* E*/
+
+                options.svg.appendChild(oPath);
+                angles.start = angles.end;
+              }
+              return paths;
+
+            }
+            function clearRing (paths, options){
+              options = extend(defaultOptions, options);
+              var svg = options.svg;
+              if(paths){
+                for (var i=0; i<paths.length; i++){
+                  if(paths[i]){
+                    svg.removeChild(paths[i])
+                  }
+                }
+              }
+              //options.svg.innerHtml = '';
+            }
+            function drawAnimateRing (time){
+              var start = new Date();
+              var paths;
+              var interval = setInterval( function(){
+                var now = new Date();
+                var p = (now - start)/time;
+                clearRing(paths);
+                if( p >= 1){
+                  p =1 ;
+                  drawRing(parts,{radius : {outer: 150, inner: 50}},p);
+                  clearInterval(interval);
+                  interval = null;
+                  paths = null;
+                }else{
+                  paths = drawRing(parts,{radius : {outer: 150, inner: 50}},p);
+                }
+              },1000/60)
+            }
+           // drawRing(parts,{radius : {outer: 150, inner: 50}});
+           drawAnimateRing(1000)
+           </script>
+        </div>
+
+      </div>
+    </div>
+    <div>
+      <!--
+      svg 加入到html页面中
+      <line> 标签用来创建线条。
+      x1 属性在 x 轴定义线条的开始
+      y1 属性在 y 轴定义线条的开始
+      x2 属性在 x 轴定义线条的结束
+      y2 属性在 y 轴定义线条的结束
+
+      stroke 填充颜色  线line宽度  border 宽度
+      stroke-dasharray 虚线
+      看得见的宽度30  看不见的宽度40
+      实线与实线之间的间隙  40
+      注意 这段代码 svg line的长度为父元素的3倍;
+      -->
+
+    </div>
+  </div>
+  <div class="panel-footer"></div>
+  <script type="text/javascript">
+  //一些公共函数
+    (function(window) {
+      var util = {
+        throttle : function(fn,delay){
+          var start = new Date();
+          var timeout = null;
+          return function(){
+            var now = new Date();
+            var time = now - start;
+            timeout && clearTimeout(timeout);
+            if( time > delay){
+              start = now;
+              typeof fn === 'function' && fn()
+            }else{
+              timeout = setTimeout(fn, time)
+            }
+          }
+        }
+
+      }
+
+    })(window);
+  </script>
+</div>
+
+
+</body>
+</html>

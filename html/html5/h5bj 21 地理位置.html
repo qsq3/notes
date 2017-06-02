@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>21. 地理位置</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.4.css" />
+    <script type="text/javascript" src="js/baseUtil.js"></script>
+    <style type="text/css">
+      pre{
+        white-space : pre-wrap;
+      }
+      *{
+				margin:0px;
+				padding:0px;
+			}
+			#box{
+				width:500px;
+				height:500px;
+				border:2px solid red;
+			}
+    </style>
+</head>
+<body class="container">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="row">
+
+      <div class="col-sm-6">
+        <pre>
+地理位置
+经度  :   南北极的连接线
+纬度  :   东西连接的线
+
+位置信息从何而来
+IP地址
+GPS全球定位系统
+Wi-Fi无线网络
+基站
+
+navigator.geolocation
+ 单次定位请求  ：getCurrentPosition(请求成功,请求失败,数据收集方式)
+请求成功函数
+经度 :  coords.longitude
+纬度 :  coords.latitude
+准确度 :  coords.accuracy
+海拔 :  coords.altitude
+海拔准确度 :  coords.altitudeAcuracy
+行进方向 :  coords.heading
+地面速度 :  coords.speed
+请求的时间: new Date(position.timestamp)
+
+请求失败函数
+失败编号  ：code
+0  :  不包括其他错误编号中的错误
+1  :  用户拒绝浏览器获取位置信息
+2  :  尝试获取用户信息，但失败了
+3  :   设置了timeout值，获取位置超时了
+数据收集 :  json的形式
+enableHighAcuracy  :  更精确的查找，默认false
+timeout  :  获取位置允许最长时间，默认infinity
+maximumAge :  位置可以缓存的最大时间，默认0
+
+多次定位请求  :  watchPosition
+移动设备有用，位置改变才会触发
+配置参数：frequency 更新的频率
+关闭更新请求  :  clearWatch
+
+百度地图API
+<script src="http://api.map.baidu.com/api?v=2.0&ak=qZfInp9MaT9Qa0PoNy4Rmx3Y9W9ZXMfw"></script>
+
+
+        </pre>
+      </div>
+      <!-- col-md-6 S-->
+      <div class="col-sm-6">
+          <button id="btn1">请求位置信息</button>
+          <button id="btn2">多次请求位置信息</button>
+		      <div id="box"></div>
+      </div>
+      <!-- col-md-6 E-->
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    
+  </div>
+  <script type="text/javascript">
+    ;(function(){
+      var btn1 = document.getElementById("btn1");
+      var btn2 = document.getElementById("btn2");
+      var box = document.getElementById("box");
+      btn1.onclick = function(){
+        box.innerHTML = '';
+        navigator.geolocation.getCurrentPosition(success, fail,{
+          enableHighAcuracy : false, //更精确的查找，默认false
+          //timeout : 5000, //获取位置允许最长时间，默认infinity
+          maximumAge : 1000 //位置可以缓存的最大时间，默认0 
+        });
+      }
+      btn2.onclick = function(){
+        box.innerHTML = '';
+        var watcher = navigator.geolocation.watchPosition(success, fail,{
+          enableHighAcuracy : false, //更精确的查找，默认false
+          //timeout : 5000, //获取位置允许最长时间，默认infinity
+          maximumAge : 1000, //位置可以缓存的最大时间，默认0 
+          frequency  : 1000 //更新频率
+        });
+        setTimeout(function(){
+          console.log("清除请求");
+          navigator.geolocation.clearWatch(watcher);//清除多次请求
+        },3000)
+      }
+      function success(position){
+          //console.log(position);
+          box.innerHTML += "经度:" + position.coords.longitude + "\n";
+          box.innerHTML += "纬度:" + position.coords.latitude + "\n";
+          box.innerHTML += "准确度:" + position.coords.accuracy + "\n";
+          box.innerHTML += "海拔:" + position.coords.altitude + "\n";
+          box.innerHTML += "海拔准确度:" + position.coords.altitudeAcuracy + "\n";
+          box.innerHTML += "行进方向:" + position.coords.heading + "\n";
+          box.innerHTML += "地面速度:" + position.coords.speed + "\n";
+          box.innerHTML += "请求的时间:" + new Date(position.timestamp);
+      };
+      function fail(err){
+          box.innerHTML += "错误码:" + err.code + "\n<br>";
+          box.innerHTML += "错误信息:" + err.message + "\n<br>";
+          console.log(err);
+      };
+    })()
+  </script>
+</div>
+
+</body>
+</html>

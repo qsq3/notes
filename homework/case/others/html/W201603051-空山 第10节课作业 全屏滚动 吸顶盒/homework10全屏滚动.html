@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>第十节全屏滚动</title>
+		<meta name="keywords" content=""/>
+		<meta name="description" content=""/>
+		<link rel="stylesheet" type="text/css" href="css/cssReset.css" />
+		<style type="text/css">
+			html,body,div.boxbg{
+				height:100%;
+			}
+			body{
+				overflow:hidden;
+			}
+			.clear{
+				clear:both;
+			}
+			div:nth-of-type(1){
+				background:url("img/1.jpg") 0 0/100% 100% no-repeat;
+				
+			}
+			div:nth-of-type(2){
+				background:url("img/2.jpg") 0 0/100% 100%  no-repeat;
+			}
+			div:nth-of-type(3){
+				background:url("img/3.jpg") 0 0/100% 100%  no-repeat;
+			}
+			div:nth-of-type(4){
+				background:url("img/4.jpg") 0 0/100% 100%  no-repeat;
+
+			}
+			.bodybg ul{
+				position:fixed;
+				left:5%;
+				bottom:50%;
+			}
+			.bodybg ul li{
+				height:25px;
+				width:25px;
+				border:2px solid white;
+				margin-bottom:3px;
+				border-radius:50%;
+			}
+			.bodybg ul li.actived1{
+				background:white;
+			}
+
+		</style>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				setTimeout(function(){$(window).scrollTop(0)},50);
+				var Lbox = $(".boxbg").length;
+				var _index = 0;
+				function wheelbg(){
+					var H = $(window).height();
+					$(".bodybg ul li").eq(_index).addClass("actived1").siblings().removeClass("actived1");
+					$("html,body").stop().animate({"scrollTop":_index*H},1000);
+				};
+				/*setInterval(function(){
+					_index++;
+					_index%=Lbox;
+					wheelbg();
+				},3000); 轮播效果*/
+				$(window).mousewheel(function(ev,ms){
+					if (ms<=0){
+						_index++;
+					}else {
+						_index--;
+					}
+					if(_index<0){_index = Lbox-1;};
+					_index%=Lbox;
+					/*var H = $(window).height();
+					$(".bodybg ul li").eq(_index).addClass("actived1").siblings().removeClass("actived1");
+					$("html,body").stop(true).animate({"scrollTop":_index*H},1000);*/
+					wheelbg();
+				});
+				$(".bodybg ul li").click(function(){
+					_index =$(this).index();
+					/*var H = $(window).height();
+					$(this).addClass("actived1").siblings().removeClass("actived1");
+					$("html,body").stop(true).animate({"scrollTop":_index*H},1000);*/
+					wheelbg();
+				});
+				
+				//浏览窗口大小改变时,滚动条与头部重新计算距离 
+				$(window).resize(function(){
+					var H = $(window).height();
+					$(document).scrollTop(_index*H);
+				});
+			});
+		</script>
+	</head>
+	<body class="bodybg">
+		<div class="boxbg"></div>
+		<div class="boxbg"></div>
+		<div class="boxbg"></div>
+		<div class="boxbg"></div>
+		<ul>
+			<li class="actived1"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+
+		</ul>
+	</body>
+</html>

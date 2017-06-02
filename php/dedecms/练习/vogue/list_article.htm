@@ -1,0 +1,260 @@
+{dede:include filename="list_header.htm"/}
+
+		<!-- 【内容】开始 -->
+		<div id="con" class="clearfix">
+			<div class="breadnav">
+				您现在的位置：
+
+{dede:field name='position'/}
+<!--<a href="">首页</a>
+				   <span class="gt">></span>   
+				<a href="">珠宝腕表</a>
+				   <span class="gt">></span>   
+				<a href="" class="cur">经典搭配&新奇玩法</a>
+-->
+
+			</div>
+
+			<div class="artile">
+				
+				<!-- 【内容】开始 -->
+				<div class="content">
+					<div class="artile-line"></div>
+					
+					<img src="{dede:global.cfg_templets_skin/}/images/ar-bt.png" width="680" height="42" alt="" />
+					
+					<!-- 【文章列表】 开始-->
+					<ul class="content-type-artileList clearfix">
+                        {dede:arclist row='9' titlelen='30'} 
+                            <li>
+                            <a href="[field:arcurl/]" class="img" title='[field:fulltitle/]' >
+                                <img src="[field:litpic/]" width="210" height="210" alt="[field:alttext/]" /></a>
+                                <h3><a href="[field:arcurl/]">[field:title/]</a></h3>
+                            <a href="[field:arcurl/]" class="des">[field:description/]</a>
+                            <p>
+                                <a href="[field:arcurl/]">[详细内容]</a>
+                            </p>
+                        </li>
+                        {/dede:arclist}
+						<!-- <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg1.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2016趋势：金属光泽</a></h3>
+                            <a href="" class="des">如果你的衣橱中更多的是基本款和暗色，那你更需要的是一些可以点亮它们的关键单品，比如从2015年秋冬就开始兴起的金属色潮流，...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg2.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015冬季必备：派对裙装</a></h3>
+                            <a href="" class="des">到年底，你为自己准备好了派对裙装没有？忙碌了一整年，应该借着年底让自己“闪亮登场”一次，虽然一年到尾这件派对裙装的穿着...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg3.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg4.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势：高级灰</a></h3>
+                            <a href="" class="des">被时尚圈宠爱了多年的质感高级灰，凭借冷静优雅和高级趣味，本季依旧大热。由于色调偏中性，它能更好地的衬托亚洲女性的气色，...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg5.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg6.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg7.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg8.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg9.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg10.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg11.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg12.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg13.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg14.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg15.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg16.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg17.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg18.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg19.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg20.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li>
+                        <li>
+                            <a href="" class="img"><img src="{dede:global.cfg_templets_skin/}/images/listimg21.jpg" width="210" height="210" alt="法国美女" /></a>
+                            <h3><a href="">2015秋冬趋势 复古Disco风</a></h3>
+                            <a href="" class="des">正如麦当娜在经典Disco舞曲《Vogue》中所唱的那般“Let your body move to the music”，本季，众多大牌设计师用闪光面料、荧...</a>
+                            <p>
+                                <a href="">[详细内容]</a>
+                            </p>
+                        </li> -->
+						
+					</ul>
+					<!-- 【文章列表】 结束-->
+				</div>
+				<!-- 【内容】开始 -->
+
+
+				<!-- 【侧边栏】开始 -->
+				<div class="sidebar">
+					<img src="{dede:global.cfg_templets_skin/}/images/side-bt.png" width="300" height="192" alt="" />
+					<!-- 【新闻列表】开始-->
+					<div class="topic-list">
+						<h2 class="title">潮流排行<br><span>Most Read</span></h2>
+						
+						<ul class="tl-content tl-noborder">
+							<li class="num num1"><a href="" title="按照身材选毛衣 才能更美更时髦">按照身材选毛衣 才能更美更时髦</a><span></span></li>
+							<li class="num num2"><a href="" title="超长大衣穿出冬日强大气场">超长大衣穿出冬日强大气场</a><span></span></li>
+							<li class="num num3"><a href="" title="静谧蓝+粉晶 大女人如何穿好流行色">静谧蓝+粉晶 大女人如何穿好流行色</a><span></span></li>
+							<li class="num num4"><a href="" title="宽松毛衣加过膝裙的别样冬季">宽松毛衣加过膝裙的别样冬季</a><span></span></li>
+							<li class="num num5"><a href="" title="时髦和温度从“头”开始 根据脸型选帽子">时髦和温度从“头”开始 根据脸...</a><span></span></li>
+							<li class="num num6"><a href="" title="他们都是“小鲜肉” 他们颜值高还会穿">他们都是“小鲜肉” 他们颜值高...</a><span></span></li>
+							<li class="num num7"><a href="" title="阔腿裤配所有 年末该买的最省钱单品">阔腿裤配所有 年末该买的最省钱单...</a><span></span></li>
+							<li class="num num8"><a href="" title="这样搭配显瘦又温暖 冬装的正确打开方式">这样搭配显瘦又温暖 冬装的正确...</a><span></span></li>
+							<li class="num num9"><a href="" title="女人 这世上只有内衣不能将就">女人 这世上只有内衣不能将就</a><span></span></li>
+							<li class="num num10"><a href="" title="穿好一条羊毛阔腿裤 冬季显瘦就靠它">穿好一条羊毛阔腿裤 冬季显瘦就靠...</a><span></span></li>
+						</ul>
+					</div>
+					<!-- 【新闻列表】结束-->
+					
+					<!-- 【广告位】开始 -->
+					<div class="rt-ad" style="margin:20px auto">
+						<!--Skyscraper 1 Content Pagesstart-->
+						<iframe width="300" height="500" frameborder="0" scrolling="no" marginwidth="0" marginheight="0" src="{dede:global.cfg_templets_skin/}/images/0_376.jpg"></iframe>
+						<!--Skyscraper 1 Content Pagesend-->
+					</div>
+					<!-- 【广告位】结束 -->
+					
+					<img src="{dede:global.cfg_templets_skin/}/images/side-wm2.png" width="300" height="495" alt="" />
+					<img src="{dede:global.cfg_templets_skin/}/images/side-wm3.png" width="300" height="391" alt="" />
+					<img src="{dede:global.cfg_templets_skin/}/images/side-wm5.png" width="300" height="575" alt="" />
+				</div>
+				<!-- 【侧边栏】开始 -->
+
+			</div>
+
+			
+		</div>
+
+
+		<!-- 【内容】结束 -->
+
+{dede:include filename="list_footer.htm"/}
+		
+

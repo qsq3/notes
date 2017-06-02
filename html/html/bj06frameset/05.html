@@ -1,0 +1,161 @@
+<!--声明文档类型 html5-->
+<!doctype html>
+<!--最外层结构,声明语言为中文-->
+<html lang="zh-cn">
+	<!--头部------------------------------------------------------------------------------------------------------------->
+	<head>
+		<!--编码方式,gbk,gb2312中文编码,UTF-8国际编码,注意html文档本身也有编码,需更改为一致-->
+		<meta charset="UTF-8"/>
+		<!--头部三要素------------------------------------------>
+		<!--网页标题-->
+		<title>第五节</title>
+		<!--网页关键字-->
+		<meta name="keywords" content=""/>
+		<!--网页描述,80个字以内-->
+		<meta name="discription" content=""/>
+		<!--新窗口打开链接------------------------------------->
+		<base target="_blank" />
+		<!--作者------------------------------------------------>
+		<meta name="author" content="空山"/>
+		<!--编辑工具-->
+		<meta name="generator" content="Editplus"/>
+		<style type="text/css">
+			body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, textarea, p {
+				margin: 0px;
+				padding: 0px;
+			}
+			ul{
+				list-style:none;
+			}
+			img,a{
+				border:none;
+				text-decoration:none;
+			}
+			#header{
+				margin:50px auto;
+				width:1000px;
+				height:1600px;
+				border: 2px solid red;
+				text-indent:2em;
+			}
+			#nav{
+				margin:0 auto;
+				width:1000px;
+				height:100px;
+				border: 2px dashed #CCC;
+				text-indent:2em;
+			}
+			#main{
+				margin:10px auto;
+				width:1000px;
+				height:600px;
+				border: 5px double rgb(255,140,0);
+				text-indent:2em;
+			}
+			#footer{
+				margin:10px auto;
+				width:1000px;
+				height:300px;
+				border: 2px inset rgba(145,14,238,0.2);
+				text-indent:2em;
+			}			
+		</style>
+	
+		
+	</head>
+	<!--身体标签---------------------------------------------------------------------------------------->
+	<body>
+		<div id="header">
+			一.1.img标签
+			四要素:<img 
+			src="作业/img/baidufooter.png" 
+			width="300" height="300" 
+			alt="图片未显示时所显示的文字,同时也利于搜索引擎抓取" 
+			title="鼠标放上去时显示的文字,同时也利于搜索引擎抓取,在没有title属性时,alt也有同样效果"
+			align="right"/>
+			../表示上一级目录,
+			相对路径:相对于文件本身位置 
+			绝对路径,本地路径是从磁盘开始,网络路径是完整网址;
+			align 属性定义了图像相对于周围元素的水平和垂直对齐方式。
+			left	把图像对齐到左边
+			right	把图像对齐到右边
+			middle	把图像与中央对齐(图片中间与文字底端对齐)
+			top	把图像与顶部对齐
+			bottom	把图像与底部对齐
+			absmiddle  图片中间与文字中间居中
+
+			pre标签： 
+			<pre>常用来表示计算机源代码，被包围在 pre 元素中的文本通常会保留空格和换行符
+
+			可以导致段落断开, 一定要注意块标签绝不能包含在内 
+					
+			特殊符号 转义符
+			< &lt;
+			> &gt;
+			& &amp;
+			" &quot;
+			c &copy;
+			X &times;
+			R &reg;
+			空格 &nbsp;
+			换行 <br />
+			</pre> 
+			
+			滚动标签(marquee标签)
+			1.滚动方向direction（包括4个值：up、 down、 left和 right）
+			2.滚动方式behavior（scroll:循环滚动，默认效果； slide:只滚动一次就停止； alternate:来回交替进行滚动）
+			3.滚动速度scrollamount（滚动速度是设置每次滚动时移动的长度，以像素为单位）
+			4.滚动延迟scrolldelay（设置滚动的时间间隔，单位是毫秒）
+			5.滚动循环loop（默认值是-1，滚动会不断的循环下去）
+			6.滚动范围width、height
+			7.滚动背景颜色bgcolor
+			<div id="nav">
+			<marquee direction="up">点击加我QQ</marquee> 测试占行<br />
+			
+			文本输入标签（textarea）文本域，定义多行的文本输入控件。
+			<textarea name="" id="" cols="60" rows="10" placeholder="文字背景显示,ie6到ie9都不支持" type="text">
+			文字显示,可以写入标签不被解析,例如:
+				<div >
+				</div>
+			</textarea>
+			</div>
+		</div>
+		<div id="main">
+		iframe 标签：
+		创建包含另外一个文档的内联框架（即行内框架）
+		frameborder边框宽度0或1,scrolling滚动条
+		overflow 超出文本框部分
+		overflow="auto"
+		
+		用a标签实现iframe内的网页跳转
+		<a href="05.html" target="show">第5次笔记</a>
+		<iframe src="04.html" width="100%" height="100%" id="iframe" frameborder="0" scrolling="auto" name="show" overflow="auto"/>
+		宽高设为100%可以继承父块的宽高
+
+		利用css属性overflow优化 可能的值:
+				 visible默认:内容不会被修剪,会出现在元素框外面
+				 hidden:超出范围的内容会被隐藏
+				 scroll:超出范围的内容会被修剪,但浏览器会显示滚动条以便观看其余内容
+				 auto:如果内容超出范围,则浏览器会显示滚动条以便观看其余内容
+				  inherit:从父元素继承overflow的属性值
+					overflow:auto			
+		
+		SEO ：搜索引擎优化；
+
+		部分方法：
+		A、页面标签语义化；
+		B、使用对SEO有利的标签：h1/h2/h3/strong/em……
+		C、提高页面关键词密度；
+		D、……等等；
+
+		SEM：搜索引擎营销；（包含SEO）
+		
+		font:斜体 加粗 大小/行高 "微软雅黑";
+
+
+		</div>
+
+		<div id="footer">
+		<div>
+	</body>
+</html>

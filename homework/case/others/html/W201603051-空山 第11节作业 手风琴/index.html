@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<!--声明当前页面的编码集GBK,GB2312(中文编码)，UTF-8(国际编码)-->
+		<meta charset="UTF-8" />
+		
+		<!--声明网页三要素-->
+		<title>前端开发</title>
+		<meta name="Keywords" content="潭州追梦"/>
+		<meta name="Description" content=""/>
+		
+		<!--CSS层叠样式表(让网页变得漂亮，网页设计师)-->
+		<link rel="stylesheet" href="css/reset.css" />
+		<style type="text/css">
+			#box{
+				width:1181px;
+				height:405px;
+				margin:80px auto;
+				position:relative;/* 	对照物-静止不动 */
+			}
+			#box ul li{
+				width:106px;
+				height:405px;
+				border-left:1px solid black;
+				float:left;
+				overflow:hidden;
+				background:#000;
+			}
+			#box ul li.first{
+				width:538px;
+			}
+			#box ul li img{
+				opacity:0.5
+			}
+			#box ul li img.active{
+				opacity:1;
+			}
+			#box ul li.last{
+				position:absolute;/* 绝对定位-移动-位置的改变*/
+				right:0;
+				top:0;
+			}
+		</style>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var i = 0;
+				var Timer;
+				$("#box ul li").mouseenter(function(){
+					i = $(this).index();
+					play()
+				});
+				
+				$("#box").hover(function(){
+					clearInterval( Timer );
+				},function(){
+					startPlay();
+				});
+				
+				startPlay();
+				function startPlay(){
+					Timer = setInterval(function(){
+						i++;
+						i%=$("#box ul li").size();
+						play();
+					},2500);
+				}
+
+				function play(){
+					$("#box ul li").eq(i).find("img").addClass("active").parent().siblings().find("img").removeClass("active");
+					$("#box ul li").eq(i).stop().animate({"width":"538px"},500).siblings().stop().animate({"width":"106px"},500);
+				}
+			});
+		</script>
+	</head>
+	<body>
+		<div id="box">
+			<ul>
+				<li class="first">
+					<img class="active" src="img/01.jpg" height="405" width="538" alt=""/>
+				</li>
+				<li><img src="img/02.jpg" height="405" width="538" alt=""/></li>
+				<li><img src="img/03.jpg" height="405" width="538" alt=""/></li>
+				<li><img src="img/04.jpg" height="405" width="538" alt=""/></li>
+				<li><img src="img/05.jpg" height="405" width="538" alt=""/></li>
+				<li><img src="img/06.jpg" height="405" width="538" alt=""/></li>
+				<li class="last"><img src="img/07.jpg" height="405" width="538" alt=""/></li>
+			</ul>
+		</div>
+	</body>
+</html>

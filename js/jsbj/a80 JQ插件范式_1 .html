@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>标题</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, minimum-scale=1, user-scalable=no"> 
+
+    <!-- apple 相关  -->
+    <!-- 以应用程序风格显示  -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 以应用程序风格显示的基础上, 开启状态栏透明,默认值为default（白色），可以定为black（黑色）和black-translucent（灰色半透明,将会占据页面px位置，浮在页面上方（会覆盖页面20px高度–iphone4和itouch4的Retina屏幕为40px）) -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- "添加到主屏幕“后全屏显示 ,作用为: 设置为no删除默认的苹果工具栏和菜单栏-->
+    <meta name="apple-touch-fullscreen" content="yes">
+    
+    <!-- 忽略将页面中的数字识别为电话号码和邮箱 -->
+    <meta name="format-detection" content="telephone=no,email=no">
+    
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 设置web app的放置主屏幕上icon文件路径 
+    这样就能在用户把网页存为书签时，在手机HOME界面创建应用程序样式的图标-->
+    <link rel="apple-touch-icon-precomposed" href="img/tx_64X64.ico">
+    <link rel="apple-touch-icon" href="img/tx_64X64.ico">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="" />
+    <link rel="shortcut icon" href="img/tx_64X64.ico">
+    <link rel="Bookmark" href="img/tx_64X64.ico" />  
+
+    <style type="text/css">
+
+        /** 清除内外边距 **/
+        body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+        dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+        pre, /* text formatting elements 文本格式元素 */
+        form, fieldset, legend, button, input, textarea, /* form elements 表单元素 */
+        th, td /* table elements 表格元素 */ {
+          margin: 0;
+          padding: 0;
+        }
+
+        /** 重置列表元素 **/
+        ul, ol { list-style: none; }
+
+        /** 重置文本格式元素 **/
+        a { text-decoration: none; }
+        
+    </style>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script> 
+    <script src="a80.jquery.ks_plugin.eg.js?123"></script> 
+    <script>
+        $(function(){
+            var a = $("#test").demo({
+                renderYellow : function(){
+                    console.log(this)
+                    $(this).css("background-color",'yellow');
+                }
+            });
+
+        })
+    </script>
+</head>
+<body>
+    <div id='test' data-ks_plugin="render" style="height:500px;"></div>
+</body>
+</html>

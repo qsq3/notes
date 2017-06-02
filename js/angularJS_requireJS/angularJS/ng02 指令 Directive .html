@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN" ng-app="myModule">
+<head>
+    <meta charset="utf-8">
+    <title>ng02 指令</title>
+
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <base target="_blank"></base>
+
+    <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.js" type="text/javascript"></script> 
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular-animate.js"></script>
+
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular-touch.js"></script>
+    <script src="../lib/angularjs/ui-bootstrap-tpls-2.2.0.js"></script>
+</head>
+<body class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                
+            </div>
+        </div>
+        <div class="panel-body">
+            
+        </div>
+        <script type="text/javascript">
+            //注意,扩展库中依赖的库这里需写入
+            var myModule = angular.module('myModule',['ngAnimate', 'ngTouch', 'ui.bootstrap']);
+        </script>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                指令要点
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>解析最简单的指令 hello: 匹配模式 restrict</li>
+                <li>解析最简单的指令 hello: template、tempmlateUrl、$templateCache</li>
+                <li>解析最简单的指令 hello: replace 与 transclude</li></li>
+                <li>compile 与 link (操作元素、添加 CSS 样式、绑定事件)</li>
+                <li>指令与控制器之间的交互</li>
+                <li>指令间的交互</li>
+                <li>scope 的类型与独立 scope</li>
+                <li>scope 的绑定策略</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                匹配模式 restrict 
+            </div>
+        </div>
+        <div class="panel-body">
+            <p>html中的四种方式:</p>
+            <ul>
+                <li>推荐: 创建模板时使用1.标签Element, 为已有HTML标签添加属性时使用2.属性Attribute</li>
+                <li><label>1.标签 E Element: </label> <hello1></hello1></li>
+                <li><label>2.属性 A Attribute [默认]: </label><div hello1></div></li>
+                <li><label>3.类名 C  Class: </label><div class='hello1'></div></li></li>
+                <li><label>4.注释 M Comment <b>[注意 注释两端应有一个空格]</b>: </label><!-- directive:hello1 --></li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            
+            
+            myModule.directive('hello1', function() {
+                return {
+                    //restrict: "A/E/C/M",可复用
+                    // 四种: Element, Attribute, Class, Comment  默认为 AE
+                    restrict: "AECM",
+                    // 模板
+                    template: '<i>Hi everyone! </i>',
+                    // 模板 也可引用html文件
+                    //templateUrl: 'temp.html',
+
+                    // 是否替换节点内的内容
+                    replace: true,
+
+                    //自定义compile函数,编译阶段执行;
+                    compile: function () {
+                         
+                    },
+
+                    //自定义link函数, 链接阶段执行;一般用于操作DOM,绑定事件监听器;
+                    link: function(){
+                        //link函数中操作dom
+                    }
+                }
+            });
+        </script>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                 转置 transclude ng-transclude
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>transclude 作用在于转置指令内部原有的内容，以免<code>replace: true</code>被设置时内部内容被全部替换，这样非常有用于嵌套指令</li>
+                <li> <hello2> 成功! 标签内部的内容在这!!! </hello2> </li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            
+            myModule.directive('hello2', function() {
+                return {
+
+                    restrict: 'E',
+
+                    // 注意：不能用 replace: true
+                    transclude: true,
+
+                    // 标签内部内容将会被转置到 div[ng-transclude] 内部
+                    template: "<em> 成功! Hello AngularJS!</em> <b ng-transclude></b>"
+                }
+            });
+        </script>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                模板缓存 template、tempmlateUrl、$templateCache
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>run 方法会在注册器加载完所有模块之后被执行一次</li>
+                <li>$templateCache 可以缓存模板以供多个指令使用 </li>
+                <li>put & get 类似面向对象的 setter & getter 方法 </li>
+                <li><hello3></hello3></li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            
+            myModule.run(function($templateCache) {
+                $templateCache.put('hello.html', '<div> 成功! 这是通过$templateCache所缓存的模板内容</div>');
+            });
+
+            // use get method to get cache
+            myModule.directive('hello3', function($templateCache) {
+                return {
+                    restrict : 'E',
+                    template: $templateCache.get('hello.html'),
+                    replace: true
+                }
+            });
+        </script>
+    </div>
+    
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                compile 与 link
+            </div>
+        </div>
+        <div class="panel-body">
+            <dl>
+                <dt>加载阶段</dt>
+                <dd>加载 angular.js，找到 ng-app 指令，确定应用的边界</dd>
+                <dt>编译阶段</dt>
+                <dd>遍历 DOM，找到所有指令</dd>
+                <dd>根据指令代码中的 template、replace、transclude 转换 DOM 结构</dd>
+                <dd>如果存在 compile 函数则调用</dd>
+                <dd>compile 函数用来对模板自身进行转换,仅在编译阶段被执行一次, 可返回preLink和postLink函数</dd>
+                <dt>链接阶段</dt>
+                <dd>对每一条指令运行 link 函数</dd>
+                <dd>作用域在链接阶段才会被绑定到编译之后的link函数上</dd>
+                <dd>link 函数负责在模型与视图之间进行动态关联,一般用来操作 DOM、绑定事件监听器, 对于指令的每个实例,都会执行一次,只返回postLink函数</dd>
+                <dd>如果需要修改DOM结构,应该在postLink中来做,在preLink中做这件事会导致错误</dd>
+                <dd>大多数时候我们只要编写link函数即可</dd>
+                
+            </dl>
+        </div>
+        <script type="text/javascript">
+            
+            
+        </script>
+    </div>
+    
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                指令调用控制器的方法，使用 <code>link</code>
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li><loader ng-controller='MyCtrl1' howToLoad="loadData()">Hover to load</loader></li>
+                <li><loader ng-controller='MyCtrl2' howToLoad="loadData2()">Hover to load2</loader></li>
+                <li>{{loadStatus}}</li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            
+            myModule.controller('MyCtrl1', ['$scope',
+                function($scope) {
+                    $scope.loadData = function() {
+                        console.log('Loading111...');
+                        $scope.$parent.loadStatus = "Loading111...";
+                    };
+                }
+            ]);
+
+            myModule.controller('MyCtrl2', ['$scope',
+                function($scope) {
+                    $scope.loadData2 = function() {
+                        console.log('Loading222...');
+                        $scope.$parent.loadStatus = "Loading222...";
+                    };
+                }
+            ]);
+
+            myModule.directive('loader', function() {
+                return {
+                    resetrict: 'AE',
+                    template: '',
+                    replace: true,
+                    link: function(scope, element, attrs) { 
+                    //参数依次为 
+                    //$scope, 
+                    //element是元素节点$('loader'),
+                    //attrs是个map，内容是你这个directive在html上的所有属性
+                    //第4参数为父控制器
+
+                        // demo: 绑定事件
+                        element.bind('mouseenter', function() {
+
+                            // 以下两种形式都可以，推荐下面的
+                            //scope.loadData();
+                            //scope.$apply('loadData()');
+
+                            // 通过属性值调用,可实现指令复用
+                            // 根据指令特定属性的不同应用不同方法
+                            // 注意 坑 : HTML中(属性名,而不是属性值的字符串)驼峰写法在js中应小写
+                            scope.$apply(attrs.howtoload);
+                        });
+                    }
+                }
+            });
+        </script>
+    </div>
+    
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                指令之间的交互: 
+                <div class="small">重点是创建独立 scope，使得指令之间不互相影响</div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul ng-controller='parentSupCtrl'>
+                <li><superman  supermanStatusA = "{{supermanStatusB}}" strength>Strength : {{supermanStatus}}</superman></li>
+                <li><superman  supermanStatusA = "{{supermanStatusB}}" strength speed>Strength &amp; Speed : {{supermanStatus}}</superman></li>
+                <li><superman  supermanStatusA = "{{supermanStatusB}}" strength speed light>Stength &amp; Speed &amp; Light : {{supermanStatus}}</superman></li>
+                <li>{{supermanStatus}}</li>
+                <li><b>父级$scope变化的数据只能被兄弟$scope域激活,可能是自定义scope中的事件不会触发脏值检测: {{parentabilities}} </b></li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+
+            myModule.directive('superman', function() {
+                return {
+
+                    // 创建独立 scope
+                    scope: {
+                      supermanStatus : '=supermanStatusA'
+                    },
+                    restrict: 'AE',
+
+                    // 希望指令暴露出一些方法编写在 controller 里面供其他指令调用
+                    // 同时使用 this 指代 superman的controller，这样交互的指令才能引用 
+                    controller: function($scope) {
+                        $scope.abilities = [];
+                        this.addStrength = function () {
+                            $scope.abilities.push('Strength');
+                        };
+                        this.addSpeed = function () {
+                            $scope.abilities.push('Speed');
+                        };
+                        this.addLight = function () {
+                            $scope.abilities.push('Light');
+                        };
+                    },
+
+                    // link 处理指令内部事件,
+                    link: function (scope, element, attrs) {
+                        element.addClass('btn btn-primary btn-lg');
+                        element.bind('mouseenter', function() {
+                            console.log(scope.abilities);
+                            //scope.$parent.parentabilities = scope.abilities.join();
+                            scope.$apply();//这里主动触发view层
+                        });
+                    }
+                };
+            })
+            .directive('strength', function() {
+                return {
+
+                    // 依赖于 superman 指令，这样 link 函数才可以调用 supermanCtrl 参数
+                    require: '^superman',
+                    link: function(scope, element, attrs, supermanCtrl) {
+                        supermanCtrl.addStrength();
+                    }
+                };
+            })
+            .directive('speed', function() {
+                return {
+                    require: '^superman',
+                    link: function(scope, element, attrs, supermanCtrl) {
+                        supermanCtrl.addSpeed();
+                    }
+                };
+            })
+            .directive('light', function() {
+                return {
+                    require: '^superman',
+                    link: function(scope, element, attrs, supermanCtrl) {
+                        supermanCtrl.addLight();
+                    }
+                };
+            })
+            .controller('parentSupCtrl',['$scope',function($scope) {
+                $scope.supermanStatus = '空';
+                $scope.supermanStatusB = '什么都没有1';
+            }]);
+        </script>
+    </div>
+    
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                独立scope
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul ng-controller='parentSupCtrl'>
+                <hello></hello>
+                <hello></hello>
+                <hello></hello>
+                <hello></hello>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            myModule.directive("hello", function(){
+                return{
+                    restrict: 'AE',
+                    scope: {},
+                    template: '<div><input type="text" ng-model="userName" />{{userName}}</div>',
+                    replace: true
+                }
+            })
+        </script>
+    </div>
+    
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                scope的绑定策略
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li ng-controller="MyCtrlA">
+                    <dl>
+                        <dt><code>@</code> 把当前属性作为字符串传递. 你还可以绑定来自外层scope的值,在属性值中插入双花括号{ {}}即可
+                        </dt>
+                        <dd>
+                            <drinkA flavor="{{ctrlFlavorA}}"></drinkA>
+                        </dd>
+                    </dl>
+                    <script type="text/javascript">
+                        myModule.controller('MyCtrlA', ['$scope', function ($scope) {
+                            $scope.ctrlFlavorA = '青岛啤酒';
+                        }])
+                        myModule.directive('drinka',function(){
+                            return {
+                                restrict:'AE',
+                                template:'<div>{{flavor}}</div>',
+                                /*
+                                link: function(scope, element, attrs){
+                                    scope.flavor=attrs.flavor;
+                                }
+                                和下面的方法等价;
+                                */
+                                scope: {
+                                    flavor:'@'
+                                }
+                            }
+                        })
+                    </script>
+                </li>
+                <li  ng-controller="MyCtrlB">
+                    <dl>
+                        <dt>
+                            <code>=</code> 与父scope中的属性进行双向绑定
+                        </dt>
+                        <dd>
+                            Ctrl:<br>
+                            <input type="text" ng-model='ctrlFlavorB'>
+                        </dd>
+                        <dd>
+                            Directive<br>
+                            <drinkB flavor='ctrlFlavorB'></drinkB>
+                        </dd>
+                    </dl>
+                    <script type="text/javascript">
+                        myModule.controller('MyCtrlB', ['$scope', function ($scope) {
+                            $scope.ctrlFlavorB = '百威啤酒';
+                        }])
+                        //注意 坑,html中非字符串的字符, 在js中忽略大小写, 全部小写;
+                        myModule.directive('drinkb',function(){
+                            return {
+                                restrict:'AE',
+                                template:'<input type="text" ng-model="flavor"></div>',
+                                scope: {
+                                    flavor:'='
+                                }
+                            }
+                        })
+                    </script>
+                </li>
+                <li ng-controller="MyCtrlC">
+                    <dl>
+                        <dt>
+                            <code>&</code> 传递一个来自父scope的函数, 稍后调用
+                        </dt>
+                        <dd>
+                            <drinkC flavor='drinking(name)'></drinkC>
+                            <drinkC flavor='drinking(name)'></drinkC>
+                            <drinkC flavor='drinking(name)'></drinkC>
+                        </dd>
+                    </dl>
+                    <script type="text/javascript">
+                        myModule.controller('MyCtrlC', ['$scope', function ($scope) {
+                            $scope.drinking = function(name){
+                                alert("正在喝" + name)
+                            };
+                        }])
+                        myModule.directive('drinkc',function(){
+                            return {
+                                restrict:'AE',
+                                template:'<div><input type="text" ng-model="beerName">' +
+                                         '<button class="btn btn-default" ng-click="flavor({name: beerName})">饮酒状态</button><br></div>',
+                                scope: {
+                                    flavor:'&'
+                                }
+                            }
+                        })
+                    </script>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                指令
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li><a target="_blank" href="http://docs.ngnice.com/api/ng/directive/">内置指令API文档:  http://docs.ngnice.com/api/ng/directive/</a> </li>
+
+                <li  ng-controller="singleExpander">
+                    <div>自定义指令-UI控件之singleExpander</div>
+                    <expander  expander-title='title1'>{{expanderText}}</expander>
+                </li>
+
+                <li  ng-controller="multipleExpander">
+                    <div>自定义指令-UI控件之multipleExpander</div>
+                    <expanderWrap>
+                        <expander2 ng-repeat='expander in expanders' expander-title='expander.title'>{{expander.text}}</expander2>
+                    </expanderWrap>
+                </li>
+                
+            </ul>
+        </div>
+        <script type="text/javascript">
+
+            //singleExpander
+            myModule.controller('singleExpander', function($scope){
+                $scope.title1 = '点击展开';
+                $scope.expanderText = '这里是内部的内容';
+            });
+            myModule.directive('expander', function(){
+                return{
+                    restrict : 'EA',
+                    replace : true,
+                    transclude : true,
+                    scope : {
+                        title2 : '=expanderTitle'
+                    },
+                    template : '<div>'
+                        +'<div class="text-danger" ng-click="toggle()">{{title2}}</div>'
+                        +'<div class="text-info" ng-show="showMe" ng-transclude></div>'
+                        +'</div>',
+                    link : function(scope, element, attrs){
+                        scope.showMe = false;
+                        scope.toggle = function(){
+                            scope.showMe = !scope.showMe;
+                        }
+                    }
+                }
+            })
+
+            //multipleExpander 注意 HTML不区分大小写的地方要小写, 坑
+            myModule.directive('expanderwrap', function(){
+                return{
+                    restrict : 'EA',
+                    replace : true,
+                    transclude: true,
+                    template: '<ol ng-transclude></ol>',
+                    controller: function(){
+                        var expanders = [];
+                        this.gotOpened = function(selectedExpander){
+                            angular.forEach(expanders, function(expander){
+                                if(selectedExpander != expander){
+                                    expander.showMe = false;
+                                }
+                            });
+                        };
+                        this.addExpander = function(expander){
+                            expanders.push(expander);
+                        }
+                    },
+                }
+            });
+            myModule.directive('expander2',function(){
+                return {
+                    restrict : 'EA',
+                    replace : true,
+                    transclude: true,
+                    require: '^?expanderwrap',
+                    scope : {
+                        title : '=expanderTitle'
+                    },
+                    template : '<li>'
+                             + '<div class="text-warning" ng-click="toggle()">{{title}}</div>'
+                             + '<div class="text-default" ng-show="showMe" ng-transclude></div>'
+                             + '</li>',
+
+                    link : function(scope, element, attrs, expanderWrapCtrl){
+                        scope.showMe = false;
+                        expanderWrapCtrl.addExpander(scope);
+                        scope.toggle = function(){
+                            scope.showMe = !scope.showMe;
+                            expanderWrapCtrl.gotOpened(scope);
+                        }
+                    }
+                }
+            });
+            myModule.controller('multipleExpander', function($scope){
+                $scope.expanders = [
+                    {title: '标题1 点击展开', text:'内容1'},
+                    {title: '标题2', text:'内容2'},
+                    {title: '标题3', text:'内容3'}
+                ];
+
+            });
+        </script>
+
+    </div>
+    
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <a target="_blank" href="https://angular-ui.github.io/"> UI扩展库angular-ui  https://angular-ui.github.io/</a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>
+                    <div><a target="_blank" href="https://angular-ui.github.io/bootstrap"> AngularJS UI Bootstrap  https://angular-ui.github.io/bootstrap/</a></div>
+<!--S copy部分-->
+<div ng-controller="AccordionDemoCtrl">
+
+  <script type="text/ng-template" id="group-template.html">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title" style="color:#fa39c3">
+          <a href tabindex="0" class="accordion-toggle" ng-click="toggleOpen()" uib-accordion-transclude="heading">
+            <span uib-accordion-header ng-class="{'text-muted': isDisabled}">
+              {{heading}}
+            </span>
+          </a>
+        </h4>
+      </div>
+      <div class="panel-collapse collapse" uib-collapse="!isOpen">
+        <div class="panel-body" style="text-align: right" ng-transclude></div>
+      </div>
+    </div>
+  </script>
+
+  <p>
+    <button type="button" class="btn btn-default btn-sm" ng-click="status.open = !status.open">Toggle last panel</button>
+    <button type="button" class="btn btn-default btn-sm" ng-click="status.isFirstDisabled = ! status.isFirstDisabled">Enable / Disable first panel</button>
+  </p>
+
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" ng-model="oneAtATime">
+      Open only one at a time
+    </label>
+  </div>
+  <uib-accordion close-others="oneAtATime">
+    <div uib-accordion-group class="panel-default" heading="Static Header, initially expanded" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+      This content is straight in the template.
+    </div>
+    <div uib-accordion-group class="panel-default" heading="{{group.title}}" ng-repeat="group in groups">
+      {{group.content}}
+    </div>
+    <div uib-accordion-group class="panel-default" heading="Dynamic Body Content">
+      <p>The body of the uib-accordion group grows to fit the contents</p>
+      <button type="button" class="btn btn-default btn-sm" ng-click="addItem()">Add Item</button>
+      <div ng-repeat="item in items">{{item}}</div>
+    </div>
+    <div uib-accordion-group class="panel-default" heading="Custom template" template-url="group-template.html">
+      Hello
+    </div>
+    <div uib-accordion-group class="panel-default" is-open="status.isCustomHeaderOpen" template-url="group-template.html">
+      <uib-accordion-heading>
+        Custom template with custom header template <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isCustomHeaderOpen, 'glyphicon-chevron-right': !status.isCustomHeaderOpen}"></i>
+      </uib-accordion-heading>
+      World
+    </div>
+    <div uib-accordion-group class="panel-danger" heading="Delete account">
+      <p>Please, to delete your account, click the button below</p>
+      <button class="btn btn-danger">Delete</button>
+    </div>
+    <div uib-accordion-group class="panel-default" is-open="status.open">
+      <uib-accordion-heading>
+        I can have markup, too! <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+      </uib-accordion-heading>
+      This is just some content to illustrate fancy headings.
+    </div>
+  </uib-accordion>
+</div>
+    
+<script>
+//var myModule = angular.module('myModule',['ngAnimate', 'ngTouch', 'ui.bootstrap'])
+  myModule.controller('AccordionDemoCtrl', function ($scope) {
+  $scope.oneAtATime = true;
+  
+  $scope.groups = [
+    {
+      title: 'Dynamic Group Header - 1',
+      content: 'Dynamic Group Body - 1'
+    },
+    {
+      title: 'Dynamic Group Header - 2',
+      content: 'Dynamic Group Body - 2'
+    }
+  ];
+
+  $scope.items = ['Item 1', 'Item 2', 'Item 3'];
+
+  $scope.addItem = function() {
+    var newItemNo = $scope.items.length + 1;
+    $scope.items.push('Item ' + newItemNo);
+  };
+
+  $scope.status = {
+    isCustomHeaderOpen: false,
+    isFirstOpen: true,
+    isFirstDisabled: false
+  };
+});
+</script>
+<!--E copy部分-->
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>

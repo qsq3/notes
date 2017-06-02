@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>内置组件</title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+        <script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+        <style type="text/css">
+            
+        </style>
+	</head>
+	<body>
+	    <div class="container">
+    	    <div class="row">
+                <div class="h2 page-header">组件 概述</div>
+                <div class="row">
+                    面板 panel         缩略图应用 caption          巨幕 jumbotron
+
+                    提示框 alert             进度条 progress             媒体对象 media
+                    
+                    列表组 list-group 
+                    
+                </div>
+                <div class="row">
+      
+                </div>
+                <hr />
+            </div>
+            <div class="row">
+                <div class="h2 page-header">面板</div>
+                    <!--
+                    描述：面板知识点
+                    面板大多数应用于应用系统的首页
+                    .panel {
+                      margin-bottom: 20px;
+                      background-color: #fff;
+                      border: 1px solid transparent;
+                      border-radius: 4px;
+                      -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+                              box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+                    }
+                    .panel-body {
+                      padding: 15px;
+                    }
+                    .panel-heading {
+                      padding: 10px 15px;
+                      border-bottom: 1px solid transparent;
+                      border-top-left-radius: 3px;
+                      border-top-right-radius: 3px;
+                    }
+                -->
+                <br />
+                <h3>普通面板</h3>
+                <div class = "row">
+                    <div class = "col-md-6">
+                        <div class = "panel panel-default">
+                            <div class = "panel-heading">Panel header</div>
+                            <div class = "panel-body">
+                                <p>内置组件-第一个测试面板</p><p>内置组件-第一个测试面板</p><p>内置组件-第一个测试面板</p><p>内置组件-第一个测试面板</p><p>内置组件-第一个测试面板</p>
+                            </div>
+                            <div class = "panel-footer">Panel-footer</div>
+                        </div>
+                    </div>
+                    <div class = "col-md-6">
+                        <!--panel-success info warning danger-->
+                        <div class = "panel panel-primary">
+                            <div class = "panel-heading">Panel header</div>
+                            <div class = "panel-body">
+                                <p>内置组件-第一个测试面板</p><p>内置组件-第一个测试面板</p><p>内置组件-第一个测试面板</p><p>内置组件-第一个测试面板</p><p>内置组件-第一个测试面板</p>     
+                            </div>
+                            <div class = "panel-footer">Panel-footer</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>带表格或者带列表的面板</h3>
+                <div class = "row">
+                    <div class = "col-md-6">
+                        <div class = "panel panel-success">
+                            <div class = "panel-heading">用户信息列表</div>
+                            <div class = "panel-body">
+                                <table class ="table"><!--table-border-->
+                                    <thead>
+                                        <tr>
+                                            <th>用户名</th>
+                                            <th>性别</th>
+                                            <th>年龄</th>
+                                            <th>联系方式</th>
+                                            <th>住址</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Kobe</td>
+                                            <td>Man</td>
+                                            <td>37</td>
+                                            <td>123456789</td>
+                                            <td>123456789</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jordan</td>
+                                            <td>Man</td>
+                                            <td>50</td>
+                                            <td>123456789</td>
+                                            <td>123456789</td>
+                                        </tr>
+                                        <tr>
+                                            <td>James</td>
+                                            <td>Man</td>
+                                            <td>31</td>
+                                            <td>123456789</td>
+                                            <td>123456789</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Curry</td>
+                                            <td>Man</td>
+                                            <td>26</td>
+                                            <td>123456789</td>
+                                            <td>123456789</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Thompson</td>
+                                            <td>Man</td>
+                                            <td>26</td>
+                                            <td>123456789</td>
+                                            <td>123456789</td>
+                                        </tr>
+                                    </tbody>
+                                </table>                             
+                            </div>
+                            <div class = "panel-footer">Panel-footer</div>
+                        </div>
+                    </div>
+                    
+                    <div class = "col-md-6">
+                        <div class = "panel panel-danger">
+                            <div class = "panel-heading">通知列表</div>
+                            <div class = "panel-body">
+                                <ul class= "list-group">
+                                    <li class = "list-group-item">入学通知</li>
+                                    <li class = "list-group-item">上课通知</li>
+                                    <li class = "list-group-item">作业通知</li>
+                                    <li class = "list-group-item">毕业通知</li>
+                                </ul>                        
+                            </div>
+                            <div class = "panel-footer">Panel-footer</div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div class="row">
+                <div class="h2 page-header">标题</div>
+                <h3>购物网站caption应用</h3>
+                <div class = "row">
+                    <div class = "col-xs-3 col-sm-3 col-md-3">
+                        <a href="javascript:void(0)" class = "thumbnail">
+                            <img src = "img/1.jpg" />
+                        </a>
+                        <div class ="caption">
+                            <h5 class='text-center'>外卖快送</h5>
+                            <p class="btn-group-justified">
+                                <span class="btn-group">
+                                    <button class = "btn btn-primary btn-xs">询价</button>
+                                </span>
+                                <span class="btn-group">
+                                    <button class = "btn btn-primary btn-xs">价格</button>
+                                </span>
+                            </p>                        
+                        </div>
+                    </div>
+                    <div class = "col-xs-3 col-sm-3 col-md-3">
+                        <a href="javascript:void(0)" class = "thumbnail">
+                            <img src = "img/1.jpg" />
+                        </a>
+                        <div class ="caption">
+                            <h5>外卖快送</h5>
+                            <p>
+                                <button class = "btn btn-primary btn-xs">询价</button>
+                                <button class = "btn btn-primary btn-xs">价格</button>
+                            </p>                        
+                        </div>
+                    </div>
+                    <div class = "col-xs-3 col-sm-3 col-md-3">
+                        <a href="javascript:void(0)" class = "thumbnail">
+                            <img src = "img/1.jpg" />
+                        </a>
+                        <div class ="caption">
+                            <h5>外卖快送</h5>
+                            <p>
+                                <button class = "btn btn-primary btn-xs">询价</button>
+                                <button class = "btn btn-primary btn-xs">价格</button>
+                            </p>                        
+                        </div>
+                    </div>
+                    <div class = "col-xs-3 col-sm-3 col-md-3">
+                        <a href="javascript:void(0)" class = "thumbnail">
+                            <img src = "img/1.jpg" />
+                        </a>
+                        <div class ="caption">
+                            <h5>外卖快送</h5>
+                            <p>
+                                <button class = "btn btn-primary btn-xs">询价</button>
+                                <button class = "btn btn-primary btn-xs">价格</button>
+                            </p>                        
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div class="row">
+                <div class="h2 page-header">巨幕</div>
+                <div class = "jumbotron " style = "background-color: #99c;">
+                    <h1>BootStrap</h1>
+                    <p> 简洁 直观  强悍的前端框架 让web开发更迅速 更简单</p>
+                    <p>
+                        <button  class = "btn btn-primary">开始学习</button>
+                    </p>
+                </div>
+                <hr />
+            </div>
+            
+            <div class="row">
+                <div class="h2 page-header">提示框</div>
+                <div class = "row">
+                    <div class = "col-md-4">
+                        <div class = "alert alert-success">成功提示框alert-success 绿色</div>
+                    </div>
+                </div>  
+                <div class = "row">
+                    <div class = "col-md-4">
+                        <div class = "alert alert-info">信息提示框alert-info 浅蓝</div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "col-md-4">
+                        <div class = "alert alert-warning">警告提示框alert-warning 浅黄</div>
+                    </div>
+                </div>  
+                <div class = "row">
+                    <div class = "col-md-4">
+                        <div class = "alert alert-danger">错误提示框alert-danger 红色</div>
+                    </div>
+                </div>  
+                <hr />
+            </div>
+            
+            <div class="row">
+                <div class="h2 page-header">进度条</div>
+                <h3>基础进度条</h3>
+                <div class = "input-group-lg">
+                    <div class = "progress">
+                        <div class = "progress-bar" style = "width:20%">
+                            20%
+                        </div> 
+                    </div>
+                </div>
+                <div class = "progress">
+                    <div class = "progress-bar" style = "width:20%">
+                        <span class ="sr-only">20%</span>
+                    </div> 
+                </div>
+                
+                 <h3>不同颜色的进度条</h3>
+                 <div class = "progress">
+                    <div class = "progress-bar progress-bar-info" style = "width:20%">
+                        <span class ="sr-only">20%</span>
+                    </div> 
+                </div>
+                <div class = "progress">
+                    <div class = "progress-bar progress-bar-success" style = "width:20%">
+                        <span>20%</span>
+                    </div> 
+                </div>
+                <div class = "progress">
+                    <div class = "progress-bar progress-bar-danger" style = "width:20%">
+                        <span class ="sr-only">20%</span>
+                    </div> 
+                </div>
+                <div class = "progress">
+                    <div class = "progress-bar progress-bar-warning" style = "width:20%">
+                        <span class ="sr-only">20%</span>
+                    </div> 
+                </div>
+                
+                <h3>条纹进度条</h3>
+                <div class = "progress progress-striped">
+                    <div class = "progress-bar progress-bar-warning" style = "width:20%">
+                        <span>20%</span>
+                    </div> 
+                </div>
+                
+                <h3>多条纹进度条</h3>
+                <div class = "progress">
+                    <div class = "progress-bar progress-bar-info progress-bar-striped" style = "width:25%">
+                        <span>25%</span>
+                    </div> 
+                    <div class = "progress-bar progress-bar-success progress-bar-striped" style = "width:25%">
+                        <span class ="sr-only">25%</span>
+                    </div>
+                    <div class = "progress-bar progress-bar-danger progress-bar-striped" style = "width:25%">
+                        <span>25%</span>
+                    </div>
+                    <div class = "progress-bar progress-bar-warning progress-bar-striped" style = "width:25%">
+                        <span class ="sr-only">25%</span>
+                    </div>
+                </div>
+                <hr />
+            </div>
+            
+            <div class="row">
+                <div class="h2 page-header">媒体对象</div>
+                <!--media包含所有媒体内容（图片，描述，标题)
+                    media-object 包含图片视频
+                    media-body 描述评价等文字信息
+                 -->
+                <h3>media 包含媒体.描述.标题</h3>
+                <div class = "media">
+                    <a class = "pull-left" href = "javascript:void(0)">
+                        <img class = "media-object"  src = "img/1.jpg" />
+                    </a>
+                    <div class = "media-body">
+                        <div class = "h4 media-heading">BootStrap基础教程</div>
+                        <div>BootStrap是一个什么,有什么好,为什么要学。</div>
+                        <br />
+                        <button class = "btn btn-default">询价</button>
+                        <button class = "btn btn-default">购买</button>
+                    </div>
+                </div>
+                <br />
+                <h3>media列表</h3>
+                <ul class = "media-list">
+                    <li class = "media">
+                        <a class = "pull-left" href = "javascript:void(0)">
+                            <img class = "media-object"  src = "img/1.jpg" />
+                        </a>
+                        <div class = "media-body">
+                            <div class = "h4 media-heading">BootStrap基础教程</div>
+                            <div>BootStrap是一个什么,有什么好,为什么要学。</div>
+                            <br />
+                            <button class = "btn btn-default">询价</button>
+                            <button class = "btn btn-default">购买</button>
+                        </div>
+                    </li>
+                    <li class = "media">
+                        <a class = "pull-left" href = "javascript:void(0)">
+                        <img class = "media-object"  src = "img/1.jpg" />
+                        </a>
+                        <div class = "media-body">
+                            <div class = "h4 media-heading">BootStrap基础教程</div>
+                            <div>BootStrap是一个什么,有什么好,为什么要学。</div>
+                            <br />
+                            <button class = "btn btn-default">询价</button>
+                            <button class = "btn btn-default">购买</button>
+                        </div>
+                    </li>
+                    <li class = "media">
+                        <a class = "pull-left" href = "javascript:void(0)">
+                        <img class = "media-object"  src = "img/1.jpg" />
+                        </a>
+                        <div class = "media-body">
+                            <div class = "h4 media-heading">BootStrap基础教程</div>
+                            <div>BootStrap是一个什么,有什么好,为什么要学。</div>
+                            <br />
+                            <button class = "btn btn-default">询价</button>
+                            <button class = "btn btn-default">购买</button>
+                        </div>
+                    </li>
+                </ul>
+                <hr />
+            </div>
+            
+            <div class="row">
+                <div class="h2 page-header">列表组</div>
+                <h3>普通列表组</h3>
+                 <ul class= "list-group">
+                    <li class = "list-group-item">入学通知</li>
+                    <li class = "list-group-item">上课通知</li>
+                    <li class = "list-group-item">作业通知</li>
+                    <li class = "list-group-item">毕业通知</li>
+                </ul> 
+                <h3>带徽章的列表组</h3>
+                <ul class= "list-group">
+                    <li class = "list-group-item">
+                        入学通知<span class = "badge">1</span>
+                    </li>
+                    <li class = "list-group-item">
+                        上课通知<span class = "badge">2</span>
+                    </li>
+                    <li class = "list-group-item">
+                        作业通知<span class = "badge">3</span>
+                    </li>
+                    <li class = "list-group-item">
+                        毕业通知<span class = "badge">4</span>
+                    </li>                
+                </ul> 
+                
+                <h3>a标签带徽章的列表组</h3>
+                <ul class= "list-group">
+                    <li class = "list-group-item">
+                        <a href="javascript:void(0)">入学通知</a><span class = "badge">1</span>
+                    </li>
+                    <li class = "list-group-item">
+                        <a href="javascript:void(0)">上课通知</a><span class = "badge">2</span>
+                    </li>
+                    <li class = "list-group-item">
+                        <a href="javascript:void(0)">作业通知</a><span class = "badge">3</span>
+                    </li>
+                    <li class = "list-group-item">
+                        <a href="javascript:void(0)">毕业通知</a><span class = "badge">4</span>
+                    </li>                
+                </ul> 
+                
+                <h3>button列表组</h3>
+                <div class= "list-group">
+                    <button class = "list-group-item">
+                        入学通知<span class = "badge">1</span>
+                    </button>
+                    <button class = "list-group-item">
+                        上课通知<span class = "badge">2</span>
+                    </button>
+                    <button class = "list-group-item">
+                        作业通知<span class = "badge">3</span>
+                    </button>
+                    <button class = "list-group-item">
+                        毕业通知<span class = "badge">4</span>
+                    </button>                
+                </div> 
+                 
+                <h3>不同主题的a标签列表组</h3>
+                <ul class= "list-group">
+                    <li class = "list-group-item list-group-item-info">
+                        <a href="javascript:void(0)">入学通知</a><span class = "badge">1</span>
+                    </li>
+                    <li class = "list-group-item list-group-item-success">
+                        <a href="javascript:void(0)">上课通知</a><span class = "badge">2</span>
+                    </li>
+                    <li class = "list-group-item list-group-item-danger">
+                        <a href="javascript:void(0)">作业通知</a><span class = "badge">3</span>
+                    </li>
+                    <li class = "list-group-item list-group-item-warning">
+                        <a href="javascript:void(0)">毕业通知</a><span class = "badge">4</span>
+                    </li>                
+                </ul> 
+                
+                <h3>包含head,text的a标签列表组</h3>
+                <ul class= "list-group">
+                    <li class = "list-group-item">
+                        <a href="javascript:void(0)">
+                            <div class= "h4 list-group-item-heading">西游记</div>
+                            <p class= "list-group-item-text">西游记好看好看真好看</p>
+                        </a>
+                    </li>
+                    <li class = "list-group-item">
+                        <a href="javascript:void(0)">
+                            <div class= "h4 list-group-item-heading">红楼梦</div>
+                            <p class= "list-group-item-text">红楼梦好看好看真好看</p>
+                        </a>
+                    </li>
+                    <li class = "list-group-item">
+                        <a href="javascript:void(0)">
+                            <div class= "h4 list-group-item-heading">水浒传</div>
+                            <p class= "list-group-item-text">水浒传好看好看真好看</p>
+                        </a>
+                    </li>                
+                </ul> 
+                <hr />
+            </div>
+            
+        </div>
+	</body>
+</html>

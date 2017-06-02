@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>	
+		<title>hw11手风琴3.0</title>
+		<meta name="keywords" content=""/>
+		<meta name="description" content=""/>
+		<link rel="stylesheet" href="css/reset.css">
+		<style type="text/css">
+			#box ul{
+				width:1116px;
+				height:400px;
+				margin:100px auto;
+				box-shadow: 0 0 10px black;
+				position:relative;
+				overflow:hidden;
+			}
+			#box ul li{
+				position:absolute;
+				top:0;
+			}
+
+			#box ul li a,#box ul li a img{
+				display:block;
+			}
+			#box ul li p{
+				width:20px;
+				padding:143px 10px 143px 9px;
+				border-left:1px solid white;
+				background-color:black;
+				opacity:0.7;
+				position:absolute;
+				color:#FFF;
+				top:0;
+				font:italic 20px/30px "Microsoft Yahei";
+			}
+		</style>
+		<script type="text/javascript" src="js/jquery-2.1.4.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				shoufq("#box ul li");
+				function shoufq (sfq){
+					var $index = 0,arr=[],timer;
+					$(sfq).each(function(i){
+						arr[i] = i*40;
+						$(this).css("left",arr[i]+"px");
+					});
+					play();
+					function play (){
+						$(sfq).eq($index).find("p").css("opacity",1).parent().siblings().find("p").css("opacity",0.7);
+						$(sfq).each(function(i){
+								if(i<=$index){
+									$(this).animate({"left":arr[i]+"px"},500);
+								}else{
+									$(this).animate({"left":arr[i]+916+"px"},500);
+							}
+						});					
+					}
+					$(sfq).click(function(){
+						$index = $(this).index();
+						play ();
+					});
+					
+					timer = setInterval(function(){
+						$index++;
+						$index%=$(sfq).length;
+						//alert($index);
+						play();
+					},1000);
+				};
+			});
+		</script>
+	</head>
+	<body>
+		<div id="box">
+			<ul>
+				<li>
+					<a href="javascript:;">
+						<img src="img/1.jpg" alt="">
+					</a>
+					<p>爱新鲜</p>
+				</li>
+				<li>
+					<a href="javascript:;">
+						<img src="img/2.jpg" alt="">
+					</a>
+					<p>一衣多香</p>
+				</li>
+				<li>
+					<a href="javascript:;">
+						<img src="img/3.jpg" alt="">
+					</a>
+					<p>评测擂台</p>
+				</li>
+				<li>
+					<a href="javascript:;">
+						<img src="img/4.jpg" alt="">
+					</a>
+					<p>达人心经</p>
+				</li>	
+				<li>
+					<a href="javascript:;">
+						<img src="img/5.jpg" alt="">
+					</a>
+					<p>大咖卖场</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

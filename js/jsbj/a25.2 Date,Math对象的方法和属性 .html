@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>a24-26 对象string,date,math.html</title>
+		<script type="text/javascript">
+			
+			/*Date对象  用于处理日期和时间
+			1.用于获取当前时间;
+			2.获取指定时间;*/
+
+			function testDate(){
+			/*	//创建时间对象
+var d1=new Date();//默认当前系统时间;
+var d2=new Date(2015,0,2,3,24,60,60);//月份是0-11;只写一个是毫秒;
+var d3=new Date("2015/0/2");
+
+关于datetime的那点事
+/把一个日期字符串如“2007-2-28 10：18：30”转换为Date对象
+var   strArray=str.split("   "); 
+var   strDate=strArray[0].split("-"); 
+var   strTime=strArray[1].split(":"); 
+var   a=new   Date(strDate[0],(strDate[1]-parseInt(1)),strDate[2],strTime[0],strTime[1],strTime[2]) 
+   
+2：第二种方法真是简单啊
+var   s   =   "2005-12-15   09:41:30"; 
+var   d   =   new Date(Date.parse(s.replace(/-/g,   "/"))); 
+----------------------------------------------------------------
+获取当前时间  参考：http://www.quackit.com/javascript/javascript_date_and_time_functions.cfm    http://www.quackit.com/javascript/tutorial/javascript_date_and_time.cfm
+
+var myDate = new Date();
+var year=myDate.getYear();     //获取从1970年到现在年份(2位)
+var year1=myDate.getFullYear();   //获取完整的年份(4位,1970-????)
+var moonth=myDate.getMonth();      //获取当前月份(0-11,0代表1月)
+myDate.getDate();       //获取当前日(1-31) 
+myDate.getDay();        //获取当前星期X(0-6,0代表星期天) 
+myDate.getTime();       //获取当前时间(从1970.1.1开始的毫秒数)
+myDate.getHours();      //获取当前小时数(0-23)  
+myDate.getMinutes();    //获取当前分钟数(0-59) 
+myDate.getSeconds();    //获取当前秒数(0-59) 
+myDate.getMilliseconds();   //获取当前毫秒数(0-999)  
+var mytime=myDate.toLocaleDateString();    //获取当前日期    //怎么是英文的
+var mytime=myDate.toLocaleTimeString();    //获取当前时间
+var a=myDate.toLocaleString( );       //获取日期与时间
+
+相对应还有设置时间的set方法;
+
+--------------------------------------------
+js中怎么判断是否为datetime类型
+1 短时间，形如 (13:04:06)
+function isTime(str)
+{
+var a = str.match(/^(\d{1,2})(:)?(\d{1,2})\2(\d{1,2})$/);
+if (a == null) {alert('输入的参数不是时间格式'); return false;}
+if (a[1]>24 || a[3]>60 || a[4]>60)
+{
+alert("时间格式不对");
+return false
+}
+return true;
+}
+   
+2. 短日期，形如 (2008-07-22)
+function strDateTime(str)
+{
+var r = str.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+if(r==null)return false;
+var d= new Date(r[1], r[3]-1, r[4]);
+return (d.getFullYear()==r[1]&&(d.getMonth()+1)==r[3]&&d.getDate()==r[4]);
+}
+   
+3 长时间，形如 (2008-07-22 13:04:06)
+function strDateTime(str)
+{
+var reg = /^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/;
+var r = str.match(reg);
+if(r==null)return false;
+var d= new Date(r[1], r[3]-1,r[4],r[5],r[6],r[7]);
+return (d.getFullYear()==r[1]&&(d.getMonth()+1)==r[3]&&d.getDate()==r[4]&&d.getHours()==r[5]&&d.getMinutes()==r[6]&&d.getSeconds()==r[7]);
+}
+<br>
+
+    //4个结果一样返回当前时间的毫秒数
+    alert(+new Date());
+    alert(+new Date);
+    var s=new Date();
+    alert(s.valueOf());
+    alert(s.getTime());
+
+    附送js获取时间的各种用法:
+    http://www.cnblogs.com/0banana0/archive/2011/05/25/2056614.html
+    var myDate = new Date();
+    var a=myDate.toLocaleString( ); 
+    2011-11-07 18:13:56
+
+*/
+				//从1970年三天打鱼两天晒网,到指定的一天的状态,
+				var d = document.getElementById("date").value;
+				d = d.replace(/[-\.\,]/g,'/');//兼容问题 ,用d的字符串的话, IE 只认字符串为1970/1/1的模式;因此需做兼容
+				var oDate = new Date(d);
+				var oDate0 = new Date(1970,0,1);
+				var n = (Date.parse(d)+1000*60*60*8) / (1000*60*60*24);
+				//var n = (oDate.getTime()+1000*60*60*8) / (1000*60*60*24);
+				//var n = (new Date(d)- 0+1000*60*60*8)/ (1000*60*60*24);
+				//var n = (new Date(d)- new Date(1970,0,1)) / (1000*60*60*24);
+				//注: 如果是 var n = (new Date(1970-0-1)- new Date(1970,0,1)) / (1000*60*60*24);得出的是东八区时间 - GMT标准时间,用d的字符串则无此问题;
+				var i=n%5;
+				if(d.slice(-2).match(/\d+/g) == oDate.getDate() && d.slice(0,4)>=1970){
+					i<3? alert(d+"是第"+(n+1)+"天:打鱼"): alert(d+"是第"+(n+1)+"天:晒网");	
+				}else{
+					alert("错误的日期");
+				}
+			}
+ 
+				//////////////////
+				
+				//Math对象,用于执行数学任务
+				
+				function testMath(){
+				
+				//属性
+				//alert(Math.PI);//圆周率
+				//alert(Math.E);//算术常量e,即自然对数的底数(约.2718)
+				//alert(Math.SQRT2);//2的平方根	
+				
+				var num=3000.123;
+				//方法
+				/*
+				alert(Math.abs(num));//绝对值;幂等函数
+				ceil(x)上舍入;floor(x)下舍入(底层实现:先-0.5再四舍五入);round(x)四舍五入;
+				alert(Math.ceil(num)+"\n"+Math.floor(num)+"\n"+Math.round(num));
+				alert(Math.max(10,15)+"\n"+Math.min(10,15));//取最大值和最小值;
+				//次幂和平方根
+				alert(Math.pow(2,3)+"=="+Math.sqrt(64));
+				alert(Math.random());//返回0-1之间的随机数,包含0不包含1;
+				alert(Math.round(Math.random()*100));//0-100
+				alert(Math.round(Math.random()*(60-18))+18));//18-60
+				*/
+				//alert(Math.floor(Math.random()*101));//0--100几率更平均				
+
+				
+				};
+				
+				
+			
+				
+			
+			
+		</script>
+		
+	</head>
+	<body>
+		<input type="button" name="" id="" value="测试字符串对象的属性与方法" onclick="testString();"/>
+		<input type="button" value="测试date对象" onclick="testDate();"/>
+		
+		<input type="button" value="测试Math对象" onclick="testMath();"/>
+		<input type="text" value="1970/01/01" size="30" id="date">
+	</body>
+</html>

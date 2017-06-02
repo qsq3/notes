@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>标题</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 禁止系统自动添加效果，直接显示设计原图;-->
+    <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-57x57-precomposed.png">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+    <link rel="shortcut icon" href="path/to/favicon.ico">
+    
+</head>
+<body>
+    规范自己的JavaScript书写 – Dojo Javascript 编程规范
+By 彬Go 2010-10-25
+Dojo Javascript 编程规范
+
+前言
+
+良好的JavaScript书写习惯的优点不言而喻，今天彬Go向大家推荐Dojo Javascript 编程规范，相当不错的 Javascript 编程风格规范，建议大家可以借鉴一下此规范编写 Javascript。感谢i.feelinglucky的翻译。
+
+序
+
+Any violation to this guide is allowed if it enhances readability.
+
+所有的代码都要变成可供他人容易阅读的。
+
+快读参考
+
+核心 API 请使用下面的风格：
+
+结构	规则	注释
+模块	小写	不要使用多重语义（Never multiple words）
+类	骆驼	
+公有方法	混合	其他的外部调用也可以使用 lower_case()，这样的风格
+公有变量	混合	
+常量	骆驼 或 大写	
+下面的虽然不是必要的，但建议使用：
+
+结构	规则
+私有方法	混合，例子：_mixedCase
+私有变量	混合，例子：_mixedCase
+方法（method）参数	混合，例子：_mixedCase, mixedCase
+本地（local）变量	混合，例子：_mixedCase, mixedCase
+
+命名规范
+
+1.变量名称 必须为 小写字母。
+2.类的命名使用骆驼命名规则，例如：
+
+   Account, EventHandler
+3.常量 必须 在对象（类）或者枚举变量的前部声明。枚举变量的命名必须要有实际的意义，并且其成员 必须 使用骆驼命名规则或使用大写：
+
+var NodeTypes = {
+    Element : 1,
+    DOCUMENT: 2
+}
+4.简写单词 不能使用 大写名称作为变量名：
+
+getInnerHtml(), getXml(), XmlDocument
+5.方法的命令 必须 为动词或者是动词短语：
+obj.getSomeValue()
+
+6.公有类的命名 必须 使用混合名称（mixedCase）命名。
+
+7.CSS 变量的命名 必须 使用其对应的相同的公共类变量。
+
+8.私有类的变量属性成员 必须 使用混合名称（mixedCase）命名，并前面下下划线（_）。例如：
+var MyClass = function(){
+   var _buffer;
+   this.doSomething = function(){
+   };
+}
+
+9.变量如果设置为私有，则前面 必须 添加下划线。
+
+this._somePrivateVariable = statement;
+10.通用的变量 必须 使用与其名字一致的类型名称：
+
+setTopic(topic) // 变量 topic 为 Topic 类型的变量
+11.所有的变量名 必须 使用英文名称。
+12.变量如有较广的作用域（large scope），必须使用全局变量；此时可以设计成一个类的成员。相对的如作用域较小或为私有变量则使用简洁的单词命名。
+13.如果变量有其隐含的返回值，则避免使用其相似的方法：
+
+getHandler(); // 避免使用 getEventHandler()
+14.公有变量必须清楚的表达其自身的属性，避免字义含糊不清，例如：
+
+MouseEventHandler
+，而非 MseEvtHdlr。
+　　请再次注意这条规定，这样做得的好处是非常明显的。它能明确的表达表达式所定义的含义。例如：
+　　　
+
+dojo.events.mouse.Handler // 而非 dojo.events.mouse.MouseEventHandler
+15.类/构造函数 可以使用 扩展其基类的名称命名，这样可以正确、迅速的找到其基类的名称：
+　EventHandler
+　UIEventHandler
+　MouseEventHandler
+　　基类可以在明确描述其属性的前提下，缩减其命名：
+　　　MouseEventHandler as opposed to MouseUIEventHandler.
+
+特殊命名规范
+
+术语 “get/set” 不要和一个字段相连，除非它被定义为私有变量。
+前面加 “is” 的变量名 应该 为布尔值，同理可以为 “has”, “can” 或者 “should”。
+术语 “compute” 作为变量名应为已经计算完成的变量。
+术语 “find” 作为变量名应为已经查找完成的变量。
+术语 “initialize” 或者 “init” 作为变量名应为已经实例化（初始化）完成的类或者其他类型的变量。
+UI （用户界面）控制变量应在名称后加控制类型，例如： leftComboBox, TopScrollPane。
+复数必须有其公共的名称约定（原文：Plural form MUST be used to name collections）。
+带有 “num” 或者 “count” 开头的变量名约定为数字（对象）。
+重复变量建议使用 “i”, “j”, “k” （依次类推）等名称的变量。
+补充用语必须使用补充词，例如： get/set, add/remove, create/destroy, start/stop, insert/delete, begin/end, etc.
+能缩写的名称尽量使用缩写。
+避免产生歧义的布尔变量名称，例如：
+　　isNotError, isNotFound 为非法
+错误类建议在变量名称后加上 “Exception” 或者 “Error”。
+方法如果返回一个类，则应该在名称上说明返回什么；如果是一个过程，则应该说明做了什么。
+文件
+
+缩进请使用 4 个空白符的制表位。
+如果您的编辑器支持 文件标签_（file tags），请加添如下的一行使我们的代码更容易阅读：
+
+// vim:ts=4:noet:tw=0:
+译注：老外用 VIM 编辑器比较多，此条可以选择遵循。
+
+代码折叠必须看起来是完成并且是合乎逻辑的：
+
+var someExpression = Expression1
+    + Expression2
+    + Expression3;
+
+var o = someObject.get(
+    Expression1,
+    Expression2,
+    Expression3
+);
+注：表达式的缩进与变量声明应为一致的。
+注：函数的参数应采用明确的缩进，缩进规则与其他块保持一致。
+
+变量
+
+变量必须在声明初始化以后才能使用，即便是 NULL 类型。
+变量不能产生歧义。
+相关的变量集应该放在同一代码块中，非相关的变量集不应该放在同一代码块中。
+变量应该尽量保持最小的生存周期。
+循环/重复变量的规范：
+只有循环控制块的话，则必须使用 FOR 循环。
+循环变量应该在循环开始前就被初始化；如使用 FOR 循环，则使用 FOR 语句初始化循环变量。
+“do … while” 语句是被允许的。
+“break” 和 “continue” 语句仍然允许使用（但请注意）。
+条件表达式
+应该尽量避免复杂的条件表达式，如有必要可以使用临时布尔变量。
+The nominal case SHOULD be put in the “if” part and the exception in the “else” part of an “if” statement.
+应避免在条件表达式中加入块。
+杂项
+尽量避免幻数（Magic numbers），他们应该使用常量来代替。
+浮点变量必须指明小数点后一位（即使是 0）。
+浮点变量必须指明实部，即使它们为零（使用 0. 开头）。
+布局
+
+块
+
+普通代码段 应该 看起来如下：
+while (!isDone){
+        doSomething();
+    isDone = moreToDo();
+}
+IF 语句 应该 看起来像这样：
+if (someCondition){
+        statements;
+} else if (someOtherCondition){
+    statements;
+} else {
+    statements;
+}
+FOR 语句 应该 看起来像这样：
+for (initialization; condition; update){
+        statements;
+}
+WHILE 语句 应该 看起来像这样：
+while (!isDone) {
+        doSomething();
+    isDone = moreToDo();
+}
+DO … WHILE 语句 应该 看起来像这样：
+do {
+        statements;
+} while (condition);
+SWITCH 语句 应该 看起来像这样：
+switch (condition) {
+case ABC:
+    statements;
+    //  fallthrough
+case DEF:
+    statements;
+    break;
+default:
+        statements;
+    break;
+}
+TRY … CATCH 语句 应该 看起来像这样：
+try {
+    statements;
+} catch(ex) {
+    statements;
+} finally {
+    statements;
+}
+单行的 IF – ELSE，WHILE 或者 FOR 语句也 必须 加入括号，不过他们可以这样写：
+if (condition){ statement; }
+while (condition){ statement; }
+for (intialization; condition; update){ statement; }
+空白
+
+操作符 建议 使用空格隔开（包括三元操作符）。
+下面的关键字 避免使用 空白隔开：
+break
+catch
+continue
+do
+else
+finally
+for
+function （如果为匿名函数，例如：var foo = function(){}; ）
+if
+return
+switch
+this
+try
+void
+while
+with
+下面的关键字必须使用空白隔开：
+case
+default
+delete
+function （如果为申明，例如：function foo(){}; ）
+in
+instanceof
+new
+throw
+typeof
+var
+逗号（,） 建议 使用空白隔开。
+冒号（:） 建议 使用空白隔开。
+点（.） 在后部 建议 使用空白隔开。
+点（.） 避免 在前部使用空白。
+函数调用和方法 避免 使用空白，例如： doSomething(someParameter); // 而非 doSomething (someParameter)
+逻辑块 之间使用空行。
+声明 建议 对齐使其更容易阅读。
+注释
+
+生涩的代码就 没有必要 添加注释了，首先您需要 重写 它们。
+所有的注释请使用英文。
+从已解决的方案到未开发的功能，注释 必须 与代码相关。
+大量的变量申明后 必须 跟随一段注释。
+注释需要说明的是代码段的用处，尤其是接下来的代码段。
+注释 没有必要 每行都添加。
+文档
+
+下面提供了一些基本的函数或者对象的描述方法：
+
+总结（summary）: 简短的表述此函数或者对象实现的目的
+描述（description）: 对于此函数或者类的简短的描述
+返回（return）: 描述此函数返回什么（并不包括返回类型）
+基本函数信息
+
+function(){
+    // summary: Soon we will have enough treasure to rule all of New Jersey.
+    // description: Or we could just get a new roomate.
+    //          Look, you go find him.  He don't yell at you.
+    //          All I ever try to do is make him smile and sing around
+    //          him and dance around him and he just lays into me.
+    //          He told me to get in the freezer 'cause there was a carnival in there.
+    // returns:  Look, a Bananarama tape!
+}
+对象函数信息
+
+没有返回值描述
+
+{
+    // summary: Dingle, engage the rainbow machine!
+    // description: 
+    //          Tell you what, I wish I was--oh my g--that beam,
+    //          coming up like that, the speed, you might wanna adjust that.
+    //          It really did a number on my back, there. I mean, and I don't
+    //          wanna say whiplash, just yet, cause that's a little too far,
+    //          but, you're insured, right?
+}
+函数的声明
+
+在有的情况下，对于函数的调用和声明是隐义（invisible）的。在这种情况下，我们没有办法在函数中加入说明等（供程序调用）。如果您遭遇了这种情况，您可以使用一个类来封装函数。
+
+注：此此方法只能在函数没有初始化的参数情况下。如过不是，则它们会被忽略。
+
+dojo.declare(
+    "foo",
+    null,
+    {
+        // summary: Phew, this sure is relaxing, Frylock.
+        // description: 
+        //              Thousands of years ago, before the dawn of
+        //              man as we knew him, there was Sir Santa of Claus: an
+        //              ape-like creature making crude and pointless toys out
+        //              of dino-bones, hurling them at chimp-like creatures with
+        //              crinkled hands regardless of how they behaved the
+        //              previous year.
+        // returns: Unless Carl pays tribute to the Elfin Elders in space.
+        }
+);
+
+
+<h3>参数</h3>
+<ol>
+    <li>简单类型
+　　　简单的类型的参数可以直接在函数参数定义中注释说明。
+[cc lang="javascript"]function(/*String*/ foo, /*int*/ bar)...
+可变类型参数
+　　下面是几个修饰符供参考：
+? 可选参数
+… 说面参数范围不确定
+数组
+function(/*String?*/ foo, /*int...*/ bar, /*String[]*/ baz)...
+全局参数描述
+　如果你想增加一个描述，你可以将它们移至初始化块。
+基本信息格式为： *关键字* 描述字段 （ *key* Descriptive sentence）
+参数和变量的格式为： *关键字* ~*类型*~ 描述字段 （ *key* ~*type*~ Descriptive sentence）
+注： *关键字* 和 ~*类型*~ 可以使用任何字母和数字表述。
+
+function (foo, bar) {
+    // foo: String
+    //          used for being the first parameter
+    // bar: int
+    //          used for being the second parameter
+}
+变量
+
+由于实例变量、原型变量和外部变量的声明是一致的，所以有很多的方法声明、修改变量。具体的如何定义和定位应在变量最先出现的位置指明变量的名称、类型、作用域等信息。
+
+function foo() {
+    // myString: String
+    // times: int
+    //          How many times to print myString
+    // separator: String
+    //          What to print out in between myString*
+    this.myString = "placeholder text";
+    this.times = 5;
+}
+foo.prototype.setString = function (myString) {
+    this.myString = myString;
+}
+foo.prototype.toString = function() {
+    for(int i = 0; i < this.times; i++) {
+        dojo.debug(this.myString);
+        dojo.debug(foo.separator);
+        }
+}
+foo.separator = "=====";
+对象中的变量注释
+
+应使用和对象值和方法一致的标注方式，比如在他们声明的时候：
+
+{
+    // key: String
+    //          A simple value
+    key: "value",
+    // key2: String
+    //          Another simple value
+}
+返回值
+
+因为函数可以同时返回多个不同（类型）的值，所以应每个返回值之后加入返回类型的注释。注释在行内注释即可，如果所有的返回值为同一类型，则指明返回的类型；如为多个不同的返回值，则标注返回类型为”mixed”。
+
+function() {
+        if (arguments.length) {
+                return "You passed argument(s)"; // String
+        } else {
+        return false; // Boolean
+    }
+}
+伪代码（有待讨论）
+
+有时候您需要在函数或者类中添加对于此函数和类的功能性流程描述。如果您打算这样做，您可以使用 /*======== （= 字符最好出现 5 次或者更多），这样做的好处就是可以不用将这些东西加入代码（译注：原作者的意思可能为代码管理系统）。
+
+这样看起来在 /*===== 和 =====*/ 会有非常长的一段注释，等待功能调整完毕以后就可以考虑是否删除。
+
+/*=====
+module.pseudo.kwArgs = {
+        // url: String
+    //          The location of the file
+    url: "",
+    // mimeType: String
+    //          text/html, text/xml, etc
+    mimeType: ""
+}
+=====*/
+
+function(/*module.pseudo.kwArgs*/ kwArgs){
+    dojo.debug(kwArgs.url);
+        dojo.debug(kwArgs.mimeType);
+}
+原文链接： http://dojotoolkit.org/developer/StyleGuide
+翻译（Translated by）：i.feelinglucky{at}gmail.com from http://www.gracecode.com
+</body>
+</html>

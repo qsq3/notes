@@ -1,0 +1,161 @@
+<!--声明文档类型 html5-->
+<!doctype html>
+<!--最外层结构,声明语言为中文-->
+<html lang="zh-cn">
+	<!--头部------------------------------------------------------------------------------------------------------------->
+	<head>
+		<!--编码方式,gbk,gb2312中文编码,UTF-8国际编码,注意html文档本身也有编码,需更改为一致-->
+		<meta charset="UTF-8"/>
+		<!--头部三要素------------------------------------------>
+		<!--网页标题-->
+		<title>第四节HTML基础标签</title>
+		<!--网页关键字-->
+		<meta name="keywords" content="基础标签,超链接a标签,伪类"/>
+		<!--网页描述,80个字以内-->
+		<meta name="discription" content="第四节HTML基础标签,基础标签,超链接a标签,伪类。"/>
+		<!--作者------------------------------------------------>
+		<meta name="author" content="空山"/>
+		<!--编辑工具-->
+		<meta name="generator" content="Editplus"/>
+		<meta name="image" content="http://baike.bdimg.com/cms/static/baike.png">
+		<style type="text/css">
+			body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, textarea, p {
+				margin: 0px;
+				padding: 0px;
+			}
+			ul{
+				list-style:none;
+			}
+			img,a{
+				border:none;
+				text-decoration:none;
+			}
+			#header{
+				margin:	0px auto;
+				width:1000px;
+				height:300px;
+				line-height:300px;
+				text-align:center;
+				border: 2px solid red;
+				background:green;
+			}
+			#nav{
+				margin:0 auto;
+				width:1000px;
+				height:100px;
+				line-height:100px;
+				border: 2px dashed #CCC;
+				text-align:center;
+				word-spacing: 100px;
+				background:#CCC;
+			}
+			#nav h2{
+				display:inline;
+			}
+			a{
+				color:white;
+			}
+			a:hover{
+				color:red;
+			}
+			a:active{
+				color:blue;
+			}
+			a#tzxy{
+				text-align:right;
+			}
+			a#tzxy:visited{
+				color:black;
+			
+			}
+			#main{
+				margin:0px auto;
+				width:1000px;
+				line-height:30px;
+				text-align:center;
+				border: 5px double rgb(255,140,0);
+
+			}
+			#footer{
+				width:1000px;
+				height:200px;
+				margin:0 auto;
+			}
+			#footer-left{
+				width:500px;
+				height:200px;
+				background:green;
+				float:left;
+			}
+			#footer-right{
+				width:500px;
+				height:200px;
+				background:blue;
+				float:left;
+			}
+		</style>
+	
+		
+	</head>
+	<!--身体标签---------------------------------------------------------------------------------------->
+	<body>
+		<div id="header">
+			<h1>第四节HTML基础标签</h1>
+			
+		</div>
+		<div id="nav">
+			<h2><a href="#jcbq"> 一.基础标签 </a></h2>
+			<h2><a href="#clj"> 二.超链接标签 </a></h2>
+			<h2><a href="#wl"> 三.伪类 </a></h2>
+			<a id="tzxy" href="http://www.tanzhouedu.com/" target="_blank" >------潭州学院</a>
+		</div>
+		<div id="main">
+			<br/><hr/><br/>
+			<a name="jcbq"></a><h3>1.基础标签</h3>
+			<p>span 标签被用来组合文档中的行内元素,以便通过样式来格式化<span style="color:red;font-size:20px;">他们</span>。</p>
+			<p>font 标签规定文本的<font size="5" face="arial" color="red">字体、字体尺寸、字体颜色</font>已被淘汰</p>
+			<p><b>b标签</b>和<strong>stron标签</strong>:文本为粗体格式,</p>
+			<p><i>i标签</i>和<em>em标签</em>:文本为斜体格式,i标签还用于iconfont矢量图标</p>
+			<p> strong 标签和 em 标签一样，用于强调文本，但它强调的程度更强一些,<br/>
+			影响搜索引擎权重,但不要超过六个。最好使用在句子中,词语中,有利于搜索引擎抓取.<br/>
+			影响权重的还有h1,h2,h3,</p>
+			<p><strong style="font-weight: normal">style="font-weight: normal 去掉粗体</strong></p>
+			<p><em style="font-style: normal">style="font-style: normal 去掉斜体</em> </p>
+			<br/><hr/><br/>
+			
+			<a name="clj"></a><h3>2.超链接a标签：</h3>
+			<strong>a 标签可以从通过点击从一个页面跳到另一个页面</strong><br/>
+			<!--语法： a href=“url” 文字显示 /a 锚标记：相当于书签，<br/>
+			当使用锚标记时，我们可以创建直接跳至该命名锚的链接<br/>
+			语法：	a name=“自定义名字" 锚（显示在页面上的文本） /a <br/>
+			创建使用该锚的链接：<br/>
+			 a href=“#自定义的锚名字” 显示内容 a<br/>-->
+			a标签：<span style="background:orange"> <a href="https://www.baidu.com/" target="_blank">链接</a>/ <a href="img/xueyuan.zip">下载</a>/<a href="#jcbq">锚点</a></span> <br/> 
+				target 链接打开方式 <br/>
+				blank  新窗口<br/>
+				self     当前窗口<br/>
+			 base target="_blank" 定义页面链接定义新窗口打开方式,<b>注意锚点链接也会被设置为新窗口打开</b><br/>
+			
+			<br/><hr/><br/>
+			<a name="wl"></a><h3>3.伪类：</h3>
+			<em>伪类用于向被选中元素添加特殊的效果。</em><br/>
+					link            未访问（默认）<br/>
+					hover         鼠标悬停（鼠标划过）<br/>
+					active         链接激活（鼠标按下）<br/>
+					visited        访问过后（点击过后）<br/>
+			A四个伪类的顺序：<br/>
+				link    visited    hover  active<br/>
+				（love hate 记忆方法！）<br/>
+
+			a伪类的应用：<br/>
+			a、四个伪类全用(搜索引擎、新闻门户、小说网站)<br/>
+			b、一般网站只用（ a{ }   a:hover{ }  ）<br/>
+			IE6不支持a以外其它任何标签的伪类；<br/>			
+
+		</div>
+		<div id="footer">
+			<div id="footer-left"></div>
+			<div id="footer-right"></div>
+		</div>
+	</body>
+</html>

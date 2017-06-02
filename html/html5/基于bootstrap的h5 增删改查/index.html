@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="keywords" content="关键字" />
+<meta name="description" content="描述" />
+<title>web sql</title>
+<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+<style type="text/css">
+	.list-group{margin-top:10px;position:relative;}
+	.list-group-item{padding:10px 150px 10px 15px !important;}
+	.btn-group-seat{position:absolute;right:0;top:8%;}
+
+</style>
+</head>
+<body>
+ <div class="container">
+	<div class="row">
+		<div class="page-header">
+			<h1>HTML 5 Web SQL</h1>
+		</div>
+		<!-- 提交笔记的表单 -->
+		<form class="bs-example" id="note-form">
+			<div class="col-md-9">
+				<!-- 提交笔记内容的文本区域 -->
+				<textarea name="note-content" class="form-control" rows="3"></textarea>
+			</div>
+			<div class="col-md-3">
+				<!-- 提交笔记的按钮 -->
+				<button value="submit" id="submit-btn" class="btn btn-primary btn-lg">提交</button>
+				<input type="hidden" name="note-id" value="0"/>
+			</div>
+		</form>
+	</div>
+	<div class="row">	
+			<!-- 显示笔记列表 -->
+		<ul class="list-group" id="note-list"></ul>
+	</div>
+ </div>
+ <script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>
+

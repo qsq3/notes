@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>空山</title>
+    <meta name="Generator" content="EditPlus">
+    <meta name="Author" content="空山">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    
+</head>
+<body>
+background:
+	background-color:背景颜色
+	background-image:背景图片
+	background-repeat:背景重复
+	background-position:背景定位
+	background-attachment:背景固定(scroll/fixed)
+
+复合写法:background:green url("") no-repeat fixed left top/cover ;
+默认值
+background: transparent none repeat scroll 0% 0% / ;
+background: 透明 无背景图片 平铺 背景图片随文本滚动  位于元素左上角/
+
+background新增属性
+
+
+background-size  背景尺寸
+	background-size:x y
+	background-size:100% 100%
+	background-size:cover 比例放大
+    background-size:contain 包含（图片不溢出）
+background-size :
+    length:
+        设置背景图像的高度和宽度。
+        第一个值设置宽度，第二个值设置高度。
+        如果只设置一个值，则第二个值会被设置为 "auto"。
+
+    percentage	
+        以父元素的百分比来设置背景图像的宽度和高度。
+        第一个值设置宽度，第二个值设置高度。
+        如果只设置一个值，则第二个值会被设置为 "auto"。
+        
+    cover	
+        把背景图像扩展至足够大，以使背景图像完全覆盖背景区域。
+        背景图像的某些部分也许无法显示在背景定位区域中。
+        
+    contain:把图像图像扩展至最大尺寸，以使其宽度和高度完全适应内容区域。
+
+background-break 	循环 不兼容
+    书写方式{-moz-background-inline-policy}
+
+多背景(不兼容:IE8-):
+background:url() 0 0,url() 0 100%;
+
+background-origin:背景区域定位起始位置;
+    padding-box	背景图像相对于内边距框来定位。(默认)
+    border-box	背景图像相对于边框盒来定位。
+    content-box	背景图像相对于内容框来定位。
+
+background-clip:背景绘制的区域
+    border-box	背景被裁剪到边框盒。(只有把background-origin设为               border-box,把背景区域显示的起始位置拉过去,才能在边框中显示背景)	
+    padding-box	背景被裁剪到内边距框。(默认)
+    content-box	背景被裁剪到内容框。
+    text 背景填充文本(需要私有前缀)
+        可以做出剪切蒙版的光影效果
+        <style type="text/css">
+        .box{
+            width:500px;
+            height:500px;
+            font-size:100px;
+            font-weight:bold;
+            line-height:500px;
+            color:rgba(0,0,0,0);
+            border:20px solid red;
+            background:url("../../img/1.jpg") no-repeat;
+            -webkit-background-clip:text;
+            transition:1s;
+        }
+        .box:hover{
+            background-position:-100px 0px;
+        }
+        </style>
+        <div class="box">
+			空山新雨后
+		</div>
+    no-clip 从border区域向外裁剪背景
+
+background-origin：padding|border|content
+该属性指定了背景从哪个区域(边框、补白或内容)开始绘制,但也仅仅能控制背景开始绘制的位置，你可以用这个属性在边框上绘制背景，但边框上的背景显不显示出来那就要由background-clip来决定了
+
+background-clip：border|padding|content
+该属性指定了背景在哪些区域可以显示，但与背景开始绘制的位置无关，背景的绘制的位置可以出现在不显示背景的区域，这时就相当于背景图片被不显示背景的区域裁剪了一部分一样。
+
+
+渐变: Internet Explorer 9 及之前的版本不支持渐变
+
+线性渐变：linear-gradient(起点/角度，颜色 位置，...,)
+	    起点：left/top/right/bottom/left top...... 默认top
+	    角度：逆时针方向 0-360度
+	    颜色 位置：red 50%, blue 100%(红色从50%渐变到100%为蓝色)
+repeating-linear-gradient;平铺线性渐变
+background 和background-image均可使用
+兼容性问题: 注意是否带私有前缀浏览器的解析会不同,对括号内属性的支持也不同;
+私有性前缀: 支持: 起始方位 , 不支持:to 方位; 默认为"270deg"或top(从上往下) ,角度逆时针旋转;
+无私有前缀: 支持: to 方位 , 不支持:起始方位; ,默认为"180deg"或to bottom(从上往下), 0角度为私有性的90度方向,顺时针旋转;;
+<style>/*css样式表的衣柜*/
+    .wrap1{
+        display:-webkit-flex;
+        flex-wrap : wrap;
+        flex-flow : flex-wrap;
+    }
+    .box2,.box3,.box4,.box5,.box6,.box7,.box8{
+        width:300px;
+        height:300px;
+        margin:10px;
+    }
+    .box2{
+        /*无私有前缀  */
+        -background-image:linear-gradient(to bottom ,red,blue,yellow);
+        /*第一个参数省略时,默认为"180deg"或to bottom ;支持: to 方位, 不支持: 起始方位; 角度顺时针旋转;*/
+        background:linear-gradient(90deg , red,blue,yellow);
+        
+        /*IE不支持#000字符式的颜色格式,必须写满6位, 0代表竖向渐变,1代表横向渐变*/
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0000',endColorstr='#0000ff',GradientType='0');
+        
+        /*兼容写法*/
+        background:#000000;
+        background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff0000), color-stop(100%, #0000ff));
+        background:-webkit-linear-gradient(top,#ff0000 0%,#0000ff 100%);
+        background:-moz-linear-gradient(top,#ff0000 0%,#0000ff 100%);
+        background:-ms-linear-gradient(top,#ff0000 0%,#0000ff 100%);
+        background:-0-linear-gradient(top,#ff0000 0%,#0000ff 100%);
+        background:linear-gradient(to bottom,#ff0000 0%,#0000ff 100%);
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0000',endColorstr='#0000ff',GradientType='0');
+    }   
+    .box3{
+        /* 私有前缀 */
+        -background-image:-webkit-linear-gradient(top,red,blue,yellow);
+        /*第一个参数省略时,默认为"270deg"或top,*/
+        /* 支持: 起始方位,不支持: to 方位; 角度逆时针旋转;*/
+        background:-webkit-linear-gradient(0deg,red 10%,blue 20%,yellow 100%);
+        /* (从起始点算起,垂直于渐变线,而不是盒子的边,相邻没有渐变元素则此间显示为纯色) */
+        /*百分比表示,其值为该色值浓度最高(渐变起始位置)*/
+        /*单位值表示,其值为色值浓度最高*/
+    }
+
+    .wrap2{
+        width:200px;
+        height:20px;
+        overflow:hidden;
+        border-radius:10px;
+
+    }
+    .box4{
+     /* 线性渐变的重复平铺 */
+        width:1000px;
+        height:20px;
+        margin:0;
+        background:-webkit-repeating-linear-gradient(30deg,#990066 0, #9933ff 10px ,#ff0033 10px,#00cc00 20px);
+        transition:1s linear;
+
+    }
+    .box4:hover{
+        background-position:-400px 0;
+    }
+    .box5{
+        /* 应用 :格子图 */
+        background:-webkit-linear-gradient(0deg,#aaf 5px,transparent 0),-webkit-linear-gradient(90deg,#aaf 5px,transparent 0);
+        background-size:5% 5%;
+    }
+    .box6{
+        /*应用:斜切角*/
+        background: #58a;
+        background: linear-gradient(135deg, transparent 15px, #58a 0) top left,
+                    linear-gradient(-135deg, transparent 15px, #655 0) top right,
+                    linear-gradient(-45deg, transparent 15px, #58a 0) bottom right,
+                    linear-gradient(45deg, transparent 15px, #655 0) bottom left;
+        background-size: 50% 50%;
+        background-repeat: no-repeat;
+    }
+    .box7{/*应用:简单折角*/
+        background: #58a; /* Fallback */
+        background:
+            linear-gradient(to left bottom,
+            transparent 50%, rgba(0,0,0,.4) 0)
+            no-repeat 100% 0 / 2em 2em,
+            linear-gradient(-135deg,
+            transparent 1.5em, #58a 0);
+    }
+    .box8 {/*应用:折角*/
+        position: relative;
+        background: #58a; /* Fallback */
+        background:
+        linear-gradient(-150deg,
+        transparent 1.5em, #58a 0);
+        border-radius: .5em;
+    }
+    .box8::before {
+        content: '';
+        position: absolute;
+        top: 0; right: 0;
+        background: linear-gradient(to left bottom,
+        transparent 50%, rgba(0,0,0,.2) 0, rgba(0,0,0,.4))
+        100% 0 no-repeat;
+        width: 1.73em;
+        height: 3em;
+        transform: translateY(-1.3em) rotate(-30deg);
+        transform-origin: bottom right;
+        border-bottom-left-radius: inherit;
+        box-shadow: -.2em .2em .3em -.1em rgba(0,0,0,.15);
+    }
+</style>
+<div class='wrap1'>
+    <div class="box2">无私有前缀</div>
+    <div class="box3">私有前缀</div>
+    <div class="wrap2">
+        <div class="box4"></div>
+    </div>
+    <div class="box5">
+    </div>
+    <div class="box6">
+    </div>
+    <br>
+    <div class="box7">
+    </div>
+    <div class="box8">
+    </div>
+</div>
+<hr />
+径向渐变：radial-gradient(起点(圆心位置), 形状 大小，颜色1 颜色1大小，颜色2 颜色2半径)
+无前缀的径向渐变。它使用“at语法”
+	    起点：left/top/right/bottom或具体值/百分比
+	    形状：ellipse(椭圆)(默认)、circle(正圆)
+	    大小：渐变的总范围,具体数值或百分比，也可以是关键字（closest-side(最近端), closest-corner(最近角), farthest-side(最远端), farthest-corner(最远角), contain(包含) ,cover(覆盖)）;注:firefox目前只支持关键字
+
+
+repeating-radial-gradient  径向渐变重复平铺
+
+background: radial-gradient(circle at 30% 20%, #fff, #000);
+
+实例
+带有不同尺寸大小关键字的径向渐变：
+<style>
+.grad div{
+    height: 150px;
+    width: 300px;
+}
+#grad1 {
+    background: -webkit-radial-gradient(60% 55%,circle closest-side,blue,green,yellow 66%,yellow 95%,red 100%); /* Safari 5.1 - 6.0 */
+    background: -o-radial-gradient(60% 55%, closest-side,blue,green,yellow,red); /* Opera 11.6 - 12.0 */
+    background: -moz-radial-gradient(60% 55%, closest-side,blue,green,yellow,red); /* Firefox 3.6 - 15 */
+    background: radial-gradient(circle closest-side at 60% 55%,blue,green,yellow 66%,yellow 95%,red 100%); /* 标准的语法（必须放在最后） */
+}
+
+#grad2 {
+    background: -webkit-radial-gradient(60% 55%, farthest-side,blue,green,yellow 66%,yellow 95%,red 100%); /* Safari 5.1 - 6.0 */
+    background: -o-radial-gradient(60% 55%, farthest-side,blue,green,yellow,red); /* Opera 11.6 - 12.0 */
+    background: -moz-radial-gradient(60% 55%, farthest-side,blue,green,yellow,red); /* Firefox 3.6 - 15 */
+    background: radial-gradient(circle farthest-side at 60% 55%,blue,green,yellow 66%,yellow 95%,red 100%); /* 标准的语法（必须放在最后） */
+}
+
+#grad3 {
+    background: -webkit-radial-gradient(60% 55%, closest-corner,blue,green,yellow 66%,yellow 95%,red 100%); /* Safari 5.1 - 6.0 */
+    background: -o-radial-gradient(60% 55%, closest-corner,blue,green,yellow,red); /* Opera 11.6 - 12.0 */
+    background: -moz-radial-gradient(60% 55%, closest-corner,blue,green,yellow,red); /* Firefox 3.6 - 15 */
+    background: radial-gradient(circle closest-corner at 60% 55%,blue,green,yellow 66%,yellow 95%,red 100%); /* 标准的语法（必须放在最后） */
+}
+
+#grad4 {
+    background: -webkit-radial-gradient(60% 55%, farthest-corner,blue,green,yellow 66%,yellow 95%,red 100%); /* Safari 5.1 - 6.0 */
+    background: -o-radial-gradient(60% 55%, farthest-corner,blue,green,yellow,red); /* Opera 11.6 - 12.0 */
+    background: -moz-radial-gradient(60% 55%, farthest-corner,blue,green,yellow,red); /* Firefox 3.6 - 15 */
+    background: radial-gradient(circle farthest-corner at 60% 55%,blue,green,yellow 66%,yellow 95%,red 100%); /* 标准的语法（必须放在最后） */
+}
+</style>
+
+<div class="grad">
+<h3>径向渐变 - 不同尺寸大小关键字的使用</h3>
+
+<p><strong>closest-side：</strong></p>
+<div id="grad1"></div>
+
+<p><strong>farthest-side：</strong></p>
+<div id="grad2"></div>
+
+<p><strong>closest-corner：</strong></p>
+<div id="grad3"></div>
+
+<p><strong>farthest-corner（默认）：</strong></p>
+<div id="grad4"></div>
+
+<p><strong>注意：</strong> Internet Explorer 9 及之前的版本不支持渐变。</p>
+</div>
+
+
+mask 遮罩 对应background;
+
+-webkit-mask (background)
+-webkit-mask-attachment (background-attachment)
+-webkit-mask-clip (background-clip)
+-webkit-mask-origin (background-origin)
+-webkit-mask-image (background-image)
+-webkit-mask-repeat (background-repeat)
+-webkit-mask-composite (background-composite)
+-webkit-mask-box-image (border-image)
+
+图片缩放保持圆角
+-webkit-mask-image: -webkit-radial-gradient(circle,white,black);
+<div id="wrapper">
+    <div id="box"></div>
+</div>
+<div>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC" alt="" height="100" width="100"> 
+</div>
+<style>
+#wrapper {
+	-position: absolute;
+	width: 200px;
+	height: 200px;
+	overflow: hidden;
+	border-radius: 50%;
+	background-color: #ccc;
+	background-clip: padding-box;
+}
+#box {
+	-position :relative;
+	width: 100%;
+	height: 100%;
+	background-color: #cde;
+	-webkit-transition:all 0.5s ease;
+	transition:all 0.5s ease;
+}
+#box:hover {
+    -webkit-transform:translate3d(100px,0,0);
+    transform:translate3d(100px,0,0);
+}
+#wrapper{
+  -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);/* 用1px*1px 的图片填充*/
+  -webkit-mask-image: -webkit-radial-gradient(circle,white,black); /* 用渐变填充*/
+}
+</style>
+图片filter属性:
+//灰度
+    .father.gray {
+        background:url('img');
+		    filter: gray; 
+        -webkit-filter: grayscale(80%);
+        -moz-filter: grayscale(80%);
+        -ms-filter: grayscale(80%);
+        -o-filter: grayscale(80%);
+        filter: grayscale(80%);
+    }
+    .son.gray {
+        color: gray;
+    }
+
+
+图片模糊
+.blur {    
+    -webkit-filter: blur(10px); /* Chrome, Opera */
+       -moz-filter: blur(10px);
+        -ms-filter: blur(10px);    
+            filter: blur(10px);    
+}
+
+图片变亮效果
+.news-grid img:active, .news-grid img:hover {
+    -webkit-filter: brightness(1.3);
+}
+.news-grid img {
+    width: 100%;
+    transition: box-shadow .2s ease,-webkit-filter .2s ease-out;
+    -webkit-filter: brightness(1);
+}
+
+
+</body>
+</html>
+
+

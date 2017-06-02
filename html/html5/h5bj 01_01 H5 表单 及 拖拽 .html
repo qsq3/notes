@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>标题</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 禁止系统自动添加效果，直接显示设计原图;-->
+    <link rel="apple-touch-icon-precomposed" href="">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="" />
+    <link rel="shortcut icon" href="">
+    
+</head>
+<body>
+ 表单:
+datalist  表单的下拉列表;为input定义下拉列表 和表单相关联  <option></option>或ajax实现
+<input type="text" list='lista'/>
+<datalist id='lista'>
+	<option>A下拉列表<option>
+	<option>B下拉列表<option>
+	<option>C下拉列表<option>
+</datalist>
+新增元素属性:
+	form属性
+	formaction属性
+	form method属性
+	placeholder属性
+	autofocus属性
+	list属性
+	autocomplete属性
+
+<form id="myform" action="action.html">
+	<input type="text" placeholder="生活在一个愉快的坏境！">
+	<input type="submit">
+	<input type="submit" value="我是提交到第二个页面" formaction="action1.html">
+	<input type="submit" value="我是提交到第三个页面" formaction="action2.html">
+	<input type="submit" value="我是提交到第四个页面" formaction="action3.html">
+	<input type="submit" value="我是提交到第五个页面" formaction="action4.html">
+	<input type="submit" value="我是提交到第六个页面" formaction="action5.html">
+</form>
+
+
+//datalist 下拉属性
+<textarea form="myform2"  placeholder="生活在一个愉快的坏境！" autofocus></textarea>
+<form id="myform2">
+		<input type="text" placeholder="生活在一个愉快的坏境！" list="list_test">
+		<datalist id="list_test" style="display:none;">
+			<option  value="我是零曦">零曦</option>
+			<option  value="我是硬撑">硬撑</option>
+			<option  value="超级无敌">超级无敌</option>
+			<option  value="MoonSeo-Cheney-阿‭魏"> MoonSeo-Cheney-阿‭魏</option>
+			<option  value="宇宙第一">宇宙第一</option>
+			<option  value="天上地下">天上地下</option>
+		</datalist>
+</form>
+input元素的种类 required非空 pattern符合正则;
+	
+        input表单type属性值
+        type="text"            单行文本输入框
+        type="password"   密码（maxlength=""）
+        type="radio"          单项选择（checked="checked"）
+        type="checkbox"   多项选择
+        type="button"       按钮
+        type="submit"	     提交
+        type="file"             上传文件
+        type="reset"	     重置
+新增type:
+        type = "email"  限制用户输入必须为Email类型
+        type="url"	      限制用户输入必须为URL类型
+        type="date"      限制用户输入必须为日期类型
+        type="datetime" 显示完整日期 含时区
+        type="datetime-local"  显示完整日期 不含时区
+        type="time"      限制用户输入必须为时间类型
+        type="month"   限制用户输入必须为月类型
+        type="week"     限制用户输入必须为周类型
+        type="number" 限制用户输入必须为数字类型
+        type="range"    生成一个滑动条
+        type="search"  具有搜索意义的表单results="n"属性
+        type="color"     生成一个颜色选择表单
+        type="tel"     显示电话号码
+        <form class="element" action="action3.html" method="post" oninput="output.value = parseInt(tel.value)+ parseInt(text.value)">
+		<input type="text" name='text' placeholder="文本输入" required>
+		<input type="search"   placeholder="搜索">
+		<input type="tel" name='tel'  placeholder="电话">
+		<input type="email"  placeholder="邮件" >
+		<input type="time"   placeholder="时间">time{datetime date month week time datetime-local}
+		<input type="number"  placeholder="数字"  max=101 min=8 step="6"> //step为控制加减幅度
+		<input name="range" type="range" min="0" max="100" step="5"> //滑动条
+		<output name='output' onforminput="value=range.value">5</output> //仅支持oprea10以上
+		<input type="color"   placeholder="颜色"> 
+		<input type="submit">
+		<input type="week"  >
+		<input type="text"  placeholder="文本输入" pattern="[0-9][A-Z]{9}">
+
+	</form>
+新增属性:
+form: 规定输入字段所属的一个或多个表单。 form='id';
+required: required 内容不能为空
+placeholder: 表单提示信息
+autofocus:自动聚焦
+pattern: 正则表达式  输入的内容必须匹配到指定正则范围
+autocomplete:是否保存用户输入值
+	默认为on，关闭提示选择off
+formaction: 在submit里定义提交地址
+datalist: 输入框选择列表配合list使用  list值为datalist的id值
+output: 计算或脚本输出	
+
+表单验证
+	自动验证
+	required属性
+	pattern属性
+	min-max属性
+	step 属性
+	显示验证
+	取消验证
+	自定义错误信息
+
+增强页面元素
+	figure 与 figcaption 元素
+	details元素
+	mark 元素
+	progress元素
+	meter 元素
+	menu与command 元素
+	ol列表
+	dl列表
+	cite
+	small
+
+
+
+
+表单验证反馈:
+Invalid事件 validity对象(valid查看验证是否通过)
+input.addEventListener('invalid',fn,false)
+阻止默认验证：ev.preventDefault()
+formnovalidate属性  :  关闭验证
+    oText.addEventListener("invalid",fn1,false);
+    ev.preventDefault()
+    valueMissing  :  输入值为空时
+    typeMismatch :  控件值与预期类型不匹配
+    patternMismatch  :  输入值不满足pattern正则
+    customError 不符合自定义验证
+    setCustomValidity(); 自定义验证
+    tooLong  :  超过maxLength最大限制
+    rangeUnderflow : 验证的range最小值
+    rangeOverflow：验证的range最大值
+    stepMismatch: 验证range 的当前值 是否符合min、max及step的规则
+
+
+file
+新的表单元素-> output
+<form method="post" oninput="result.value = parseInt(num1.value) + parseInt(num2.value)">
+			a:<input type="number" name="num1" required autocomplete="off"></br>
+			b:<input type="number" name="num2" required autocomplete="off"></br>
+			<output name="result"></output>
+
+
+//表单验证
+<form action="http://www.baidu.com" method="post">
+    <input type="text" required id="text" pattern="/^1\d{10}$/"></br>
+    <input type="submit" value="提交" >
+</form>
+<script>
+    var oText = document.getElementById("text");
+    oText.addEventListener("invalid",fn,false);
+
+    function fn(ev){
+        var ev = ev || window.event;
+        ev.preventDefault()
+        alert(this.validity.patternMismatch);
+    }
+</script>
+
+//自定义验证1
+<form name="test" action="." method="post">
+    <input type="text" required pattern="^\d{4}$" placeholder="请输入代码" id="num" >
+    <button type="submit">Check</button>
+</form>
+<script type="text/javascript">
+var num = document.getElementById("num");
+num.oninput = function(){
+var v = this.validity;
+if(true === v.valueMessing){
+    this.setCustomValidity("请填写些字段");
+}else{
+    if(true === v.patternMismatch){
+        this.setCustomValidity("请输入4位数字的代码");
+    }else{//ev.preventDefault() 不能使用阻止默认
+        this.setCustomValidity("");
+    }
+
+}
+
+}
+
+</script>
+
+//自定义验证2
+<form>
+    <input type="text" id="text" placeholder="请输入用户名:" name="user" ></br>
+    <input type="submit" value="提交" >
+</form>
+<script>
+    var oText = document.getElementById("text");
+    /*oText.addEventListener("invalid",fn,false);*/
+    oText.oninput = function(){
+        if (this.value == "玄武")
+        {	
+            //判断成功显示提示信息，同时阻止提交
+              this.setCustomValidity("123123");
+            //alert(this.setCustomValidity("该用户名已注册"));
+            
+        }else{
+            this.setCustomValidity("");
+        }
+    }
+        
+    
+    function fn(ev){
+        var ev = ev || window.event;
+        //ev.preventDefault() 不能使用阻止默认
+        alert(this.validity.customError);
+    }
+</script>
+
+
+//H5拖拽
+拖放API 
+	拖放步骤
+		拖放事件
+		draggable=“true”
+		dragstart		开始拖放操作
+		drag			拖放过程中
+		dragenter		拖放元素进入本元素范围内
+		dragover		拖放元素正在本元素范围内移动
+		dragleave		拖放元素离开本元素的范围
+		drop			其他元素拖到本元素中
+		dragend               结束
+    DataTransfer 对象
+        dropEffect  表示视觉效果
+        effectAllowed  表示视觉效果
+        types  存入数据的类型
+        void clearData(DOMString format)  清除对象数据
+        void setData(DOMString format、DOMString  data)存入数据
+        DOMString  getData(DOMString format)读取数据
+        void setDragImage(Element image,long x ,long y)自定义 拖放图标
+
+
+        拖放的视觉效果
+        dropEffect     none 不容许被拖放到目标元素中
+        effectAllowed    none 不容许被拖放元素
+
+        自定义拖放图标
+        setDragImage
+        .src
+
+<div id="drag" draggable="true"></div>
+<div id="box"></div>
+<img id="img" src="images/9.jpg" width="50" height="50">
+
+<script>
+    var drag = document.getElementById("drag");
+    var box = document.getElementById("box");
+    var img = document.getElementById("img");
+    //被拖拽元素事件
+    drag.ondragstart = function(ev){//拖拽开始
+        var ev = ev||window.event;
+        ev.dataTransfer.setData("data","轩陌");
+        ev.dataTransfer.effectAllowed = "copyMove";
+        ev.dataTransfer.setDragImage(img,25,25); //自定义拖拽图标;
+        this.style.background = "green";
+    }
+    drag.ondrag = function(){//拖拽过程中
+        this.innerHTML = "被拖拽中...";
+    }
+    drag.ondragend = function(){//拖拽结束
+        this.style.background = "blue";
+        this.innerHTML = "";
+    }
+    //目标元素事件
+    box.ondragenter = function(){//进入目标元素触发
+        this.innerHTML = "可以将文件拖放到这里！！";
+    }
+    box.ondragover = function(ev){//在目标元素上连续触发
+        var ev = ev||window.event;
+        ev.preventDefault();//阻止默认事件
+        this.style.background = "red";
+    }
+    box.ondragleave = function(){//离开目标元素
+        this.innerHTML = "";
+        this.style.background = "none";
+    }
+
+    box.ondrop = function(ev){//在目标元素上面释放鼠标触发
+        //alert("拖拽结束！！");
+        this.innerHTML = ev.dataTransfer.getData("data");
+        var ev = ev||window.event;
+        ev.preventDefault();//阻止默认事件
+        var file = ev.dataTransfer.files;
+        alert(file[0].type);
+    }
+</script>
+
+
+文件api ,FileReader构造函数
+	fileList 对象与 file 对象
+		单文件 和多文件上传
+	blob对象
+		size   文件对象字节
+		type   文件类型
+	fileReader 接口
+		接口方法
+		接口事件
+		 readAsBinaryString   file   二进制码
+		 readAsText   file,[encoding]  文本
+		 readAsDataURL   file    路径
+		abort　　　中断
+
+		事件　
+		onabort 中断		
+		onerror			读取出错
+		onloadstart		读取开始
+		onprogress		读取中
+		onload		读取成功时
+		onloadend   完成时
+
+实例:
+//相册,垃圾回收站
+<div id="box"><span>可以将文件拖放到这里！！</span></div>
+<div id="dustbin">垃圾回收站</div>
+
+<script>
+    var box = document.getElementById("box");
+    var dusTbin = document.getElementById("dustbin");
+    var span = box.getElementsByTagName("span")[0];
+    //目标元素事件
+    var img = '';
+    box.ondragenter = function(){//进入目标元素触发
+        span.style.display = "block";
+    }
+    box.ondragover = function(ev){//在目标元素上连续触发
+        var ev = ev||window.event;
+        ev.preventDefault();//阻止默认事件
+        span.style.display = "block";
+    }
+    box.ondragleave = function(){//离开目标元素
+        span.style.display = "none";
+    }
+    box.ondrop = function(ev){//在目标元素上面释放鼠标触发
+        //alert("拖拽结束！！");
+        var ev = ev||window.event;
+        ev.preventDefault();//阻止默认事件
+        span.style.display = "none";
+        var file = ev.dataTransfer.files;
+        //alert(file[0].type);
+        for (var i=0; i<file.length ;i++ )
+        {
+            if (file[i].type.indexOf("image")!=-1)
+            {
+                var read = new FileReader();//新建一个读取文件对象
+                read.readAsDataURL(file[i]);//读取文件
+                read.onload = function(){//读取文件成功之后调用什么函数
+                    var img = document.createElement("img");
+                    //alert(this.result);
+                    img.src = this.result;
+                    box.appendChild(img);
+                    //获取img节点 实现删除功能
+                    var oImg = document.getElementsByTagName("img");
+                    if (oImg)
+                    {
+                        for (var j=0;j<oImg.length ;j++ )
+                        {
+                            oImg[j].ondragstart = function(ev){
+                                ev.dataTransfer.setData("data",ev.target.innerHTML);
+                                img = ev.target;
+                            }
+                            oImg[j].ondragend = function(ev){
+                                ev.dataTransfer.clearData("data");//清除数据
+                                img = null;
+                            }
+                        }
+
+                    }
+                    //实现删除功能(移除img节点)
+                    dusTbin.ondragover = function(ev){
+                        ev.preventDefault();
+                    }
+                    dusTbin.ondrop = function(){
+                        if (img)
+                        {
+                            img.parentNode.removeChild(img);
+                        }
+                    }
+                }
+            }else{
+                alert("请上传图片！");
+            }
+            
+        }
+        
+    }
+</script>
+
+
+
+
+
+
+
+
+<!-- 下面是上传文件部分 -->
+<!-- blob对象 -->
+在 HTML 文档中 <input type="file"> 标签每出现一次，一个 FileUpload 对象就会被创建。
+该元素包含一个文本输入字段，用来输入文件名，还有一个按钮，用来打开文件选择对话框以便图形化选择文件。
+该元素的 value 属性保存了用户指定的文件的名称，但是当包含一个 file-upload 元素的表单被提交的时候，浏览器会向服务器发送选中的文件的内容而不仅仅是发送文件名。
+当用户选择或编辑一个文件名，file-upload 元素触发 onchange 事件句柄。
+
+(在IE8 中 无效， this.files 无法读取文件。这个属于html5 的特性)
+
+当选择了一个文件时，就会把包含这个文件的列表（一个FileList对象）作为参数传给handleFiles()函数了。
+这个FileList对象类似一个数组，可以知道文件的数目，而它的元素就是File对象了。
+从这个File对象可以获取name、size、lastModifiedDate和type等属性。
+把这个File对象传给FileReader对象的读取方法，就能读取文件了。
+Blob 是什么？ 这里说的是一种JavaScript的对象类型。
+oracle 中也有类似的栏位类型。
+在 
+
+[JS进阶] HTML5 之文件操作(file)
+这一篇中用到了File对象，而实际上 file 对象只是 blob 对象的一个更具体的版本，blob 存储着大量的二进制数据，并且 blob 的 size 和 type 属性，都会被 file 对象所继承。
+所以， 在大多数情况下，blob 对象和 file 对象可以用在同一个地方，例如，可以使用 FileReader 借口从 blob 读取数据，也可以使用 URL.createObjectURL() 从 blob 创建一个新的 URL 对象。
+<script>
+//document.getElementById("file").files 返回fileList 列表对象  
+    function showF(){
+        //document.getElementById("file").onclick();  保留问题
+        //怎么样才可以模拟上传
+         var file;
+         for(var i=0;i<document.getElementById("file").files.length;i++){
+            file = document.getElementById("file").files[i];
+            //alert(file.lastModifiedDate); //上传时间
+            alert(file.name);
+         }
+    }
+
+    function showT(){
+         var file;
+         file = document.getElementById("file2").files[0];
+         var size = document.getElementById("size");
+         var type = document.getElementById("type");
+            size.innerHTML  = file.size;
+            type.innerHTML  = file.type;
+    }
+
+    function showU(){
+         var file;
+         for(var i=0;i<document.getElementById("file3").files.length;i++){
+            file = document.getElementById("file3").files[i];
+                if (!/image\/\w+/.test(file.type))
+                {
+                    alert("分手快乐:  文件不是我喜欢的类型我只要图片");
+                    break;
+                }else{
+                    alert("情人快乐： 就是图片");
+                }
+         }
+    }
+</script>
+
+
+  <!--多文件上传 multiple  -->
+<form id="textform">
+    <input type="file" id="file" multiple />
+    <input type="button" value="文件上传"  onclick="showF()"/>
+</form>
+    <br/> <!--上传文件的字节和类型 -->
+<form id="text2form">
+    <input type="file" id="file2" />
+    <input type="button" value="显示文件信息"  onclick="showT()"/>
+    <br/>
+    文件字节长度 <span id="size"></span> <br/>
+    文件类型 <span id="type"></span>
+</form>
+
+    <br/> <!--是否是图片是图片就上传 -->
+     <!--默认显示图片类型 -->
+<form id="text3form">
+    <input type="file" id="file3" multiple  accept="image/*"/>
+    <input type="button" value="显示文件信息"  onclick="showU()"/>
+</form>
+	
+<!-- 下面是读取上传文件的接口部分 fileReader接口,IE8-不支持-->
+	 <script>
+		//将文件以Data URL形式进行读入页面
+		function dataURL(){
+			var file = document.getElementById("file").files[0];
+			//alert(file);
+			if (!/image\/\w+/.test(file.type))
+            {
+                alert("分手快乐:  文件不是我喜欢的类型我只要图片");
+                return false;
+            }else{
+                var reader =new FileReader();
+                //将文件以Data URL形式进行读入页面
+                reader.readAsDataURL(file);
+                reader.onload = function(e){
+                    var result=document.getElementById("result");
+                    result.innerHTML = '<img src="'+this.result+'" alt="?" />';
+                }
+            }
+		}
+
+		//将文件以文本形式进行读入页面,默认格式utf-8
+		function sText(){
+			var file = document.getElementById("file").files[0];
+			var reader =new FileReader();
+			reader.readAsText(file);
+			reader.onload = function(){
+				var result=document.getElementById("result");
+				result.innerHTML = this.result;
+			}
+		}
+
+		//将文件以二进制形式进行读入页面
+		function binaryString(){
+			var file = document.getElementById("file").files[0];
+			var reader =new FileReader();
+			reader.readAsBinaryString(file);
+			reader.onload = function(){
+				var result=document.getElementById("result");
+				result.innerHTML = this.result;
+			}
+		}
+		//abort　　　中断
+	</script>
+
+	<form id="textform">
+			<input type="file" id="file"  />
+			<input type="button" value="读取图像"  onclick="dataURL()"/>
+			<input type="button" value="读取二进制数据"  onclick="binaryString()"/>
+			<input type="button" value="读取文本文件"  onclick="sText()"/>
+	</form>
+	<!--结果 -->
+	<div id="result"></div>
+
+
+
+
+
+<!-- 零曦的实例 
+	 <script>
+		function init(){
+			var source = document.getElementById("dragimg");
+			var dest = document.getElementById("drag");
+			var dragIco = document.createElement('img');
+			//设定图的来源
+			dragIco.src="xi.ico";
+			//(1) 拖放开始
+			source.addEventListener("dragstart",function(ev){
+				//向dataTransfer 对象添加数据
+				var dt = ev.dataTransfer;
+				//与第一个不相同的地方
+				dt.effectAllowedb = 'copy';
+				//(2) 拖动元素为dt.setData("text/plain", this.id); 
+				//自定义图片  图片 X  Y
+				dt.setDragImage(dragIco, 0 ,0);
+				dt.setData("text/plain","十月十日 ， 卖萌日");
+			},false);
+			//(3)拖放结束
+			dest.addEventListener("dragend",function(ev){
+				//不执行  默认处理
+				ev.preventDefault();
+			},false);
+			//(4) 进入元素   被拖放
+			//与第一个不相同的地方
+			dest.addEventListener("dragenter",function(ev){
+				// 从DataTransfer对象那里取得数据
+				var dt = ev.dataTransfer;
+				dt.dropEffect = 'copy';
+				var text = dt.getData("text/plain");
+				dest.textContent += text;
+				//(5) 不执行 默认处理
+				ev.preventDefault();
+				//停止 事件
+				ev.stopPropagation();
+			},false);
+		}
+	//(6) 设置页面属性，不执行默认处理（拒绝被拖放）
+    document.ondragover = function(e){e.preventDefault();};
+    document.ondrop = function(e){e.preventDefault();};
+    </script>
+
+    <div onload="init()" class="box">
+        <p draggable="true" id="dragimg">赶紧的，你想做什么？</p>
+        <img src="2.gif" />
+        <img src="1.gif" />
+    </div>
+    <div class="box_d" >
+        <div class="drop" id="drag"></div>
+        <div class="drop" ></div>
+        <div class="drop" ></div>
+    </div>
+    -->
+ </body>
+</html>

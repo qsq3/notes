@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 优先使用最新版本的IE 和 Chrome 内核 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>10. Canvas</title>
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta name="author" content="空山, 112093112@qq.com">
+
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+
+    <!-- iOS 图标
+    apple-touch-icon 图片自动处理成圆角和高光等效果;
+    apple-touch-icon-precomposed 禁止系统自动添加效果，直接显示设计原图;-->
+    <link rel="apple-touch-icon-precomposed" href="">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="" />
+    <link rel="shortcut icon" href="">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.4.css" />
+    <script type="text/javascript" src="js/baseUtil.js"></script>
+    <style type="text/css">
+      pre{
+        white-space : pre-wrap;
+      }
+    </style>
+</head>
+<body class="container">
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      优化要点
+    </div>
+  </div>
+  <div class="panel-body">
+    <pre>
+      将渲染阶段的开销转嫁到计算阶段之上。
+      使用多个分层的 Canvas 绘制复杂场景。
+      不要频繁设置绘图上下文的 font 属性。
+      不在动画中使用 putImageData 方法。
+      通过计算和判断，避免无谓的绘制操作。
+      将固定的内容预先绘制在离屏 Canvas 上以提高性能。
+      使用 Worker 和拆分任务的方法避免复杂算法阻塞动画运行。
+    </pre>
+  </div>
+  <div class="panel-footer"></div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <code>canvas</code> 基础
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-6">
+        <pre>
+  画布默认宽度300px，默认高度 150px
+  宽高要设置为canvas标签的属性,如果设置在css上, 会导致拉伸变形
+  
+  设置绘图环境
+    getContent("2d"); 目前支持2d绘图环境
+
+  设置绘图路径:
+    beginPath():开始路径
+    closePath():结束路径
+    save():保存路径,即保存绘图的配置 , 保存过后,只有恢复后才能再次保存,相当于另外开辟了一个绘制层
+    restore():恢复路径
+  
+  绘制线段和填充
+    stroke(): 绘制线段  默认为黑色
+    fill(): 填充方法 
+
+  绘制矩形(缩写)：
+    fillRect(x,y,w,h)   填充实心矩形
+    strokeRect(x,y,w,h)  绘制空心矩形
+    clearRect(x,y,w,h)  清除矩形选区
+    
+  设置线段路径:
+    moveTo(x,y):将触笔移动到x,y点(初始化)
+    lineTo(x,y):绘制到x,y点
+
+  设置矩形路径
+    rect(x,y,w,h): 设置矩形路径
+
+  设置圆形路径：
+    arc(x,y,r,起始弧度,终点弧度,false)
+      x,y  圆心坐标位置
+      r 圆半径 
+      弧度: 从0度到360度,绘制一个圆形,需换算为(弧度 = 2*Math.PI*角度/360),0度为水平x轴;
+      true/false  逆时针/顺时针绘图
+  
+  设置曲线路径
+    arcTo(x1,y1,x2,y2,r)
+        x1,y1 坐标一  x2,y2坐标二   r圆弧半斤
+    quadraticCurveTo(dx,dy,x1,y1)
+        二次方曲线:dx,dy控制点  x1,y1结束坐标
+    bezierCurveTo(dx1,dy1,dx2,dy2,x1,y1)
+        贝塞尔曲线:dx1,dy1 控制点一 dx2,dy2控制点二 
+            x1,y1结束坐标
+
+  设置绘图样式：
+    fillStyle: 填充颜色
+    strokeStyle: 触笔颜色
+    lineWidth: 触笔宽度(线宽)
+
+  设置边界样式：
+    lineJoin : 连接点样式
+        miter(默认值),round(圆角),bevel(斜角)
+    lineCap: 端点样式
+        butt(默认值),round(圆角),square(高度多出线宽一半);
+
+  canvas变换
+    translate(x,y) 坐标基准点偏移 : 从起始点为基准，移动到当前位置
+    rotate(弧度) 弧度公式: 2*Math.PI*角度/360, 以画布的坐标基准点为基准
+    scale(wb,hb) 缩放比例
+
+  矩阵变换
+    矩阵变换的 API 和 css3 动画中的没啥区别：
+    ctx.setTransform(a, b, c, d, e, f);
+    最常使用的是用来进行坐标还原。因为，它每一次变换都是覆盖掉上一次变化，所以，还原坐标常使用：
+    ctx.setTransform(1,0,0,1,0,0);
+
+    ctx.transform(a, b, c, d, e, f); 
+    该 API 和 setTransform 有些不同。setTransform 相当于重置，而 transform 会基于前一个变换结果，接着进行变换。它的使用方式和 setTransform 差不多。
+
+    resetTransform
+    相当于就是 setTransform(1,0,0,1,0,0)的封装。
+  
+  颜色渐变
+	线性渐变:createLinearGradient(x1,y1,x2,y2)
+		x1,y1起始坐标点
+		x2,y2结束坐标点
+	径向渐变:createRadialGradient(x1,y1,r1,x2,y2,r2)
+		x1,y1,r1内圆坐标及半径
+		x2,y2,r2外圆坐标及半径
+	addColorStop(位置,颜色)
+		位置:渐变点  0-1之间 可多个
+
+  绘制文本
+    strokeText(text, x, y [, maxWidth]);;  绘制空心文本
+    fillText(text,x,y); 绘制实心文本
+    font = "font-size  font-family" 注:尺寸 字体缺一不可
+    textAlign = "";文本左右对齐方式 
+      start center end  left right
+    textBaseline文本上下对齐方式 
+      alphabetic	默认。文本基线是普通的字母基线。
+      top	文本基线是 em 方框的顶端。。
+      hanging	文本基线是悬挂基线。
+      middle	文本基线是 em 方框的正中。
+      ideographic	文本基线是表意基线。
+      bottom	文本基线是 em 方框的底端。
+    measureText(文本).width; 获取文本实际宽度(只有宽度值)
+  
+  阴影
+    shadowOffsetX,shadowOffsetY    x轴、y轴偏移
+    shadowBlur    阴影模糊度
+    shadowColor  阴影颜色
+    默认颜色:rgba(0,0,0,0)
+
+  裁剪
+    clip 从画布中裁剪区域,然后绘制。只有被剪切区域内是可见的;
+    // 最常用
+    void ctx.clip();
+    // fillRule 主要有两种，下面再解释
+    void ctx.clip(fillRule);
+    // 这里就是将需要画的路径，当参数传到 clip 里
+    void ctx.clip(path, fillRule);
+    fillRule： 常用的 fillRule 有两种，一种是 nonzero，一种是 even-odd 。主要作用就是用来判断重叠区域是否属于裁剪区域。
+
+        </pre>
+      </div>
+
+      <div class="col-sm-6">
+        <canvas id="demo-01" width="500" height="1300"> 
+          您的浏览器不支持canvas,请您更换最新版本的浏览器！
+        </canvas>
+      </div>
+
+      <style>
+        /* 可设置 display: block 来调整canvas的样式*/
+        #canvas1{
+          background-color: #ccc;
+          display: block;
+          margin : 0;
+        }
+      </style>
+
+      <script type="text/javascript">
+      ;(function(){
+        var canvas = document.getElementById("demo-01");
+        canvas.height = canvas.parentNode.previousSibling.previousSibling.children[0].clientHeight;
+        var context = canvas.getContext("2d");//2d渲染环境
+
+        //设置样式
+        context.strokeStyle = "#03f"; //设置线条颜色
+        context.lineWidth = 10; //设置线条宽度,以中心为基点,两边各绘5px; 注意 设置为1会为2px, 因为两边不识别0.5,最小1
+        context.fillStyle = "#3c3"; //设置填充颜色
+        
+        //绘制矩形
+        context.beginPath(); //开始设置路径
+          //第一种矩形画法, 线条+填充
+        context.rect(50,50,100,100);//设置矩形路径：x,y,w,h
+        context.stroke();// 按照路径绘制线条,
+        context.fill();// 按照路径进行填充
+          //第二种矩形画法, 线条+填充,缩写
+          //后面绘制会覆盖之前的
+        context.strokeRect(100,100,100,100);//触笔方法绘制空心矩形,缩写
+        context.fillRect(100,100,100,100);//填充方法绘制实心矩形,缩写
+        //context.clearRect(0,0,canvas.width,canvas.height);//清除画布内容
+        //context.closePath()//结束路径
+
+        //绘制多边形,线段:
+        context.beginPath(); //开始设置路径
+        context.moveTo(200,50) //设置绘制起点 x,y
+        context.lineTo(250,136) //设置绘制终点(线条) x,y
+        context.lineTo(300,50) //设置第二个终点
+        //context.lineTo(200,50) //设置第三个终点,终点不完全闭合的三角形;
+        context.closePath()///自动闭合路径,完美三角形;
+        context.strokeStyle = '#f60';
+        context.lineWidth = 10;
+        context.fillStyle = "#006"; 
+        context.stroke(); //绘制边
+        context.fill();// 填充
+        
+        //设置端点和连接点
+        context.beginPath(); 
+        context.moveTo(350,50) 
+        context.lineTo(400,136) 
+        context.lineTo(450,50) 
+        context.lineJoin = "bevel";// 线段连接点样式 miter(默认值),round(圆角,直径为线宽),bevel(斜角,切除角尖)
+        context.lineCap = "round";// 线段端点样式, 会被closePath无效化; butt(默认值),round(圆角,直径为线宽),square(高度多出线宽一半);
+        context.stroke(); //绘制边
+        context.fill();
+
+        //绘制圆形
+        context.strokeStyle = '#f06';
+        context.fillStyle = '#369';
+        context.beginPath();
+        context.arc(100,300,50,0,2*Math.PI,false)//一个整圆;
+        context.closePath()///闭合路径;
+        context.stroke() //描边
+        context.fill()//填充
+        
+        //绘制圆弧
+        context.beginPath();
+        context.arc(200,300,50, 2*Math.PI*(-90)/360, 2*Math.PI*0/360,false)//一个90度弧度;
+        context.lineTo(200,300) 
+        context.closePath()///闭合路径;
+        context.stroke() //描边
+        context.fill()//填充
+
+        //变换 translate 坐标基准点偏移
+        context.save();
+        context.translate(400,300); //从起始点为基准，移动到当前位置
+        context.scale(1.8,0.8); //缩放
+        context.rotate(2*Math.PI*90/360); //旋转
+        context.beginPath();
+        context.moveTo(0,0); //这里会从起始点连接到圆弧
+        context.arc(0,0,50,0,6,false);
+        //context.closePath();
+        context.stroke();
+        context.restore(); //复原到上一个save的位置
+
+		    context.save();
+        //绘制线性渐变
+        var bgColor = context.createLinearGradient(0,400,200,500);//注意,这里是x1,y1,x2,y2
+        bgColor.addColorStop(0,"blue");
+        bgColor.addColorStop(0.5,"orange");
+        bgColor.addColorStop(1,"red");
+        context.fillStyle = bgColor;
+        context.fillRect(0,400,200,100);//注意,这里是x1,y1,w,h
+        
+        //绘制径向渐变: 椭圆
+        var x = 375, y =480, a = 110, b = 80;
+        var r = (a > b) ? a : b;
+        var ratioX = a / r;
+        var ratioY = b / r;
+
+        bgColor = context.createRadialGradient(x,y,0,x,y,100);
+        bgColor.addColorStop(0,"blue");
+        bgColor.addColorStop(0.5,"orange");
+        bgColor.addColorStop(1,"red");
+        context.fillStyle = bgColor;
+
+        context.strokeStyle = '#0f6';
+        context.save();
+        context.scale(ratioX, ratioY);
+        context.beginPath();
+        context.arc(x / ratioX, y / ratioY, r, 0, 2 * Math.PI, false);
+        context.closePath();
+        context.restore();
+        context.stroke();
+        context.fill();
+        //context.arc(375,500,100,0,2*Math.PI,false);
+		    
+        //曲线 x0,y0为起点, x2,y2为终点, x1,y1为控制点;
+        var x1 = x0 = 10,
+            y0 = 550,
+            y2 = y1 = y0-30,
+            x2 = 50,
+            r = 50;
+        //圆弧曲线
+        context.strokeStyle = '#f60';
+        context.lineWidth = 10;
+        context.beginPath();
+        //以x1,y1为基点, 分别向x0,y0, x2,y2做两条切线,取经过这两条切线,并且以r为半径的圆弧,并且连接到x0,y0
+        context.moveTo(x0,y0); 
+        context.arcTo(x1,y1,x2,y2,r); 
+        //context.closePath();
+        context.stroke();
+        //context.fill();
+
+        for(var i = 0; i<=2; i++){
+          context.beginPath();
+          context.strokeStyle = '#f0'+''+(i*4);
+          context.moveTo(eval('x'+i),eval('y'+i)); 
+          context.lineTo(eval('x'+i),eval('y'+i));
+          context.closePath();
+          context.stroke();
+        }
+        
+        //二次方曲线
+        r = 60;
+        context.strokeStyle = '#f60';
+        context.beginPath();
+        context.moveTo(x0+r,y0);
+        context.quadraticCurveTo(x1+r,y1,x2+r,y2)
+        context.stroke();
+        
+        //贝塞尔曲线,两个控制点,可拉出S线
+        context.strokeStyle = '#f60';
+        context.beginPath();
+        context.moveTo(x0+r*2,y0);
+        context.bezierCurveTo(x0+r*3,y0,x1+r,y1,x2+r*2,y2);
+        context.stroke();
+        
+
+        //绘制文本,阴影
+        context.strokeStyle = '#60f';
+        context.fillStyle = '#f60';
+        context.font = "bold 24px 微软雅黑";
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 0;
+        context.shadowBlur = 5;
+        context.shadowColor = "#6F0";
+        //两种居中办法
+        var w = context.measureText("绘制实心文本").width;//读取文本宽度
+        context.fillText("绘制实心文本",(canvas.width-w)/2,600);
+        
+        context.textAlign = "center";
+        context.textBaseline = "top"; 
+        context.lineWidth = 0.7;
+        context.strokeText("绘制空心文本,需设置lineWidth",canvas.width/2,620);
+        context.shadowBlur = 0;
+
+
+        //绘制时钟
+        context.translate(canvas.width/2,canvas.height-210); //下一次转移基准点, 是以之前转移的基准点为基准, 而不是默认的画布左上角
+        
+        function clock () {
+          context.clearRect(-250,-250,500,500); //清除画布,防止重叠
+          //画圆
+          context.strokeStyle = "pink";
+          context.fillStyle = "#fff";
+          context.lineWidth = 10; 
+          context.beginPath();
+          context.arc(0,0,200,0,2*Math.PI,false);
+          context.closePath();
+          context.stroke();
+          
+          //画刻度
+          function drawScale(scaleWidth,scaleHeight,size) {
+            context.lineWidth = scaleWidth; 
+            
+            /* 方法一 start
+            //刻度
+            for (var i = 0; i < size; i ++) {
+              context.beginPath();
+              context.arc(0,0,195,2*Math.PI*i/size,2*Math.PI*(i+1)/size,false);
+              context.lineTo(0,0); 
+              context.closePath();
+              context.stroke();
+            }
+            //覆盖
+            context.beginPath();
+            context.arc(0,0,195-scaleHeight,0,2*Math.PI,false);
+            context.closePath();
+            context.fill();
+            /* 方法一 end */
+
+            /* 方法二 start */
+            context.save();
+            for (var i = 0; i < size; i ++) {
+              context.rotate(2*Math.PI/size);
+              context.beginPath();
+              context.moveTo(0,200-scaleHeight);
+              context.lineTo(0,200-8);
+              context.closePath();
+              context.stroke();
+            }
+            context.restore();
+            /* 方法二 end */
+
+          }
+
+          context.strokeStyle = "#f68";
+          //分刻度
+          drawScale(4,14,60);
+          //时刻度
+          drawScale(10,22,12);
+          
+          //画指针
+          function pointer(angel, len, lineWidth, strokeStyle,pointerType){
+            context.lineWidth = lineWidth;
+            context.strokeStyle = strokeStyle;  
+            
+            //方法一
+            /*
+            context.beginPath();
+            context.moveTo(0,0);
+            var x= len * Math.sin(angel);
+            var y= -len * Math.cos(angel);
+            context.lineTo(x,y); 
+            context.closePath();
+            context.stroke();
+            */
+
+            /* 方法二 start
+            
+            angel -= Math.PI/2;
+            context.beginPath();
+            context.moveTo(0,0);
+            context.arc(0,0,len,angel,angel,false);
+            context.closePath();
+            context.stroke();
+
+            context.beginPath();
+            context.moveTo(0,0);
+            context.arc(0, 0,len/8,angel+Math.PI,angel+Math.PI,false);
+            context.closePath();
+            context.stroke();
+			
+            if(pointerType ==="s"){
+                context.fillStyle = "#ccc";
+                context.beginPath();
+			          context.arc(0, 0,6,0,2*Math.PI,false);
+                context.closePath();
+                context.fill();
+                context.stroke();
+                
+                angel += Math.PI/2;
+                context.beginPath();
+			          context.arc((len-20) * Math.sin(angel),-(len-20) * Math.cos(angel),6,0,2*Math.PI,false);
+                context.closePath();
+                context.fill();
+                context.stroke();
+            }
+            /* 方法二 end*/
+
+            /*方法三 start*/
+            context.save();
+            context.rotate(angel);
+            context.beginPath();
+            context.moveTo(0,len/8);
+            context.lineTo(0,-len);
+            context.closePath();
+            context.stroke();
+
+            if(pointerType ==="s"){
+                context.fillStyle = "#ccc";
+                context.beginPath();
+			          context.arc(0, 0,6,0,2*Math.PI,false);
+                context.closePath();
+                context.fill();
+                context.stroke();
+                context.beginPath();
+			          context.arc( 0 ,-len+20,6,0,2*Math.PI,false);
+                context.closePath();
+                context.fill();
+                context.stroke();
+            }
+
+            context.restore();
+            /*方法三 end*/
+
+          }
+        
+          
+          var h = new Date().getHours();
+          var m = new Date().getMinutes();
+          var s = new Date().getSeconds();
+          var angel;
+          context.lineCap = "round";
+          //时针
+          angel = 2*Math.PI*((h+m/60)/12);
+          pointer(angel, 120, 10, "#369");
+          //分针
+          angel = 2*Math.PI*((m+s/60)/60);
+          pointer(angel, 145, 6, "#639");
+          //秒针
+          angel = 2*Math.PI*((s)/60);
+          pointer(angel, 170, 2, "#f06","s");
+
+          //画中心
+		  /*
+          context.fillStyle = "#06f";
+          context.beginPath();
+          context.arc(0,0,10,0,2*Math.PI,false);
+          context.closePath();
+          context.fill();
+		  */
+        }
+
+        clock();
+        setInterval(clock,1000);
+      })();
+      </script>
+
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      图片绘制
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      
+      <div class="col-sm-6">
+        <pre>
+  绘制图片 (需同源)
+  drawImage(img, x, y); //简单的 3 个参数，就用来确定图片在 canvas 上的位置，不进行任何缩放
+  drawImage(img, x, y, w, h); // 通过, w 和 h 来确定在 canvas 中绘制的大小，可以放大和缩小。
+  drawImage(img,[ix,iy,iw,ih,] x,y [,w,h]) : 剪切图片并绘制 (图片,[剪切坐标x,剪切坐标y,剪切宽,剪切高,] 绘制坐标x,绘制坐标y [,绘制宽度,绘制高度])
+
+  设置背景
+  createPattern(img,平铺方式) 平铺方式:repeat,repeat-x,repeat-y,no-repeat
+  
+  像素处理
+  createImageData(sx,sy)
+    创建新的、空白的 ImageData 对象
+  getImageData(x1,y1,w,h)
+    返回 ImageData 对象，该对象为画布上指定的矩形复制像素数据  
+  putImageData(img,x2,y2)
+    把图像数据（从指定的 ImageData 对象）放回画布上
+
+  Canvas.toDataURL 图片跨域问题: 在将页面的图片地址进行本地输出时（Html2Canvas.js），因不同源存在跨域问题，会出现toDataURL访问权限问题：
+  解决方案： 图片预加载: 获取图片文件 onload中调用
+  根据错误分析需要在控制头增加“Access-Control-Allow-Origin”，即允许访问源文件权限，那么我们对这个页面【注意是要输出页面的图片】这样处理：
+    var img = new Image;
+    img.src = 'http://myurl.com/....';
+    //img.crossOrigin = 'anonymous';  //可选值：anonymous，*   此处存疑,设置此项反而报错   
+    //或者是HTML中 : <img src="" id="imgclcd" crossorigin="anonymous">
+    img.onload = myLoader;
+
+    核心是请求头中包含了 Origin: "anonymous"或"*" 字段，响应头中就会附加上 Access-Control-Allow-Origin: * 字段，问题解决。
+
+        </pre>
+        <!--< img src="../../img/1.jpg" alt="" id="demo-02-img" style="display:none"> -->
+      </div>
+      
+      <div class="col-sm-6">
+        <canvas width="500" height="450" id="demo-02">
+          您的浏览器不支持canvas,请您更换最新版本的浏览器！
+        </canvas>
+      </div>
+
+    </div>
+  </div>
+  
+  <style type="text/css">
+    img{
+      max-width: 100%;
+    }
+  </style>
+
+  <script type="text/javascript">
+  ;(function(){
+    var canvas = document.getElementById("demo-02");
+    //canvas.height = canvas.parentNode.previousSibling.previousSibling.children[0].clientHeight;
+    var context = canvas.getContext("2d");
+    //var img = document.getElementById("demo-02-img");
+    var img = new Image();
+    //img.crossOrigin = '*';  //可选值：anonymous，*      
+    img.width = 200;
+    img.height = 200;
+    img.src = 'img/1.jpg'; //注意,firefox不能解决 ../ 的相对路径跨域;
+    /*
+      complete 判断是否加载完成 (加载完成返回true)
+      onerror  图片加载失败时候调用
+      onload   图片加载完成时候调用
+      readyState == "complete"
+      readyState == "loading"
+    */
+    //if( img.complete || img.readyState == "complete"){...}
+    img.onload = function(){
+      
+      context.clearRect(0,0,canvas.width,canvas.height);//清除画布内容
+      
+      //绘制图片
+      context.drawImage(img,0,0,200, 200);
+
+      //绘制背景
+      
+      var bgImg = context.createPattern(img,'repeat');//设置背景图片
+      context.fillStyle = bgImg;
+      context.save();
+      context.beginPath();
+      context.translate(275,0); 
+      context.arc(100,100,100,0,2*Math.PI,false);
+      context.scale(0.3, 0.4);
+      context.closePath();
+      context.fill();
+      context.restore();
+      //console.log(canvas.toDataURL(canvas));
+
+      
+      //像素获取, 4个值为一组, r g b a;
+      function getData(obj,x,y){//一行一列来获取具体某个坐标点的像素值
+        var w = obj.width;
+        var d = obj.data;
+        var color = [];
+        color[0] = d[4*(w*y+x)];
+        color[1] = d[4*(w*y+x)+1];
+        color[2] = d[4*(w*y+x)+2];
+        color[3] = d[4*(w*y+x)+3];
+        return color;
+      }
+
+      //像素处理, 4个值为一组
+      function setData(obj,x,y,color){
+        var w = obj.width;
+        var d = obj.data;
+        d[4*(w*y+x)] = color[0];
+        d[4*(w*y+x)+1] = color[1];
+        d[4*(w*y+x)+2] = color[2];
+        d[4*(w*y+x)+3] = color[3];
+      }
+
+      var copyData = context.getImageData(0,0,200, 200);
+      //马赛克
+      var newData = context.createImageData(200,200);
+      var n = 10;//模糊值
+      for(var i=0; i<copyData.height;i+=n){
+        for(var j=0; j<copyData.width;j+=n){
+          var color = getData(copyData,j+Math.floor(Math.random()*n),i+Math.floor(Math.random()*n));
+          for(var k=0; k<n;k++){
+            for(var l=0; l<n;l++){
+              setData(newData,j+l,i+k,color);
+            }
+          }
+        }
+      };
+      context.clearRect(250, 210,200,200);
+      context.putImageData(newData, 250, 210);
+
+
+      //亮化
+      var d = 5; //亮度
+      function drawCopy(){
+        [].forEach.call(copyData.data,function(value,index){
+          value = value+d*20;
+          (index+1)%4 && (copyData.data[index] = value >255 ? 255: value);
+        });
+        context.beginPath();
+        context.clearRect(0, 210,200,200);
+        context.putImageData(copyData, 0, 210);
+        context.closePath();
+      }
+      drawCopy();
+      //console.log(newData.data);//copyData.data本身只读, 只能写其内部属性值
+
+
+      var offset = getOffset(canvas);
+      // document.onscroll = function(){
+      //   console.log(document.documentElement.scrollTop)
+      // }
+
+      context.lineJoin = "round";
+      context.lineCap = 'round';
+      context.lineWidth = 20;
+      
+      canvas.onmousedown = function(e){
+        e = e || window.event;
+        var x = e.pageX  - offset.left;
+        var y = e.pageY - offset.top;
+        context.beginPath();
+        context.moveTo(x,y);
+        context.arc(x,y,10,0,2*Math.PI,false);
+        context.fill();
+
+        canvas.onmousemove = function(e){
+          x = e.pageX  - offset.left;
+          y = e.pageY - offset.top;
+          context.lineTo(x,y);
+          context.strokeStyle = bgImg;
+          context.stroke();
+        }
+        document.onmouseup = function(){
+          canvas.onmousemove = null;
+        }
+        if (context.isPointInPath(x,y)){
+          n = 5;
+          drawMask();
+          drawCopy();
+        }
+      }
+    }
+
+  })();
+  </script>
+  
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      
+      <div class="col-sm-6">
+        <pre>
+  合成
+  globalAlpha  设置或返回绘图的当前 alpha 或透明值
+  globalCompositeOperation 设置或返回新图像如何绘制到已有的图像上
+    source-over 默认。在目标图像上显示源图像。
+    source-atop 在目标图像顶部显示源图像。源图像位于目标图像之外的部分是不可见的。
+    source-in 在目标图像中显示源图像。只有目标图像内的源图像部分会显示，目标图像是透明的。
+    source-out  在目标图像之外显示源图像。只会显示目标图像之外源图像部分，目标图像是透明的。
+    destination-over 在源图像上方显示目标图像。
+    destination-atop 在源图像顶部显示目标图像。源图像之外的目标图像部分不会被显示。
+    destination-in 在源图像中显示目标图像。只有源图像内的目标图像部分会被显示，源图像是透明的。
+    destination-out 在源图像外显示目标图像。只有源图像外的目标图像部分会被显示，源图像是透明的。
+    lighter 显示源图像 + 目标图像。
+    copy 显示源图像。忽略目标图像。
+    xor 使用异或操作对源图像与目标图像进行组合。
+
+  将画布导出为图片
+  火狐、谷歌浏览器右键菜单可直接导出为图片
+  canvas.toDataURL
+  事件  
+    isPointInPath(x,y) 
+    如果指定的点位于当前路径中，返回布尔值
+    只能判断最后绘制出来的图片
+        </pre>
+      </div>
+      <div class="col-sm-6">
+        <form id="demo-03-01">
+          <label>globalCompositeOperation options:</label>
+          <select name="select">
+            <option selected>source-over</option>
+            <option>source-atop</option>
+            <option>source-in</option>
+            <option>source-out</option>
+            <option>destination-over</option>
+            <option>destination-atop</option>
+            <option>destination-in</option>
+            <option>destination-out</option>
+            <option>lighter</option>
+            <option>copy</option>
+            <option>xor</option>
+          </select>
+        </form>
+        <canvas width="220" height="200" id="demo-03">
+          您的浏览器不支持canvas,请您更换最新版本的浏览器！
+        </canvas>
+      </div>
+    </div>
+  </div>
+  <style type="text/css">
+    img{
+      vertical-align: baseline;
+    }
+  </style>
+  <div class="panel-footer"></div>
+  <script type="text/javascript">
+    ;(function(){
+      var canvas = document.getElementById("demo-03");
+      //canvas.height = canvas.parentNode.previousSibling.previousSibling.children[0].clientHeight;
+      var context = canvas.getContext("2d");
+      var oForm = document.getElementById("demo-03-01");
+
+      //合成
+      function drawGlobalCompositeOperation () {
+        context.clearRect(0,0,200,200);
+
+        context.fillStyle = "red";
+        context.beginPath();
+        context.fillRect(10, 10, 100,100);
+
+        //透明度
+        context.save();
+        context.fillStyle = "green";
+        context.globalAlpha = 0.5;
+        context.fillRect(60, 10, 100,100);
+        context.restore();
+
+        context.save();
+        context.fillStyle = "blue";
+        context.globalCompositeOperation = oForm.select.value;
+        context.fillRect(10, 60, 100,100);
+        context.restore();
+      }
+      drawGlobalCompositeOperation();
+      oForm.select.onchange = drawGlobalCompositeOperation;
+
+      //读取路径
+      var img = new Image();
+      img.src = canvas.toDataURL();
+      canvas.parentNode.appendChild( img );
+
+    })()
+  </script>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      插件
+    </div>
+  </div>
+  <div class="panel-body">
+    <canvas width="1000" height="200" id="demo-04">
+          您的浏览器不支持canvas,请您更换最新版本的浏览器！
+    </canvas>
+  </div>
+  <div class="panel-footer"></div>
+  <script type="text/javascript" src="js/jCanvaScript.1.5.18.min.js"></script>
+  <script type="text/javascript">
+    ;(function () {
+      jc.start('demo-04',true); // ID名, 是否重绘;
+      var myrect = jc.rect(250,100,50,50,'#00f',false);
+      jc.circle(250,100,50,'#ff0',true).draggable(myrect.up());
+      jc.circle(50,50,50,'#f60',true).click(function(){
+        this.animate({x:800,y:200,color:'#0f6'},1000, function(){
+          jc("#circle").draggable("clone",{color:"#f06"}); //通过ID调用
+        });
+      }).id("circle"); //可以命名ID
+      
+    })()
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      背景
+    </div>
+  </div>
+  <div class="panel-body">
+    <style type="text/css">
+      #demo-05{
+        width: 100%;
+        height: 500px;
+        background-color: #000;
+      }
+    </style>
+    <canvas id="demo-05">
+          您的浏览器不支持canvas,请您更换最新版本的浏览器！
+    </canvas>
+  </div>
+  <div class="panel-footer"></div>
+  <script type="text/javascript">
+    
+    (function (window) {
+      var canvas = document.getElementById('demo-05');
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+      var context = canvas.getContext('2d');
+      
+      
+      //初始鼠标位置
+      var mousePosition = {
+        x : canvas.width*0.3,
+        y : canvas.height*0.3,
+        cx : getOffset(canvas).left,
+        cy : getOffset(canvas).top
+      };
+      //判断鼠标落点
+      canvas.onmousemove = function(e) {
+        e = e || window.event;
+        mousePosition.x = e.pageX - mousePosition.cx;
+        mousePosition.y = e.pageY - mousePosition.cy;
+      };
+      canvas.onmouseleave = function(e) {
+        mousePosition.x = canvas.width/2;
+        mousePosition.y = canvas.height/2;
+      };
+
+      //圆形粒子对象配置信息
+      var dots = {
+        n : 300,        //粒子总数量
+        arr : [],  //保存粒子对象
+        chainArr : [],
+        chainRange : 50,  //链接线最大距离
+        mouseRange : 100 //鼠标点影响距离
+      };
+      //圆形粒子构造函数
+      function Dot (){
+        //随机圆心坐标
+        this.x = Math.random()*canvas.width.toFixed(2);
+        this.y = Math.random()*canvas.height.toFixed(2);
+        //x,y方向运动的速度值
+        this.vx = Math.random()-0.5;
+        this.vy = Math.random()-0.5;
+        //随机半径
+        this.radius = Math.random()*5;
+        //随机颜色
+        this.color = getRandomColor();
+      };
+      Dot.prototype.draw = function(){
+        context.beginPath();
+        context.fillStyle = this.color;
+        context.arc(this.x,this.y,this.radius,0,2*Math.PI,false);
+        context.closePath();
+        context.fill();
+      }
+      //添加粒子对象
+      function creatDots(){
+        var t;
+        for(var i=0; i< dots.n; i++){
+          dots.arr.push(new Dot());
+        }
+      }
+
+      //移动粒子
+      function moveDots(){
+        dots.arr.forEach(function(dot){
+          if(dot.x<0 || dot.x>canvas.width) {
+            dot.vx = -dot.vx ; 
+            dot.color = getRandomColor();
+            dot.radius = Math.random()*5;
+          };
+          if(dot.y<0 || dot.y>canvas.height) {
+            dot.vy = -dot.vy;
+            dot.color = getRandomColor();
+            dot.radius = Math.random()*5;
+          };
+          dot.x += dot.vx;
+          dot.y += dot.vy;
+        })
+      };
+      //绘制粒子
+      function drawDots(){
+        dots.arr.forEach(function(dot){
+          dot.draw();
+        });
+      }
+
+      //判定链条
+      function moveChains(){
+        chainArr = [];
+        dots.arr.forEach(function(a){
+          if((Math.pow(a.x-mousePosition.x, 2)+Math.pow(a.y- mousePosition.y,2) )> Math.pow(dots.mouseRange,2)) return;
+          dots.arr.forEach(function(b){
+            var f = chainArr.some(function(c){
+              return ((c[0] === a && c[1] === b) ||  (c[1] === a && c[0] === b));
+            });
+            if( !f && (a != b) && ((Math.pow(a.x-b.x, 2)+Math.pow(a.y- b.y,2) )< Math.pow(dots.chainRange,2))){
+              chainArr.push([a,b]);
+              
+            }
+          })
+        })
+      }
+      //绘制链条
+      context.lineWidth = 0.3;
+      function drawChain(a,b){
+        context.save();
+        //绘制线性渐变
+        var color = context.createLinearGradient(a.x,a.y,b.x,b.y);//注意,这里是x1,y1,x2,y2
+        color.addColorStop(0,a.color);
+        color.addColorStop(1,b.color);
+        context.strokeStyle = color;
+        context.beginPath();
+        context.moveTo(a.x,a.y);
+        context.lineTo(b.x,b.y);
+        context.closePath();
+        context.stroke();
+        context.restore();
+      }
+      function drawChains(){
+        chainArr.forEach(function(c){
+          drawChain.apply(this,c)
+        })
+      }
+      //动画
+      function animateDots () {
+        moveDots();
+        moveChains();
+        context.clearRect(0,0,canvas.width,canvas.height);
+        drawDots();
+        drawChains();
+        window.requestAnimationFrame(animateDots);
+      }
+
+      creatDots();
+      animateDots();
+
+      
+    })(window)
+  </script>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      推箱子
+    </div>
+  </div>
+  <div class="panel-body">
+    <div>
+      <canvas height="560" width="560" id="tuixiangzi"></canvas>
+      <div class="btns">
+        <p id="msg"></p>
+        <input type="button" value="上一关" id="prev-level"/>
+        <input type="button" value="下一关" id="next-level"/>
+        <input type="button" value="重新本关" id="restart"/>
+        <input type="button" value="提示信息" id="msg-btn" />
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer"></div>
+  <style type="text/css">
+    #tuixiangzi{
+      display: block;
+      margin:0 auto;
+    }
+    .btns{
+      width: 560px;
+      margin:10px auto;
+    }
+  </style>
+  <script type="text/javascript" src="js/tuixiangzi-mapdata100.js"></script>
+  <script type="text/javascript">
+    (function(window){
+      var canvas = document.getElementById("tuixiangzi");
+      var context = canvas.getContext('2d');
+      var msg = document.getElementById("msg");
+      var srcs = {
+        ball : 'img/ball.png',
+        block: 'img/block.gif',
+        box: 'img/box.png',
+        down: 'img/down.png',
+        left: 'img/left.png',
+        right: 'img/right.png',
+        up: 'img/up.png', 
+        wall: 'img/wall.png'
+      };
+      var w = 35, h=35,curMap,curLevel=0,step=0;
+      var images = {}, person={x:3,y:3};
+
+      //深拷贝数组
+      var clone = function (o) {
+        var b,C;
+        if ( typeof o !== 'object' || !o || !o.constructor){
+          b = o;
+        }else{
+          b = new o.constructor();
+          for (var k in o) {
+            if(o.hasOwnProperty(k) && o[k] !== undefined){
+              b[k] = clone(o[k]);
+            }
+          }
+        }
+        return b;
+      }
+      
+
+      var preLoad = function (srcs, callback){
+        var sum=0, count=0, key;
+        for(key in srcs){
+          sum++;
+        };
+        for(key in srcs){
+          images[key] = new Image();
+          images[key].src = srcs[key];
+          images[key].onload = function(){
+            if(++count >= sum){
+              callback();
+            }
+          }
+        }
+      };
+
+      var drawBlock = function(){
+        context.clearRect(0,0,canvas.width,canvas.height);
+        for(var i=0;i<16;i++){
+          for(var j=0; j<16;j++){
+            context.drawImage(images.block, w*j, h*i,w,h);
+          }
+        }
+      };
+
+      var drawData = function(){
+        var img,weight=[];
+        curMap.forEach(function (row,i) {
+          weight[i] = weight[i] || [];
+          row.forEach(function(n,j){
+            img = {};
+            img.x = j;
+            img.y = i;
+            switch(n){
+              case 0:
+                img.pic = images.block;
+                return;
+              case 1:
+                img.pic = images.wall;
+                break;
+              case 2:
+                img.pic = images.ball;
+                break;
+              case 3:
+              case 5:
+                img.pic = images.box;
+                break;
+              case 4:
+              case 6:
+                img.pic = person.pic;
+                person = img;
+                break;
+            }
+            n = n>4? n-2: n;
+            weight[i][n] = weight[i][n] || [];
+            weight[i][n].push(img);
+          })
+        })
+
+        var drawImg = function(img){
+          context.drawImage(img.pic,img.x*w-(img.pic.width-w)/2,img.y*h-(img.pic.height-h),img.pic.width,img.pic.height);
+        }
+
+        var recurForEach = function(fn,arr){
+          arr.forEach(function(s){
+            if(typeof s == 'object'){
+              if (s.constructor !== Array) {
+                fn(s);
+              }else{
+                recurForEach(fn,s)
+              }
+            }
+          })
+        }
+        recurForEach(drawImg,weight);
+
+      };
+
+      var drawMap = function(){
+        drawBlock();
+        drawData();
+      }
+      var showHelp = false;
+      var showHelpMsg = function(){
+        msg.innerHTML = "用键盘上的上、下、左、右键移动小人，把箱子全部推到小球的位置即可过关。箱子只可向前推，不能往后拉，并且小人一次只能推动一个箱子。";
+      };
+      var showMoveMsg = function(){
+        msg.innerHTML = "第" + (curLevel+1) +"关 移动次数: "+ step;
+      };
+      var initGame = function(){
+        showHelp = false;
+        step=0;
+        curMap = clone(levels[curLevel]);
+        person.pic = images.down;
+        drawMap();
+        showMoveMsg();
+      }
+      var tryGo = function(p0,p1,p2){
+        if( p1.x < 0 || p1.y<0|| p1.x > (curMap[0].length-1) || p1.y > (curMap.length-1) || curMap[p1.y][p1.x] === 1) return false;
+        if( curMap[p1.y][p1.x] === 3 || curMap[p1.y][p1.x] === 5 ){
+          if( curMap[p2.y][p2.x] === 1 ||curMap[p2.y][p2.x] === 3 || curMap[p2.y][p2.x] === 5 ) return false;
+          curMap[p2.y][p2.x] +=3;
+          curMap[p1.y][p1.x] -=3;
+        }
+        curMap[p1.y][p1.x] +=4;
+        curMap[p0.y][p0.x] -=4;
+        return true;
+      }
+      var checkOver = function(){
+        return !curMap.some(function (row) {
+          return row.some(function(n){
+            return (n === 3 || n === 2 || n === 6);
+          })
+        })
+      }
+      var go = function(d){
+        var p1={x:person.x, y:person.y},p2={x:person.x, y:person.y};
+        person.pic = images[d];
+        switch (d){
+          case 'left':
+          p1.x--;
+          p2.x = p1.x-1;
+          break;
+          case 'right':
+          p1.x++;
+          p2.x = p1.x+1;
+          break;
+          case 'up':
+          p1.y--;
+          p2.y = p1.y-1;
+          break;
+          case 'down':
+          p1.y++;
+          p2.y = p1.y+1;
+          break;
+        }
+       
+        if ( tryGo(person,p1,p2) ){
+          step++;
+          showMoveMsg();
+        }
+        drawMap();
+        if (checkOver()) {
+          alert("恭喜过关!");
+          document.getElementById("next-level").click();
+        }
+      }
+
+      var getKey = function(e){
+        e = e || window.event;
+        switch (e.keyCode){
+          case 37:
+            go('left')
+            e.preventDefault();
+            break;
+          case 38:
+            go('up')
+            e.preventDefault();
+            break;
+          case 39:
+            go('right')
+            e.preventDefault();
+            break;
+          case 40:
+            go('down')
+            e.preventDefault();
+            break;
+        }
+      }
+      preLoad(srcs, initGame);
+      document.getElementById("prev-level").onclick= function(){
+        (curLevel > 0) && curLevel--;
+        initGame();
+      }
+      document.getElementById("restart").onclick= function(){
+        initGame();
+      }
+      document.getElementById("next-level").onclick= function(){
+        (curLevel < (levels.length-1)) && curLevel++;
+        initGame();
+      }
+      document.getElementById("msg-btn").onclick= function(){
+        showHelp = !showHelp;
+        showHelp ? showHelpMsg() : showMoveMsg();
+      }
+
+      document.body.onkeydown = getKey;
+
+    })(window)
+  </script>
+</div>
+
+<canvas width=300 height=300 id="demo-09"></canvas>
+<script>
+  var sun = new Image();
+  var moon = new Image();
+  var earth = new Image();
+function init(){
+  // online
+ earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
+  sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
+  moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
+
+  // local
+  //earth.src = 'Canvas_earth.png';
+  //sun.src='Canvas_sun.png';
+  draw();
+}
+
+
+function draw(){
+  let canvas = document.getElementById('demo-09'),
+      ctx = canvas.getContext('2d'),
+      width = canvas.width,
+      height = canvas.height;
+    // ctx.globalCompositeOperation = 'destination-over';
+    ctx.clearRect(0,0,width,height);
+    ctx.drawImage(sun,0,0,width,height);
+    ctx.fillStyle= 'rgba(0,0,0,0.4)';
+    ctx.strokeStyle = 'rgba(0,50,50,0.5)';
+    ctx.arc(width/2,height/2,width/3,0,2*Math.PI);
+  
+  
+    ctx.stroke();
+    // ctx.fill();
+  
+    ctx.save();
+    //earth
+    let date = new Date();
+
+    ctx.translate(width/2,height/2);
+    // 公转
+    ctx.rotate ((2*Math.PI)*1*(date.getSeconds()/60 + date.getMilliseconds()/60000) );
+    ctx.translate(width/3,0);
+    // 自转
+    ctx.rotate ((2*Math.PI)*25*(date.getSeconds()/60 + date.getMilliseconds()/60000) );
+    ctx.drawImage(earth,-earth.width/2,-earth.height/2);
+    ctx.save();
+    ctx.translate(20,0);
+    ctx.drawImage(moon,-moon.width/2,-moon.height/2);
+
+    ctx.restore();
+    ctx.restore();
+    window.requestAnimationFrame(draw);
+}
+init();
+
+
+</script>
+</body>
+</html>

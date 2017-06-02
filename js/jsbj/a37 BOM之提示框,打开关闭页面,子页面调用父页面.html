@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>三种消息的对话框</title>
+		<script type="text/javascript">
+			function testAlert(){
+				window.alert("您的余额不足!"+location.href);//window可省略
+			};
+			function testConfirm () {
+
+			var flag = window.confirm("你真的要离开么?"); 
+			//又叫询问框
+ if (flag) {
+ alert("你怎么不去死,走了就别回来了");
+ } else{
+ alert("你真坏!");
+				}
+			};
+			function testPrompt (){
+				var name = window.prompt("来将通名","例如:张三");
+				alert(name);
+			};
+			
+			function testGame(){
+				var flag =window.confirm("你是不是傻逼?");
+				if (flag){
+					alert("你承认我就放心了!")
+				}else{
+					//递归,一直重复不断的调用自己,但是需要给递归一个出口
+					testGame();				
+				}}
+				
+			function testOpen  () {
+				//bom还是没有统一规则
+				
+				//window.open( URL,_self本窗口打开(默认新窗口打开),新窗口name值(不能中文),窗口风格,replace:Boolean);宽高最小为100,resizable是否可改变窗口大小,toolbar是否显示工具栏,location地址栏,menubar菜单栏,status状态栏,
+
+				window.open("https://www.baidu.com/","_self","baidu","height=100,width=600,top=0,left=100,resizable=no,toolbar=no,menubar=no,scrollbars=no,location=no,status=no");
+
+                // 或者直接修改href : window.location = ""
+				}
+			function testClose () {
+				window.close();
+			}
+			function testOpener () {
+				window.opener.sayHello();//调用父页面的函数,在父页面打开;
+				alert(window.opener.str);//调用父页面的属性值,在子页面打开;
+			}
+			
+			
+			
+		</script>
+		
+		
+	</head>
+	<body>
+		<h1>三种消息的对话框</h1>
+		<input type="button" value="警告框" onclick="testAlert();">
+		
+		<input type="button" value="确认框" onclick="testConfirm();">
+		
+		<input type="button" value="提示框" onclick="testPrompt();">
+		<hr/>
+		
+		<input type="button" name="" id="" value="史上最恶毒的小游戏" onclick="testGame();"/>
+		<hr/>
+		
+		<input type="button" name="" id="" value="打开子页面" onclick="testOpen();"/>
+	<input type="button" name="" id="" value="关闭本页面" onclick="testClose();"/>
+	<input type="button" name="" id="" value="子页面调用父页面" onclick="testOpener();"/>
+	
+		<input type="button" name="" id="" value="父页面调用子页面" onclick="test();"/>
+	</body>
+</html>

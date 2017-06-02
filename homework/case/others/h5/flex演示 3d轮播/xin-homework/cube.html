@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!--ie最高文档类型渲染-->
+    <meta name="viewport" content="width=device-width,inital-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <style>
+    	*{margin: 0;padding: 0;}
+    	html,body{height: 100%;}
+		.box{width: 100%;height: 100%;overflow: hidden;position: relative;}
+		ul{width: 1000%;height: 100%;position: absolute;left: 0;}
+    	li{list-style: none;float: left;height: 100%;}
+    	img{width: 100%;height: 100%;}
+    	.clickwrap{width:404px;height:283px;position: fixed;right: 30px;bottom: 50px;}
+    	.btn{position: absolute;right: 14px;top: 119px;}
+    	.btn div{width: 78px;height: 78px;border: 2px solid #fff;cursor: pointer;}
+    	.btn div.pre{border-bottom: none;}
+    	.next{background: url(img/arrow_right.png)no-repeat}
+    	.cube{/*background-color: #aaa; */width: 309px;height: 200px;position: relative;transform-style: preserve-3d;
+    	perspective:80000px;transition: all 1s;transform: rotateX(0deg);}
+    	.cube div{position: absolute;width: 100%;height: 100%;box-shadow: 0 0 5px 5px #fff inset;font-size: 30px;color: #fff;
+    	}
+    	.cube div.left,.cube div.right{width: 200px;height: 200px;}
+    	/*
+    	.left{transform:translateZ(-100px) rotateY(-90deg);transform-origin: left;}
+    	.right{transform: translateZ(100px) rotateY(-90deg);transform-origin: right;right: 0;}
+    	*/
+    	.top{transform:translateZ(-100px) rotateX(90deg);transform-origin: top;}
+    	.bottom{transform:translateZ(-100px) rotateX(-90deg);transform-origin: bottom;}
+    	.front{transform:translateZ(100px);background: url(img/info_1.png)no-repeat;}
+    	.back{transform:translateZ(-100px)  rotateX(180deg);}
+    	.cube div.shadow{transform:translateZ(-100px)  translateY(-100px) rotateX(-90deg);transform-origin: bottom;background-color: #aaa;
+    	box-shadow: none; }
+    	/*.cube:hover{transform: rotateX(180deg);}*/
+    	.jp{position: absolute;left: 0;bottom: 0;background: #222;border-radius: 50%;}
+    	.jp a{display: block;text-decoration: none;font-size: 14px;line-height: 40px;text-align: center;
+    	padding: 5px 12px;text-shadow: 0 0 5px gold,0 0 15px orchid;color: #fff;}
+    </style>
+</head>
+<body>
+	<div class="box">
+		<ul>
+			<li>
+				<img src="img/01.jpg" />
+			</li>
+			<li>
+				<img src="img/02.jpg" />
+			</li>
+			<li>
+				<img src="img/03.jpg" />
+			</li>
+			<li>
+				<img src="img/04.jpg" />
+			</li>
+			<li>
+				<img src="img/05.jpg" />
+			</li>
+			<li>
+				<img src="img/06.jpg" />
+			</li>
+			<li>
+				<img src="img/07.jpg" />
+			</li>
+			<li>
+				<img src="img/08.jpg" />
+			</li>
+			<li>
+				<img src="img/09.jpg" />
+			</li>
+		</ul>
+		<div class="clickwrap">
+			<div class="cube">
+				<div class="front"></div>
+				<div class="bottom"></div>
+				<div class="back"></div>
+				<div class="top"></div>
+				<!--
+				<div class="left">左</div>
+				<div class="right">右</div>
+				-->
+				<!--<div class="shadow"></div>-->
+			</div>
+			<div class="btn">
+				<div class="pre"></div>
+				<div class="next"></div>
+			</div>
+			
+			<div class="jp">
+				<a href="hw_8.html">传送门</a>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="js/jquery-1.11.3.min.js"></script>
+<script>
+	$(function(){
+		var index = 0;
+		var wid = $(window).width();
+		$('li').width(wid);
+		var dg = 0;
+		$(window).resize(function(){
+			wid = $(window).width();
+			$('li').width(wid);
+		});
+
+
+		$('.next').click(function(){
+			index++;
+			dg+=90;
+			if( index > 7){
+				index=8;
+				$(this).css('background','none');
+			}
+			if( dg > 720 ){
+				dg=720;
+			}
+			$('.pre').css('background','url(img/arrow_left.png)no-repeat');
+			$('ul').stop().animate({
+				'left' : -index*wid
+			},800);
+			$('.cube').css('transform','rotateX('+dg+'deg)');
+			setTimeout(function(){					
+				$('.cube div').eq( ((index%4)-2) ).hide().siblings().show();
+			},100);
+			$('.cube div').eq( (index%4) ).css({
+				'background':'url(img/info_'+(index+1)+'.png)no-repeat'
+			});
+		});
+		$('.pre').click(function(){
+			index--;
+			dg-=90;
+			if( index < 1){
+				index=0;
+				$(this).css('background','none');
+			}
+			if( dg < 0 ){
+				dg=0;
+			}
+			$('.next').css('background','url(img/arrow_right.png)no-repeat');
+			$('ul').stop().animate({
+				'left' : -index*wid
+			},800);
+			$('.cube').css('transform','rotateX('+dg+'deg)');
+			setTimeout(function(){					
+				$('.cube div').eq( ((index%4)-2) ).hide().siblings().show();
+			},100);
+		});
+	})
+</script>
+</html>

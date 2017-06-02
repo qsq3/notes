@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>会员登录</title>
+        <meta name="description" content="不超过150个字符">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        <link rel="stylesheet" type="text/css" href="css/weui.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery-weui.css" />
+        <link rel="stylesheet" type="text/css" href="css/common.css" />
+        <link rel="stylesheet" type="text/css" href="css/loginpage.css" />
+        
+    
+    </head>
+    <body ontouchstart class="loginPage">
+        <div class=" container">
+            <div class=" loginWrap">
+				<header class="regtitle">会员登录</header>
+                <form id="loginForm" class="weui_cells weui_cells_form">
+                  <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label"><img src="img/denglu/0.png"/></label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                      <input class="weui_input" type="tel" name="tel" placeholder="请输入手机号">
+                    </div>
+                  </div>
+                  <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label"><img src="img/denglu/2.png"/></label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                      <input class="weui_input" type="password" name="pw" placeholder="请输入密码">
+                    </div>
+                  </div>
+                </form>
+                <div class="weui_btn_area">
+                    <a href="usercenter.html" id="loginBtn" class="weui_btn weui_btn_primary bluebtn">登录</a>
+                    <a href="register.html" class="weui_btn weui_btn_plain_primary bluebtn_plain">注册</a>
+                </div>
+            </div>
+        </div>
+        <script src="js/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/jquery-weui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/ks_storage.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/login.js" type="text/javascript" charset="utf-8"></script>
+    </body>
+</html>

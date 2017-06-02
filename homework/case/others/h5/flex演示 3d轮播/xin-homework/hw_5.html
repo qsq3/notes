@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <style>
+    	*{padding: 0;margin: 0;}
+	    .likeIcon {position: fixed;}
+	    .likeIcon:before {position: absolute;left: 20px;content: " ";border: 0 solid transparent;
+	    border-radius: 100px 100px 0 0;width: 20px;height: 30px;background: #ff79bc;transform: rotate(-45deg);}
+	    .likeIcon:after {position: absolute;left: 27px;top: 0px;content: " ";border: 0 solid transparent;
+        border-radius: 100px 100px 0 0;width: 20px;height: 30px;background: #ff79bc;transform: rotate(45deg);}
+        #taiji{width: 150px;height: 74px;background: #fff;border-width: 1px 1px 75px 1px;border-style: solid;
+  		border-color: #000;border-radius: 50%;position: relative;top: 400px;left: 50%;animation: autoplay 3s infinite linear;
+  		-webkit-animation: autoplay 3s infinite linear;-moz-animation: autoplay 3s infinite linear;}
+  		#taiji:before {content: "";width: 15px;height: 15px;background: #fff;border: 30px solid #000;border-radius: 50%;
+  		position: absolute;top: 34px;left: 0;}
+		#taiji:after {content: "";width: 15px;height: 15px;background: #000;border: 30px solid #fff;border-radius: 50%;
+  		position: absolute;top: 34px;right: 0;} 
+  		@keyframes autoplay{
+  			from{transform: rotate(0);}
+  			to{transform: rotate(360deg);}
+  		}
+  		@-moz-keyframes autoplay{
+  			from{transform: rotate(0);}
+  			to{transform: rotate(360deg);}
+  		}
+  		@-ms-keyframes autoplay{
+  			from{transform: rotate(0);}
+  			to{transform: rotate(360deg);}
+  		}
+    </style>
+</head>	
+<body>
+	<div id="taiji"></div>
+</body>
+<script src="js/jquery-1.11.3.min.js"></script>
+  <script>
+	$(function(){
+		//获取页面宽高 
+		var w_w = $(window).width();
+		$(window).resize(function(){
+			w_w = $(window).width();
+		});
+		
+		var w_h = $(window).height();
+		$(window).resize(function(){
+			w_h = $(window).height();
+		});
+		
+		//生成爱心并且赋予随机初始位置
+		function creat(){
+			for( var i = 0 ; i < 5 ; i++ ){
+				var html = "<i class='likeIcon'></i>";
+				$('body').append( html );
+			};
+			
+			$('.likeIcon').each(function(){
+				$(this).css({
+					'left' : ( Math.random()*w_w )+'px',
+					//防止卡顿
+					'top' : ( -50*Math.random()-50 )+'px'
+				});				
+			});
+			
+		};
+		
+		//爱心降落动画
+		function play(){
+			$('.likeIcon').each(function(){
+				$(this).animate({
+					'top' : w_h+'px' ,
+					'left' : ( Math.random()*w_w ) +'px' ,
+					'opacity' : '0'
+				},4000,function(){
+					$(this).remove();
+				});
+			});
+		}
+
+		var timer = setInterval(function(){
+			creat();
+			play();
+		},900);	
+	});
+  </script>
+</html>
