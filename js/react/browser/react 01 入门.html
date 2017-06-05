@@ -243,6 +243,9 @@
         <pre>
           表单处理
           需要注意的是，由于 this.refs.[refName] 属性获取的是真实 DOM ，所以必须等到虚拟 DOM 插入文档以后，才能使用这个属性
+          替代LinkedStateMixin双向绑定 可复用的 Higher-order Components 高阶组件 和 Decorators @ 修饰类 
+            但是, 与高阶组件不同, 修饰器本质是编译时执行的函数, 所以对于同样在编译时解析的函数, 不能使用修饰器;
+            如果同一个方法有多个修饰器，会像剥洋葱一样，先从外到内进入，然后由内向外执行。类似栈(先进后出)
         </pre>
       </div>
       <!-- col-md-6 S-->
@@ -267,23 +270,19 @@
               state = {
                   inputValue: this.props.inputValue || 'red',
                   selectValue: this.props.selectValue || 'B',
-                  checkBoxValues: this.props.checkBoxValues || ['1'],
+                  checkBoxValue: this.props.checkBoxValue || ['a'],
                   linkValue: this.props.linkValue || '1',
               }
               //继承
               constructor(props) {
                 super(props)
               }
-
-              handleChange = (inputName,e) => {
-                this.setState({
-                  [`${inputName}Value`]: e.target.value
-                });
-              }
+              //柯里化
+              handleChange = (name) => (e) => this.setState({ [`${name}Value`]: e.target.value });
 
               handleCheckBox = (values) => {
                 this.setState({
-                    checkBoxValues: values
+                    checkBoxValue: values
                 });
               }
               
@@ -296,7 +295,7 @@
                   var formData = {
                     inputValue : this.state.inputValue,         //通过状态获取
                     selectValue : this.refs['demoSelect'].value,//通过dom元素获取
-                    checkBoxValues : this.state.checkBoxValues,
+                    checkBoxValue : this.state.checkBoxValue,
                     linkValue : this.state.linkValue,
                   };
                   console.log(formData)
@@ -306,7 +305,7 @@
                 let {
                   inputValue,
                   selectValue,
-                  checkBoxValues,
+                  checkBoxValue,
                   ...others,      // 解构其它
                 } = this.state;
                 return (
@@ -315,7 +314,7 @@
                       <h3>ES6 表单示例: </h3>
                       <span>onChange绑定值: </span>
                       <input 
-                        onChange={this.handleChange.bind(null,'input')} 
+                        onChange={this.handleChange('input')} //因为使用箭头函数, bind 无效, 所以可以随意绑定为null
                         value={ inputValue } 
                         //同时挂载onChange事件会使得传参错误,  React will call the ref callback with the DOM element when the component mounts, and call it with null when it unmounts.
                         //ref={function(self){ self && self.focus() }} 
@@ -323,7 +322,7 @@
                       /> 
                       &nbsp;&nbsp;
                       <span style={{color: this.state.inputValue}} >{inputValue}</span>
-                      <InputSub inputValue={inputValue} handleChange={this.handleChange.bind(null,'input')} />
+                      <InputSub inputValue={inputValue} handleChange={this.handleChange('input')} />
                       <br/><br/>
                       <span>使用库,TODO</span><br/><br/>
                       <span>设置defaultValue,读取dom.value: </span>
@@ -335,21 +334,24 @@
 
                       <ComponentCheckBox 
                         handleCheckBox={this.handleCheckBox} 
-                        checkBoxValues = {checkBoxValues}
+                        checkBoxValue = {checkBoxValue}
+                        checkArray={[
+                                    {name: '选项A', value: 'a'},
+                                    {name: '选项B', value: 'b'},
+                                    {name: '选项C', value: 'c'},
+                                  ]}
                       /><br/>
                       <input type="text" />
                       <input type="submit" value="提交"  />
+                      <InputSub2 />
                     </form>
                   </div>
                 );
               }
             };
 
-            //子组件onChange双向绑定
+            //子组件InputSub 的onChange手动双向绑定
             class InputSub extends React.Component {
-              constructor(props) {
-                super(props);
-              };
               render(){
                 return(
                   <input type="text" value={this.props.inputValue} onChange={this.props.handleChange} />
@@ -361,7 +363,7 @@
             class ComponentCheckBox extends React.Component {
                 static propTypes =  {
                   checkArray: PropTypes.array,
-                  checkBoxValues: PropTypes.array.isRequired,
+                  checkBoxValue: PropTypes.array.isRequired,
                   handleCheckBox: PropTypes.func.isRequired
                 };
                 static defaultProps = {
@@ -371,9 +373,6 @@
                     {name: '选项三', value: '3'},
                   ]
                 };
-                state = {
-                    checkBoxValues: this.props.checkBoxValues || []
-                };
                 constructor(props) {
                   super(props);
                 };
@@ -381,12 +380,12 @@
                 //使用箭头函数直接调用外部this,不必绑定 
                 // =>箭头函数并不绑定 this，arguments，super(ES6)，抑或 new.target(ES6)。
                 handleCheck = (event) => {
-                  let checkBoxValues = this.state.checkBoxValues.slice();
+                  let checkBoxValue = this.props.checkBoxValue.slice();
                   let newValue = event.target.value;
-                  let index = checkBoxValues.indexOf(newValue);
-                  index == -1 ? checkBoxValues.push(newValue) : checkBoxValues.splice(index,1);
-                  this.setState({ 'checkBoxValues' : checkBoxValues}); //注意 : 任务流最后才执行, 先执行的console;
-                  this.props.handleCheckBox(checkBoxValues);
+                  let index = checkBoxValue.indexOf(newValue);
+                  index == -1 ? checkBoxValue.push(newValue) : checkBoxValue.splice(index,1);
+                  console.log(newValue,checkBoxValue);
+                  this.props.handleCheckBox(checkBoxValue);
                 }
 
                 render() {
@@ -394,18 +393,15 @@
                     <p>
                       <span>使用子组件 : </span>
                       { this.props.checkArray.slice().map((list) => {
-                          let checked = this.state.checkBoxValues.indexOf(list.value) == -1? false : true;
                           return ( 
                             <span key={list.name} >
                               {list.name} : 
                               <input 
                                 type="checkbox" 
-                                onClick={this.handleCheck} 
+                                onChange={this.handleCheck} 
                                 value={list.value}
-                                defaultChecked={checked}
+                                checked={this.props.checkBoxValue.indexOf(list.value) >= 0}
                               /> 
-                              &nbsp;
-                              &nbsp;
                             </span>
                           )
                         }
@@ -414,8 +410,44 @@
                   )
                 }
             };
+            
+            //利用修饰符绑定数据
+            const linkState = (component) => {
+              let cache = {};
+              component.prototype.linkState = function(name){
+                var _this = this;
+                class LinkClass {
+                  value = _this.state[name]
+                  handle = () => {
+                    _this.setState({ [`${name}`]: this.value });
+                  }
+                }
+                cache[name] = cache[name] || new LinkClass();
+                return (e) =>{
+                  cache[name].value = e.target.value;
+                  cache[name].handle();
+                }
+              };
+            }
 
+            //@linkState
+            class InputSub2 extends React.Component {
+              state = {
+                name : 'kitty'
+              }
+              //linkState = (name) => (e) => this.setState({ [`${name}`]: e.target.value })
 
+              render(){
+                return(
+                  <div>
+                    <input type="text" value={this.state.name} onChange={this.linkState('name')} />
+                    &nbsp;<span>{this.state.name}</span>
+                  </div>
+                )
+              } 
+            };
+            linkState(InputSub2);
+            
             //开始渲染
             let MyForm = ReactDOM.render( 
               <FormControlES6  />,
@@ -568,10 +600,13 @@
                 )
               }
             }
+            //中止, 调试其它;
+            /*
             let LifeTestComponent = ReactDOM.render(
               <LifeTest />,
               document.getElementById('demo-03')
             ) 
+            */
           </script>
         </div>
       </div>
