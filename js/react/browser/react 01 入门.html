@@ -76,9 +76,9 @@
                   class *** extends React.Component      //深比较
                     mixin 需求可使用  high order components 方案,或者 react-mixin库
             3. JavaScript Function 函数式  stateLess 组件           
-                const Person = ({firstName,lastName,...others}) => { 
+                const Person = ({firstName,lastName,...others}) => ( 
                     <span>{firstName}, {lastName}</span> 
-                };
+                );
 
           LinkedStateMixin 已废弃 可使用第三方 LinkedInput 库替代,
         </pre>
@@ -272,6 +272,7 @@
                   selectValue: this.props.selectValue || 'B',
                   checkBoxValue: this.props.checkBoxValue || ['a'],
                   linkValue: this.props.linkValue || '1',
+                  radio : this.props.radio || 'secret'
               }
               //继承
               constructor(props) {
@@ -279,6 +280,8 @@
               }
               //柯里化
               handleChange = (name) => (e) => this.setState({ [`${name}Value`]: e.target.value });
+              //直接读取 e.target.name
+              handleRadio = (e)=>this.setState({[`${e.target.name}`]:e.target.value == this.state[`${e.target.name}`] ? '': e.target.value})
 
               handleCheckBox = (values) => {
                 this.setState({
@@ -296,7 +299,7 @@
                     inputValue : this.state.inputValue,         //通过状态获取
                     selectValue : this.refs['demoSelect'].value,//通过dom元素获取
                     checkBoxValue : this.state.checkBoxValue,
-                    linkValue : this.state.linkValue,
+                    radio : this.state.radio,
                   };
                   console.log(formData)
               }
@@ -338,10 +341,22 @@
                         checkArray={[
                                     {name: '选项A', value: 'a'},
                                     {name: '选项B', value: 'b'},
-                                    {name: '选项C', value: 'c'},
-                                  ]}
+                                    {name: '选项C', value: 'c'}
+                        ]}
                       /><br/>
-                      <input type="text" />
+                      { /* 使用子元素 与函数式*/ }
+                      <Radio 
+                        name = 'radio'
+                        value= {this.state.radio}
+                        handleChange= {this.handleRadio}
+                      >
+                        <options value="man">男性</options>
+                        <options value="woman">女性</options>
+                        <options value="secret">保密</options>
+                      </Radio> <br/>
+
+                      <label htmlFor="myinput">input输入框: </label>
+                      <input id="myinput" type="text" />
                       <input type="submit" value="提交"  />
                       <InputSub2 />
                     </form>
@@ -354,7 +369,11 @@
             class InputSub extends React.Component {
               render(){
                 return(
-                  <input type="text" value={this.props.inputValue} onChange={this.props.handleChange} />
+                  <input 
+                    type="text" 
+                    value= {this.props.inputValue}
+                    onChange= {this.props.handleChange} 
+                  />
                 )
               } 
             };
@@ -411,6 +430,32 @@
                 }
             };
             
+            //子组件 Radio 函数式
+            const Radio = ({...props}) =>{
+              console.log(props);
+              return (
+                <span> 
+                  {
+                    React.Children.map(props.children,(child,index)=>(
+                      <label> 
+                        <i>{child.props.children}: </i>
+                        <input 
+                          type = "radio" 
+                          value= {child.props.value}
+                          name = {props.name}
+                          checked = {props.value == child.props.value}
+                          onChange = {props.handleChange}
+                        />
+                        &nbsp;&nbsp;
+                      </label> 
+                    ))
+                    
+                  } 
+                  <b>选择了 : {props.value}</b> 
+                </span>
+              )
+            }
+
             //利用修饰符绑定数据
             const linkState = (component) => {
               let cache = {};
@@ -480,43 +525,43 @@
 
       <div class="col-sm-6">
         <pre>
-组件的生命周期
+  组件的生命周期
 
-  组件的生命周期分成三个状态：
+    组件的生命周期分成三个状态：
 
-  Mounting：已插入真实 DOM
-  Updating：正在被重新渲染
-  Unmounting：已移出真实 DOM
+    Mounting：已插入真实 DOM
+    Updating：正在被重新渲染
+    Unmounting：已移出真实 DOM
 
-  React 为每个状态都提供了两种处理函数，will 函数在进入状态之前调用，did 函数在进入状态之后调用，三种状态共计五种处理函数。
-  钩子函数:
-  
-  //创建组件(类)
-  getDefaultProps() es6已废弃 获取默认props 只在创建组件时调用一次 实例间共享其引用,类似原型属性
+    React 为每个状态都提供了两种处理函数，will 函数在进入状态之前调用，did 函数在进入状态之后调用，三种状态共计五种处理函数。
+    钩子函数:
+    
+    //创建组件(类)
+    getDefaultProps() es6已废弃 获取默认props 只在创建组件时调用一次 实例间共享其引用,类似原型属性
 
-  //初始化实例
-  getInitialState() es6已废弃 初始化state,初始化实例时调用, 类似实例属性
-  componentWillMount() 实例即将加载, render前最后一次修改状态的机会
-  render  开始渲染  只有一个顶层组件, 只能访问 this.props 和 this.state,不允许修改状态和DOM输出;
-  componentDidMount()  实例加载完成,成功渲染后触发,可以修改DOM
+    //初始化实例
+    getInitialState() es6已废弃 初始化state,初始化实例时调用, 类似实例属性
+    componentWillMount() 实例即将加载, render前最后一次修改状态的机会
+    render  开始渲染  只有一个顶层组件, 只能访问 this.props 和 this.state,不允许修改状态和DOM输出;
+    componentDidMount()  实例加载完成,成功渲染后触发,可以修改DOM
 
-  //更新数据
-  componentWillReceiveProps(object nextProps)：已加载组件props变化时最先调用,常用于子组件监听父组件数据变化
-  shouldComponentUpdate(object nextProps, object nextState)：组件判断是否重新渲染时调用
-  componentWillUpdate(object nextProps, object nextState)  实例即将更新数据, 不能修改属性和状态;用于日志打印/数据获取等只读操作; 因为 数据变动 -> 触发 componentWillUpdate -> 触发数据变动 容易造成成无限递归死循环;
-  render 开始渲染  只有一个顶层组件, 只能访问 this.props 和 this.state,不允许修改状态和DOM输出;
-  componentDidUpdate(object prevProps, object prevState)   实例完成更新数据 ,可以修改DOM
+    //更新数据
+    componentWillReceiveProps(object nextProps)：已加载组件props变化时最先调用,常用于子组件监听父组件数据变化
+    shouldComponentUpdate(object nextProps, object nextState)：组件判断是否重新渲染时调用
+    componentWillUpdate(object nextProps, object nextState)  实例即将更新数据, 不能修改属性和状态;用于日志打印/数据获取等只读操作; 因为 数据变动 -> 触发 componentWillUpdate -> 触发数据变动 容易造成成无限递归死循环;
+    render 开始渲染  只有一个顶层组件, 只能访问 this.props 和 this.state,不允许修改状态和DOM输出;
+    componentDidUpdate(object prevProps, object prevState)   实例完成更新数据 ,可以修改DOM
 
-  //销毁实例
-  componentWillUnmount()       实例将要销毁
+    //销毁实例
+    componentWillUnmount()       实例将要销毁
 
 
-  纯组件 PureComponent 不会深比较对象,只浅比较对象的引用;
-  在纯组件有子组件的时候，所有基于 this.context 改变的子组件， 在 this.context 改变时， 将不会重新渲染 ，除非在父组件(Parent ParentComponent)中声明 contextTypes 。
+    纯组件 PureComponent 不会深比较对象,只浅比较对象的引用;
+    在纯组件有子组件的时候，所有基于 this.context 改变的子组件， 在 this.context 改变时， 将不会重新渲染 ，除非在父组件(Parent ParentComponent)中声明 contextTypes 。
 
-  组件的数据来源，通常是通过 Ajax 请求从服务器获取，可以使用 componentDidMount 方法设置 Ajax 请求，等到请求成功，再用 this.setState 方法重新渲染 UI
+    组件的数据来源，通常是通过 Ajax 请求从服务器获取，可以使用 componentDidMount 方法设置 Ajax 请求，等到请求成功，再用 this.setState 方法重新渲染 UI
 
-  使用第三方库操作DOM, 比如 JQ , 需要在dom加载完成, 也就是 window.onload 后使用 ,避免dom还没被react渲染完成;
+    使用第三方库操作DOM, 比如 JQ , 需要在dom加载完成, 也就是 window.onload 后使用 ,避免dom还没被react渲染完成;
         </pre>
       </div>
       <!-- col-md-6 S-->
@@ -617,6 +662,7 @@
     footer
   </div>
 </div>
+
 <!-- 属性与状态 -->
 <div class="panel panel-primary">
   <div class="panel-heading">
@@ -660,7 +706,7 @@
   </div>
 </div>
 
- 
+ <!-- 事件对象 event -->
 <div class="panel panel-primary">
   <div class="panel-heading">
     <div class="panel-title">
