@@ -611,9 +611,10 @@ animate参数详解
               }
 
               function drawRing(parts, options, p) {
+                options = extend(defaultOptions, options);
+                p = p || 1;
                 var angles = {};
-                var d, p = p || 1;
-                var options = extend(defaultOptions, options);
+                var d; 
                 var total = options.angleTotal * p;
                 var oPath, oAnime, paths = [];
                 var start = options.angleStart || -total * parts[0].size / 200;
