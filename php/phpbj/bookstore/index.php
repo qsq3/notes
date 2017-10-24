@@ -18,9 +18,13 @@
 			</p>
 			<?php
 				/* 包含自定义的函数库文件 */
+        include "./config.inc.php";
 				include "./book/func.inc.php";
-				/* 如果用户的操作是请求添加图书表单action=add，则条件成立 */
-				if($_GET["action"] == "add") {
+        if (empty($_GET["action"]) || $_GET["action"] == "list") {
+          include "./book/list.inc.php";
+
+        /* 如果用户的操作是请求添加图书表单action=add，则条件成立 */
+        } else if($_GET["action"] == "add") {
 					/* 包含add.inc.php获取用户添加表单 */
 					include "./book/add.inc.php";
 				/* 如果用户提交添加表单action=insert，则条件成立 */
@@ -131,9 +135,7 @@
 				} else if($_GET["action"] == "ser"){
 					include "./book/ser.inc.php";
 				/* 默认的请求都是图书列表 */
-				} else {
-					include "./book/list.inc.php";
-				}
+				} 
 			?>
 	</body>
 </html>

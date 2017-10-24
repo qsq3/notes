@@ -16,6 +16,8 @@ date_default_timezone_set('PRC');
     Windows:  
         停止服务: net stop mysql
         启动: net strat mysql
+        环境变量: 配置PATH : "D:\Tools\phpStudy\MySQL\bin"
+        CMD : mysql -h localhost -uroot -proot
 
     Linux 
         启动: service mysqld start

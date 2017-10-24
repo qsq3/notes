@@ -81,7 +81,7 @@ date_default_timezone_set('PRC');
     
     //非查询语句(无结果集): PDO::exec
     $sql = "INSERT INTO users( name, balance) VALUES('王二' , '1000'),('张三' , '2000')";
-
+    $sql = "INSERT INTO products( name, price) VALUES('黄瓜' , '15'),('香蕉' , '20'),('茄子' , '30')";
     /*  错误模式: 默认 不提示
     $affect_rows = $pdo -> exec( $sql );
     if( $affect_rows > 0 ){
@@ -96,11 +96,11 @@ date_default_timezone_set('PRC');
     }
     */
 
-    /* 错误模式: 异常 无结果集 */
+    /* 错误模式: 异常 */
     try {
         $affect_rows = $pdo -> exec( $sql );
         echo "执行成功, 受影响行数为{$affect_rows}<br>";
-        echo "最近插入语句(可以是多行)的ID(多行的情况, id全为自动增长则为第一个,或者插入语句的自动增长ID): ". $pdo -> lastInsertId() . '<br>';
+        echo "最近插入语句(可以是多行)的ID(多行的情况, id全为自动增长则为第一个,或者指定id的最后一个): ". $pdo -> lastInsertId() . '<br>';
     } catch ( PDOException $e ){
         echo '执行失败: ' . $e -> getMessage () ;
         exit;
@@ -140,7 +140,7 @@ date_default_timezone_set('PRC');
         //执行SQL语句
         $buyerId = 2;
         $salerId = 1;
-        $productId =9;
+        $productId =3;
 
         $sql = "update users set balance=balance-(select price from products where id={$productId}) where id={$buyerId};";
 
