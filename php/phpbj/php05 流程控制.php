@@ -111,7 +111,7 @@ eg:
     continue 2; 用在  while  do while for 语句中, 用于跳过当前一次循环;
     break 3; 用在 switch while  do while for 语句中, 用于退出当前循环结构;
         php中,break 和continue后可以接数字表示退出几层循环;
-    exit; exit('可以输出文本'); 退出当前脚本 ,die()就是exit()的一个别名;
+    exit; exit('可以输出文本'); 退出当前脚本 ,die()就是exit()的一个别名; 注意 , exit后面即使 html 代码也不会被加载
     return 1; 返回一个值;
     goto ; 不能用 break 跳出;
 

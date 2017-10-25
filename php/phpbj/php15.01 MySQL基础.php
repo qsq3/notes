@@ -36,7 +36,7 @@ date_default_timezone_set('PRC');
         在命令行中登陆MYSQL控制台 , 即使用 MYSQL COMMEND LINE TOOL
             语法格式 mysql –user=root –password=123456 db_name
                    或 mysql –uroot –p123456 db_name 注意：直接输入密码-p后面不能留有空格
-            mysql -u 用户名 -p密码-h 服务器IP地址-P 服务器端MySQL端口号-D 数据库名
+            mysql -u用户名 -p密码 -h 服务器IP地址 -P 服务器端MySQL端口号-D 数据库名
     
     和PHP整合
 
