@@ -59,6 +59,10 @@ date_default_timezone_set('PRC');
 
 二. 数据表的设计:
 1. 数据表
+    列出所有库: show databases;
+    使用库: use 'database'
+    列出库中所有表: show tables;
+
 2. 创建数据表的SQL语句模型
     DDL
     CREATE TABLE [IF NOT EXISTS]表名称(
@@ -293,7 +297,7 @@ date_default_timezone_set('PRC');
     
     删: delete from 表名 [where 条件] ; alter table 表名 drop column 字段名; 
 
-    截断/清空表(不影响表结构): TRUNCATE 表名;
+    截断/重置表(不影响表结构): TRUNCATE 表名;
     
     改: update 表名 set 字段1="数值" [,字段2=concat('字符串',字段2)...] [where 条件]
     

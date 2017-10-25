@@ -80,9 +80,9 @@ date_default_timezone_set('PRC');
 */
     
     //非查询语句(无结果集): PDO::exec
+    //
+    /*  错误模式: 默认 不提示  */
     $sql = "INSERT INTO users( name, balance) VALUES('王二' , '1000'),('张三' , '2000')";
-    $sql = "INSERT INTO products( name, price) VALUES('黄瓜' , '15'),('香蕉' , '20'),('茄子' , '30')";
-    /*  错误模式: 默认 不提示
     $affect_rows = $pdo -> exec( $sql );
     if( $affect_rows > 0 ){
         echo "执行成功, 受影响行数为{$affect_rows}<br>";
@@ -94,9 +94,9 @@ date_default_timezone_set('PRC');
         print_r($pdo->errorInfo());
         exit;
     }
-    */
 
     /* 错误模式: 异常 */
+    $sql = "INSERT INTO products( name, price) VALUES('黄瓜' , '15'),('香蕉' , '20'),('茄子' , '30')";
     try {
         $affect_rows = $pdo -> exec( $sql );
         echo "执行成功, 受影响行数为{$affect_rows}<br>";
@@ -352,7 +352,8 @@ function  readDataBackwards ( $dbh ,$sql ) {
   try {
      $stmt  =  $dbh -> prepare ( $sql , array( PDO :: ATTR_CURSOR  =>  PDO :: CURSOR_SCROLL ));
      $stmt -> execute ();
-     $row  =  $stmt -> fetch ( PDO :: FETCH_NUM ,  PDO :: FETCH_ORI_LAST );
+     $row  =  $stmt -> fetch ( PDO::FETCH_NUM ,  PDO::FETCH_ORI_LAST );
+     var_dump($row);
     do {
        $data  =  $row [ 0 ] .  "\t"  .  $row [ 1 ] .  "\t"  .  $row [ 2 ] .  "\n<br>" ;
       print  $data ;
