@@ -106,3 +106,39 @@
     explode() 分割字符串为数组;
     implode() 连接数组为字符串;
     str_repeat() 字符串重复拼接;
+
+    ltrim(); rtrim(); trim();
+    str_pad(); 按需求对字符串填充;
+    
+    三. 定界符:
+    //heredoc 句法结构：<<<。在该运算符之后要提供一个标识符，然后换行。接下来是字符串 string 本身，最后要用前面定义的标识符作为结束标志。 结束时所引用的标识符必须在该行的第一列，而且，标识符的命名也要像其它标签一样遵守 PHP 的规则：只能包含字母、数字和下划线，并且必须以字母和下划线作为开头。
+    //Heredocs 结构不能用来初始化类的属性。自 PHP 5.3 起，此限制仅对 heredoc 包含变量时有效。
+echo <<<EOT
+My name is "$name". I am printing some $foo->foo.
+Now, I am printing some {$foo->bar[1]}.
+This should print a capital 'A': \x41
+EOT;
+
+以上例程会输出：
+My name is "MyName". I am printing some Foo.
+Now, I am printing some Bar2.
+This should print a capital 'A': A
+
+    //Nowdoc 结构
+    //就象 heredoc 结构类似于双引号字符串，Nowdoc 结构是类似于单引号字符串的。Nowdoc 结构很象 heredoc 结构，但是 nowdoc 中不进行解析操作。这种结构很适合用于嵌入 PHP 代码或其它大段文本而无需对其中的特殊字符进行转义。与 SGML 的 <![CDATA[ ]]> 结构是用来声明大段的不用解析的文本类似，nowdoc 结构也有相同的特征。一个 nowdoc 结构也用和 heredocs 结构一样的标记 <<<， 但是跟在后面的标识符要用单引号括起来，即 <<<'EOT'。Heredoc 结构的所有规则也同样适用于 nowdoc 结构，尤其是结束标识符的规则。
+    //
+echo <<<'EOT'
+My name is "$name". I am printing some $foo->foo.
+Now, I am printing some {$foo->bar[1]}.
+This should not print a capital 'A': \x41
+EOT;
+
+以上例程会输出：
+My name is "$name". I am printing some $foo->foo.
+Now, I am printing some {$foo->bar[1]}.
+This should not print a capital 'A': \x41
+
+    $new = preg_replace($reg, "#", $str); //替换
+    $newarr = preg_split($reg, $str); //分割
+    preg_match($reg, $str,$arr);//匹配,返回布尔值,匹配成功的值放在 $arr 里面
+    preg_match_all($reg, $str,$arr);//匹配所有,返回布尔值,匹配成功的值放在 $arr 里面 
