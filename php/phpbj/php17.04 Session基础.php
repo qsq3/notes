@@ -22,6 +22,7 @@ echo '<br>';
 // 客户端
 echo $_COOKIE['PHPSESSID'];
 echo '<br>';
+
 /*
 // 删除 session 首先也要开启session
 // session_start();
