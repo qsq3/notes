@@ -45,6 +45,27 @@ session_destroy();
 <a href="/test.php?<?php echo session_name()."=".session_id() ?>">手动跳转sessionid链接</a>
 <a href="/test.php?<?php echo SID ?>">SID常量跳转sessionid链接</a>
 <div>
+session_gc 垃圾回收机制:
+php.ini :
+session.gc_divisor = 1000 ; 用户刷新时 1/1000 几率启动
+session.gc_maxlifetime = 1440 ; 回收 1440秒 未更新的session 文件;
+
 在使用Linux系统做服务器时， 在编辑PHP时， 如果使用了—enable-trans-sid配置选项， 和运行时选项session.use_trans_sid都被激活， 在客户端禁用cookie时， 相对的url将被自动修改为包含sessionid, 如果没有配置， 或使用windows系统作为服务器时， 可以使用常量SID.  
 建议使用Linux并配置好。
+
+自定义 session 保存格式
+ session.save_handler 默认 files
+1. 预定义memcache:
+  php.ini:
+  // 方式改为memcache
+  session.save_handler = memcache
+  //多个memcache地址
+  session.save_path = "tcp://localhost:11211;tcp://192.168.1.101:11211;..."
+
+2. 用户自定义
+  php.ini:
+  // 方式改为 user
+  session.save_handler = user
+
+  通过函数 session_set_save_handler 注册生命周期钩子
 </div>
