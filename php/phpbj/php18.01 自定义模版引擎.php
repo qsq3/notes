@@ -131,6 +131,7 @@
   $smarty = new Smarty();
   $smarty->template_dir = './php18.0.1/template';
   $smarty->compile_dir = './php18.0.1/template_c';
+  
   // 查询数据库获得数据
     // 连接数据库 include "conn.class.php";
     const DSN = 'mysql:host=localhost;dbname=login';
