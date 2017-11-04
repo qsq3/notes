@@ -15,7 +15,7 @@
   define("ROOT", str_replace("\\", "/", dirname(__FILE__)));
 
   // 
-  include ROOT."/libs/smarty/Smarty.class.php";
+  include ROOT."/libs/smarty-3.1.30/libs/Smarty.class.php";
   $smarty = new Smarty;
   // smart3.0 设置目录
   $smarty->setTemplateDir(ROOT.'/php18.0.1/template2');
