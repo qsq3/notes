@@ -16,8 +16,10 @@ const server = http.createServer((req, res) => {
   if(arg.a && arg.b){
     str = add(arg.a, arg.b)
   }
-  let str2 = querystring.stringify(arg);
-  res.end(`Hello World\n ${str} \n ${str2}`);
+  res.write(`Hello World\n`)
+  res.write(`${str} \n`)
+  res.write(`${querystring.stringify(arg)} \n`)
+  res.end(`END`);
 });
 
 server.listen(port, hostname, () => {
