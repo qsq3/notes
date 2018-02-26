@@ -11,6 +11,7 @@ const add = require('./modules/add.js') // 自定义模块
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  //var arg = url.parse(req.url).query;  // arg => a=001&b=002
   var arg = url.parse(req.url, true).query;  // arg => { a: '001', b: '002' }
   let str = '无参数'
   if(arg.a && arg.b){
